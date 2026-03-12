@@ -636,11 +636,18 @@ button {
   font-size: 13px;
 }
 
-.advantage-list,
 .service-grid,
 .estate-list {
   display: grid;
   gap: var(--space-12);
+  width: 100%;
+  min-width: 0;
+}
+
+.advantage-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
   width: 100%;
   min-width: 0;
 }
@@ -657,24 +664,25 @@ button {
 }
 
 .advantage-card {
-  width: 100%;
-  min-width: 0;
-  padding: var(--space-14);
-  border: 1px solid rgba(253, 93, 0, 0.08);
-  border-radius: 18px;
-  background: linear-gradient(180deg, #ffffff 0%, #fffaf7 100%);
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  min-height: 34px;
+  padding: 0 var(--space-12);
+  border: 1px solid rgba(253, 93, 0, 0.12);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.96);
 }
 
 .advantage-card__title {
-  margin: 0 0 var(--space-8);
-  font-size: var(--font-size-sm);
+  margin: 0;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
+  color: var(--color-text-1);
 }
 
 .advantage-card__desc {
-  margin: 0;
-  color: var(--color-text-2);
-  font-size: var(--font-size-xs);
+  display: none;
 }
 
 .service-card {

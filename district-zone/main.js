@@ -521,7 +521,6 @@
       return '' +
         '<article class="advantage-card">' +
           '<h3 class="advantage-card__title">' + item.title + "</h3>" +
-          '<p class="advantage-card__desc">' + item.desc + "</p>" +
         "</article>";
     }).join("");
 
