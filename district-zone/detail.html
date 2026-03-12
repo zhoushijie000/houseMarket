@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>区县详情</title>
+  <link rel="stylesheet" href="./components.css" />
+</head>
+<body data-page="detail">
+  <main class="mobile-page" id="detailPage">
+    <header class="topbar">
+      <a class="topbar__back" id="backLink" href="./index.html">返回</a>
+      <div class="topbar__title" id="detailTopTitle">区县详情</div>
+    </header>
+
+    <section class="detail-hero">
+      <div class="detail-hero__top">
+        <div class="detail-logo" id="detailLogo">高新</div>
+        <div>
+          <p class="detail-hero__location" id="detailLocation">成都南部</p>
+          <h1 class="detail-hero__name" id="detailName">高新区</h1>
+          <p class="detail-hero__label" id="detailFocus">科创产业 / 金融城 / 改善住区</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section detail-layout">
+      <div class="detail-section">
+        <div class="section-title">
+          <div class="section-title__text">区县特色</div>
+        </div>
+        <div class="advantage-list" id="advantagesList"></div>
+      </div>
+
+      <div class="detail-section" id="servicesAnchor">
+        <div class="section-title">
+          <div class="section-title__text">区县服务</div>
+        </div>
+        <div class="service-grid" id="serviceGrid"></div>
+      </div>
+
+      <div class="detail-section">
+        <div class="section-title">
+          <div class="section-title__text">区县视频</div>
+          <div class="section-title__meta" id="videoCount"></div>
+        </div>
+        <div class="video-rail" id="videoRail"></div>
+      </div>
+
+      <div class="detail-section">
+        <div class="section-title">
+          <div class="section-title__text">区县重点项目</div>
+          <div class="section-title__meta" id="projectCount"></div>
+        </div>
+        <div class="filter-scroll project-filter-bar" id="projectFilterBar"></div>
+        <div class="estate-list" id="projectList"></div>
+      </div>
+    </section>
+
+    <div class="spacer"></div>
+  </main>
+
+  <script src="./main.js"></script>
+</body>
+</html>

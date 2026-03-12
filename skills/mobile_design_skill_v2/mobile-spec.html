@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>房产超市移动端设计规范</title>
+  <link rel="stylesheet" href="./tokens.css" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #eef1f3;
+      color: var(--color-text-1);
+      font-family: var(--font-family);
+    }
+    .doc {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+    .block {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.06);
+    }
+    h1,h2,h3,p { margin-top: 0; }
+    .token-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+    }
+    .swatch {
+      border: 1px solid #eee;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .swatch__color { height: 56px; }
+    .swatch__info { padding: 10px 12px; font-size: 12px; }
+    .sample {
+      width: 375px;
+      max-width: 100%;
+      margin: 0 auto;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,.12);
+      background: var(--color-page);
+      border: 8px solid #111;
+    }
+    .rule-list { color: var(--color-text-2); line-height: 1.8; }
+    .font-row {
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+  </style>
+  <link rel="stylesheet" href="./components.css" />
+</head>
+<body>
+  <div class="doc">
+    <div class="block">
+      <h1>房产超市移动端设计规范</h1>
+      <p>基于 SVG 设计稿提炼：375 宽移动端、橙色品牌体系、白底卡片信息流、房产价格与专题标签突出，适用于区县专题、楼盘列表、活动与政策信息页。</p>
+    </div>
+
+    <div class="block">
+      <h2>一、颜色规范</h2>
+      <div class="token-grid">
+        <div class="swatch"><div class="swatch__color" style="background:#FD5D00"></div><div class="swatch__info">Primary<br>#FD5D00</div></div>
+        <div class="swatch"><div class="swatch__color" style="background:#FF8F2E"></div><div class="swatch__info">Accent<br>#FF8F2E</div></div>
+        <div class="swatch"><div class="swatch__color" style="background:#303133"></div><div class="swatch__info">Text 1<br>#303133</div></div>
+        <div class="swatch"><div class="swatch__color" style="background:#909399"></div><div class="swatch__info">Text 3<br>#909399</div></div>
+        <div class="swatch"><div class="swatch__color" style="background:#F3F5F6"></div><div class="swatch__info">Page Bg<br>#F3F5F6</div></div>
+        <div class="swatch"><div class="swatch__color" style="background:#67CC35"></div><div class="swatch__info">Success<br>#67CC35</div></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>二、字体层级</h2>
+      <div class="font-row" style="font-size:17px;font-weight:600;">17 / Semibold 页面主标题</div>
+      <div class="font-row" style="font-size:16px;font-weight:600;">16 / Semibold 模块标题</div>
+      <div class="font-row" style="font-size:15px;font-weight:600;">15 / Semibold 卡片标题</div>
+      <div class="font-row" style="font-size:14px;">14 / Regular 正文信息</div>
+      <div class="font-row" style="font-size:12px;color:#909399;">12 / Regular 辅助信息</div>
+      <div class="font-row" style="font-size:10px;color:#909399;">10 / Regular 说明标签</div>
+    </div>
+
+    <div class="block">
+      <h2>三、页面规则</h2>
+      <div class="rule-list">
+        页面宽度按 375px 设计；左右安全边距建议 16px。<br>
+        卡片内容优先按“标题 → 基础信息 → 价格 → 状态”组织。<br>
+        价格使用品牌橙色突出，剩余套数使用红色弱底标签强调。<br>
+        活动与政策模块使用白底卡片承载，时间、地点等信息使用 12px 灰色说明文案。<br>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>四、页面骨架示例</h2>
+      <div class="sample mobile-page">
+        <div class="topbar">
+          <div class="topbar__title">郫都区专题</div>
+        </div>
+        <div class="topic-hero">
+          <h3 class="topic-hero__title">西部新城 · 刚改 / 轨交关注</h3>
+          <p class="topic-hero__desc">基于设计稿提炼的专题头部样式</p>
+          <div class="chips">
+            <span class="chip">人才购房</span>
+            <span class="chip">以旧换新</span>
+            <span class="chip">购房补贴</span>
+          </div>
+        </div>
+        <div class="page-section">
+          <div class="section-title">
+            <div class="section-title__text">在售楼盘</div>
+            <div class="section-title__action">展开更多</div>
+          </div>
+          <div class="estate-card card">
+            <div class="estate-card__thumb"></div>
+            <div class="estate-card__body">
+              <h4 class="estate-card__title">招商·时代花园</h4>
+              <p class="estate-card__meta">天府新区 / 建面 120~130㎡</p>
+              <p class="estate-card__desc">容积率 2.3</p>
+              <div class="estate-card__footer">
+                <div class="price">31000~32000 <small>元/㎡</small></div>
+                <span class="stock-tag">剩余 30 套</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fixed-bar">
+          <button class="btn btn--primary">查看专题全部房源</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

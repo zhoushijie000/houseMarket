@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>成都区县专区</title>
+  <link rel="stylesheet" href="./components.css" />
+</head>
+<body data-page="collection">
+  <main class="mobile-page" id="collectionPage">
+    <header class="topbar">
+      <div class="topbar__title">成都区县专区</div>
+    </header>
+
+    <section class="hero-card card">
+      <div class="hero-card__label">区县搜索</div>
+      <h1 class="hero-card__title">查找并进入区县专区</h1>
+      <p class="hero-card__desc">搜索区县名称后查看区位、特色、政策服务和重点项目</p>
+
+      <label class="search-box" for="districtSearchInput">
+        <span class="search-box__icon" aria-hidden="true"></span>
+        <input
+          class="search-box__field"
+          id="districtSearchInput"
+          type="search"
+          inputmode="search"
+          placeholder="搜索区县名称"
+          autocomplete="off"
+        />
+      </label>
+    </section>
+
+    <section class="page-section page-stack">
+      <div class="section-title">
+        <div class="section-title__text">区县集合</div>
+        <div class="section-title__meta" id="districtCount"></div>
+      </div>
+
+      <div class="district-grid" id="districtGrid"></div>
+    </section>
+
+    <div class="spacer"></div>
+  </main>
+
+  <script src="./main.js"></script>
+</body>
+</html>
