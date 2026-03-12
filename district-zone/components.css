@@ -205,6 +205,16 @@ button {
   color: var(--color-text-3);
 }
 
+.search-panel {
+  margin: var(--space-12) var(--page-padding-x) 0;
+}
+
+.search-box--compact {
+  margin-top: 0;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: var(--shadow-card);
+}
+
 .location-banner {
   display: flex;
   align-items: center;
@@ -320,6 +330,7 @@ button {
 
 .district-grid__expanded {
   grid-column: 1 / -1;
+  margin-top: 0;
 }
 
 .district-empty {
@@ -344,17 +355,43 @@ button {
   box-shadow: var(--shadow-card);
   text-align: left;
   cursor: pointer;
+  transition:
+    margin 0.22s ease,
+    min-height 0.22s ease,
+    padding 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease,
+    transform 0.22s ease;
 }
 
 .district-card.is-active {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12);
+  grid-column: 1 / -1;
+  height: 100px;
+  min-height: 100px;
+  margin-inline: 0;
+  padding: var(--space-12) var(--space-16);
   border-color: rgba(253, 93, 0, 0.24);
   box-shadow: var(--shadow-emphasis);
+  transform: translateY(-2px);
+}
+
+.district-card.is-active .district-card__head {
+  flex: 0 0 auto;
+  min-width: 0;
 }
 
 .district-card__head {
   display: flex;
   align-items: center;
   gap: var(--space-10);
+}
+
+.district-card__head > div {
+  min-width: 0;
 }
 
 .district-logo {
@@ -391,6 +428,15 @@ button {
   font-size: var(--font-size-xs);
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  transition: margin 0.22s ease, min-height 0.22s ease;
+}
+
+.district-card.is-active .district-card__intro {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  -webkit-line-clamp: 1;
 }
 
 .tag-row {
