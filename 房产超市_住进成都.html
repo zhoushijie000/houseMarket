@@ -1,0 +1,2937 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>房产超市 - 住进成都专题原型</title>
+  <style>
+    :root {
+      --brand-primary: #fd5d00;
+      --brand-secondary: #ff8f2e;
+      --brand-deep: #c74100;
+      --accent-green: #67cc35;
+      --accent-red: #ff2828;
+      --text-primary: #303133;
+      --text-secondary: #606266;
+      --text-tertiary: #909399;
+      --text-quaternary: #c0c4cc;
+      --line-soft: #e4e7ed;
+      --page-bg: #f3f5f6;
+      --surface: #ffffff;
+      --surface-soft: #fff7f0;
+      --surface-warm: #fff2e5;
+      --surface-cool: #eef7f7;
+      --shadow-card: 0 14px 32px rgba(48, 49, 51, 0.08);
+      --shadow-float: 0 18px 44px rgba(253, 93, 0, 0.18);
+      --radius-xs: 6px;
+      --radius-sm: 10px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-7: 28px;
+      --space-8: 32px;
+      --font-display: "Alibaba PuHuiTi 3.0", "PingFang SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
+      --font-body: "PingFang SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at top left, rgba(255, 212, 181, 0.9), transparent 36%),
+        radial-gradient(circle at right 14%, rgba(255, 181, 132, 0.42), transparent 28%),
+        linear-gradient(180deg, #fff9f4 0%, #f7f2ec 100%);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 24px 12px;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .phone-shell {
+      position: relative;
+      width: min(100%, 390px);
+      min-height: 844px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.98)),
+        var(--page-bg);
+      border-radius: 34px;
+      box-shadow:
+        0 24px 60px rgba(48, 49, 51, 0.12),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.75);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .phone-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(140deg, rgba(255, 244, 232, 0.95), transparent 36%),
+        radial-gradient(circle at right top, rgba(253, 93, 0, 0.08), transparent 36%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page-stack,
+    .screen {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+    }
+
+    .screen {
+      display: none;
+      height: 844px;
+      overflow-y: auto;
+      scrollbar-width: none;
+      animation: screen-enter 320ms ease;
+    }
+
+    .screen::-webkit-scrollbar {
+      display: none;
+    }
+
+    .screen.is-active {
+      display: block;
+    }
+
+    .page-content {
+      padding: 18px 16px calc(44px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 6;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 12px;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(180deg, rgba(255, 250, 245, 0.92), rgba(255, 250, 245, 0.72));
+      border-bottom: 1px solid rgba(228, 231, 237, 0.7);
+    }
+
+    .topbar__meta,
+    .topbar__action {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .topbar__meta {
+      width: 100%;
+      min-height: 24px;
+    }
+
+    .topbar__city {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255, 143, 46, 0.14);
+      color: var(--brand-deep);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .topbar__title {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .icon-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border: none;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 10px 22px rgba(48, 49, 51, 0.08);
+      cursor: pointer;
+      color: var(--text-primary);
+    }
+
+    .back-button {
+      position: relative;
+      z-index: 1;
+      border: none;
+      padding: 0;
+      background: transparent;
+      color: var(--text-primary);
+      font-size: 24px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      padding: 16px;
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at top right, rgba(255, 212, 171, 0.62), transparent 34%),
+        linear-gradient(150deg, #fff8f1 0%, #fff2e5 38%, #ffe1c6 100%);
+      box-shadow: var(--shadow-card);
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      right: -16px;
+      top: -18px;
+      width: 108px;
+      height: 108px;
+      border-radius: 50%;
+      background: rgba(253, 93, 0, 0.09);
+    }
+
+    .hero-card__eyebrow {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.68);
+      color: var(--brand-deep);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .hero-card__title {
+      position: relative;
+      margin: 10px 0 6px;
+      font-family: var(--font-display);
+      font-size: 22px;
+      line-height: 1.25;
+      font-weight: 700;
+    }
+
+    .hero-card__desc {
+      position: relative;
+      margin: 0;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      font-size: 12px;
+    }
+
+    .hero-card__tool-row {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .hero-card__locate {
+      min-height: 34px;
+      padding: 0 12px;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: none;
+      white-space: nowrap;
+      font-size: 12px;
+    }
+
+    .hero-card__status {
+      position: relative;
+      z-index: 1;
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.68);
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .hero-card__status strong {
+      color: var(--brand-deep);
+    }
+
+    .section {
+      margin-top: 16px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .section-head p {
+      margin: 4px 0 0;
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+
+    .section-link {
+      border: none;
+      background: transparent;
+      color: var(--brand-primary);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .shortcut-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .shortcut-card {
+      padding: 14px 8px 12px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: var(--shadow-card);
+      text-align: center;
+    }
+
+    .shortcut-card__icon {
+      width: 42px;
+      height: 42px;
+      margin: 0 auto 10px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      background: linear-gradient(180deg, rgba(255, 143, 46, 0.16), rgba(253, 93, 0, 0.08));
+    }
+
+    .shortcut-card strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .shortcut-card span {
+      display: block;
+      margin-top: 4px;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .topic-banner {
+      position: relative;
+      overflow: hidden;
+      padding: 18px;
+      border: none;
+      width: 100%;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at top right, rgba(255, 255, 255, 0.24), transparent 26%),
+        linear-gradient(135deg, #d9571d 0%, #fd7e22 42%, #ffb65f 100%);
+      color: #fff;
+      text-align: left;
+      box-shadow: var(--shadow-float);
+      cursor: pointer;
+    }
+
+    .topic-banner__tag {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.18);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .topic-banner__title {
+      margin: 14px 0 8px;
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .topic-banner__desc {
+      margin: 0;
+      max-width: 250px;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 13px;
+    }
+
+    .topic-banner__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 18px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .listing-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .listing-card {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      align-items: start;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: var(--shadow-card);
+    }
+
+    .listing-card__media {
+      width: 100%;
+      aspect-ratio: 5 / 4;
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, rgba(253, 93, 0, 0.12), rgba(255, 143, 46, 0.08)),
+        #fff1e6;
+      min-height: auto;
+      display: grid;
+      place-items: end start;
+      align-self: start;
+      padding: 9px;
+      color: var(--brand-deep);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .listing-card__title {
+      margin: 0 0 4px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .listing-card__meta,
+    .listing-card__tagline {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .listing-card__price {
+      margin-top: 8px;
+      color: var(--brand-primary);
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .listing-card__price span,
+    .listing-card__price small {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+    }
+
+    .listing-card__video {
+      margin-top: 8px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: rgba(49, 93, 117, 0.08);
+    }
+
+    .listing-card__video-tag {
+      display: inline-flex;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(49, 93, 117, 0.12);
+      color: #315d75;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .listing-card__video-title {
+      margin: 8px 0 4px;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .listing-card__video-meta {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .listing-card__report {
+      width: 100%;
+      margin-top: 8px;
+      padding: 10px 12px;
+      border: none;
+      border-radius: 16px;
+      background: rgba(253, 93, 0, 0.08);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .listing-card__report-tag {
+      display: inline-flex;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(253, 93, 0, 0.12);
+      color: var(--brand-deep);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .listing-card__report-title {
+      margin: 8px 0 4px;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.5;
+      color: var(--text-primary);
+    }
+
+    .listing-card__report-meta {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .detail-hero {
+      padding: 20px;
+      border-radius: var(--radius-xl);
+      background:
+        radial-gradient(circle at right top, rgba(255, 255, 255, 0.2), transparent 30%),
+        linear-gradient(135deg, #243949 0%, #315d75 48%, #4c7b78 100%);
+      color: #fff;
+      box-shadow: var(--shadow-card);
+    }
+
+    .detail-hero__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .detail-hero h1 {
+      margin: 16px 0 8px;
+      font-family: var(--font-display);
+      font-size: 30px;
+      line-height: 1.15;
+    }
+
+    .detail-hero p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.84);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .detail-hero__badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .detail-hero__badge {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+      font-size: 12px;
+    }
+
+    .toolbar-card,
+    .panel-card {
+      padding: 16px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: var(--shadow-card);
+    }
+
+    .toolbar-card {
+      margin-top: 18px;
+    }
+
+    .toolbar-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .toolbar-row p {
+      margin: 6px 0 0;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .primary-button,
+    .ghost-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 42px;
+      padding: 0 16px;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .primary-button {
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+      color: #fff;
+      box-shadow: 0 14px 26px rgba(253, 93, 0, 0.24);
+    }
+
+    .ghost-button {
+      background: rgba(255, 143, 46, 0.12);
+      color: var(--brand-deep);
+    }
+
+    .primary-button:active,
+    .ghost-button:active,
+    .icon-button:active {
+      transform: translateY(1px);
+    }
+
+    .filter-chips {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+
+    .filter-chips::-webkit-scrollbar {
+      display: none;
+    }
+
+    .chip {
+      flex: 0 0 auto;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: none;
+      background: #f5f7fa;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+    }
+
+    .chip.is-active {
+      background: rgba(255, 143, 46, 0.18);
+      color: var(--brand-deep);
+      box-shadow: inset 0 0 0 1px rgba(253, 93, 0, 0.18);
+    }
+
+    .chip.is-match {
+      outline: 2px solid rgba(103, 204, 53, 0.28);
+      outline-offset: 1px;
+    }
+
+    .filter-chips--hero {
+      position: relative;
+      z-index: 1;
+      margin-top: 14px;
+    }
+
+    .filter-chips--hero .chip {
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .activity-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .activity-group {
+      padding: 16px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: var(--shadow-card);
+    }
+
+    .activity-group__head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .activity-group__title {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .activity-group__desc {
+      margin: 6px 0 0;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .activity-group__badge {
+      flex: 0 0 auto;
+      padding: 8px 10px;
+      border-radius: 14px;
+      background: rgba(255, 143, 46, 0.12);
+      color: var(--brand-deep);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .activity-item {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 18px;
+      background: var(--surface-soft);
+      border: 1px solid rgba(253, 93, 0, 0.08);
+      text-align: left;
+      cursor: pointer;
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .activity-item + .activity-item {
+      margin-top: 10px;
+    }
+
+    .activity-item:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 22px rgba(253, 93, 0, 0.08);
+    }
+
+    .activity-item__title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .activity-item__title strong {
+      font-size: 14px;
+    }
+
+    .activity-item__count {
+      color: var(--brand-primary);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .activity-item__meta {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.75;
+    }
+
+    .activity-item__footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: 10px;
+      color: var(--brand-primary);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .activity-item__arrow {
+      font-size: 14px;
+    }
+
+    .columns-grid,
+    .decor-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .decor-grid--compact {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .column-card,
+    .decor-card {
+      padding: 16px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: var(--shadow-card);
+    }
+
+    .column-card__type {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(49, 93, 117, 0.1);
+      color: #315d75;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .column-card__title {
+      margin: 14px 0 6px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .column-card__meta,
+    .decor-card__meta {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .column-card__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 14px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+    }
+
+    .bot-entry {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at right top, rgba(255, 255, 255, 0.16), transparent 30%),
+        linear-gradient(135deg, #315d75 0%, #4c7b78 100%);
+      color: #fff;
+      box-shadow: var(--shadow-card);
+    }
+
+    .bot-entry h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      font-family: var(--font-display);
+    }
+
+    .bot-entry p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .bot-avatar {
+      flex: 0 0 auto;
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+      display: grid;
+      place-items: center;
+      font-size: 30px;
+      background: rgba(255, 255, 255, 0.18);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+    }
+
+    .decor-card__head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .decor-card__title {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .decor-card__badge {
+      padding: 7px 10px;
+      border-radius: 14px;
+      background: rgba(103, 204, 53, 0.14);
+      color: #3d8b1f;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .tag {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #f5f7fa;
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+
+    .service-entry {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 16px 14px;
+      border: none;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: var(--shadow-card);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .service-entry__icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      background: linear-gradient(180deg, rgba(255, 143, 46, 0.16), rgba(253, 93, 0, 0.08));
+      color: var(--brand-deep);
+    }
+
+    .service-entry__title {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .service-entry__desc {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .activity-detail-hero {
+      padding: 4px 0 18px;
+      border-bottom: 1px solid rgba(228, 231, 237, 0.9);
+      color: var(--text-primary);
+    }
+
+    .activity-detail-hero__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 143, 46, 0.12);
+      color: var(--brand-deep);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .activity-detail-hero h1 {
+      margin: 14px 0 10px;
+      font-family: var(--font-display);
+      font-size: 28px;
+      line-height: 1.18;
+    }
+
+    .activity-detail-hero p {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.72;
+    }
+
+    .activity-detail-hero__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .activity-detail-hero__meta span {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--surface-soft);
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .report-page {
+      display: grid;
+      gap: 16px;
+    }
+
+    .report-gallery-wrap {
+      position: relative;
+    }
+
+    .report-gallery {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x mandatory;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .report-gallery::-webkit-scrollbar {
+      display: none;
+    }
+
+    .report-photo {
+      position: relative;
+      flex: 0 0 100%;
+      overflow: hidden;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      border-radius: 26px;
+      min-height: 352px;
+      padding: 22px 22px 54px;
+      display: flex;
+      align-items: flex-start;
+      background:
+        linear-gradient(180deg, rgba(16, 24, 40, 0.08), rgba(16, 24, 40, 0.54)),
+        linear-gradient(135deg, var(--report-photo-start, rgba(253, 93, 0, 0.96)), var(--report-photo-end, rgba(255, 143, 46, 0.76)));
+      box-shadow: var(--shadow-card);
+    }
+
+    .report-photo::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 16% 20%, var(--report-photo-glow, rgba(255, 255, 255, 0.2)), transparent 24%),
+        radial-gradient(circle at 84% 18%, rgba(255, 255, 255, 0.12), transparent 18%),
+        linear-gradient(180deg, transparent 0%, rgba(16, 24, 40, 0.28) 100%);
+    }
+
+    .report-photo--wide {
+      min-height: 352px;
+    }
+
+    .report-photo__content {
+      position: relative;
+      z-index: 1;
+      color: #fff;
+      max-width: 78%;
+    }
+
+    .report-photo__tag {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .report-photo__content strong {
+      display: block;
+      margin-top: 12px;
+      font-size: 22px;
+      line-height: 1.35;
+    }
+
+    .report-photo__content span {
+      display: block;
+      margin-top: 8px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .report-gallery__dots {
+      position: absolute;
+      left: 50%;
+      bottom: 18px;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(16, 24, 40, 0.22);
+      backdrop-filter: blur(10px);
+      transform: translateX(-50%);
+    }
+
+    .report-gallery__dot {
+      appearance: none;
+      width: 8px;
+      height: 8px;
+      padding: 0;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.42);
+      transition: width 0.24s ease, background-color 0.24s ease;
+    }
+
+    .report-gallery__dot.is-active {
+      width: 20px;
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .report-hero {
+      padding: 0;
+    }
+
+    .report-hero h1 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 24px;
+      line-height: 1.45;
+    }
+
+    .report-body {
+      display: grid;
+      gap: 12px;
+    }
+
+    .report-body p {
+      margin: 0;
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.9;
+    }
+
+    .report-body p strong {
+      font-weight: 700;
+    }
+
+    .district-panel {
+      display: grid;
+      gap: 10px;
+    }
+
+    .district-panel__status {
+      margin: 0;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .district-panel__status strong {
+      color: var(--brand-primary);
+    }
+
+    .district-media-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .district-media-card {
+      display: grid;
+      gap: 8px;
+      padding: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .district-media-card__cover {
+      position: relative;
+      min-height: 96px;
+      padding: 12px;
+      border-radius: 18px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      background:
+        linear-gradient(180deg, rgba(16, 24, 40, 0.02), rgba(16, 24, 40, 0.56)),
+        linear-gradient(135deg, rgba(49, 93, 117, 0.88), rgba(76, 123, 120, 0.8));
+    }
+
+    .district-media-card__cover::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 24%, rgba(255, 255, 255, 0.18), transparent 24%),
+        radial-gradient(circle at 82% 18%, rgba(255, 255, 255, 0.14), transparent 20%),
+        linear-gradient(180deg, transparent 0%, rgba(20, 26, 38, 0.36) 100%);
+    }
+
+    .district-media-card__content,
+    .district-media-card__play {
+      position: relative;
+      z-index: 1;
+    }
+
+    .district-media-card__content {
+      color: #fff;
+      max-width: 76%;
+    }
+
+    .district-media-card__content strong {
+      display: block;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    .district-media-card__content span {
+      display: inline-flex;
+      margin-top: 8px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .district-media-card__play {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--brand-primary);
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .district-media-card__title {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .district-media-card__meta,
+    .district-media-card__link {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 11px;
+      line-height: 1.55;
+    }
+
+    .district-media-card__link {
+      color: var(--brand-primary);
+      font-weight: 700;
+    }
+
+    .project-grid,
+    .video-grid,
+    .influencer-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .project-card,
+    .video-card,
+    .influencer-card {
+      padding: 16px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: var(--shadow-card);
+    }
+
+    .project-card__tag,
+    .influencer-card__tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 143, 46, 0.12);
+      color: var(--brand-deep);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .project-card__title,
+    .video-card__title {
+      margin: 14px 0 8px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .project-card__desc,
+    .video-card__meta,
+    .influencer-card__quote {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .video-card__head,
+    .influencer-card__head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .video-card__cover,
+    .influencer-card__cover {
+      position: relative;
+      min-height: 170px;
+      padding: 14px;
+      border-radius: 18px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      background:
+        linear-gradient(180deg, rgba(16, 24, 40, 0.02), rgba(16, 24, 40, 0.56)),
+        linear-gradient(135deg, rgba(49, 93, 117, 0.88), rgba(76, 123, 120, 0.8));
+    }
+
+    .video-card__cover::before,
+    .influencer-card__cover::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 22% 24%, rgba(255, 255, 255, 0.18), transparent 24%),
+        radial-gradient(circle at 84% 18%, rgba(255, 255, 255, 0.14), transparent 20%),
+        linear-gradient(180deg, transparent 0%, rgba(20, 26, 38, 0.34) 100%);
+    }
+
+    .video-card__cover-content,
+    .influencer-card__cover-content {
+      position: relative;
+      z-index: 1;
+      max-width: 70%;
+      color: #fff;
+    }
+
+    .video-card__cover-content strong,
+    .influencer-card__cover-content strong {
+      display: block;
+      font-size: 18px;
+      line-height: 1.35;
+    }
+
+    .video-card__cover-content span,
+    .influencer-card__cover-content span {
+      display: inline-flex;
+      margin-top: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .video-card__play {
+      position: relative;
+      z-index: 1;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--brand-primary);
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .video-card__meta {
+      margin-top: 12px;
+    }
+
+    .influencer-card__name {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .influencer-card__role {
+      margin: 6px 0 0;
+      color: var(--text-tertiary);
+      font-size: 12px;
+    }
+
+    .influencer-card__quote {
+      margin-top: 12px;
+    }
+
+    .influencer-card__cta {
+      color: var(--brand-primary);
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .activity-status {
+      margin-top: 12px;
+    }
+
+    .detail-sticky-bar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 8;
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 14px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+      border-radius: 24px 24px 0 0;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 18px 42px rgba(48, 49, 51, 0.12);
+      backdrop-filter: blur(18px);
+    }
+
+    .detail-sticky-bar button {
+      min-height: 50px;
+    }
+
+    .phone-shell--activity .detail-sticky-bar {
+      display: grid;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 12;
+      display: none;
+    }
+
+    .overlay.is-visible {
+      display: block;
+    }
+
+    .overlay__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(25, 28, 32, 0.44);
+      backdrop-filter: blur(10px);
+    }
+
+    .splash-wrap {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 24px 54px rgba(48, 49, 51, 0.22);
+      animation: modal-pop 360ms ease;
+    }
+
+    .splash-card {
+      position: relative;
+      padding: 22px;
+      background:
+        radial-gradient(circle at top right, rgba(255, 255, 255, 0.28), transparent 32%),
+        linear-gradient(160deg, #8d2300 0%, #d94d10 42%, #ff9b46 100%);
+      color: #fff;
+    }
+
+    .splash-card::after {
+      content: "";
+      position: absolute;
+      right: -28px;
+      bottom: -24px;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .splash-card__close {
+      position: absolute;
+      right: 14px;
+      top: 14px;
+      width: 34px;
+      height: 34px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.16);
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .splash-card__eyebrow {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    .splash-card__title {
+      margin: 16px 0 10px;
+      font-family: var(--font-display);
+      font-size: 32px;
+      line-height: 1.1;
+      font-weight: 700;
+    }
+
+    .splash-card__desc {
+      margin: 0;
+      max-width: 280px;
+      color: rgba(255, 255, 255, 0.84);
+      font-size: 14px;
+      line-height: 1.72;
+    }
+
+    .splash-card__highlights {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .splash-card__highlights span {
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      font-size: 12px;
+    }
+
+    .splash-card__actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .splash-card__actions button {
+      min-height: 46px;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .splash-card__actions .enter-button {
+      background: #fff;
+      color: var(--brand-deep);
+    }
+
+    .splash-card__actions .later-button {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    .chat-drawer {
+      position: absolute;
+      inset: 0;
+      z-index: 15;
+      display: none;
+      animation: screen-enter 280ms ease;
+    }
+
+    .chat-drawer.is-visible {
+      display: block;
+    }
+
+    .chat-panel {
+      display: grid;
+      grid-template-rows: auto 1fr auto auto;
+      height: 100%;
+      background:
+        radial-gradient(circle at top left, rgba(255, 221, 197, 0.44), transparent 28%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(250, 252, 253, 0.98));
+      backdrop-filter: blur(20px);
+    }
+
+    .chat-panel__head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: calc(18px + env(safe-area-inset-top, 0px)) 18px 12px;
+      border-bottom: 1px solid rgba(228, 231, 237, 0.7);
+    }
+
+    .chat-panel__head h3 {
+      margin: 0 0 6px;
+      font-size: 18px;
+      font-family: var(--font-display);
+    }
+
+    .chat-panel__head p {
+      margin: 0;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .chat-close {
+      border: none;
+      background: #f5f7fa;
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .chat-panel__body {
+      min-height: 0;
+      padding: 16px 18px 12px;
+      overflow-y: auto;
+      background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 100%);
+    }
+
+    .chat-message {
+      display: flex;
+      margin-bottom: 12px;
+      gap: 10px;
+    }
+
+    .chat-message--user {
+      flex-direction: row-reverse;
+    }
+
+    .chat-bubble {
+      max-width: 78%;
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: #f5f7fa;
+      color: var(--text-primary);
+      font-size: 13px;
+      line-height: 1.65;
+      white-space: pre-line;
+    }
+
+    .chat-message--bot .chat-bubble {
+      background: rgba(49, 93, 117, 0.1);
+      color: #294859;
+    }
+
+    .chat-avatar {
+      flex: 0 0 auto;
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: #f5f7fa;
+      font-size: 16px;
+    }
+
+    .chat-quick-list {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 0 18px 12px;
+      scrollbar-width: none;
+    }
+
+    .chat-quick-list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .chat-quick {
+      flex: 0 0 auto;
+      border: none;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(255, 143, 46, 0.12);
+      color: var(--brand-deep);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .chat-panel__form {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      padding: 12px 18px calc(18px + env(safe-area-inset-bottom, 0px));
+      border-top: 1px solid rgba(228, 231, 237, 0.7);
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .chat-input {
+      height: 46px;
+      border: 1px solid var(--line-soft);
+      border-radius: 14px;
+      padding: 0 14px;
+      background: #f9fafb;
+      outline: none;
+    }
+
+    .chat-input:focus {
+      border-color: rgba(253, 93, 0, 0.24);
+      box-shadow: 0 0 0 3px rgba(253, 93, 0, 0.08);
+    }
+
+    .chat-send {
+      min-width: 86px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .chat-fab {
+      position: absolute;
+      right: 20px;
+      bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+      z-index: 8;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      width: 72px;
+      height: 72px;
+      border: none;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #315d75, #4c7b78);
+      color: #fff;
+      box-shadow: 0 16px 34px rgba(49, 93, 117, 0.26);
+      cursor: pointer;
+    }
+
+    .phone-shell--activity .chat-fab {
+      bottom: calc(110px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .chat-fab__icon {
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .chat-fab__label {
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .status-text {
+      margin-top: 10px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .status-text strong {
+      color: var(--brand-primary);
+    }
+
+    .status-text:empty {
+      display: none;
+    }
+
+    .qr-wrap {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 13;
+      animation: modal-pop 280ms ease;
+    }
+
+    .qr-card {
+      position: relative;
+      padding: 22px;
+      border-radius: 28px;
+      background: linear-gradient(180deg, #ffffff 0%, #fffaf6 100%);
+      box-shadow: 0 24px 54px rgba(48, 49, 51, 0.2);
+    }
+
+    .qr-card__close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 34px;
+      height: 34px;
+      border: none;
+      border-radius: 50%;
+      background: #f5f7fa;
+      cursor: pointer;
+    }
+
+    .qr-card__eyebrow {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 143, 46, 0.12);
+      color: var(--brand-deep);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .qr-card h3 {
+      margin: 16px 0 8px;
+      font-size: 22px;
+      font-family: var(--font-display);
+    }
+
+    .qr-card p {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .qr-code {
+      width: 196px;
+      height: 196px;
+      margin: 18px auto 14px;
+      padding: 16px;
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: inset 0 0 0 1px rgba(228, 231, 237, 0.85);
+      display: grid;
+      place-items: center;
+    }
+
+    .qr-code__pattern {
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      background:
+        linear-gradient(90deg, #101828 12px, transparent 12px) 0 0 / 32px 32px,
+        linear-gradient(#101828 12px, transparent 12px) 0 0 / 32px 32px,
+        radial-gradient(circle at 18px 18px, #101828 0 11px, transparent 12px) 0 0 / 64px 64px,
+        linear-gradient(135deg, transparent 42%, #101828 42% 58%, transparent 58%) 0 0 / 28px 28px,
+        linear-gradient(45deg, transparent 42%, #101828 42% 58%, transparent 58%) 0 0 / 28px 28px,
+        #fff;
+    }
+
+    .qr-card__meta {
+      text-align: center;
+      color: var(--text-tertiary);
+      font-size: 12px;
+    }
+
+    .decor-entry {
+      width: 100%;
+      padding: 18px;
+      border: none;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at right top, rgba(255, 255, 255, 0.16), transparent 34%),
+        linear-gradient(135deg, #fff7f0 0%, #fff2e5 100%);
+      box-shadow: var(--shadow-card);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .decor-entry__head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .decor-entry__tag {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 143, 46, 0.14);
+      color: var(--brand-deep);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .decor-entry__title {
+      margin: 12px 0 8px;
+      font-size: 18px;
+      font-family: var(--font-display);
+    }
+
+    .decor-entry__desc {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .decor-entry__arrow {
+      color: var(--brand-primary);
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .decor-directory {
+      display: none;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .decor-directory.is-open {
+      display: grid;
+    }
+
+    .decor-directory__item {
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: var(--shadow-card);
+    }
+
+    .decor-directory__item strong {
+      display: block;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .decor-directory__item span,
+    .decor-directory__item small {
+      display: block;
+      margin-top: 6px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    #activityDetailScreen .page-content {
+      padding-bottom: calc(142px + env(safe-area-inset-bottom, 0px));
+    }
+
+    @keyframes modal-pop {
+      from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.97);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes screen-enter {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 0;
+      }
+
+      .phone-shell {
+        width: 100%;
+        min-height: 100vh;
+        border-radius: 0;
+      }
+
+      .screen {
+        height: 100vh;
+      }
+
+      .district-media-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="phone-shell">
+    <main class="page-stack">
+      <section class="screen is-active" id="homeScreen" aria-label="住进成都专题首页">
+        <header class="topbar">
+          <div class="topbar__meta">
+            <span class="topbar__title">住进成都</span>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <section class="hero-card">
+            <div class="hero-card__tool-row">
+              <button class="ghost-button hero-card__locate" id="locateButton" type="button">📍 定位附近场次</button>
+            </div>
+            <h1 class="hero-card__title">把成都好房带到你的城市里</h1>
+            <p class="hero-card__desc">跨城专场活动入口</p>
+            <div class="hero-card__status" id="locationStatus">
+              当前城市：<strong>西宁</strong>
+            </div>
+            <div class="filter-chips filter-chips--hero" id="cityFilters" aria-label="城市筛选"></div>
+          </section>
+          <section class="section">
+                     <div class="activity-list" id="activityList"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen" id="activityDetailScreen" aria-label="活动详情">
+        <header class="topbar">
+          <div class="topbar__meta">
+            <button class="back-button" id="backHomeButton" type="button" aria-label="返回专题首页">&lt;</button>
+            <span class="topbar__title">活动详情</span>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <section class="activity-detail-hero" id="activityDetailHero"></section>
+          <div class="status-text activity-status" id="activityStatus"></div>
+
+          <section class="section">
+            <div class="section-head">
+              <div>
+                <h2>参与区县</h2>
+              </div>
+            </div>
+            <div class="district-panel">
+              <div class="filter-chips" id="districtFilters" aria-label="参与区县筛选"></div>
+              <p class="district-panel__status" id="districtStatus"></p>
+              <div class="district-media-grid" id="districtMediaGrid"></div>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-head">
+              <div>
+                <h2>活动楼盘</h2>
+              </div>
+            </div>
+            <div class="listing-grid" id="activityListingGrid"></div>
+          </section>
+
+          <section class="section">
+            <div class="section-head">
+              <div>
+                <h2>装修专区</h2>
+              </div>
+            </div>
+            <button class="decor-entry" id="decorEntryButton" type="button" aria-expanded="false">
+              <div class="decor-entry__head">
+                <div>
+                  <span class="decor-entry__tag">装修入口</span>
+                  <h3 class="decor-entry__title">优质装修公司伴你轻松入住</h3>
+                  <p class="decor-entry__desc">点击展开装修公司名录和联系方式。</p>
+                </div>
+                <span class="decor-entry__arrow" id="decorEntryArrow">+</span>
+              </div>
+            </button>
+            <div class="decor-directory" id="decorDirectory"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen" id="reportDetailScreen" aria-label="评测报告详情">
+        <header class="topbar">
+          <div class="topbar__meta">
+            <button class="back-button" id="backActivityButton" type="button" aria-label="返回活动详情">&lt;</button>
+            <span class="topbar__title">评测报告</span>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <div class="report-page" id="reportPage"></div>
+        </div>
+      </section>
+    </main>
+
+    <div class="detail-sticky-bar">
+      <button class="ghost-button" id="generateQrButton" type="button">生成活动二维码</button>
+      <button class="primary-button" id="callActivityButton" type="button">咨询活动</button>
+    </div>
+
+    <button class="chat-fab" id="chatFabButton" type="button" aria-label="打开机器人咨询">
+      <span class="chat-fab__icon">🤖</span>
+      <span class="chat-fab__label">咨询</span>
+    </button>
+
+    <div class="chat-drawer" id="chatDrawer">
+      <div class="chat-panel">
+        <div class="chat-panel__head">
+          <div>
+            <h3>成都政策机器人</h3>
+            <p>演示版问答入口，示例回答仅用于原型展示，实际政策以官方发布为准。</p>
+          </div>
+          <button class="chat-close" id="closeChatButton" type="button" aria-label="关闭机器人">×</button>
+        </div>
+        <div class="chat-panel__body" id="chatMessages"></div>
+        <div class="chat-quick-list" id="chatQuickList"></div>
+        <form class="chat-panel__form" id="chatForm">
+          <input class="chat-input" id="chatInput" type="text" placeholder="例如：外地人在成都购房需要什么条件？" />
+          <button class="chat-send" type="submit">发送</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="overlay" id="qrOverlay" aria-live="polite">
+      <div class="overlay__backdrop" id="qrBackdrop"></div>
+      <div class="qr-wrap">
+        <div class="qr-card">
+          <button class="qr-card__close" id="closeQrButton" type="button" aria-label="关闭二维码">×</button>
+          <span class="qr-card__eyebrow">活动二维码</span>
+          <h3 id="qrTitle">住进成都活动码</h3>
+          <p id="qrDesc">扫码查看本场活动详情、报名信息与顾问联系方式。</p>
+          <div class="qr-code" aria-hidden="true">
+            <div class="qr-code__pattern"></div>
+          </div>
+          <div class="qr-card__meta" id="qrMeta">原型演示：二维码样式占位</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const cityActivities = [
+      {
+        city: "西宁",
+        theme: "高原置业专场",
+        coords: [36.6171, 101.7782],
+        items: [
+          {
+            title: "西宁春季成都好房展",
+            time: "2026.03.20 - 2026.03.22",
+            venue: "西宁万达嘉华酒店 3F 宴会厅",
+            projects: 18,
+            note: "重点展示成都改善盘、地铁盘与返乡置业优惠。"
+          },
+          {
+            title: "海湖新区异地安家沙龙",
+            time: "2026.04.12 14:00 - 18:00",
+            venue: "西宁海湖新区城市会客厅",
+            projects: 9,
+            note: "面向返乡客群，增加政策问答与装修打包服务。"
+          }
+        ]
+      },
+      {
+        city: "上海",
+        theme: "长三角菁英专场",
+        coords: [31.2304, 121.4737],
+        items: [
+          {
+            title: "上海静安高净值私享会",
+            time: "2026.03.28 13:30 - 18:30",
+            venue: "上海静安瑞吉酒店",
+            projects: 12,
+            note: "聚焦天府新区、金融城与国际社区产品。"
+          },
+          {
+            title: "虹桥商务区房V直播联展",
+            time: "2026.04.10 - 2026.04.11",
+            venue: "虹桥天地路演空间",
+            projects: 7,
+            note: "直播看房与跨城签约咨询同步开启。"
+          }
+        ]
+      },
+      {
+        city: "北京",
+        theme: "央企置业会客厅",
+        coords: [39.9042, 116.4074],
+        items: [
+          {
+            title: "北京国贸成都改善盘巡展",
+            time: "2026.04.18 - 2026.04.19",
+            venue: "国贸大酒店 2F",
+            projects: 11,
+            note: "面向换房家庭，突出教育、医疗和通勤资源。"
+          }
+        ]
+      },
+      {
+        city: "乌鲁木齐",
+        theme: "丝路幸福置业季",
+        coords: [43.8256, 87.6168],
+        items: [
+          {
+            title: "乌鲁木齐返乡安家说明会",
+            time: "2026.05.09 10:00 - 17:30",
+            venue: "乌鲁木齐希尔顿酒店",
+            projects: 10,
+            note: "重点承接返蓉创业与改善需求客户。"
+          }
+        ]
+      },
+      {
+        city: "银川",
+        theme: "塞上江南专题场",
+        coords: [38.4872, 106.2309],
+        items: [
+          {
+            title: "银川城市主题活动日",
+            time: "2026.04.26 09:30 - 17:00",
+            venue: "银川国际交流中心",
+            projects: 8,
+            note: "增加成都装修专区、物业托管服务介绍。"
+          },
+          {
+            title: "金凤区政策问答夜场",
+            time: "2026.04.26 19:00 - 21:00",
+            venue: "金凤万达广场中庭",
+            projects: 6,
+            note: "适合白天无法到场的上班族客户。"
+          }
+        ]
+      },
+      {
+        city: "林芝",
+        theme: "雪域康养住区专场",
+        coords: [29.6547, 94.3615],
+        items: [
+          {
+            title: "林芝春日康养选房会",
+            time: "2026.05.16 11:00 - 17:00",
+            venue: "林芝会展中心 A 馆",
+            projects: 5,
+            note: "聚焦低密住区、康养社区与度假改善盘。"
+          }
+        ]
+      },
+      {
+        city: "深圳",
+        theme: "湾区资产配置场",
+        coords: [22.5431, 114.0579],
+        items: [
+          {
+            title: "深圳南山投资客专场",
+            time: "2026.04.02 14:00 - 19:00",
+            venue: "深圳湾万丽酒店",
+            projects: 13,
+            note: "重点推荐高租售比板块和改善兼投资产品。"
+          }
+        ]
+      },
+      {
+        city: "广州",
+        theme: "大湾区家庭安家展",
+        coords: [23.1291, 113.2644],
+        items: [
+          {
+            title: "广州天河家庭置业会",
+            time: "2026.04.18 10:00 - 18:00",
+            venue: "广州瑰丽酒店",
+            projects: 10,
+            note: "适配多孩家庭的教育型和刚改型项目。"
+          },
+          {
+            title: "珠江新城图文评测联播日",
+            time: "2026.04.19 14:00 - 20:00",
+            venue: "珠江新城房V直播间",
+            projects: 4,
+            note: "房V短视频与图文评测同步推送。"
+          }
+        ]
+      }
+    ];
+
+    const decorCompanies = [
+      {
+        name: "锦官匠筑装饰",
+        area: "高新区 / 天府新区",
+        phone: "028-8510-6633"
+      },
+      {
+        name: "蓉城美家整装",
+        area: "锦江区 / 武侯区",
+        phone: "028-8338-1919"
+      },
+      {
+        name: "西南筑艺空间",
+        area: "成华区 / 龙泉驿区",
+        phone: "028-8777-5200"
+      },
+      {
+        name: "云栖软装会客厅",
+        area: "全城上门",
+        phone: "028-8666-1028"
+      }
+    ];
+
+    const quickQuestions = [
+      "外地人在成都购房需要什么条件？",
+      "成都公积金贷款额度怎么理解？",
+      "买新房大概涉及哪些税费？"
+    ];
+
+    const estateTemplates = [
+      {
+        media: "TOD 改善盘",
+        title: "天府锦城观澜",
+        meta: "天府新区 · 建面 105-143㎡ · 双地铁",
+        price: "168",
+        keyword: "适合改善与异地视频带看"
+      },
+      {
+        media: "教育配套盘",
+        title: "锦江文脉府",
+        meta: "锦江区 · 建面 89-128㎡ · 学府资源",
+        price: "231",
+        keyword: "适合返乡安家与家庭型置业"
+      },
+      {
+        media: "低总价机会盘",
+        title: "东客站云庭",
+        meta: "成华区 · 建面 76-99㎡ · 主城通勤",
+        price: "126",
+        keyword: "适合预算敏感客群先上车"
+      }
+    ];
+
+    const activityServicePhone = "400-028-5100";
+    const phoneShell = document.querySelector(".phone-shell");
+    const screens = {
+      home: document.getElementById("homeScreen"),
+      activity: document.getElementById("activityDetailScreen"),
+      report: document.getElementById("reportDetailScreen")
+    };
+
+    const cityFilters = document.getElementById("cityFilters");
+    const activityList = document.getElementById("activityList");
+    const locationStatus = document.getElementById("locationStatus");
+    const locateButton = document.getElementById("locateButton");
+    const activityDetailHero = document.getElementById("activityDetailHero");
+    const activityStatus = document.getElementById("activityStatus");
+    const districtFilters = document.getElementById("districtFilters");
+    const districtStatus = document.getElementById("districtStatus");
+    const districtMediaGrid = document.getElementById("districtMediaGrid");
+    const activityListingGrid = document.getElementById("activityListingGrid");
+    const decorEntryButton = document.getElementById("decorEntryButton");
+    const decorEntryArrow = document.getElementById("decorEntryArrow");
+    const decorDirectory = document.getElementById("decorDirectory");
+    const chatDrawer = document.getElementById("chatDrawer");
+    const qrOverlay = document.getElementById("qrOverlay");
+    const chatMessages = document.getElementById("chatMessages");
+    const chatInput = document.getElementById("chatInput");
+    const chatQuickList = document.getElementById("chatQuickList");
+    const qrTitle = document.getElementById("qrTitle");
+    const qrDesc = document.getElementById("qrDesc");
+    const qrMeta = document.getElementById("qrMeta");
+    const reportPage = document.getElementById("reportPage");
+
+    let selectedCity = cityActivities[0].city;
+    let matchedCity = "";
+    let currentActivityPayload = null;
+    let selectedDistrict = "";
+    let currentReport = null;
+
+    function showScreen(name) {
+      Object.entries(screens).forEach(([key, element]) => {
+        element.classList.toggle("is-active", key === name);
+      });
+      phoneShell.classList.toggle("phone-shell--activity", name === "activity");
+    }
+
+    function formatLocationStatus() {
+      const suffix = matchedCity && matchedCity === selectedCity ? " · 已按定位推荐" : "";
+      locationStatus.innerHTML = `当前城市：<strong>${selectedCity}</strong>${suffix}`;
+    }
+
+    function renderFilters() {
+      const cities = cityActivities.map((item) => item.city);
+      cityFilters.innerHTML = cities
+        .map((city) => {
+          const classNames = ["chip"];
+          if (city === selectedCity) {
+            classNames.push("is-active");
+          }
+          if (city === matchedCity) {
+            classNames.push("is-match");
+          }
+          return `<button class="${classNames.join(" ")}" type="button" data-city="${city}">${city}</button>`;
+        })
+        .join("");
+    }
+
+    function renderActivities() {
+      const list = cityActivities
+        .map((item, groupIndex) => ({ ...item, groupIndex }))
+        .filter((item) => item.city === selectedCity);
+
+      activityList.innerHTML = list
+        .map((group) => {
+          const items = group.items
+            .map((item, itemIndex) => `
+              <button
+                class="activity-item"
+                type="button"
+                data-group-index="${group.groupIndex}"
+                data-item-index="${itemIndex}"
+              >
+                <div class="activity-item__title">
+                  <strong>${item.title}</strong>
+                  <span class="activity-item__count">${item.projects} 个参展项目</span>
+                </div>
+                <p class="activity-item__meta">活动时间：${item.time}</p>
+                <p class="activity-item__meta">活动地点：${item.venue}</p>
+                <p class="activity-item__meta">${item.note}</p>
+                <div class="activity-item__footer">
+                  <span class="activity-item__arrow">→</span>
+                </div>
+              </button>
+            `)
+            .join("");
+
+          const totalProjects = group.items.reduce((total, item) => total + item.projects, 0);
+
+          return `
+            <section class="activity-group">
+              <div class="activity-group__head">
+                <div>
+                  <h3 class="activity-group__title">${group.city}</h3>
+                  <p class="activity-group__desc">${group.theme} · 共 ${group.items.length} 场活动</p>
+                </div>
+                <span class="activity-group__badge">${totalProjects} 个项目</span>
+              </div>
+              ${items}
+            </section>
+          `;
+        })
+        .join("");
+    }
+
+    function getActivityPayload(groupIndex, itemIndex) {
+      const group = cityActivities[groupIndex];
+      const item = group.items[itemIndex];
+      const start = (groupIndex + itemIndex) % estateTemplates.length;
+      const estates = [0, 1, 2].map((offset) => {
+        const template = estateTemplates[(start + offset) % estateTemplates.length];
+        const districtName = template.meta.split(" · ")[0];
+        const isReportEstate = template.title === "东客站云庭";
+        return {
+          ...template,
+          districtName,
+          tagline: `${group.city}专场重点推荐，围绕“${item.title}”延展讲解，${template.keyword}。`,
+          influencerVideo: isReportEstate || offset === 1 ? null : {
+            title: `${template.title} 大V说房`,
+            meta: `${offset === 0 ? "阿蓉" : "老杨"} · ${districtName} 项目解读 · 02:1${offset + 6}`
+          },
+          report: isReportEstate ? {
+            title: `${template.title} 图文评测报告`,
+            summary: "面向刚需与主城通勤客群的低总价机会盘评测。",
+            author: "房V评测组",
+            updatedAt: "2026.03.16",
+            sections: [
+              {
+                title: "项目定位",
+                body: `${template.title} 主打 ${districtName} 主城通勤与总价控制，适合希望先上车、又在意轨交效率的客群。`
+              },
+              {
+                title: "板块观察",
+                body: `${districtName} 当前的居住氛围和交通兑现度更适合预算敏感型客户，评测报告重点拆解通勤、配套和交付节奏。`
+              },
+              {
+                title: "适合人群",
+                body: "适合首次置业、返乡安家和偏好主城工作圈的客户，也适合把预算集中在总价与月供平衡的人群。"
+              }
+            ]
+          } : null
+        };
+      });
+
+      const districts = estates.map((estate, index) => {
+        return {
+          name: estate.districtName,
+          promoVideo: {
+            badge: "宣传视频",
+            title: `${estate.districtName} 置业速览`,
+            duration: `0${index + 1}:2${index + 2}`,
+            meta: `${estate.districtName} 参展项目预热内容，围绕 ${estate.title} 展开讲解。`
+          }
+        };
+      });
+
+      return { group, item, estates, districts };
+    }
+
+    function renderReportDetail(report, estate) {
+      currentReport = { report, estate };
+      const reportPhotos = [
+        {
+          tag: "封面图",
+          title: `${estate.title} 值不值得买？`,
+          desc: "先看总价、板块和通勤逻辑",
+          wide: true,
+          start: "rgba(253, 93, 0, 0.96)",
+          end: "rgba(255, 143, 46, 0.76)",
+          glow: "rgba(255, 241, 227, 0.24)"
+        },
+        {
+          tag: "现场图",
+          title: "主城通勤视角",
+          desc: `${estate.meta} 的核心信息浓缩展示`,
+          start: "rgba(255, 124, 72, 0.92)",
+          end: "rgba(255, 182, 116, 0.74)",
+          glow: "rgba(255, 244, 233, 0.28)"
+        },
+        {
+          tag: "板块图",
+          title: "房V实勘笔记",
+          desc: "从生活便利度到入住节奏的实际观察",
+          start: "rgba(199, 65, 0, 0.94)",
+          end: "rgba(255, 133, 57, 0.7)",
+          glow: "rgba(255, 229, 210, 0.24)"
+        }
+      ];
+
+      reportPage.innerHTML = `
+        <section class="report-gallery-wrap">
+          <div class="report-gallery" data-report-gallery>
+            ${reportPhotos.map((photo) => `
+              <article
+                class="report-photo ${photo.wide ? "report-photo--wide" : ""}"
+                style="--report-photo-start:${photo.start}; --report-photo-end:${photo.end}; --report-photo-glow:${photo.glow};"
+              >
+                <div class="report-photo__content">
+                  <span class="report-photo__tag">${photo.tag}</span>
+                  <strong>${photo.title}</strong>
+                  <span>${photo.desc}</span>
+                </div>
+              </article>
+            `).join("")}
+          </div>
+          <div class="report-gallery__dots">
+            ${reportPhotos.map((photo, index) => `
+              <button
+                class="report-gallery__dot ${index === 0 ? "is-active" : ""}"
+                type="button"
+                data-report-gallery-dot="${index}"
+                aria-label="切换到第${index + 1}张图片"
+              ></button>
+            `).join("")}
+          </div>
+        </section>
+        <section class="report-hero">
+          <h1>${report.title}</h1>
+        </section>
+        <section class="report-body">
+          <p>${report.summary}</p>
+          ${report.sections.map((section) => `
+            <p><strong>${section.title}：</strong>${section.body}</p>
+          `).join("")}
+        </section>
+      `;
+
+      bindReportGallery();
+    }
+
+    function bindReportGallery() {
+      const gallery = reportPage.querySelector("[data-report-gallery]");
+      if (!gallery) {
+        return;
+      }
+
+      const slides = Array.from(gallery.querySelectorAll(".report-photo"));
+      const dots = Array.from(reportPage.querySelectorAll("[data-report-gallery-dot]"));
+
+      if (!slides.length) {
+        return;
+      }
+
+      const getStep = () => {
+        const styles = window.getComputedStyle(gallery);
+        const gap = parseFloat(styles.columnGap || styles.gap || 0);
+        return (slides[0].offsetWidth || gallery.clientWidth || 1) + gap;
+      };
+
+      const updateState = () => {
+        const index = Math.max(0, Math.min(slides.length - 1, Math.round(gallery.scrollLeft / getStep())));
+
+        dots.forEach((dot, dotIndex) => {
+          dot.classList.toggle("is-active", dotIndex === index);
+        });
+      };
+
+      gallery.addEventListener("scroll", updateState, { passive: true });
+
+      dots.forEach((dot) => {
+        dot.addEventListener("click", () => {
+          const index = Number(dot.dataset.reportGalleryDot);
+          gallery.scrollTo({
+            left: getStep() * index,
+            behavior: "smooth"
+          });
+        });
+      });
+
+      window.requestAnimationFrame(updateState);
+    }
+
+    function openReportDetail(estate) {
+      if (!estate.report) {
+        return;
+      }
+      renderReportDetail(estate.report, estate);
+      showScreen("report");
+    }
+
+    function renderDistrictContent() {
+      if (!currentActivityPayload) {
+        return;
+      }
+      const activeDistrict = currentActivityPayload.districts.find((item) => item.name === selectedDistrict) || currentActivityPayload.districts[0];
+
+      districtFilters.innerHTML = currentActivityPayload.districts
+        .map((district) => {
+          const classNames = ["chip"];
+          if (district.name === selectedDistrict) {
+            classNames.push("is-active");
+          }
+          return `<button class="${classNames.join(" ")}" type="button" data-district="${district.name}">${district.name}</button>`;
+        })
+        .join("");
+
+      districtStatus.innerHTML = `当前区县：<strong>${activeDistrict.name}</strong>`;
+      districtMediaGrid.innerHTML = `
+        <article class="district-media-card">
+          <div class="district-media-card__cover">
+            <div class="district-media-card__content">
+              <strong>${activeDistrict.promoVideo.title}</strong>
+              <span>${activeDistrict.promoVideo.badge}</span>
+            </div>
+            <div class="district-media-card__play">▶</div>
+          </div>
+          <h3 class="district-media-card__title">${activeDistrict.promoVideo.duration}</h3>
+          <p class="district-media-card__meta">${activeDistrict.promoVideo.meta}</p>
+        </article>
+      `;
+    }
+
+    function renderDecorDirectory() {
+      decorDirectory.innerHTML = decorCompanies
+        .map((company) => `
+          <article class="decor-directory__item">
+            <strong>${company.name}</strong>
+            <span>服务区域：${company.area}</span>
+            <small>联系电话：${company.phone}</small>
+          </article>
+        `)
+        .join("");
+    }
+
+    function renderActivityDetail(groupIndex, itemIndex) {
+      const payload = getActivityPayload(groupIndex, itemIndex);
+      const { group, item, estates, districts } = payload;
+      currentActivityPayload = payload;
+      selectedDistrict = districts[0].name;
+      decorDirectory.classList.remove("is-open");
+      decorEntryButton.setAttribute("aria-expanded", "false");
+      decorEntryArrow.textContent = "+";
+
+      activityDetailHero.innerHTML = `
+        <h1>${item.title}</h1>
+        <p>${item.note}</p>
+        <div class="activity-detail-hero__meta">
+          <span>活动时间：${item.time}</span>
+          <span>活动地点：${item.venue}</span>
+          <span>${item.projects} 个参展项目</span>
+        </div>
+      `;
+
+      activityStatus.innerHTML = "";
+
+      activityListingGrid.innerHTML = estates
+        .map((estate) => `
+          <article class="listing-card">
+            <div class="listing-card__media">${estate.media}</div>
+            <div>
+              <h3 class="listing-card__title">${estate.title}</h3>
+              <p class="listing-card__meta">${estate.meta}</p>
+              <p class="listing-card__tagline">${estate.tagline}</p>
+              ${estate.influencerVideo ? `
+                <div class="listing-card__video">
+                  <span class="listing-card__video-tag">大V说房</span>
+                  <p class="listing-card__video-title">${estate.influencerVideo.title}</p>
+                  <p class="listing-card__video-meta">${estate.influencerVideo.meta}</p>
+                </div>
+              ` : ""}
+              ${estate.report ? `
+                <button class="listing-card__report" type="button" data-open-report="${estate.title}">
+                  <span class="listing-card__report-tag">图文报告</span>
+                  <p class="listing-card__report-title">${estate.report.title}</p>
+                  <p class="listing-card__report-meta">${estate.report.author} · ${estate.report.updatedAt} · 点击查看详情</p>
+                </button>
+              ` : ""}
+              <div class="listing-card__price">${estate.price}<span> 万起</span> <small>总价</small></div>
+            </div>
+          </article>
+        `)
+        .join("");
+      renderDistrictContent();
+    }
+
+    function openActivityDetail(groupIndex, itemIndex) {
+      renderActivityDetail(groupIndex, itemIndex);
+      showScreen("activity");
+    }
+
+    function addChatMessage(role, content) {
+      const wrapper = document.createElement("div");
+      wrapper.className = `chat-message chat-message--${role}`;
+      wrapper.innerHTML = `
+        <div class="chat-avatar">${role === "bot" ? "🤖" : "我"}</div>
+        <div class="chat-bubble">${content}</div>
+      `;
+      chatMessages.appendChild(wrapper);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function getBotReply(question) {
+      const text = question.trim();
+      if (!text) {
+        return "可以直接问我成都购房资格、公积金、税费或异地看房流程。";
+      }
+
+      if (text.includes("资格") || text.includes("条件") || text.includes("限购")) {
+        return "原型示例回答：机器人会先识别你的户籍、社保和家庭名下住房情况，再返回对应区域的购房资格提示，并引导你联系顾问做正式核验。";
+      }
+
+      if (text.includes("公积金")) {
+        return "原型示例回答：机器人会根据是否首套、缴存地和缴存时长给出公积金贷款额度区间，同时提示组合贷和商业贷的搭配建议。";
+      }
+
+      if (text.includes("税") || text.includes("契税") || text.includes("费用")) {
+        return "原型示例回答：专题页会将契税、维修基金、按揭服务费等常见费用拆开展示，让外地客户能先估算总预算，具体仍以签约时政策为准。";
+      }
+
+      if (text.includes("装修")) {
+        return "原型示例回答：装修专区可按区域、预算和交付时间筛选公司，并支持顾问代为安排量房、远程监工和验收节点提醒。";
+      }
+
+      return "原型示例回答：这个机器人入口适合承接成都政策与落地服务问题。实际接入时可连接政策知识库、楼盘库和 CRM 线索系统。";
+    }
+
+    function openChatDrawer(prefill) {
+      chatDrawer.classList.add("is-visible");
+      if (typeof prefill === "string") {
+        chatInput.value = prefill;
+      }
+      chatInput.focus();
+    }
+
+    function closeChatDrawer() {
+      chatDrawer.classList.remove("is-visible");
+    }
+
+    function openQrOverlay() {
+      if (!currentActivityPayload) {
+        return;
+      }
+      const payload = currentActivityPayload;
+      qrTitle.textContent = `${payload.item.title} 活动二维码`;
+      qrDesc.textContent = `扫码查看 ${payload.group.city} 专场活动详情、到场报名和顾问联系方式。`;
+      qrMeta.textContent = `原型演示 · ${payload.item.time} · ${payload.item.venue}`;
+      qrOverlay.classList.add("is-visible");
+    }
+
+    function closeQrOverlay() {
+      qrOverlay.classList.remove("is-visible");
+    }
+
+    function confirmActivityCall() {
+      if (!currentActivityPayload) {
+        return;
+      }
+      const payload = currentActivityPayload;
+      const shouldCall = window.confirm(`确认拨打 ${activityServicePhone} 咨询“${payload.item.title}”吗？`);
+      if (!shouldCall) {
+        return;
+      }
+      activityStatus.innerHTML = `已模拟发起拨号：<strong>${activityServicePhone}</strong>，顾问将继续跟进 ${payload.item.title}。`;
+    }
+
+    function renderQuickQuestions() {
+      chatQuickList.innerHTML = quickQuestions
+        .map((question) => `<button class="chat-quick" type="button" data-question="${question}">${question}</button>`)
+        .join("");
+    }
+
+    function toRadians(value) {
+      return value * Math.PI / 180;
+    }
+
+    function getDistance(lat1, lon1, lat2, lon2) {
+      const earthRadius = 6371;
+      const deltaLat = toRadians(lat2 - lat1);
+      const deltaLon = toRadians(lon2 - lon1);
+      const a =
+        Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+        Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
+        Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
+      return 2 * earthRadius * Math.asin(Math.sqrt(a));
+    }
+
+    function locateNearestCity() {
+      if (!navigator.geolocation) {
+        locationStatus.innerHTML = "当前浏览器不支持定位，请手动切换城市查看活动。";
+        return;
+      }
+
+      locationStatus.innerHTML = "正在获取定位并匹配最近活动城市...";
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          const nearest = cityActivities
+            .map((item) => ({
+              city: item.city,
+              distance: getDistance(latitude, longitude, item.coords[0], item.coords[1])
+            }))
+            .sort((a, b) => a.distance - b.distance)[0];
+
+          matchedCity = nearest.city;
+          selectedCity = nearest.city;
+          renderFilters();
+          renderActivities();
+          locationStatus.innerHTML = `已根据定位为你匹配最近城市：<strong>${nearest.city}</strong>，距离约 ${nearest.distance.toFixed(0)} km。`;
+        },
+        () => {
+          locationStatus.innerHTML = "定位失败或权限被拒绝，请手动选择城市查看活动。";
+        },
+        { enableHighAccuracy: true, timeout: 6000 }
+      );
+    }
+
+    document.getElementById("backHomeButton").addEventListener("click", () => {
+      closeQrOverlay();
+      showScreen("home");
+    });
+    document.getElementById("backActivityButton").addEventListener("click", () => showScreen("activity"));
+    document.getElementById("generateQrButton").addEventListener("click", openQrOverlay);
+    document.getElementById("callActivityButton").addEventListener("click", confirmActivityCall);
+    document.getElementById("chatFabButton").addEventListener("click", () => openChatDrawer(""));
+    document.getElementById("closeChatButton").addEventListener("click", closeChatDrawer);
+    document.getElementById("closeQrButton").addEventListener("click", closeQrOverlay);
+    document.getElementById("qrBackdrop").addEventListener("click", closeQrOverlay);
+    locateButton.addEventListener("click", locateNearestCity);
+
+    cityFilters.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-city]");
+      if (!button) {
+        return;
+      }
+      selectedCity = button.dataset.city;
+      renderFilters();
+      renderActivities();
+      formatLocationStatus();
+    });
+
+    activityList.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-group-index][data-item-index]");
+      if (!button) {
+        return;
+      }
+      openActivityDetail(Number(button.dataset.groupIndex), Number(button.dataset.itemIndex));
+    });
+
+    activityListingGrid.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-open-report]");
+      if (!button || !currentActivityPayload) {
+        return;
+      }
+      const estate = currentActivityPayload.estates.find((item) => item.title === button.dataset.openReport);
+      if (!estate) {
+        return;
+      }
+      openReportDetail(estate);
+    });
+
+    districtFilters.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-district]");
+      if (!button) {
+        return;
+      }
+      selectedDistrict = button.dataset.district;
+      renderDistrictContent();
+    });
+
+    decorEntryButton.addEventListener("click", () => {
+      const willOpen = !decorDirectory.classList.contains("is-open");
+      decorDirectory.classList.toggle("is-open", willOpen);
+      decorEntryButton.setAttribute("aria-expanded", String(willOpen));
+      decorEntryArrow.textContent = willOpen ? "−" : "+";
+    });
+
+    chatQuickList.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-question]");
+      if (!button) {
+        return;
+      }
+      const question = button.dataset.question;
+      addChatMessage("user", question);
+      addChatMessage("bot", getBotReply(question));
+    });
+
+    document.getElementById("chatForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const question = chatInput.value.trim();
+      if (!question) {
+        return;
+      }
+      addChatMessage("user", question);
+      addChatMessage("bot", getBotReply(question));
+      chatInput.value = "";
+    });
+
+    renderFilters();
+    renderActivities();
+    renderDecorDirectory();
+    renderActivityDetail(0, 0);
+    renderQuickQuestions();
+    formatLocationStatus();
+    addChatMessage("bot", "你好，我是成都政策机器人。你可以先问我购房资格、公积金、税费，或者让顾问帮你安排异地看房。");
+  </script>
+</body>
+</html>
