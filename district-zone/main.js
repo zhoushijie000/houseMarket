@@ -201,6 +201,43 @@
 
   const LOCATED_DISTRICT_ID = "gaoxin";
 
+  const DISTRICT_VIDEO_COVER_PRESETS = {
+    gaoxin: [
+      { image: commonsFilePath("交子大道.jpg"), alt: "成都交子大道街景" },
+      { image: commonsFilePath("成都地鐵世紀城站換乘通道.jpg"), alt: "成都世纪城站换乘通道" },
+      { image: "../assets/d86e2b37c94f42fcb022f0376ae8a0cf.jpg", alt: "成都城市天际线" }
+    ],
+    tianfu: [
+      { image: commonsFilePath("成都地铁华阳站 站台 2026-01-09 01.jpg"), alt: "成都地铁华阳站站台" },
+      { image: commonsFilePath("成都地鐵三岔站.jpg"), alt: "成都地铁三岔站" },
+      { image: commonsFilePath("成都地鐵世紀城站換乘通道.jpg"), alt: "成都世纪城站换乘通道" }
+    ],
+    wuhou: [
+      { image: commonsFilePath("成都的武侯祠.jpg"), alt: "成都武侯祠景观" },
+      { image: commonsFilePath("成都的武侯祠竹林.jpg"), alt: "成都武侯祠竹林" },
+      { image: commonsFilePath("成都武侯祠 惠陵.jpg"), alt: "成都武侯祠惠陵" }
+    ],
+    qingyang: [
+      { image: commonsFilePath("成都青羊宫八卦亭.jpg"), alt: "成都青羊宫八卦亭" },
+      { image: commonsFilePath("成都青羊宫唐王殿.jpg"), alt: "成都青羊宫唐王殿" },
+      { image: commonsFilePath("成都天府广场.jpg"), alt: "成都天府广场景观" }
+    ],
+    jinjiang: [
+      { image: commonsFilePath("安顺廊桥夜景.jpg"), alt: "成都安顺廊桥夜景" },
+      { image: commonsFilePath("成都望江楼2.JPG"), alt: "成都望江楼景观" },
+      { image: commonsFilePath("成都锦江区东湖公园 从湖面眺望成都二环路.jpg"), alt: "成都锦江东湖公园" }
+    ],
+    chenghua: [
+      { image: commonsFilePath("成都东站候车室.jpg"), alt: "成都东站候车室" },
+      { image: commonsFilePath("成都东站 东广场 - panoramio.jpg"), alt: "成都东站东广场" },
+      { image: commonsFilePath("成都东客站站厅 2024-11-24 03.jpg"), alt: "成都东客站站厅" }
+    ]
+  };
+
+  function commonsFilePath(fileName) {
+    return "https://commons.wikimedia.org/wiki/Special:FilePath/" + encodeURIComponent(fileName);
+  }
+
   function getDistrictFromQuery(fallbackId) {
     const params = new URLSearchParams(window.location.search);
     const districtId = params.get("district");
@@ -580,12 +617,15 @@
         "</article>";
     }).join("");
 
+    const videoCoverList = DISTRICT_VIDEO_COVER_PRESETS[district.id] || [];
     videoRailEl.innerHTML = district.videos.map(function (video, index) {
       const start = index % 2 === 0 ? district.palette.start : district.palette.end;
       const end = index % 2 === 0 ? district.palette.end : district.accent;
+      const cover = videoCoverList.length ? videoCoverList[index % videoCoverList.length] : null;
       return '' +
         '<article class="video-card" style="--video-start:' + start + ";--video-end:" + end + '">' +
           '<div class="video-card__cover">' +
+            (cover ? '<img class="video-card__image" src="' + cover.image + '" alt="' + cover.alt + '" loading="lazy" decoding="async" referrerpolicy="no-referrer" />' : "") +
             '<div class="video-card__district">' + district.name + "</div>" +
             '<div class="video-card__play" aria-hidden="true"></div>' +
             '<h3 class="video-card__title">' + video.title + "</h3>" +

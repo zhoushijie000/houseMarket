@@ -2488,7 +2488,7 @@
       <div class="chat-panel">
         <div class="chat-panel__head">
           <div>
-            <h3>成都政策机器人</h3>
+            <h3>政策机器人</h3>
             <p>演示版问答入口，示例回答仅用于原型展示，实际政策以官方发布为准。</p>
           </div>
           <button class="chat-close" id="closeChatButton" type="button" aria-label="关闭机器人">×</button>
@@ -2708,8 +2708,8 @@
         meta: "天府新区 · 建面 105-143㎡ · 双地铁",
         price: "168",
         keyword: "适合改善与异地视频带看",
-        photo: "./assets/楼盘实景-园林入口.png",
-        photoAlt: "天府锦城观澜楼盘实景"
+        photo: "./assets/楼盘实景-会所书吧.png",
+        photoAlt: "天府锦城观澜会所书吧实景"
       },
       {
         media: "教育配套盘",
@@ -2717,8 +2717,8 @@
         meta: "锦江区 · 建面 89-128㎡ · 学府资源",
         price: "231",
         keyword: "适合返乡安家与家庭型置业",
-        photo: "./assets/楼盘实景-客厅样板间.png",
-        photoAlt: "锦江文脉府样板间实景"
+        photo: "./assets/楼盘实景-楼栋外立面.png",
+        photoAlt: "锦江文脉府楼栋外立面实景"
       },
       {
         media: "低总价机会盘",
@@ -2726,8 +2726,8 @@
         meta: "成华区 · 建面 76-99㎡ · 主城通勤",
         price: "126",
         keyword: "适合预算敏感客群先上车",
-        photo: "./assets/楼盘实景-园林入口.png",
-        photoAlt: "东客站云庭楼盘实景"
+        photo: "./assets/楼盘实景-社区楼景.png",
+        photoAlt: "东客站云庭社区楼景实景"
       }
     ];
 
@@ -3259,15 +3259,32 @@
       }
 
       addChatMessage("bot", step.prompt);
-      renderQuickQuestions(
-        step.options.map((option) => ({
+      renderQuickQuestions(getTalentStepQuickActions(step), true);
+    }
+
+    function getTalentStepQuickActions(step) {
+      return [
+        ...step.options.map((option) => ({
           type: "talent-choice",
           label: option.label,
           value: option.value,
           step: step.id
         })),
-        true
-      );
+        {
+          type: "talent-policy",
+          label: "人才政策详情"
+        }
+      ];
+    }
+
+    function getTalentPolicyReply() {
+      return [
+        "人才政策详情示意：符合相关规定的人才，可享受对应的购房补贴",
+        "A类人才，购房款补贴10%。",
+        "B类人才，购房款补贴5%。",
+        "C类人才，享受购房贴息1%。",
+        "E类及人才，可购买人才公寓。"
+      ].join("\n");
     }
 
     function getTalentCheckConclusion(answers) {
@@ -3375,8 +3392,10 @@
             label: "进入上海人才活动",
             value: activeChatFlow.activityTitle || "上海人才安家成都专场"
           },
+          { type: "talent-policy", label: "人才政策详情" },
           { type: "talent-restart", label: "重新测评" }
         ] : [
+          { type: "talent-policy", label: "人才政策详情" },
           { type: "talent-restart", label: "重新测评" }
         ],
         true
@@ -3401,6 +3420,10 @@
 
       if (text.includes("人才")) {
         return "你可以进入“上海人才安家成都专场”，点击“查看我是否符合成都人才”，机器人会按学历、工作和资料情况一步步帮你做初筛。";
+      }
+
+      if (text.includes("人才政策")) {
+        return getTalentPolicyReply();
       }
 
       if (text.includes("公积金")) {
@@ -3652,6 +3675,11 @@
         return;
       }
 
+      if (action === "talent-policy") {
+        addChatMessage("bot", getTalentPolicyReply());
+        return;
+      }
+
       if (action === "talent-open-activity") {
         openTalentActivityFromChat(button.dataset.value || "上海人才安家成都专场");
         return;
@@ -3679,7 +3707,7 @@
     renderActivityDetail(0, 0);
     renderQuickQuestions();
     formatLocationStatus();
-    addChatMessage("bot", "你好，我是成都政策机器人。你可以先问我购房资格、公积金、税费，也可以在人才专场里让我帮你做成都人才初筛。");
+    addChatMessage("bot", "你好，我是政策机器人。你可以先问我购房资格、公积金、税费，也可以在人才专场里让我帮你做成都人才初筛。");
     applyInitialRoute();
   </script>
 </body>
