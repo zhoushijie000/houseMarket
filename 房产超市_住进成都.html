@@ -2516,7 +2516,7 @@
         alt: "锦江区宣传视频封面"
       },
       "成华区": {
-        cover: "./assets/成华.png",
+        cover: "./assets/成华.jpg",
         title: "成华·宜居新主场",
         duration: "03:12",
         alt: "成华区宣传视频封面"
@@ -2762,7 +2762,8 @@
         return {
           name: estate.districtName,
           promoVideo: {
-            title: promoVideoPreset ? promoVideoPreset.title : `${estate.districtName} 宣传视频`,
+            title: promo
+             ? promoVideoPreset.title : `${estate.districtName} 宣传视频`,
             duration: promoVideoPreset ? promoVideoPreset.duration : `0${index + 1}:2${index + 2}`,
             cover: promoVideoPreset ? promoVideoPreset.cover : "",
             alt: promoVideoPreset ? promoVideoPreset.alt : `${estate.districtName} 宣传视频封面`
