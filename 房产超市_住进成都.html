@@ -301,18 +301,18 @@
       z-index: 1;
       display: flex;
       flex: 0 0 auto;
-      align-items: flex-start;
+      align-items: center;
       justify-content: flex-end;
     }
 
     .hero-card__locate {
-      min-height: 24px;
-      padding: 0 10px;
+      min-height: 22px;
+      padding: 0 8px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.78);
+      background: rgba(255, 255, 255, 0.9);
       box-shadow: none;
       white-space: nowrap;
-      font-size: 12px;
+      font-size: 11px;
       line-height: 1;
     }
 
@@ -326,11 +326,21 @@
       margin-top: 12px;
     }
 
-    .hero-card__status {
+    .hero-card__status-row {
       position: relative;
       z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
       margin-top: 12px;
-      padding: 10px 12px;
+    }
+
+    .hero-card__status {
+      position: relative;
+      flex: 1 1 auto;
+      z-index: 1;
+      margin-top: 0;
+      padding: 8px 12px;
       border-radius: 16px;
       background: var(--surface-soft);
       color: var(--text-secondary);
@@ -1343,6 +1353,17 @@
       gap: 12px;
     }
 
+    .district-entry-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+      text-decoration: none;
+      color: var(--brand-primary);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
     .district-media-card {
       display: grid;
       gap: 8px;
@@ -2226,13 +2247,15 @@
             </div>
             <div class="hero-card__heading">
               <h1 class="hero-card__title">把成都好房带到你的城市里</h1>
+            </div>
+            <p class="hero-card__desc">先看城市专题视频，再选择西宁、上海、北京专场活动</p>
+            <div class="hero-card__status-row">
+              <div class="hero-card__status" id="locationStatus">
+                当前城市：<strong>西宁</strong>
+              </div>
               <div class="hero-card__tool-row">
                 <button class="ghost-button hero-card__locate" id="locateButton" type="button">定位</button>
               </div>
-            </div>
-            <p class="hero-card__desc">先看城市专题视频，再选择西宁、上海、北京专场活动</p>
-            <div class="hero-card__status" id="locationStatus">
-              当前城市：<strong>西宁</strong>
             </div>
             <div class="city-card-grid" id="cityFilters" aria-label="城市筛选"></div>
           </section>
@@ -2447,6 +2470,39 @@
       "成都公积金贷款额度怎么理解？",
       "买新房大概涉及哪些税费？"
     ];
+
+    const districtZoneEntries = {
+      "高新区": {
+        id: "gaoxin",
+        intro: "适合关注科创产业、金融城通勤和改善住区的人群。",
+        tags: ["科创产业", "金融城", "改善住区"]
+      },
+      "天府新区": {
+        id: "tianfu",
+        intro: "适合关注总部商务、生长型新城和滨水住区的人群。",
+        tags: ["总部商务", "科学城", "滨水住区"]
+      },
+      "武侯区": {
+        id: "wuhou",
+        intro: "适合看成熟生活配套、主城通勤和城市更新板块。",
+        tags: ["成熟生活", "主城通勤", "城市更新"]
+      },
+      "青羊区": {
+        id: "qingyang",
+        intro: "适合关注主城教育医疗资源和低密改善产品。",
+        tags: ["主城资源", "教育医疗", "低密改善"]
+      },
+      "锦江区": {
+        id: "jinjiang",
+        intro: "适合关注主城商业、城东改善和生活便利度。",
+        tags: ["主城商业", "城东改善", "生活便利"]
+      },
+      "成华区": {
+        id: "chenghua",
+        intro: "适合关注东客站枢纽、板块更新和次新住区。",
+        tags: ["东客站", "板块更新", "次新住区"]
+      }
+    };
 
     const talentCheckSteps = [
       {
@@ -2694,7 +2750,7 @@
         };
       });
 
-      return { group, item, estates, districts };
+      return { group, item, estates, districts, groupIndex, itemIndex };
     }
 
     function renderReportDetail(report, estate) {
@@ -2823,6 +2879,7 @@
         return;
       }
       const activeDistrict = currentActivityPayload.districts.find((item) => item.name === selectedDistrict) || currentActivityPayload.districts[0];
+      const districtEntry = districtZoneEntries[activeDistrict.name];
 
       districtFilters.innerHTML = currentActivityPayload.districts
         .map((district) => {
@@ -2836,6 +2893,12 @@
 
       districtStatus.innerHTML = `当前区县：<strong>${activeDistrict.name}</strong>`;
       districtMediaGrid.innerHTML = `
+        ${districtEntry ? `
+          <a class="district-entry-link" href="./district-zone/detail.html?district=${districtEntry.id}&source=activity&group=${currentActivityPayload.groupIndex}&item=${currentActivityPayload.itemIndex}&districtName=${encodeURIComponent(activeDistrict.name)}">
+            <span>了解更多区县信息，进入区县专区</span>
+            <span>></span>
+          </a>
+        ` : ""}
         <article class="district-media-card">
           <div class="district-media-card__cover">
             <div class="district-media-card__content">
@@ -3230,6 +3293,31 @@
       );
     }
 
+    function applyInitialRoute() {
+      const params = new URLSearchParams(window.location.search);
+      const screen = params.get("screen");
+      const groupIndex = Number(params.get("group"));
+      const itemIndex = Number(params.get("item"));
+      const districtName = params.get("districtName");
+
+      if (screen !== "activity" || Number.isNaN(groupIndex) || Number.isNaN(itemIndex) || !cityActivities[groupIndex] || !cityActivities[groupIndex].items[itemIndex]) {
+        return;
+      }
+
+      selectedCity = cityActivities[groupIndex].city;
+      renderFilters();
+      renderActivities();
+      formatLocationStatus();
+      renderActivityDetail(groupIndex, itemIndex);
+
+      if (districtName && currentActivityPayload && currentActivityPayload.districts.some((district) => district.name === districtName)) {
+        selectedDistrict = districtName;
+        renderDistrictContent();
+      }
+
+      showScreen("activity");
+    }
+
     document.getElementById("backHomeButton").addEventListener("click", () => {
       closeQrOverlay();
       showScreen("home");
@@ -3362,6 +3450,7 @@
     renderQuickQuestions();
     formatLocationStatus();
     addChatMessage("bot", "你好，我是成都政策机器人。你可以先问我购房资格、公积金、税费，也可以在人才专场里让我帮你做成都人才初筛。");
+    applyInitialRoute();
   </script>
 </body>
 </html>

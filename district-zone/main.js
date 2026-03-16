@@ -489,6 +489,11 @@
   function initDetailPage() {
     const pageEl = document.getElementById("detailPage");
     const district = DISTRICT_MAP[getDistrictFromQuery(LOCATED_DISTRICT_ID)];
+    const params = new URLSearchParams(window.location.search);
+    const source = params.get("source");
+    const groupIndex = params.get("group");
+    const itemIndex = params.get("item");
+    const districtName = params.get("districtName");
     const backLinkEl = document.getElementById("backLink");
     const detailTopTitleEl = document.getElementById("detailTopTitle");
     const detailLogoEl = document.getElementById("detailLogo");
@@ -505,7 +510,18 @@
     let selectedProjectBoard = "";
 
     setPageAccent(pageEl, district);
-    backLinkEl.href = "./index.html?district=" + district.id;
+    if (source === "activity" && groupIndex !== null && itemIndex !== null) {
+      const backParams = new URLSearchParams();
+      backParams.set("screen", "activity");
+      backParams.set("group", groupIndex);
+      backParams.set("item", itemIndex);
+      if (districtName) {
+        backParams.set("districtName", districtName);
+      }
+      backLinkEl.href = "../房产超市_住进成都.html?" + backParams.toString();
+    } else {
+      backLinkEl.href = "./index.html?district=" + district.id;
+    }
     detailTopTitleEl.textContent = district.name + "专区";
     document.title = district.name + "专区";
     detailLogoEl.textContent = district.shortName;
