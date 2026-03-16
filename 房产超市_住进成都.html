@@ -2762,8 +2762,7 @@
         return {
           name: estate.districtName,
           promoVideo: {
-            title: promo
-             ? promoVideoPreset.title : `${estate.districtName} 宣传视频`,
+            title: promoVideoPreset ? promoVideoPreset.title : `${estate.districtName} 宣传视频`,
             duration: promoVideoPreset ? promoVideoPreset.duration : `0${index + 1}:2${index + 2}`,
             cover: promoVideoPreset ? promoVideoPreset.cover : "",
             alt: promoVideoPreset ? promoVideoPreset.alt : `${estate.districtName} 宣传视频封面`
