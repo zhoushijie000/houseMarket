@@ -2235,6 +2235,7 @@
       <section class="screen is-active" id="homeScreen" aria-label="住进成都专题首页">
         <header class="topbar">
           <div class="topbar__meta">
+            <button class="back-button" id="backPreviousButton" type="button" aria-label="返回上一页">&lt;</button>
             <span class="topbar__title">住进成都</span>
           </div>
         </header>
@@ -3318,11 +3319,23 @@
       showScreen("activity");
     }
 
+    function goBackOrFallback(fallbackAction) {
+      if (window.history.length > 1) {
+        window.history.back();
+        return;
+      }
+
+      if (typeof fallbackAction === "function") {
+        fallbackAction();
+      }
+    }
+
+    document.getElementById("backPreviousButton").addEventListener("click", () => goBackOrFallback());
     document.getElementById("backHomeButton").addEventListener("click", () => {
       closeQrOverlay();
-      showScreen("home");
+      goBackOrFallback(() => showScreen("home"));
     });
-    document.getElementById("backActivityButton").addEventListener("click", () => showScreen("activity"));
+    document.getElementById("backActivityButton").addEventListener("click", () => goBackOrFallback(() => showScreen("activity")));
     document.getElementById("generateQrButton").addEventListener("click", openQrOverlay);
     document.getElementById("callActivityButton").addEventListener("click", confirmActivityCall);
     document.getElementById("chatFabButton").addEventListener("click", () => openChatDrawer(""));

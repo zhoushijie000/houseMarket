@@ -225,6 +225,28 @@
     window.history.replaceState({}, "", url.toString());
   }
 
+  function bindHistoryBack(triggerEl, fallbackHref) {
+    if (!triggerEl) {
+      return;
+    }
+
+    if (fallbackHref && triggerEl.tagName === "A") {
+      triggerEl.href = fallbackHref;
+    }
+
+    triggerEl.addEventListener("click", function (event) {
+      if (window.history.length > 1) {
+        event.preventDefault();
+        window.history.back();
+        return;
+      }
+
+      if (triggerEl.tagName !== "A" && fallbackHref) {
+        window.location.href = fallbackHref;
+      }
+    });
+  }
+
   function renderTags(list, neutral) {
     return list.map(function (item) {
       const className = neutral ? "tag tag--neutral" : "tag";
@@ -390,6 +412,7 @@
 
   function initCollectionPageV2() {
     const pageEl = document.getElementById("collectionPage");
+    const collectionBackButton = document.getElementById("collectionBackButton");
     const searchInputEl = document.getElementById("districtSearchInput");
     const gridEl = document.getElementById("districtGrid");
     const districtCountEl = document.getElementById("districtCount");
@@ -483,6 +506,7 @@
     }
 
     setPageAccent(pageEl, selectedDistrictId ? DISTRICT_MAP[selectedDistrictId] : defaultDistrict);
+    bindHistoryBack(collectionBackButton, "../房产超市_住进成都.html");
     renderGrid();
   }
 
@@ -508,6 +532,7 @@
     const videoCountEl = document.getElementById("videoCount");
     const projectCountEl = document.getElementById("projectCount");
     let selectedProjectBoard = "";
+    let backHref = "./index.html?district=" + district.id;
 
     setPageAccent(pageEl, district);
     if (source === "activity" && groupIndex !== null && itemIndex !== null) {
@@ -518,10 +543,9 @@
       if (districtName) {
         backParams.set("districtName", districtName);
       }
-      backLinkEl.href = "../房产超市_住进成都.html?" + backParams.toString();
-    } else {
-      backLinkEl.href = "./index.html?district=" + district.id;
+      backHref = "../房产超市_住进成都.html?" + backParams.toString();
     }
+    bindHistoryBack(backLinkEl, backHref);
     detailTopTitleEl.textContent = district.name + "专区";
     document.title = district.name + "专区";
     detailLogoEl.textContent = district.shortName;
