@@ -482,7 +482,7 @@
 
     .listing-card {
       display: grid;
-      grid-template-columns: 88px 1fr;
+      grid-template-columns: 96px 1fr;
       align-items: start;
       gap: 12px;
       padding: 12px;
@@ -492,20 +492,40 @@
     }
 
     .listing-card__media {
+      position: relative;
       width: 100%;
       aspect-ratio: 5 / 4;
       border-radius: 18px;
-      background:
-        linear-gradient(180deg, rgba(253, 93, 0, 0.12), rgba(255, 143, 46, 0.08)),
-        #fff1e6;
-      min-height: auto;
-      display: grid;
-      place-items: end start;
+      overflow: hidden;
       align-self: start;
-      padding: 9px;
-      color: var(--brand-deep);
-      font-size: 11px;
+      background: #eef1f5;
+    }
+
+    .listing-card__media-image {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .listing-card__media-badge {
+      position: absolute;
+      left: 8px;
+      bottom: 8px;
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(17, 24, 39, 0.62);
+      color: #fff;
+      font-size: 10px;
       font-weight: 700;
+      backdrop-filter: blur(8px);
+    }
+
+    .listing-card__body {
+      display: grid;
+      gap: 4px;
     }
 
     .listing-card__title {
@@ -523,7 +543,7 @@
     }
 
     .listing-card__price {
-      margin-top: 8px;
+      margin-top: 6px;
       color: var(--brand-primary);
       font-family: var(--font-display);
       font-size: 20px;
@@ -539,9 +559,68 @@
 
     .listing-card__video {
       margin-top: 8px;
-      padding: 10px 12px;
+      padding: 10px;
       border-radius: 16px;
       background: rgba(49, 93, 117, 0.08);
+    }
+
+    .listing-card__video-cover,
+    .listing-card__report-cover {
+      position: relative;
+      overflow: hidden;
+      border-radius: 14px;
+      aspect-ratio: 16 / 9;
+      background: #eef1f5;
+    }
+
+    .listing-card__video-cover img,
+    .listing-card__report-cover img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .listing-card__video-play {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(17, 24, 39, 0.72);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      backdrop-filter: blur(8px);
+    }
+
+    .listing-card__creator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .listing-card__avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, #fd7b22, #fd5d00);
+    }
+
+    .listing-card__creator-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-primary);
     }
 
     .listing-card__video-tag {
@@ -571,7 +650,7 @@
     .listing-card__report {
       width: 100%;
       margin-top: 8px;
-      padding: 10px 12px;
+      padding: 10px;
       border: none;
       border-radius: 16px;
       background: rgba(253, 93, 0, 0.08);
@@ -1184,6 +1263,44 @@
       font-weight: 600;
     }
 
+    .activity-benefits {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: rgba(255, 143, 46, 0.08);
+    }
+
+    .activity-benefits__title {
+      margin: 0;
+      color: var(--brand-deep);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .activity-benefits__list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .activity-benefits__item {
+      display: grid;
+      gap: 2px;
+    }
+
+    .activity-benefits__item strong {
+      color: var(--text-primary);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .activity-benefits__item span {
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
     .report-page {
       display: grid;
       gap: 16px;
@@ -1238,6 +1355,23 @@
 
     .report-photo--wide {
       min-height: 352px;
+    }
+
+    .report-photo--image {
+      min-height: 352px;
+      padding: 0;
+      display: block;
+    }
+
+    .report-photo--image::before {
+      content: none;
+    }
+
+    .report-photo__image {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .report-photo__content {
@@ -1338,6 +1472,14 @@
 
     .district-panel__status {
       margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .district-panel__status-main {
       color: var(--text-tertiary);
       font-size: 12px;
       line-height: 1.5;
@@ -1357,11 +1499,11 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      width: fit-content;
       text-decoration: none;
       color: var(--brand-primary);
       font-size: 12px;
       font-weight: 700;
+      white-space: nowrap;
     }
 
     .district-media-card {
@@ -2523,6 +2665,12 @@
       }
     };
 
+    const activityGroupBuyingBenefits = [
+      { label: "专属折扣", desc: "签约客户享额外团购优惠。" },
+      { label: "单位团购", desc: "同一单位 5 人及以上，再享单位人才安居补贴。" },
+      { label: "老带新激励", desc: "推荐亲友购房可获成都双人旅游套餐。" }
+    ];
+
     const talentCheckSteps = [
       {
         id: "education",
@@ -2559,21 +2707,27 @@
         title: "天府锦城观澜",
         meta: "天府新区 · 建面 105-143㎡ · 双地铁",
         price: "168",
-        keyword: "适合改善与异地视频带看"
+        keyword: "适合改善与异地视频带看",
+        photo: "./assets/楼盘实景-园林入口.png",
+        photoAlt: "天府锦城观澜楼盘实景"
       },
       {
         media: "教育配套盘",
         title: "锦江文脉府",
         meta: "锦江区 · 建面 89-128㎡ · 学府资源",
         price: "231",
-        keyword: "适合返乡安家与家庭型置业"
+        keyword: "适合返乡安家与家庭型置业",
+        photo: "./assets/楼盘实景-客厅样板间.png",
+        photoAlt: "锦江文脉府样板间实景"
       },
       {
         media: "低总价机会盘",
         title: "东客站云庭",
         meta: "成华区 · 建面 76-99㎡ · 主城通勤",
         price: "126",
-        keyword: "适合预算敏感客群先上车"
+        keyword: "适合预算敏感客群先上车",
+        photo: "./assets/楼盘实景-园林入口.png",
+        photoAlt: "东客站云庭楼盘实景"
       }
     ];
 
@@ -2732,13 +2886,31 @@
           tagline: `${group.city}专场重点推荐，围绕“${item.title}”延展讲解，${template.keyword}。`,
           influencerVideo: isReportEstate || offset === 1 ? null : {
             title: `${template.title} 大V说房`,
-            meta: `${offset === 0 ? "阿蓉" : "老杨"} · ${districtName} 项目解读 · 02:1${offset + 6}`
+            meta: `${districtName} 项目解读 · 02:1${offset + 6}`,
+            authorName: "小胖说房",
+            avatarText: "胖",
+            cover: "./assets/楼盘实景-园林入口.png",
+            coverAlt: `${template.title} 大V说房视频封面`
           },
           report: isReportEstate ? {
             title: `${template.title} 图文评测报告`,
             summary: "面向刚需与主城通勤客群的低总价机会盘评测。",
-            author: "房V评测组",
+            author: "海派新房",
+            authorName: "海派新房",
+            avatarText: "海",
             updatedAt: "2026.03.16",
+            cover: "./assets/楼盘实景-客厅样板间.png",
+            coverAlt: `${template.title} 图文评测封面`,
+            gallery: [
+              {
+                image: "./assets/楼盘实景-客厅样板间.png",
+                alt: `${template.title} 样板间实景`
+              },
+              {
+                image: "./assets/楼盘实景-园林入口.png",
+                alt: `${template.title} 园林入口实景`
+              }
+            ],
             sections: [
               {
                 title: "项目定位",
@@ -2775,7 +2947,7 @@
 
     function renderReportDetail(report, estate) {
       currentReport = { report, estate };
-      const reportPhotos = [
+      const reportPhotos = report.gallery && report.gallery.length ? report.gallery : [
         {
           tag: "封面图",
           title: `${estate.title} 值不值得买？`,
@@ -2792,14 +2964,6 @@
           start: "rgba(255, 124, 72, 0.92)",
           end: "rgba(255, 182, 116, 0.74)",
           glow: "rgba(255, 244, 233, 0.28)"
-        },
-        {
-          tag: "板块图",
-          title: "房V实勘笔记",
-          desc: "从生活便利度到入住节奏的实际观察",
-          start: "rgba(199, 65, 0, 0.94)",
-          end: "rgba(255, 133, 57, 0.7)",
-          glow: "rgba(255, 229, 210, 0.24)"
         }
       ];
 
@@ -2807,16 +2971,22 @@
         <section class="report-gallery-wrap">
           <div class="report-gallery" data-report-gallery>
             ${reportPhotos.map((photo) => `
-              <article
-                class="report-photo ${photo.wide ? "report-photo--wide" : ""}"
-                style="--report-photo-start:${photo.start}; --report-photo-end:${photo.end}; --report-photo-glow:${photo.glow};"
-              >
-                <div class="report-photo__content">
-                  <span class="report-photo__tag">${photo.tag}</span>
-                  <strong>${photo.title}</strong>
-                  <span>${photo.desc}</span>
-                </div>
-              </article>
+              ${photo.image ? `
+                <article class="report-photo report-photo--image">
+                  <img class="report-photo__image" src="${photo.image}" alt="${photo.alt}" loading="lazy" decoding="async" />
+                </article>
+              ` : `
+                <article
+                  class="report-photo ${photo.wide ? "report-photo--wide" : ""}"
+                  style="--report-photo-start:${photo.start}; --report-photo-end:${photo.end}; --report-photo-glow:${photo.glow};"
+                >
+                  <div class="report-photo__content">
+                    <span class="report-photo__tag">${photo.tag}</span>
+                    <strong>${photo.title}</strong>
+                    <span>${photo.desc}</span>
+                  </div>
+                </article>
+              `}
             `).join("")}
           </div>
           <div class="report-gallery__dots">
@@ -2911,14 +3081,16 @@
         })
         .join("");
 
-      districtStatus.innerHTML = `当前区县：<strong>${activeDistrict.name}</strong>`;
-      districtMediaGrid.innerHTML = `
+      districtStatus.innerHTML = `
+        <span class="district-panel__status-main">当前区县：<strong>${activeDistrict.name}</strong></span>
         ${districtEntry ? `
           <a class="district-entry-link" href="./district-zone/detail.html?district=${districtEntry.id}&source=activity&group=${currentActivityPayload.groupIndex}&item=${currentActivityPayload.itemIndex}&districtName=${encodeURIComponent(activeDistrict.name)}">
             <span>了解更多区县信息，进入区县专区</span>
             <span>></span>
           </a>
         ` : ""}
+      `;
+      districtMediaGrid.innerHTML = `
         <article class="district-media-card">
           <div class="district-media-card__cover">
             ${activeDistrict.promoVideo.cover
@@ -2960,6 +3132,17 @@
           <span>活动地点：${item.venue}</span>
           <span>${item.projects} 个参展项目</span>
         </div>
+        <div class="activity-benefits">
+          <p class="activity-benefits__title">优惠团购</p>
+          <div class="activity-benefits__list">
+            ${activityGroupBuyingBenefits.map((benefit) => `
+              <div class="activity-benefits__item">
+                <strong>${benefit.label}</strong>
+                <span>${benefit.desc}</span>
+              </div>
+            `).join("")}
+          </div>
+        </div>
       `;
 
       activityStatus.classList.toggle("status-text--entry", Boolean(item.talentCheck));
@@ -2983,13 +3166,24 @@
       activityListingGrid.innerHTML = estates
         .map((estate) => `
           <article class="listing-card">
-            <div class="listing-card__media">${estate.media}</div>
-            <div>
+            <div class="listing-card__media">
+              <img class="listing-card__media-image" src="${estate.photo}" alt="${estate.photoAlt}" loading="lazy" decoding="async" />
+              <span class="listing-card__media-badge">${estate.media}</span>
+            </div>
+            <div class="listing-card__body">
               <h3 class="listing-card__title">${estate.title}</h3>
               <p class="listing-card__meta">${estate.meta}</p>
-              <p class="listing-card__tagline">${estate.tagline}</p>
+              <div class="listing-card__price">${estate.price}<span> 万起</span> <small>总价</small></div>
               ${estate.influencerVideo ? `
                 <div class="listing-card__video">
+                  <div class="listing-card__video-cover">
+                    <img src="${estate.influencerVideo.cover}" alt="${estate.influencerVideo.coverAlt}" loading="lazy" decoding="async" />
+                    <span class="listing-card__video-play">▶</span>
+                  </div>
+                  <div class="listing-card__creator">
+                    <span class="listing-card__avatar">${estate.influencerVideo.avatarText}</span>
+                    <span class="listing-card__creator-name">${estate.influencerVideo.authorName}</span>
+                  </div>
                   <span class="listing-card__video-tag">大V说房</span>
                   <p class="listing-card__video-title">${estate.influencerVideo.title}</p>
                   <p class="listing-card__video-meta">${estate.influencerVideo.meta}</p>
@@ -2997,12 +3191,18 @@
               ` : ""}
               ${estate.report ? `
                 <button class="listing-card__report" type="button" data-open-report="${estate.title}">
-                  <span class="listing-card__report-tag">图文报告</span>
+                  <div class="listing-card__report-cover">
+                    <img src="${estate.report.cover}" alt="${estate.report.coverAlt}" loading="lazy" decoding="async" />
+                  </div>
+                  <div class="listing-card__creator">
+                    <span class="listing-card__avatar">${estate.report.avatarText}</span>
+                    <span class="listing-card__creator-name">${estate.report.authorName}</span>
+                  </div>
+                  <span class="listing-card__report-tag">大V图文</span>
                   <p class="listing-card__report-title">${estate.report.title}</p>
                   <p class="listing-card__report-meta">${estate.report.author} · ${estate.report.updatedAt} · 点击查看详情</p>
                 </button>
               ` : ""}
-              <div class="listing-card__price">${estate.price}<span> 万起</span> <small>总价</small></div>
             </div>
           </article>
         `)
