@@ -218,7 +218,7 @@
       overflow: hidden;
       background:
         linear-gradient(180deg, rgba(10, 18, 28, 0.05), rgba(10, 18, 28, 0.38)),
-        url("./assets/chengdu-home-cover.svg") center / cover no-repeat;
+        url("./assets/d86e2b37c94f42fcb022f0376ae8a0cf.jpg") center / cover no-repeat;
       box-shadow: inset 0 -24px 44px rgba(10, 18, 28, 0.18);
     }
 
@@ -280,7 +280,8 @@
 
     .hero-card__title {
       position: relative;
-      margin: 12px 0 4px;
+      flex: 1 1 auto;
+      margin: 0;
       font-family: var(--font-display);
       font-size: 18px;
       line-height: 1.35;
@@ -299,18 +300,30 @@
       position: relative;
       z-index: 1;
       display: flex;
-      align-items: center;
+      flex: 0 0 auto;
+      align-items: flex-start;
       justify-content: flex-end;
-      margin-top: 12px;
     }
 
     .hero-card__locate {
-      min-height: 34px;
-      padding: 0 12px;
+      min-height: 24px;
+      padding: 0 10px;
+      border-radius: 999px;
       background: rgba(255, 255, 255, 0.78);
       box-shadow: none;
       white-space: nowrap;
       font-size: 12px;
+      line-height: 1;
+    }
+
+    .hero-card__heading {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 12px;
     }
 
     .hero-card__status {
@@ -738,8 +751,8 @@
       position: relative;
       display: grid;
       align-content: start;
-      gap: 6px;
-      min-height: 120px;
+      gap: 4px;
+      min-height: 92px;
       padding: 12px 10px;
       border: none;
       border-radius: 18px;
@@ -766,7 +779,6 @@
       color: var(--brand-deep);
     }
 
-    .city-card.is-active .city-card__desc,
     .city-card.is-active .city-card__meta {
       color: rgba(82, 60, 42, 0.86);
     }
@@ -775,12 +787,12 @@
       content: "定位";
       position: absolute;
       top: 10px;
-      right: 10px;
+      right: 3px;
       padding: 3px 7px;
       border-radius: 999px;
       background: rgba(103, 204, 53, 0.14);
       color: #4f8c27;
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 700;
     }
 
@@ -801,20 +813,9 @@
       line-height: 1.4;
     }
 
-    .city-card__desc {
-      margin: 0;
-      display: -webkit-box;
-      overflow: hidden;
-      color: var(--text-secondary);
-      font-size: 11px;
-      line-height: 1.5;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 3;
-    }
-
     .city-card__meta {
       display: block;
-      margin-top: auto;
+      margin-top: 8px;
       color: var(--text-tertiary);
       font-size: 10px;
       line-height: 1.4;
@@ -865,14 +866,10 @@
     }
 
     .activity-item {
-      width: 100%;
       padding: 14px;
-      border: none;
       border-radius: 18px;
       background: var(--surface-soft);
       border: 1px solid rgba(253, 93, 0, 0.08);
-      text-align: left;
-      cursor: pointer;
       transition: transform 160ms ease, box-shadow 160ms ease;
     }
 
@@ -883,6 +880,15 @@
     .activity-item:hover {
       transform: translateY(-1px);
       box-shadow: 0 12px 22px rgba(253, 93, 0, 0.08);
+    }
+
+    .activity-item__main {
+      width: 100%;
+      padding: 0;
+      border: none;
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
     }
 
     .activity-item__title {
@@ -913,15 +919,42 @@
     .activity-item__footer {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
-      margin-top: 10px;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 12px;
       color: var(--brand-primary);
       font-size: 12px;
       font-weight: 700;
     }
 
+    .activity-item__detail {
+      margin-left: auto;
+      padding: 0;
+      border: none;
+      background: transparent;
+      color: var(--brand-primary);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
     .activity-item__arrow {
       font-size: 14px;
+    }
+
+    .activity-item__talent {
+      min-height: 34px;
+      padding: 0 12px;
+      border: none;
+      border-radius: 999px;
+      background: rgba(255, 143, 46, 0.14);
+      color: var(--brand-deep);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
     }
 
     .columns-grid,
@@ -1551,6 +1584,46 @@
       margin-top: 12px;
     }
 
+    .status-text--entry {
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(255, 143, 46, 0.1);
+      cursor: pointer;
+      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+
+    .status-text--entry:active {
+      transform: translateY(1px);
+    }
+
+    .status-text__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .status-text__title {
+      display: block;
+      color: var(--text-primary);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .status-text__arrow {
+      flex: 0 0 auto;
+      color: var(--brand-primary);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .status-text__desc {
+      margin: 8px 0 0;
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
     .detail-sticky-bar {
       position: absolute;
       left: 0;
@@ -1808,6 +1881,12 @@
       scrollbar-width: none;
     }
 
+    .chat-quick-list--grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      overflow: visible;
+    }
+
     .chat-quick-list::-webkit-scrollbar {
       display: none;
     }
@@ -1822,6 +1901,14 @@
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
+    }
+
+    .chat-quick--option {
+      min-height: 52px;
+      border-radius: 16px;
+      text-align: left;
+      white-space: normal;
+      line-height: 1.5;
     }
 
     .chat-panel__form {
@@ -2137,10 +2224,12 @@
               <span class="hero-card__cover-badge">城市专题视频</span>
               <span class="hero-card__cover-play">▶</span>
             </div>
-            <div class="hero-card__tool-row">
-              <button class="ghost-button hero-card__locate" id="locateButton" type="button">📍 定位附近场次</button>
+            <div class="hero-card__heading">
+              <h1 class="hero-card__title">把成都好房带到你的城市里</h1>
+              <div class="hero-card__tool-row">
+                <button class="ghost-button hero-card__locate" id="locateButton" type="button">定位</button>
+              </div>
             </div>
-            <h1 class="hero-card__title">把成都好房带到你的城市里</h1>
             <p class="hero-card__desc">先看城市专题视频，再选择西宁、上海、北京专场活动</p>
             <div class="hero-card__status" id="locationStatus">
               当前城市：<strong>西宁</strong>
@@ -2272,7 +2361,6 @@
       {
         city: "西宁",
         theme: "高原置业专场",
-        summary: "返乡置业和刚改客户更关注总价、通勤与交付节奏。",
         coords: [36.6171, 101.7782],
         items: [
           {
@@ -2294,15 +2382,15 @@
       {
         city: "上海",
         theme: "长三角菁英专场",
-        summary: "更偏改善与资产配置，关注板块成长和高品质产品。",
         coords: [31.2304, 121.4737],
         items: [
           {
-            title: "上海静安高净值私享会",
+            title: "上海人才安家成都专场",
             time: "2026.03.28 13:30 - 18:30",
             venue: "上海静安瑞吉酒店",
             projects: 12,
-            note: "聚焦天府新区、金融城与国际社区产品。"
+            note: "面向上海人才客群，支持先做成都人才初筛，再预约专场顾问。",
+            talentCheck: true
           },
           {
             title: "虹桥商务区房V直播联展",
@@ -2316,7 +2404,6 @@
       {
         city: "北京",
         theme: "央企置业会客厅",
-        summary: "换房家庭和主城通勤客群更重视教育、医疗和兑现能力。",
         coords: [39.9042, 116.4074],
         items: [
           {
@@ -2353,10 +2440,42 @@
       }
     ];
 
+    const defaultChatPlaceholder = "例如：外地人在成都购房需要什么条件？";
+
     const quickQuestions = [
       "外地人在成都购房需要什么条件？",
       "成都公积金贷款额度怎么理解？",
       "买新房大概涉及哪些税费？"
+    ];
+
+    const talentCheckSteps = [
+      {
+        id: "education",
+        prompt: "先选择你的学历或人才证明类型。",
+        options: [
+          { value: "high", label: "硕士/博士或高级职称" },
+          { value: "mid", label: "本科或技师证书" },
+          { value: "none", label: "暂无相关证明" }
+        ]
+      },
+      {
+        id: "employment",
+        prompt: "再看你在成都的工作情况。",
+        options: [
+          { value: "social", label: "成都工作并连续社保" },
+          { value: "offer", label: "已有成都单位 offer / 合同" },
+          { value: "none", label: "暂无成都工作证明" }
+        ]
+      },
+      {
+        id: "materials",
+        prompt: "最后确认一下你手头资料是否齐全。",
+        options: [
+          { value: "full", label: "学历职称、身份证都齐全" },
+          { value: "partial", label: "已准备部分资料" },
+          { value: "none", label: "暂未准备材料" }
+        ]
+      }
     ];
 
     const estateTemplates = [
@@ -2419,6 +2538,7 @@
     let currentActivityPayload = null;
     let selectedDistrict = "";
     let currentReport = null;
+    let activeChatFlow = null;
 
     function showScreen(name) {
       Object.entries(screens).forEach(([key, element]) => {
@@ -2447,7 +2567,6 @@
             <button class="${classNames.join(" ")}" type="button" data-city="${group.city}">
               <strong class="city-card__name">${group.city}</strong>
               <span class="city-card__theme">${group.theme}</span>
-              <p class="city-card__desc">${group.summary}</p>
               <span class="city-card__meta">${group.items.length} 场活动 · ${totalProjects} 个项目</span>
             </button>
           `;
@@ -2464,23 +2583,45 @@
         .map((group) => {
           const items = group.items
             .map((item, itemIndex) => `
-              <button
-                class="activity-item"
-                type="button"
-                data-group-index="${group.groupIndex}"
-                data-item-index="${itemIndex}"
-              >
-                <div class="activity-item__title">
-                  <strong>${item.title}</strong>
-                  <span class="activity-item__count">${item.projects} 个参展项目</span>
-                </div>
-                <p class="activity-item__meta">活动时间：${item.time}</p>
-                <p class="activity-item__meta">活动地点：${item.venue}</p>
-                <p class="activity-item__meta">${item.note}</p>
+              <article class="activity-item">
+                <button
+                  class="activity-item__main"
+                  type="button"
+                  data-group-index="${group.groupIndex}"
+                  data-item-index="${itemIndex}"
+                >
+                  <div class="activity-item__title">
+                    <strong>${item.title}</strong>
+                    <span class="activity-item__count">${item.projects} 个参展项目</span>
+                  </div>
+                  <p class="activity-item__meta">活动时间：${item.time}</p>
+                  <p class="activity-item__meta">活动地点：${item.venue}</p>
+                  <p class="activity-item__meta">${item.note}</p>
+                </button>
                 <div class="activity-item__footer">
-                  <span class="activity-item__arrow">→</span>
+                  ${item.talentCheck ? `
+                    <button
+                      class="activity-item__talent"
+                      type="button"
+                      data-open-list-talent-check
+                      data-activity-title="${item.title}"
+                      data-group-index="${group.groupIndex}"
+                      data-item-index="${itemIndex}"
+                    >
+                      查看我是否符合成都人才
+                    </button>
+                  ` : "<span></span>"}
+                  <button
+                    class="activity-item__detail"
+                    type="button"
+                    data-group-index="${group.groupIndex}"
+                    data-item-index="${itemIndex}"
+                    aria-label="进入活动详情"
+                  >
+                    <span class="activity-item__arrow">→</span>
+                  </button>
                 </div>
-              </button>
+              </article>
             `)
             .join("");
 
@@ -2740,7 +2881,23 @@
         </div>
       `;
 
-      activityStatus.innerHTML = "";
+      activityStatus.classList.toggle("status-text--entry", Boolean(item.talentCheck));
+      if (item.talentCheck) {
+        activityStatus.setAttribute("data-open-talent-check", "true");
+        activityStatus.setAttribute("role", "button");
+        activityStatus.setAttribute("tabindex", "0");
+      } else {
+        activityStatus.removeAttribute("data-open-talent-check");
+        activityStatus.removeAttribute("role");
+        activityStatus.removeAttribute("tabindex");
+      }
+      activityStatus.innerHTML = item.talentCheck ? `
+        <div class="status-text__head">
+          <strong class="status-text__title">查看我是否符合成都人才</strong>
+          <span class="status-text__arrow">></span>
+        </div>
+        <p class="status-text__desc">按学历或人才证明、成都工作情况和资料完整度做一个快速初筛。</p>
+      ` : "";
 
       activityListingGrid.innerHTML = estates
         .map((estate) => `
@@ -2788,14 +2945,181 @@
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
+    function renderQuickQuestions(actions = quickQuestions.map((question) => ({
+      type: "question",
+      label: question,
+      value: question
+    })), useGrid = false) {
+      chatQuickList.classList.toggle("chat-quick-list--grid", useGrid);
+      chatQuickList.innerHTML = actions
+        .map((action) => {
+          const classNames = ["chat-quick"];
+          if (action.type !== "question") {
+            classNames.push("chat-quick--option");
+          }
+
+          const stepAttr = action.step ? ` data-step="${action.step}"` : "";
+          const valueAttr = action.value ? ` data-value="${action.value}"` : "";
+          return `<button class="${classNames.join(" ")}" type="button" data-chat-action="${action.type}"${stepAttr}${valueAttr}>${action.label}</button>`;
+        })
+        .join("");
+    }
+
+    function resetChatQuickQuestions() {
+      activeChatFlow = null;
+      chatInput.placeholder = defaultChatPlaceholder;
+      renderQuickQuestions();
+    }
+
+    function promptTalentCheckStep() {
+      const step = talentCheckSteps[activeChatFlow.stepIndex];
+      if (!step) {
+        return;
+      }
+
+      addChatMessage("bot", step.prompt);
+      renderQuickQuestions(
+        step.options.map((option) => ({
+          type: "talent-choice",
+          label: option.label,
+          value: option.value,
+          step: step.id
+        })),
+        true
+      );
+    }
+
+    function getTalentCheckConclusion(answers) {
+      const hasStrongEducation = answers.education === "high";
+      const hasEducationBase = hasStrongEducation || answers.education === "mid";
+      const hasJobBase = answers.employment === "social" || answers.employment === "offer";
+      const hasStrongJobBase = answers.employment === "social";
+      const materialsFull = answers.materials === "full";
+      const materialsPartial = answers.materials === "partial";
+
+      if (hasStrongEducation && hasJobBase && materialsFull) {
+        return {
+          qualified: true,
+          message: "初步结论：你符合成都人才条件。"
+        };
+      }
+
+      if (hasEducationBase && hasJobBase && (materialsFull || materialsPartial)) {
+        return {
+          qualified: false,
+          message: "初步结论：你有较大概率按成都人才口径申请。"
+        };
+      }
+
+      if (hasEducationBase && !hasJobBase) {
+        return {
+          qualified: false,
+          message: "初步结论：你目前更像具备人才基础，但缺少成都工作或社保资料，暂不能直接判断为符合。\n建议下一步：补充成都单位 offer、劳动合同或社保证明后再测。"
+        };
+      }
+
+      if (!hasEducationBase && hasStrongJobBase && materialsFull) {
+        return {
+          qualified: false,
+          message: "初步结论：按当前政策口径，人才证明基础还不够强，建议先补充学历或职称材料后再核验。"
+        };
+      }
+
+      return {
+        qualified: false,
+        message: "初步结论：按当前口径，你暂不符合成都人才初筛条件。"
+      };
+    }
+
+    function startTalentEligibilityCheck(activityTitle = "成都人才安家专场") {
+      activeChatFlow = {
+        type: "talent-check",
+        stepIndex: 0,
+        answers: {},
+        activityTitle
+      };
+
+      chatMessages.innerHTML = "";
+      openChatDrawer("", {
+        placeholder: "请按下方资料选项完成初筛，也可以补充说明"
+      });
+      addChatMessage("bot", `当前专场：${activityTitle}\n我们来做一个成都人才初筛。这是演示版判断，请按下方资料选项逐步选择。`);
+      promptTalentCheckStep();
+    }
+
+    function openTalentActivityFromChat(activityTitle = "上海人才安家成都专场") {
+      const matchedGroupIndex = cityActivities.findIndex((group) =>
+        group.items.some((item) => item.title === activityTitle)
+      );
+
+      if (matchedGroupIndex === -1) {
+        addChatMessage("bot", "暂时没有找到对应的人才活动页，请返回首页查看上海专场。");
+        return;
+      }
+
+      const matchedItemIndex = cityActivities[matchedGroupIndex].items.findIndex((item) => item.title === activityTitle);
+      selectedCity = cityActivities[matchedGroupIndex].city;
+      renderFilters();
+      renderActivities();
+      formatLocationStatus();
+      closeChatDrawer();
+      openActivityDetail(matchedGroupIndex, matchedItemIndex);
+    }
+
+    function handleTalentChoice(stepId, value, label) {
+      if (!activeChatFlow || activeChatFlow.type !== "talent-check") {
+        return;
+      }
+
+      const step = talentCheckSteps[activeChatFlow.stepIndex];
+      if (!step || step.id !== stepId) {
+        return;
+      }
+
+      addChatMessage("user", label);
+      activeChatFlow.answers[stepId] = value;
+      activeChatFlow.stepIndex += 1;
+
+      if (activeChatFlow.stepIndex < talentCheckSteps.length) {
+        promptTalentCheckStep();
+        return;
+      }
+
+      const conclusion = getTalentCheckConclusion(activeChatFlow.answers);
+      addChatMessage("bot", conclusion.message);
+      renderQuickQuestions(
+        conclusion.qualified ? [
+          {
+            type: "talent-open-activity",
+            label: "进入上海人才活动",
+            value: activeChatFlow.activityTitle || "上海人才安家成都专场"
+          },
+          { type: "talent-restart", label: "重新测评" }
+        ] : [
+          { type: "talent-restart", label: "重新测评" }
+        ],
+        true
+      );
+      activeChatFlow = null;
+      chatInput.placeholder = defaultChatPlaceholder;
+    }
+
     function getBotReply(question) {
       const text = question.trim();
       if (!text) {
         return "可以直接问我成都购房资格、公积金、税费或异地看房流程。";
       }
 
+      if (activeChatFlow && activeChatFlow.type === "talent-check") {
+        return "为了判断你是否符合成都人才，请先按下方资料选项完成初筛。";
+      }
+
       if (text.includes("资格") || text.includes("条件") || text.includes("限购")) {
         return "原型示例回答：机器人会先识别你的户籍、社保和家庭名下住房情况，再返回对应区域的购房资格提示，并引导你联系顾问做正式核验。";
+      }
+
+      if (text.includes("人才")) {
+        return "你可以进入“上海人才安家成都专场”，点击“查看我是否符合成都人才”，机器人会按学历、工作和资料情况一步步帮你做初筛。";
       }
 
       if (text.includes("公积金")) {
@@ -2813,16 +3137,21 @@
       return "原型示例回答：这个机器人入口适合承接成都政策与落地服务问题。实际接入时可连接政策知识库、楼盘库和 CRM 线索系统。";
     }
 
-    function openChatDrawer(prefill) {
+    function openChatDrawer(prefill, options = {}) {
       chatDrawer.classList.add("is-visible");
       if (typeof prefill === "string") {
         chatInput.value = prefill;
+      }
+      chatInput.placeholder = options.placeholder || defaultChatPlaceholder;
+      if (!activeChatFlow) {
+        renderQuickQuestions();
       }
       chatInput.focus();
     }
 
     function closeChatDrawer() {
       chatDrawer.classList.remove("is-visible");
+      resetChatQuickQuestions();
     }
 
     function openQrOverlay() {
@@ -2849,13 +3178,11 @@
       if (!shouldCall) {
         return;
       }
+      activityStatus.classList.remove("status-text--entry");
+      activityStatus.removeAttribute("data-open-talent-check");
+      activityStatus.removeAttribute("role");
+      activityStatus.removeAttribute("tabindex");
       activityStatus.innerHTML = `已模拟发起拨号：<strong>${activityServicePhone}</strong>，顾问将继续跟进 ${payload.item.title}。`;
-    }
-
-    function renderQuickQuestions() {
-      chatQuickList.innerHTML = quickQuestions
-        .map((question) => `<button class="chat-quick" type="button" data-question="${question}">${question}</button>`)
-        .join("");
     }
 
     function toRadians(value) {
@@ -2928,6 +3255,12 @@
     });
 
     activityList.addEventListener("click", (event) => {
+      const talentButton = event.target.closest("[data-open-list-talent-check]");
+      if (talentButton) {
+        startTalentEligibilityCheck(talentButton.dataset.activityTitle || "成都人才安家专场");
+        return;
+      }
+
       const button = event.target.closest("[data-group-index][data-item-index]");
       if (!button) {
         return;
@@ -2963,14 +3296,52 @@
       decorEntryArrow.textContent = willOpen ? "−" : "+";
     });
 
+    activityStatus.addEventListener("click", (event) => {
+      if (!activityStatus.hasAttribute("data-open-talent-check")) {
+        return;
+      }
+      startTalentEligibilityCheck(currentActivityPayload ? currentActivityPayload.item.title : "成都人才安家专场");
+    });
+
+    activityStatus.addEventListener("keydown", (event) => {
+      if (!activityStatus.hasAttribute("data-open-talent-check")) {
+        return;
+      }
+      if (event.key !== "Enter" && event.key !== " ") {
+        return;
+      }
+      event.preventDefault();
+      startTalentEligibilityCheck(currentActivityPayload ? currentActivityPayload.item.title : "成都人才安家专场");
+    });
+
     chatQuickList.addEventListener("click", (event) => {
-      const button = event.target.closest("[data-question]");
+      const button = event.target.closest("[data-chat-action]");
       if (!button) {
         return;
       }
-      const question = button.dataset.question;
-      addChatMessage("user", question);
-      addChatMessage("bot", getBotReply(question));
+
+      const action = button.dataset.chatAction;
+
+      if (action === "question") {
+        const question = button.dataset.value;
+        addChatMessage("user", question);
+        addChatMessage("bot", getBotReply(question));
+        return;
+      }
+
+      if (action === "talent-choice") {
+        handleTalentChoice(button.dataset.step, button.dataset.value, button.textContent.trim());
+        return;
+      }
+
+      if (action === "talent-open-activity") {
+        openTalentActivityFromChat(button.dataset.value || "上海人才安家成都专场");
+        return;
+      }
+
+      if (action === "talent-restart") {
+        startTalentEligibilityCheck(currentActivityPayload ? currentActivityPayload.item.title : "成都人才安家专场");
+      }
     });
 
     document.getElementById("chatForm").addEventListener("submit", (event) => {
@@ -2990,7 +3361,7 @@
     renderActivityDetail(0, 0);
     renderQuickQuestions();
     formatLocationStatus();
-    addChatMessage("bot", "你好，我是成都政策机器人。你可以先问我购房资格、公积金、税费，或者让顾问帮你安排异地看房。");
+    addChatMessage("bot", "你好，我是成都政策机器人。你可以先问我购房资格、公积金、税费，也可以在人才专场里让我帮你做成都人才初筛。");
   </script>
 </body>
 </html>
