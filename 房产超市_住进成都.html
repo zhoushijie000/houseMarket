@@ -1366,7 +1366,7 @@
 
     .district-media-card {
       display: grid;
-      gap: 8px;
+      gap: 10px;
       padding: 0;
       background: transparent;
       box-shadow: none;
@@ -1374,72 +1374,69 @@
 
     .district-media-card__cover {
       position: relative;
-      min-height: 96px;
-      padding: 12px;
-      border-radius: 18px;
+      min-height: 176px;
+      aspect-ratio: 16 / 9;
+      border-radius: 20px;
       overflow: hidden;
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      background:
-        linear-gradient(180deg, rgba(16, 24, 40, 0.02), rgba(16, 24, 40, 0.56)),
-        linear-gradient(135deg, rgba(49, 93, 117, 0.88), rgba(76, 123, 120, 0.8));
+      background: linear-gradient(180deg, rgba(224, 228, 232, 0.9), rgba(196, 204, 214, 0.96));
     }
 
     .district-media-card__cover::before {
       content: "";
       position: absolute;
       inset: 0;
-      background:
-        radial-gradient(circle at 20% 24%, rgba(255, 255, 255, 0.18), transparent 24%),
-        radial-gradient(circle at 82% 18%, rgba(255, 255, 255, 0.14), transparent 20%),
-        linear-gradient(180deg, transparent 0%, rgba(20, 26, 38, 0.36) 100%);
-    }
-
-    .district-media-card__content,
-    .district-media-card__play {
-      position: relative;
+      background: linear-gradient(180deg, rgba(17, 24, 39, 0.04) 0%, rgba(17, 24, 39, 0.08) 52%, rgba(17, 24, 39, 0.3) 100%);
       z-index: 1;
     }
 
-    .district-media-card__content {
-      color: #fff;
-      max-width: 76%;
+    .district-media-card__image,
+    .district-media-card__fallback,
+    .district-media-card__duration {
+      position: relative;
+      z-index: 0;
     }
 
-    .district-media-card__content strong {
+    .district-media-card__image {
       display: block;
-      font-size: 16px;
-      line-height: 1.4;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
-    .district-media-card__content span {
-      display: inline-flex;
-      margin-top: 8px;
-      padding: 5px 9px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.16);
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .district-media-card__play {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
+    .district-media-card__fallback {
       display: grid;
       place-items: center;
-      background: rgba(255, 255, 255, 0.92);
-      color: var(--brand-primary);
-      font-size: 16px;
+      width: 100%;
+      height: 100%;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+      background: linear-gradient(135deg, rgba(49, 93, 117, 0.9), rgba(76, 123, 120, 0.84));
+    }
+
+    .district-media-card__duration {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 54px;
+      min-height: 26px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: rgba(17, 24, 39, 0.72);
+      color: #fff;
+      font-size: 12px;
       font-weight: 700;
     }
 
     .district-media-card__title {
       margin: 0;
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 700;
-      line-height: 1.5;
+      line-height: 1.55;
     }
 
     .district-media-card__meta,
@@ -2505,6 +2502,27 @@
       }
     };
 
+    const districtPromoVideoPresets = {
+      "天府新区": {
+        cover: "./assets/天府新区.png",
+        title: "安家成都 I LOVE TX",
+        duration: "03:24",
+        alt: "天府新区宣传视频封面"
+      },
+      "锦江区": {
+        cover: "./assets/锦江.png",
+        title: "安家成都 品位锦江",
+        duration: "02:48",
+        alt: "锦江区宣传视频封面"
+      },
+      "成华区": {
+        cover: "./assets/成华.png",
+        title: "成华·宜居新主场",
+        duration: "03:12",
+        alt: "成华区宣传视频封面"
+      }
+    };
+
     const talentCheckSteps = [
       {
         id: "education",
@@ -2740,13 +2758,14 @@
       });
 
       const districts = estates.map((estate, index) => {
+        const promoVideoPreset = districtPromoVideoPresets[estate.districtName];
         return {
           name: estate.districtName,
           promoVideo: {
-            badge: "宣传视频",
-            title: `${estate.districtName} 置业速览`,
-            duration: `0${index + 1}:2${index + 2}`,
-            meta: `${estate.districtName} 参展项目预热内容，围绕 ${estate.title} 展开讲解。`
+            title: promoVideoPreset ? promoVideoPreset.title : `${estate.districtName} 宣传视频`,
+            duration: promoVideoPreset ? promoVideoPreset.duration : `0${index + 1}:2${index + 2}`,
+            cover: promoVideoPreset ? promoVideoPreset.cover : "",
+            alt: promoVideoPreset ? promoVideoPreset.alt : `${estate.districtName} 宣传视频封面`
           }
         };
       });
@@ -2902,14 +2921,12 @@
         ` : ""}
         <article class="district-media-card">
           <div class="district-media-card__cover">
-            <div class="district-media-card__content">
-              <strong>${activeDistrict.promoVideo.title}</strong>
-              <span>${activeDistrict.promoVideo.badge}</span>
-            </div>
-            <div class="district-media-card__play">▶</div>
+            ${activeDistrict.promoVideo.cover
+              ? `<img class="district-media-card__image" src="${activeDistrict.promoVideo.cover}" alt="${activeDistrict.promoVideo.alt}" loading="lazy" decoding="async" />`
+              : `<div class="district-media-card__fallback">${activeDistrict.promoVideo.title}</div>`}
+            <span class="district-media-card__duration">${activeDistrict.promoVideo.duration}</span>
           </div>
-          <h3 class="district-media-card__title">${activeDistrict.promoVideo.duration}</h3>
-          <p class="district-media-card__meta">${activeDistrict.promoVideo.meta}</p>
+          <h3 class="district-media-card__title">${activeDistrict.promoVideo.title}</h3>
         </article>
       `;
     }

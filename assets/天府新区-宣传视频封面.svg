@@ -1,0 +1,43 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="800" y1="0" x2="800" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F5C69A"/>
+      <stop offset="0.24" stop-color="#E8C4B4"/>
+      <stop offset="0.52" stop-color="#738495"/>
+      <stop offset="1" stop-color="#243749"/>
+    </linearGradient>
+    <linearGradient id="river" x1="0" y1="560" x2="620" y2="860" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C9A783"/>
+      <stop offset="1" stop-color="#8B6B58"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <path d="M0 434C155 422 278 438 396 456C516 474 587 519 716 514C848 509 922 449 1044 442C1167 435 1284 469 1391 500C1474 524 1538 526 1600 520V900H0V434Z" fill="#33495C" fill-opacity="0.66"/>
+  <path d="M0 530C75 555 122 588 176 648C236 714 278 760 340 820H0V530Z" fill="url(#river)" fill-opacity="0.75"/>
+  <g opacity="0.8">
+    <rect x="708" y="396" width="64" height="234" rx="12" fill="#56697D"/>
+    <rect x="786" y="348" width="82" height="282" rx="14" fill="#607487"/>
+    <rect x="888" y="378" width="58" height="252" rx="12" fill="#506678"/>
+    <rect x="968" y="314" width="90" height="316" rx="14" fill="#5D7186"/>
+    <rect x="1084" y="356" width="68" height="274" rx="12" fill="#53697A"/>
+    <rect x="1180" y="404" width="54" height="226" rx="12" fill="#496072"/>
+  </g>
+  <g opacity="0.34">
+    <path d="M218 630H664V648C614 670 550 684 484 692C418 700 334 694 260 682L218 630Z" fill="#E3CEB0"/>
+    <path d="M340 650H738V670C660 710 548 728 420 714L340 650Z" fill="#B29D89"/>
+  </g>
+  <g opacity="0.28">
+    <rect x="730" y="646" width="46" height="150" rx="12" fill="#F2D8B8"/>
+    <rect x="792" y="626" width="84" height="170" rx="12" fill="#F2D8B8"/>
+    <rect x="900" y="656" width="50" height="140" rx="12" fill="#F2D8B8"/>
+    <rect x="970" y="610" width="90" height="186" rx="12" fill="#F2D8B8"/>
+    <rect x="1084" y="646" width="64" height="150" rx="12" fill="#F2D8B8"/>
+  </g>
+  <g>
+    <rect x="60" y="50" width="196" height="82" rx="24" fill="#FF963E"/>
+    <text x="158" y="104" fill="#FFF8EC" text-anchor="middle" font-size="50" font-family="'Microsoft YaHei','PingFang SC',sans-serif" font-weight="800">安家成都</text>
+  </g>
+  <text x="800" y="318" fill="#FFFFFF" font-size="150" text-anchor="middle" font-family="'Microsoft YaHei','PingFang SC',sans-serif" font-weight="800">安家成都</text>
+  <text x="800" y="450" fill="#FFFFFF" font-size="94" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" letter-spacing="4">I ❤ TX</text>
+  <text x="800" y="574" fill="#FFFFFF" font-size="92" text-anchor="middle" font-family="'Microsoft YaHei','PingFang SC',sans-serif" font-weight="800">活力天新·金秋焕新家</text>
+</svg>

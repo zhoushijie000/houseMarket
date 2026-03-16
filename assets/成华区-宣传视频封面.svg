@@ -1,0 +1,49 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="800" y1="0" x2="800" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F41020"/>
+      <stop offset="1" stop-color="#FF7A1A"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="520" y1="240" x2="1100" y2="650" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF0B5"/>
+      <stop offset="1" stop-color="#E8BA5D"/>
+    </linearGradient>
+    <linearGradient id="city" x1="800" y1="620" x2="800" y2="860" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F89A3C" stop-opacity="0.1"/>
+      <stop offset="1" stop-color="#7D3816" stop-opacity="0.5"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect y="180" width="1600" height="240" fill="url(#city)"/>
+  <g opacity="0.9">
+    <path d="M0 648C93 610 174 664 254 644C328 625 366 575 438 570C520 565 591 625 662 616C760 603 812 534 900 536C1003 539 1068 635 1166 638C1278 640 1324 547 1436 547C1504 547 1559 584 1600 620V900H0V648Z" fill="#F7EDD0"/>
+    <path d="M0 694C86 665 154 730 248 717C344 704 379 646 470 646C571 646 622 722 714 719C817 716 850 655 954 651C1064 647 1115 726 1221 730C1333 734 1394 662 1508 665C1549 666 1579 673 1600 684V900H0V694Z" fill="#FAF4DF" fill-opacity="0.85"/>
+  </g>
+  <g opacity="0.82">
+    <path d="M31 755C85 718 129 692 178 666C205 700 220 739 230 790C191 803 132 808 82 816L31 755Z" fill="#2C5D91"/>
+    <path d="M116 733C165 689 216 659 274 640C307 678 334 727 349 782C287 785 216 786 142 796L116 733Z" fill="#163E6D"/>
+    <path d="M1403 762C1458 708 1514 669 1577 646C1602 681 1620 724 1630 769C1564 775 1490 784 1414 799L1403 762Z" fill="#4C8A94"/>
+  </g>
+  <g opacity="0.38">
+    <rect x="280" y="650" width="40" height="110" rx="8" fill="#7A3518"/>
+    <rect x="344" y="606" width="64" height="154" rx="8" fill="#7A3518"/>
+    <rect x="426" y="568" width="76" height="192" rx="8" fill="#7A3518"/>
+    <rect x="521" y="622" width="44" height="138" rx="8" fill="#7A3518"/>
+    <rect x="617" y="584" width="68" height="176" rx="8" fill="#7A3518"/>
+    <rect x="705" y="540" width="120" height="220" rx="10" fill="#7A3518"/>
+    <rect x="846" y="604" width="42" height="156" rx="8" fill="#7A3518"/>
+    <rect x="907" y="570" width="98" height="190" rx="8" fill="#7A3518"/>
+    <rect x="1027" y="614" width="52" height="146" rx="8" fill="#7A3518"/>
+    <rect x="1103" y="590" width="76" height="170" rx="8" fill="#7A3518"/>
+    <rect x="1201" y="630" width="44" height="130" rx="8" fill="#7A3518"/>
+  </g>
+  <circle cx="1298" cy="225" r="82" fill="#F7DAA1" fill-opacity="0.88"/>
+  <circle cx="976" cy="90" r="18" fill="#FFD894"/>
+  <path d="M884 114C964 84 1066 78 1176 114" stroke="#FFD17B" stroke-width="8" stroke-linecap="round"/>
+  <path d="M705 598C832 660 980 662 1107 598" stroke="#FFD8A1" stroke-width="8" stroke-linecap="round" opacity="0.72"/>
+  <text x="96" y="110" fill="#FFF2C6" font-size="38" font-family="'Microsoft YaHei','PingFang SC',sans-serif" font-weight="700">熊猫之都  活力成华</text>
+  <text x="800" y="228" fill="#FFE9B4" font-size="88" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-style="italic">In Chengdu</text>
+  <text x="800" y="380" fill="url(#gold)" font-size="132" text-anchor="middle" font-family="'Microsoft YaHei','PingFang SC',sans-serif" font-weight="800">成华·宜居新主场</text>
+  <text x="800" y="536" fill="url(#gold)" font-size="122" text-anchor="middle" font-family="'Microsoft YaHei','PingFang SC',sans-serif" font-weight="800">悦享安家黄金周</text>
+  <text x="800" y="690" fill="#FFF4DD" font-size="34" text-anchor="middle" font-family="'Microsoft YaHei','PingFang SC',sans-serif" font-weight="600">活动时间：2025年9月26日-9月28日  /  活动地点：成华区 SM 购物广场</text>
+</svg>
