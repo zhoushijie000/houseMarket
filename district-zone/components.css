@@ -518,7 +518,7 @@ button {
   border-radius: var(--radius-pill);
   background: linear-gradient(90deg, var(--district-accent, var(--color-primary)), var(--color-primary-light));
   color: #ffffff;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-sm)
   font-weight: var(--font-weight-semibold);
   box-shadow: var(--shadow-emphasis);
   white-space: nowrap;

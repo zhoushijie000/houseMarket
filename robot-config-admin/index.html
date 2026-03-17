@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>机器人功能后台配置</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="admin-shell">
+    <aside class="shell-sidebar">
+      <div class="brand-card">
+        <div class="brand-card__badge">BOT</div>
+        <div>
+          <div class="brand-card__eyebrow">后台配置</div>
+          <div class="brand-card__title">机器人问答中心</div>
+        </div>
+      </div>
+
+      <nav class="side-nav">
+        <a class="side-nav__item is-active" href="#optionPanel">功能开关</a>
+        <a class="side-nav__item" href="#questionPanel">问题按钮</a>
+        <a class="side-nav__item" href="#rulePanel">回复规则</a>
+        <a class="side-nav__item" href="#restorePanel">恢复中心</a>
+      </nav>
+
+      <section class="side-note">
+        <div class="side-note__label">当前环境</div>
+        <div class="side-note__value">正式环境</div>
+        <div class="side-note__meta">集中配置问题按钮、回复策略、推导规则和恢复版本。</div>
+      </section>
+    </aside>
+
+    <div class="shell-main">
+      <header class="shell-header">
+        <div>
+          <div class="shell-header__eyebrow">机器人后台</div>
+          <h1 class="shell-header__title">问答流程配置</h1>
+          <p class="shell-header__desc">配置问题按钮、选项路径、回复策略和答案规则，支持多题选择后自动得出对应答案。</p>
+        </div>
+        <div class="header-summary">
+          <div class="header-summary__label">当前版本</div>
+          <div class="header-summary__value" id="versionLabel">V2.4.0</div>
+          <div class="header-summary__meta" id="publishTime">2026-03-17 16:40 发布</div>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="workspace-main">
+          <section class="panel">
+            <div class="panel__header">
+              <div>
+                <div class="panel__eyebrow">配置概览</div>
+                <h2 class="panel__title">当前生效状态</h2>
+              </div>
+            </div>
+
+            <div class="overview-grid">
+              <article class="overview-card">
+                <div class="overview-card__label">启用功能</div>
+                <div class="overview-card__value" id="enabledCount">0</div>
+                <div class="overview-card__meta">按当前开关状态统计</div>
+              </article>
+              <article class="overview-card">
+                <div class="overview-card__label">问题节点</div>
+                <div class="overview-card__value" id="questionCount">0</div>
+                <div class="overview-card__meta">当前启用的问题按钮节点</div>
+              </article>
+              <article class="overview-card">
+                <div class="overview-card__label">规则数量</div>
+                <div class="overview-card__value" id="ruleCount">0</div>
+                <div class="overview-card__meta">按条件推导最终答案</div>
+              </article>
+              <article class="overview-card">
+                <div class="overview-card__label">主策略</div>
+                <div class="overview-card__value overview-card__value--text" id="strategyLabel">引导咨询</div>
+                <div class="overview-card__meta">当前默认回复方式</div>
+              </article>
+              <article class="overview-card">
+                <div class="overview-card__label">配置状态</div>
+                <div class="overview-card__value overview-card__value--text" id="draftState">已发布</div>
+                <div class="overview-card__meta">变更后可保存草稿或发布</div>
+              </article>
+            </div>
+          </section>
+
+          <section class="panel" id="optionPanel">
+            <div class="panel__header">
+              <div>
+                <div class="panel__eyebrow">功能开关</div>
+                <h2 class="panel__title">基础能力</h2>
+              </div>
+            </div>
+            <div class="feature-grid" id="featureGrid"></div>
+          </section>
+
+          <section class="panel" id="questionPanel">
+            <div class="panel__header">
+              <div>
+                <div class="panel__eyebrow">问题按钮</div>
+                <h2 class="panel__title">问题流程配置</h2>
+              </div>
+            </div>
+
+            <div class="question-layout">
+              <div class="question-list" id="questionList"></div>
+
+              <section class="editor-card">
+                <div class="editor-card__header">
+                  <div>
+                    <div class="editor-card__eyebrow">节点编辑</div>
+                    <h3 class="editor-card__title" id="questionEditorTitle">问题节点</h3>
+                  </div>
+                  <button class="toggle-tag" type="button" id="questionEnabledBtn">已启用</button>
+                </div>
+
+                <div class="field-grid field-grid--single">
+                  <label class="field-card">
+                    <span class="field-card__label">问题标题</span>
+                    <input class="field-card__control" id="questionTitleInput" type="text" />
+                  </label>
+                  <label class="field-card">
+                    <span class="field-card__label">问题说明</span>
+                    <textarea class="field-card__control field-card__control--textarea" id="questionPromptInput"></textarea>
+                  </label>
+                  <label class="field-card">
+                    <span class="field-card__label">默认策略</span>
+                    <select class="field-card__control" id="questionStrategySelect"></select>
+                  </label>
+                </div>
+
+                <div class="option-editor">
+                  <div class="option-editor__header">
+                    <div class="option-editor__title">按钮选项</div>
+                    <div class="option-editor__meta">按钮文案、下一步和策略</div>
+                  </div>
+                  <div class="option-editor__list" id="optionEditorList"></div>
+                </div>
+              </section>
+            </div>
+          </section>
+
+          <section class="panel" id="rulePanel">
+            <div class="panel__header">
+              <div>
+                <div class="panel__eyebrow">回复规则</div>
+                <h2 class="panel__title">条件推导配置</h2>
+              </div>
+            </div>
+
+            <div class="rule-layout">
+              <div class="rule-list" id="ruleList"></div>
+
+              <section class="editor-card">
+                <div class="editor-card__header">
+                  <div>
+                    <div class="editor-card__eyebrow">规则编辑</div>
+                    <h3 class="editor-card__title" id="ruleEditorTitle">规则详情</h3>
+                  </div>
+                </div>
+
+                <div class="field-grid field-grid--single">
+                  <label class="field-card">
+                    <span class="field-card__label">规则名称</span>
+                    <input class="field-card__control" id="ruleNameInput" type="text" />
+                  </label>
+                  <label class="field-card">
+                    <span class="field-card__label">命中策略</span>
+                    <select class="field-card__control" id="ruleStrategySelect"></select>
+                  </label>
+                  <div class="field-card">
+                    <span class="field-card__label">命中条件</span>
+                    <div class="condition-grid" id="ruleConditionGrid"></div>
+                  </div>
+                  <label class="field-card">
+                    <span class="field-card__label">最终回复</span>
+                    <textarea class="field-card__control field-card__control--textarea field-card__control--tall" id="ruleAnswerInput"></textarea>
+                  </label>
+                  <label class="field-card">
+                    <span class="field-card__label">动作策略</span>
+                    <input class="field-card__control" id="ruleActionInput" type="text" />
+                  </label>
+                </div>
+              </section>
+            </div>
+          </section>
+
+          <section class="panel" id="strategyPanel">
+            <div class="panel__header">
+              <div>
+                <div class="panel__eyebrow">全局策略</div>
+                <h2 class="panel__title">默认回复配置</h2>
+              </div>
+            </div>
+
+            <div class="strategy-grid" id="strategyGrid"></div>
+
+            <div class="field-grid">
+              <label class="field-card">
+                <span class="field-card__label">服务范围</span>
+                <select class="field-card__control" id="scopeSelect">
+                  <option value="project-policy">项目与政策</option>
+                  <option value="project-only">仅项目咨询</option>
+                  <option value="policy-only">仅政策答复</option>
+                </select>
+              </label>
+              <label class="field-card">
+                <span class="field-card__label">超范围处理</span>
+                <select class="field-card__control" id="fallbackSelect">
+                  <option value="manual">转人工</option>
+                  <option value="leave-message">引导留言</option>
+                  <option value="knowledge">返回知识库</option>
+                </select>
+              </label>
+              <label class="field-card">
+                <span class="field-card__label">连续追问阈值</span>
+                <select class="field-card__control" id="responseLimitSelect">
+                  <option value="2">2轮</option>
+                  <option value="3">3轮</option>
+                  <option value="5">5轮</option>
+                </select>
+              </label>
+              <label class="field-card">
+                <span class="field-card__label">恢复后草稿处理</span>
+                <select class="field-card__control" id="recoverPolicySelect">
+                  <option value="keep">保留当前草稿</option>
+                  <option value="replace">替换为恢复版本</option>
+                  <option value="backup">先备份再恢复</option>
+                </select>
+              </label>
+            </div>
+          </section>
+        </section>
+
+        <aside class="workspace-side">
+          <section class="panel panel--sticky">
+            <div class="panel__header">
+              <div>
+                <div class="panel__eyebrow">流程预览</div>
+                <h2 class="panel__title">问答推导演示</h2>
+              </div>
+              <button class="button button--ghost button--small" type="button" id="resetPreviewBtn">重置预览</button>
+            </div>
+
+            <div class="preview-steps" id="previewSteps"></div>
+
+            <div class="preview-question">
+              <div class="preview-question__label" id="previewQuestionLabel">当前问题</div>
+              <div class="preview-question__title" id="previewQuestionTitle">请选择问题路径</div>
+              <div class="preview-question__desc" id="previewQuestionDesc">按配置好的问题按钮继续模拟。</div>
+            </div>
+
+            <div class="preview-options" id="previewOptions"></div>
+
+            <div class="preview-result" id="previewResult">
+              <div class="preview-result__label">推导结果</div>
+              <div class="preview-result__title">等待选择</div>
+              <div class="preview-result__desc">完成问题选择后，在这里查看命中的回复和策略。</div>
+            </div>
+          </section>
+
+          <section class="panel" id="restorePanel">
+            <div class="panel__header">
+              <div>
+                <div class="panel__eyebrow">恢复中心</div>
+                <h2 class="panel__title">版本恢复</h2>
+              </div>
+            </div>
+
+            <div class="restore-actions">
+              <button class="action-card action-card--warn" type="button" id="restoreDefaultBtn">
+                <span class="action-card__title">恢复默认配置</span>
+                <span class="action-card__meta">回到系统初始模板</span>
+              </button>
+              <button class="action-card" type="button" id="restoreStableBtn">
+                <span class="action-card__title">恢复最近稳定版</span>
+                <span class="action-card__meta">回到最新稳定版本</span>
+              </button>
+              <button class="action-card" type="button" id="createSnapshotBtn">
+                <span class="action-card__title">生成恢复点</span>
+                <span class="action-card__meta">保存当前配置快照</span>
+              </button>
+            </div>
+
+            <div class="snapshot-header">
+              <div class="snapshot-header__title">恢复记录</div>
+              <div class="snapshot-header__meta" id="snapshotCountMeta">0 个版本</div>
+            </div>
+            <div class="snapshot-list" id="snapshotList"></div>
+
+            <div class="restore-summary">
+              <div class="restore-summary__title">恢复摘要</div>
+              <div class="restore-summary__body" id="changeSummary">选择恢复点后查看该版本的主要变更。</div>
+              <button class="button button--primary button--full" type="button" id="restoreSnapshotBtn">恢复所选版本</button>
+            </div>
+          </section>
+        </aside>
+      </main>
+
+      <div class="action-bar">
+        <div class="action-bar__status">
+          <span class="status-dot" id="statusDot"></span>
+          <span id="statusText">当前配置已发布</span>
+        </div>
+        <div class="action-bar__actions">
+          <button class="button button--ghost" type="button" id="saveDraftBtn">保存草稿</button>
+          <button class="button button--primary" type="button" id="publishBtn">发布配置</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="./main.js"></script>
+</body>
+</html>

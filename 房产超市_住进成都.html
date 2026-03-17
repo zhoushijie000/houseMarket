@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
@@ -482,22 +482,23 @@
 
     .listing-card {
       display: grid;
-      grid-template-columns: 96px 1fr;
-      align-items: start;
+      grid-template-columns: 88px minmax(0, 1fr);
+      align-items: stretch;
       gap: 12px;
       padding: 12px;
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.94);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.96);
       box-shadow: var(--shadow-card);
     }
 
     .listing-card__media {
       position: relative;
-      width: 100%;
-      aspect-ratio: 5 / 4;
-      border-radius: 18px;
+      width: 88px;
+      min-width: 88px;
+      height: 104px;
+      border-radius: 14px;
       overflow: hidden;
-      align-self: start;
+      align-self: stretch;
       background: #eef1f5;
     }
 
@@ -511,7 +512,7 @@
     .listing-card__media-badge {
       position: absolute;
       left: 8px;
-      bottom: 8px;
+      top: 8px;
       display: inline-flex;
       align-items: center;
       padding: 4px 8px;
@@ -524,14 +525,17 @@
     }
 
     .listing-card__body {
-      display: grid;
-      gap: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
     }
 
     .listing-card__title {
-      margin: 0 0 4px;
-      font-size: 15px;
+      margin: 0;
+      font-size: 16px;
       font-weight: 700;
+      line-height: 1.35;
     }
 
     .listing-card__meta,
@@ -542,12 +546,44 @@
       line-height: 1.55;
     }
 
+    .listing-card__tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .listing-card__tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: rgba(253, 93, 0, 0.1);
+      color: var(--brand-deep);
+      font-size: 11px;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .listing-card__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: auto;
+      min-width: 0;
+    }
+
     .listing-card__price {
-      margin-top: 6px;
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
       color: var(--brand-primary);
       font-family: var(--font-display);
       font-size: 20px;
+      line-height: 1;
       font-weight: 700;
+      white-space: nowrap;
     }
 
     .listing-card__price span,
@@ -555,6 +591,20 @@
       font-size: 12px;
       font-weight: 500;
       color: var(--text-tertiary);
+    }
+
+    .listing-card__stock {
+      flex: 0 0 auto;
+      min-width: 62px;
+      max-width: 62px;
+      min-height: 38px;
+      padding: 6px 8px;
+      border-radius: 999px;
+      background: rgba(255, 40, 40, 0.08);
+      color: #d73a49;
+      font-size: 11px;
+      line-height: 1.25;
+      text-align: center;
     }
 
     .listing-card__video {
@@ -831,25 +881,24 @@
       position: relative;
       z-index: 1;
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 8px;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 12px;
       margin-top: 14px;
     }
 
     .city-card {
       position: relative;
-      display: grid;
-      align-content: start;
-      gap: 4px;
-      min-height: 92px;
-      padding: 12px 10px;
+      overflow: hidden;
+      display: block;
+      min-height: 102px;
+      padding: 14px 16px;
       border: none;
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.96);
-      box-shadow: inset 0 0 0 1px rgba(228, 231, 237, 0.9);
+      border-radius: 24px;
+      background: #243949;
+      box-shadow: 0 18px 34px rgba(17, 24, 39, 0.18);
       text-align: left;
       cursor: pointer;
-      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+      transition: transform 180ms ease, box-shadow 180ms ease;
     }
 
     .city-card:active {
@@ -857,57 +906,105 @@
     }
 
     .city-card.is-active {
-      background: linear-gradient(180deg, rgba(255, 244, 236, 0.98), rgba(255, 236, 219, 0.96));
       box-shadow:
-        inset 0 0 0 1px rgba(253, 93, 0, 0.18),
-        0 12px 24px rgba(253, 93, 0, 0.1);
-    }
-
-    .city-card.is-active .city-card__name,
-    .city-card.is-active .city-card__theme {
-      color: var(--brand-deep);
-    }
-
-    .city-card.is-active .city-card__meta {
-      color: rgba(82, 60, 42, 0.86);
+        inset 0 0 0 1px rgba(255, 255, 255, 0.32),
+        0 20px 38px rgba(17, 24, 39, 0.22);
     }
 
     .city-card.is-match::after {
-      content: "定位";
+      content: "定位推荐";
       position: absolute;
-      top: 10px;
-      right: 3px;
-      padding: 3px 7px;
+      top: 14px;
+      right: 14px;
+      z-index: 2;
+      padding: 5px 10px;
       border-radius: 999px;
-      background: rgba(103, 204, 53, 0.14);
-      color: #4f8c27;
-      font-size: 12px;
+      background: rgba(103, 204, 53, 0.2);
+      color: #f5fff0;
+      font-size: 11px;
       font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .city-card__backdrop {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(135deg, rgba(18, 24, 38, 0.22), rgba(18, 24, 38, 0.54)),
+        var(--city-card-cover);
+      background-size: cover;
+      background-position: center;
+      transform: scale(1.02);
+    }
+
+    .city-card__content {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      align-content: start;
+      gap: 5px;
+      min-height: 72px;
+      color: #fff;
+    }
+
+    .city-card__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      max-width: 100%;
+      min-height: 24px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(12px);
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
     }
 
     .city-card__name {
       display: block;
-      padding-right: 28px;
-      font-size: 16px;
+      padding-right: 78px;
+      font-size: 20px;
       font-weight: 700;
-      line-height: 1.2;
-      color: var(--text-primary);
+      line-height: 1.15;
+      color: #fff;
+      letter-spacing: 0.01em;
     }
 
     .city-card__theme {
-      display: block;
-      color: var(--brand-deep);
-      font-size: 11px;
+      display: -webkit-box;
+      overflow: hidden;
+      color: rgba(255, 255, 255, 0.94);
+      font-size: 12px;
       font-weight: 600;
-      line-height: 1.4;
+      line-height: 1.35;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
     }
 
     .city-card__meta {
-      display: block;
-      margin-top: 8px;
-      color: var(--text-tertiary);
-      font-size: 10px;
-      line-height: 1.4;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .city-card__action {
+      margin-top: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+      color: #fff3ea;
+    }
+
+    .city-card__action::after {
+      content: "→";
+      font-size: 13px;
     }
 
     .activity-list {
@@ -1470,6 +1567,11 @@
       gap: 10px;
     }
 
+    .filter-chips:empty,
+    .district-panel__status:empty {
+      display: none;
+    }
+
     .district-panel__status {
       margin: 0;
       display: flex;
@@ -1506,92 +1608,82 @@
       white-space: nowrap;
     }
 
-    .district-media-card {
-      display: grid;
-      gap: 10px;
-      padding: 0;
-      background: transparent;
-      box-shadow: none;
-    }
-
-    .district-media-card__cover {
+    .district-entry-card {
       position: relative;
-      min-height: 176px;
-      aspect-ratio: 16 / 9;
-      border-radius: 20px;
       overflow: hidden;
-      background: linear-gradient(180deg, rgba(224, 228, 232, 0.9), rgba(196, 204, 214, 0.96));
+      display: grid;
+      gap: 8px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at right top, rgba(255, 255, 255, 0.36), transparent 28%),
+        linear-gradient(135deg, rgba(255, 247, 240, 0.98), rgba(255, 255, 255, 0.98));
+      box-shadow: var(--shadow-card);
+      text-decoration: none;
+      color: inherit;
     }
 
-    .district-media-card__cover::before {
+    .district-entry-card::after {
       content: "";
       position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(17, 24, 39, 0.04) 0%, rgba(17, 24, 39, 0.08) 52%, rgba(17, 24, 39, 0.3) 100%);
+      right: -30px;
+      bottom: -30px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(253, 93, 0, 0.12) 0%, rgba(253, 93, 0, 0) 72%);
+    }
+
+    .district-entry-card__head,
+    .district-entry-card__name,
+    .district-entry-card__desc,
+    .district-entry-card__footer {
+      position: relative;
       z-index: 1;
     }
 
-    .district-media-card__image,
-    .district-media-card__fallback,
-    .district-media-card__duration {
-      position: relative;
-      z-index: 0;
+    .district-entry-card__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-width: 0;
     }
 
-    .district-media-card__image {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .district-media-card__fallback {
-      display: grid;
-      place-items: center;
-      width: 100%;
-      height: 100%;
-      color: #fff;
+    .district-entry-card__name {
+      margin: 0;
+      min-width: 0;
       font-size: 17px;
       font-weight: 700;
-      background: linear-gradient(135deg, rgba(49, 93, 117, 0.9), rgba(76, 123, 120, 0.84));
+      line-height: 1.3;
+      color: var(--text-primary);
     }
 
-    .district-media-card__duration {
-      position: absolute;
-      right: 12px;
-      bottom: 12px;
-      z-index: 2;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 54px;
-      min-height: 26px;
-      padding: 0 10px;
-      border-radius: 999px;
-      background: rgba(17, 24, 39, 0.72);
-      color: #fff;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .district-media-card__title {
-      margin: 0;
-      font-size: 15px;
-      font-weight: 700;
-      line-height: 1.55;
-    }
-
-    .district-media-card__meta,
-    .district-media-card__link {
+    .district-entry-card__desc {
       margin: 0;
       color: var(--text-secondary);
       font-size: 11px;
       line-height: 1.55;
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
 
-    .district-media-card__link {
+    .district-entry-card__cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      min-width: 92px;
+      min-height: 30px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: rgba(253, 93, 0, 0.1);
       color: var(--brand-primary);
+      font-size: 11px;
       font-weight: 700;
+      white-space: nowrap;
     }
 
     .project-grid,
@@ -2119,7 +2211,7 @@
       right: 20px;
       bottom: calc(20px + env(safe-area-inset-bottom, 0px));
       z-index: 8;
-      display: inline-flex;
+      display: none;
       flex-direction: column;
       align-items: center;
       justify-content: center;
@@ -2426,10 +2518,7 @@
                 <button class="ghost-button hero-card__locate" id="locateButton" type="button">定位</button>
               </div>
             </div>
-            <div class="city-card-grid" id="cityFilters" aria-label="城市筛选"></div>
-          </section>
-          <section class="section">
-                     <div class="activity-list" id="activityList"></div>
+            <div class="city-card-grid" id="cityFilters" aria-label="城市站点入口"></div>
           </section>
         </div>
       </section>
@@ -2468,24 +2557,6 @@
             <div class="listing-grid" id="activityListingGrid"></div>
           </section>
 
-          <section class="section">
-            <div class="section-head">
-              <div>
-                <h2>装修专区</h2>
-              </div>
-            </div>
-            <button class="decor-entry" id="decorEntryButton" type="button" aria-expanded="false">
-              <div class="decor-entry__head">
-                <div>
-                  <span class="decor-entry__tag">装修入口</span>
-                  <h3 class="decor-entry__title">优质装修公司伴你轻松入住</h3>
-                  <p class="decor-entry__desc">点击展开装修公司名录和联系方式。</p>
-                </div>
-                <span class="decor-entry__arrow" id="decorEntryArrow">+</span>
-              </div>
-            </button>
-            <div class="decor-directory" id="decorDirectory"></div>
-          </section>
         </div>
       </section>
 
@@ -2553,7 +2624,9 @@
     const cityActivities = [
       {
         city: "西宁",
+        stationLabel: "西宁站",
         theme: "高原置业专场",
+        cover: "./assets/西宁.png",
         coords: [36.6171, 101.7782],
         items: [
           {
@@ -2574,7 +2647,9 @@
       },
       {
         city: "上海",
+        stationLabel: "上海站",
         theme: "长三角菁英专场",
+        cover: "./assets/上海.png",
         coords: [31.2304, 121.4737],
         items: [
           {
@@ -2596,7 +2671,9 @@
       },
       {
         city: "北京",
+        stationLabel: "北京站",
         theme: "央企置业会客厅",
+        cover: "./assets/北京.png",
         coords: [39.9042, 116.4074],
         items: [
           {
@@ -2861,6 +2938,7 @@
     let currentReport = null;
     let activeChatFlow = null;
     let suspendedTalentAssessment = null;
+    const cityDisplayOrder = ["上海", "西宁", "北京"];
 
     function escapeHtml(value) {
       return String(value)
@@ -2951,13 +3029,28 @@
       phoneShell.classList.toggle("phone-shell--activity", name === "activity");
     }
 
+    function getCityConfig(city) {
+      return cityActivities.find((item) => item.city === city) || null;
+    }
+
+    function getCityLabel(city) {
+      const cityConfig = getCityConfig(city);
+      return cityConfig ? cityConfig.stationLabel || cityConfig.city : city;
+    }
+
+    function getOrderedCityGroups() {
+      return cityActivities
+        .map((group, groupIndex) => ({ ...group, groupIndex }))
+        .sort((a, b) => cityDisplayOrder.indexOf(a.city) - cityDisplayOrder.indexOf(b.city));
+    }
+
     function formatLocationStatus() {
       const suffix = matchedCity && matchedCity === selectedCity ? " · 已按定位推荐" : "";
-      locationStatus.innerHTML = `当前城市：<strong>${selectedCity}</strong>${suffix}`;
+      locationStatus.innerHTML = `当前站点：<strong>${getCityLabel(selectedCity)}</strong>${suffix}`;
     }
 
     function renderFilters() {
-      cityFilters.innerHTML = cityActivities
+      cityFilters.innerHTML = getOrderedCityGroups()
         .map((group) => {
           const classNames = ["city-card"];
           if (group.city === selectedCity) {
@@ -2966,12 +3059,22 @@
           if (group.city === matchedCity) {
             classNames.push("is-match");
           }
-          const totalProjects = group.items.reduce((total, item) => total + item.projects, 0);
+          const featuredItem = group.items[0];
           return `
-            <button class="${classNames.join(" ")}" type="button" data-city="${group.city}">
-              <strong class="city-card__name">${group.city}</strong>
-              <span class="city-card__theme">${group.theme}</span>
-              <span class="city-card__meta">${group.items.length} 场活动 · ${totalProjects} 个项目</span>
+            <button
+              class="${classNames.join(" ")}"
+              type="button"
+              data-city="${group.city}"
+              data-group-index="${group.groupIndex}"
+              data-item-index="0"
+              style="--city-card-cover:url('${group.cover}')"
+            >
+              <span class="city-card__backdrop" aria-hidden="true"></span>
+              <span class="city-card__content">
+                <strong class="city-card__name">${group.stationLabel || group.city}</strong>
+                <span class="city-card__theme">${featuredItem.title}</span>
+                <span class="city-card__meta">${featuredItem.time} · ${featuredItem.projects} 个重点项目</span>
+              </span>
             </button>
           `;
         })
@@ -2979,6 +3082,10 @@
     }
 
     function renderActivities() {
+      if (!activityList) {
+        return;
+      }
+
       const list = cityActivities
         .map((item, groupIndex) => ({ ...item, groupIndex }))
         .filter((item) => item.city === selectedCity);
@@ -3053,69 +3160,30 @@
       const start = (groupIndex + itemIndex) % estateTemplates.length;
       const estates = [0, 1, 2].map((offset) => {
         const template = estateTemplates[(start + offset) % estateTemplates.length];
-        const districtName = template.meta.split(" · ")[0];
-        const isReportEstate = template.title === "东客站云庭";
+        const metaParts = template.meta.split(" · ");
+        const districtName = metaParts[0];
+        const stockCount = Math.max(12, 36 - groupIndex * 5 - itemIndex * 4 - offset * 7);
         return {
           ...template,
           districtName,
           tagline: `${group.city}专场重点推荐，围绕“${item.title}”延展讲解，${template.keyword}。`,
-          influencerVideo: isReportEstate || offset === 1 ? null : {
-            title: `${template.title} 大V说房`,
-            meta: `${districtName} 项目解读 · 02:1${offset + 6}`,
-            authorName: "小胖说房",
-            avatarText: "胖",
-            cover: "./assets/楼盘实景-园林入口.png",
-            coverAlt: `${template.title} 大V说房视频封面`
-          },
-          report: isReportEstate ? {
-            title: `${template.title} 图文评测报告`,
-            summary: "面向刚需与主城通勤客群的低总价机会盘评测。",
-            author: "海派新房",
-            authorName: "海派新房",
-            avatarText: "海",
-            updatedAt: "2026.03.16",
-            cover: "./assets/楼盘实景-客厅样板间.png",
-            coverAlt: `${template.title} 图文评测封面`,
-            gallery: [
-              {
-                image: "./assets/楼盘实景-客厅样板间.png",
-                alt: `${template.title} 样板间实景`
-              },
-              {
-                image: "./assets/楼盘实景-园林入口.png",
-                alt: `${template.title} 园林入口实景`
-              }
-            ],
-            sections: [
-              {
-                title: "项目定位",
-                body: `${template.title} 主打 ${districtName} 主城通勤与总价控制，适合希望先上车、又在意轨交效率的客群。`
-              },
-              {
-                title: "板块观察",
-                body: `${districtName} 当前的居住氛围和交通兑现度更适合预算敏感型客户，评测报告重点拆解通勤、配套和交付节奏。`
-              },
-              {
-                title: "适合人群",
-                body: "适合首次置业、返乡安家和偏好主城工作圈的客户，也适合把预算集中在总价与月供平衡的人群。"
-              }
-            ]
-          } : null
+          desc: template.keyword,
+          tags: metaParts.slice(1),
+          stock: `剩余 ${stockCount} 套`
         };
       });
 
-      const districts = estates.map((estate, index) => {
-        const promoVideoPreset = districtPromoVideoPresets[estate.districtName];
-        return {
+      const districts = estates.reduce((items, estate) => {
+        if (items.some((district) => district.name === estate.districtName)) {
+          return items;
+        }
+
+        items.push({
           name: estate.districtName,
-          promoVideo: {
-            title: promoVideoPreset ? promoVideoPreset.title : `${estate.districtName} 宣传视频`,
-            duration: promoVideoPreset ? promoVideoPreset.duration : `0${index + 1}:2${index + 2}`,
-            cover: promoVideoPreset ? promoVideoPreset.cover : "",
-            alt: promoVideoPreset ? promoVideoPreset.alt : `${estate.districtName} 宣传视频封面`
-          }
-        };
-      });
+          projectCount: estates.filter((currentEstate) => currentEstate.districtName === estate.districtName).length
+        });
+        return items;
+      }, []);
 
       return { group, item, estates, districts, groupIndex, itemIndex };
     }
@@ -3240,45 +3308,56 @@
     }
 
     function renderDistrictContent() {
-      if (!currentActivityPayload) {
+      if (!currentActivityPayload || !districtMediaGrid) {
         return;
       }
-      const activeDistrict = currentActivityPayload.districts.find((item) => item.name === selectedDistrict) || currentActivityPayload.districts[0];
-      const districtEntry = districtZoneEntries[activeDistrict.name];
+      if (districtFilters) {
+        districtFilters.innerHTML = "";
+      }
+      if (districtStatus) {
+        districtStatus.innerHTML = "";
+      }
 
-      districtFilters.innerHTML = currentActivityPayload.districts
+      districtMediaGrid.innerHTML = currentActivityPayload.districts
         .map((district) => {
-          const classNames = ["chip"];
-          if (district.name === selectedDistrict) {
-            classNames.push("is-active");
+          const districtEntry = districtZoneEntries[district.name];
+          const summary = districtEntry
+            ? districtEntry.intro
+            : `${district.name} 已同步上线区位信息、政策服务与重点项目。`;
+
+          if (!districtEntry) {
+            return `
+              <article class="district-entry-card">
+                <div class="district-entry-card__head">
+                  <h3 class="district-entry-card__name">${district.name}</h3>
+                  <span class="district-entry-card__cta">即将上线</span>
+                </div>
+                <p class="district-entry-card__desc">${summary}</p>
+              </article>
+            `;
           }
-          return `<button class="${classNames.join(" ")}" type="button" data-district="${district.name}">${district.name}</button>`;
+
+          return `
+            <a
+              class="district-entry-card"
+              href="./district-zone/detail.html?district=${districtEntry.id}&source=activity&group=${currentActivityPayload.groupIndex}&item=${currentActivityPayload.itemIndex}&districtName=${encodeURIComponent(district.name)}"
+            >
+              <div class="district-entry-card__head">
+                <h3 class="district-entry-card__name">${district.name}</h3>
+                <span class="district-entry-card__cta">进入区县专区</span>
+              </div>
+              <p class="district-entry-card__desc">${summary}</p>
+            </a>
+          `;
         })
         .join("");
-
-      districtStatus.innerHTML = `
-        <span class="district-panel__status-main">当前区县：<strong>${activeDistrict.name}</strong></span>
-        ${districtEntry ? `
-          <a class="district-entry-link" href="./district-zone/detail.html?district=${districtEntry.id}&source=activity&group=${currentActivityPayload.groupIndex}&item=${currentActivityPayload.itemIndex}&districtName=${encodeURIComponent(activeDistrict.name)}">
-            <span>了解更多区县信息，进入区县专区</span>
-            <span>></span>
-          </a>
-        ` : ""}
-      `;
-      districtMediaGrid.innerHTML = `
-        <article class="district-media-card">
-          <div class="district-media-card__cover">
-            ${activeDistrict.promoVideo.cover
-              ? `<img class="district-media-card__image" src="${activeDistrict.promoVideo.cover}" alt="${activeDistrict.promoVideo.alt}" loading="lazy" decoding="async" />`
-              : `<div class="district-media-card__fallback">${activeDistrict.promoVideo.title}</div>`}
-            <span class="district-media-card__duration">${activeDistrict.promoVideo.duration}</span>
-          </div>
-          <h3 class="district-media-card__title">${activeDistrict.promoVideo.title}</h3>
-        </article>
-      `;
     }
 
     function renderDecorDirectory() {
+      if (!decorDirectory) {
+        return;
+      }
+
       decorDirectory.innerHTML = decorCompanies
         .map((company) => `
           <article class="decor-directory__item">
@@ -3292,12 +3371,18 @@
 
     function renderActivityDetail(groupIndex, itemIndex) {
       const payload = getActivityPayload(groupIndex, itemIndex);
-      const { group, item, estates, districts } = payload;
+      const { item, estates, districts } = payload;
       currentActivityPayload = payload;
       selectedDistrict = districts[0].name;
-      decorDirectory.classList.remove("is-open");
-      decorEntryButton.setAttribute("aria-expanded", "false");
-      decorEntryArrow.textContent = "+";
+      if (decorDirectory) {
+        decorDirectory.classList.remove("is-open");
+      }
+      if (decorEntryButton) {
+        decorEntryButton.setAttribute("aria-expanded", "false");
+      }
+      if (decorEntryArrow) {
+        decorEntryArrow.textContent = "+";
+      }
 
       activityDetailHero.innerHTML = `
         <h1>${item.title}</h1>
@@ -3320,23 +3405,11 @@
         </div>
       `;
 
-      activityStatus.classList.toggle("status-text--entry", Boolean(item.talentCheck));
-      if (item.talentCheck) {
-        activityStatus.setAttribute("data-open-talent-check", "true");
-        activityStatus.setAttribute("role", "button");
-        activityStatus.setAttribute("tabindex", "0");
-      } else {
-        activityStatus.removeAttribute("data-open-talent-check");
-        activityStatus.removeAttribute("role");
-        activityStatus.removeAttribute("tabindex");
-      }
-      activityStatus.innerHTML = item.talentCheck ? `
-        <div class="status-text__head">
-          <strong class="status-text__title">查看我是否符合成都人才</strong>
-          <span class="status-text__arrow">></span>
-        </div>
-        <p class="status-text__desc">按学历或人才证明、成都工作情况和资料完整度做一个快速初筛。</p>
-      ` : "";
+      activityStatus.classList.remove("status-text--entry");
+      activityStatus.removeAttribute("data-open-talent-check");
+      activityStatus.removeAttribute("role");
+      activityStatus.removeAttribute("tabindex");
+      activityStatus.innerHTML = "";
 
       activityListingGrid.innerHTML = estates
         .map((estate) => `
@@ -3348,36 +3421,14 @@
             <div class="listing-card__body">
               <h3 class="listing-card__title">${estate.title}</h3>
               <p class="listing-card__meta">${estate.meta}</p>
-              <div class="listing-card__price">${estate.price}<span> 万起</span> <small>总价</small></div>
-              ${estate.influencerVideo ? `
-                <div class="listing-card__video">
-                  <div class="listing-card__video-cover">
-                    <img src="${estate.influencerVideo.cover}" alt="${estate.influencerVideo.coverAlt}" loading="lazy" decoding="async" />
-                    <span class="listing-card__video-play">▶</span>
-                  </div>
-                  <div class="listing-card__creator">
-                    <span class="listing-card__avatar">${estate.influencerVideo.avatarText}</span>
-                    <span class="listing-card__creator-name">${estate.influencerVideo.authorName}</span>
-                  </div>
-                  <span class="listing-card__video-tag">大V说房</span>
-                  <p class="listing-card__video-title">${estate.influencerVideo.title}</p>
-                  <p class="listing-card__video-meta">${estate.influencerVideo.meta}</p>
-                </div>
-              ` : ""}
-              ${estate.report ? `
-                <button class="listing-card__report" type="button" data-open-report="${estate.title}">
-                  <div class="listing-card__report-cover">
-                    <img src="${estate.report.cover}" alt="${estate.report.coverAlt}" loading="lazy" decoding="async" />
-                  </div>
-                  <div class="listing-card__creator">
-                    <span class="listing-card__avatar">${estate.report.avatarText}</span>
-                    <span class="listing-card__creator-name">${estate.report.authorName}</span>
-                  </div>
-                  <span class="listing-card__report-tag">大V图文</span>
-                  <p class="listing-card__report-title">${estate.report.title}</p>
-                  <p class="listing-card__report-meta">${estate.report.author} · ${estate.report.updatedAt} · 点击查看详情</p>
-                </button>
-              ` : ""}
+              <p class="listing-card__tagline">${estate.desc}</p>
+              <div class="listing-card__tag-row">
+                ${estate.tags.map((tag) => `<span class="listing-card__tag">${tag}</span>`).join("")}
+              </div>
+              <div class="listing-card__footer">
+                <div class="listing-card__price">${estate.price}<span> 万起</span> <small>总价</small></div>
+                <div class="listing-card__stock">${estate.stock}</div>
+              </div>
             </div>
           </article>
         `)
@@ -3745,11 +3796,11 @@
 
     function locateNearestCity() {
       if (!navigator.geolocation) {
-        locationStatus.innerHTML = "当前浏览器不支持定位，请手动切换城市查看活动。";
+        locationStatus.innerHTML = "当前浏览器不支持定位，请手动切换站点查看活动。";
         return;
       }
 
-      locationStatus.innerHTML = "正在获取定位并匹配最近活动城市...";
+      locationStatus.innerHTML = "正在获取定位并匹配最近站点...";
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
@@ -3764,10 +3815,10 @@
           selectedCity = nearest.city;
           renderFilters();
           renderActivities();
-          locationStatus.innerHTML = `已根据定位为你匹配最近城市：<strong>${nearest.city}</strong>，距离约 ${nearest.distance.toFixed(0)} km。`;
+          locationStatus.innerHTML = `已根据定位为你匹配最近站点：<strong>${getCityLabel(nearest.city)}</strong>，距离约 ${nearest.distance.toFixed(0)} km。`;
         },
         () => {
-          locationStatus.innerHTML = "定位失败或权限被拒绝，请手动选择城市查看活动。";
+          locationStatus.innerHTML = "定位失败或权限被拒绝，请手动选择站点查看活动。";
         },
         { enableHighAccuracy: true, timeout: 6000 }
       );
@@ -3817,9 +3868,12 @@
     document.getElementById("backPreviousButton").addEventListener("click", () => goBackOrFallback());
     document.getElementById("backHomeButton").addEventListener("click", () => {
       closeQrOverlay();
-      goBackOrFallback(() => showScreen("home"));
+      showScreen("home");
     });
-    document.getElementById("backActivityButton").addEventListener("click", () => goBackOrFallback(() => showScreen("activity")));
+    document.getElementById("backActivityButton").addEventListener("click", () => {
+      closeQrOverlay();
+      showScreen("activity");
+    });
     document.getElementById("generateQrButton").addEventListener("click", openQrOverlay);
     document.getElementById("callActivityButton").addEventListener("click", confirmActivityCall);
     document.getElementById("chatFabButton").addEventListener("click", () => openChatDrawer(""));
@@ -3829,7 +3883,7 @@
     locateButton.addEventListener("click", locateNearestCity);
 
     cityFilters.addEventListener("click", (event) => {
-      const button = event.target.closest("[data-city]");
+      const button = event.target.closest("[data-group-index][data-item-index]");
       if (!button) {
         return;
       }
@@ -3837,21 +3891,18 @@
       renderFilters();
       renderActivities();
       formatLocationStatus();
-    });
-
-    activityList.addEventListener("click", (event) => {
-      const talentButton = event.target.closest("[data-open-list-talent-check]");
-      if (talentButton) {
-        startTalentEligibilityCheck(talentButton.dataset.activityTitle || "成都人才安家专场");
-        return;
-      }
-
-      const button = event.target.closest("[data-group-index][data-item-index]");
-      if (!button) {
-        return;
-      }
       openActivityDetail(Number(button.dataset.groupIndex), Number(button.dataset.itemIndex));
     });
+
+    if (activityList) {
+      activityList.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-group-index][data-item-index]");
+        if (!button) {
+          return;
+        }
+        openActivityDetail(Number(button.dataset.groupIndex), Number(button.dataset.itemIndex));
+      });
+    }
 
     activityListingGrid.addEventListener("click", (event) => {
       const button = event.target.closest("[data-open-report]");
@@ -3874,12 +3925,14 @@
       renderDistrictContent();
     });
 
-    decorEntryButton.addEventListener("click", () => {
-      const willOpen = !decorDirectory.classList.contains("is-open");
-      decorDirectory.classList.toggle("is-open", willOpen);
-      decorEntryButton.setAttribute("aria-expanded", String(willOpen));
-      decorEntryArrow.textContent = willOpen ? "−" : "+";
-    });
+    if (decorEntryButton && decorDirectory && decorEntryArrow) {
+      decorEntryButton.addEventListener("click", () => {
+        const willOpen = !decorDirectory.classList.contains("is-open");
+        decorDirectory.classList.toggle("is-open", willOpen);
+        decorEntryButton.setAttribute("aria-expanded", String(willOpen));
+        decorEntryArrow.textContent = willOpen ? "−" : "+";
+      });
+    }
 
     activityStatus.addEventListener("click", (event) => {
       if (!activityStatus.hasAttribute("data-open-talent-check")) {
