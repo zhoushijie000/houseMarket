@@ -2022,6 +2022,16 @@
       color: #294859;
     }
 
+    .chat-bubble strong {
+      color: #183746;
+    }
+
+    .chat-bubble a {
+      color: var(--brand-deep);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
     .chat-avatar {
       flex: 0 0 auto;
       width: 34px;
@@ -2219,6 +2229,14 @@
       place-items: center;
     }
 
+    .qr-code img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 16px;
+      object-fit: cover;
+    }
+
     .qr-code__pattern {
       width: 100%;
       height: 100%;
@@ -2236,6 +2254,17 @@
       text-align: center;
       color: var(--text-tertiary);
       font-size: 12px;
+    }
+
+    .qr-card__link {
+      display: inline-flex;
+      width: 100%;
+      justify-content: center;
+      margin-top: 12px;
+      color: var(--brand-deep);
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
     }
 
     .decor-entry {
@@ -2510,10 +2539,11 @@
           <span class="qr-card__eyebrow">活动二维码</span>
           <h3 id="qrTitle">住进成都活动码</h3>
           <p id="qrDesc">扫码查看本场活动详情、报名信息与顾问联系方式。</p>
-          <div class="qr-code" aria-hidden="true">
+          <div class="qr-code" id="qrCode" aria-hidden="true">
             <div class="qr-code__pattern"></div>
           </div>
           <div class="qr-card__meta" id="qrMeta">原型演示：二维码样式占位</div>
+          <a class="qr-card__link" id="qrLink" href="#" target="_blank" rel="noreferrer noopener">打开分享链接</a>
         </div>
       </div>
     </div>
@@ -2610,6 +2640,66 @@
       "成都公积金贷款额度怎么理解？",
       "买新房大概涉及哪些税费？"
     ];
+    const shanghaiTalentShareUrl = "https://app.mockplus.cn/p/45P1oHbdkN?请查看《公园城市（演示）》";
+    const talentApplicationUrl = "https://member.rc114.com/Login";
+    const talentPolicyEntries = [
+      {
+        district: "成都东部新区",
+        status: "",
+        summary: "A/B/C/D 类人才首次购买新建商品住房，购房金最高 100 万元；全日制本科及以上购买首套新房最高补贴 5 万元，并可享人才公寓优惠面积。"
+      },
+      {
+        district: "锦江区",
+        status: "",
+        summary: "A/B/C/D 类人才购买人才公寓，可按 200/120/90/70 平方米对应面积享 5% 购房补贴。"
+      },
+      {
+        district: "青羊区",
+        status: "",
+        summary: "人才相关条款以保障性租赁住房筹集支持为主，新增不低于 100 套（间）的市场主体，每套（间）补贴 1.5 万元。"
+      },
+      {
+        district: "金牛区",
+        status: "",
+        summary: "具有中级及以上职称或区县级以上荣誉称号的人才，购买新建商品住宅可领 2 万至 3 万元消费补贴券；A/B/C 类人才在金牛区工作并首次购新房，购房补贴最高 100/50/20 万元。"
+      },
+      {
+        district: "龙泉驿区",
+        status: "",
+        summary: "在龙泉驿区工作并购买新建商品住房的博士、硕士、本科及中级及以上职称人才，分别补贴 8/6/4/2 万元。"
+      },
+      {
+        district: "温江区",
+        status: "",
+        summary: "A/B 类人才按实际购房款 40% 补贴，最高 100 万元；C 类最高 40 万元；D/E 类按 5% 补贴，最高 10 万/3 万元。"
+      },
+      {
+        district: "彭州",
+        status: "",
+        summary: "创新创业人才购买新建商品住房可申领购房补贴，并可与以旧换新、多子女家庭、员工团购等政策叠加。"
+      },
+      {
+        district: "邛崃市",
+        status: "",
+        summary: "A 类人才购房支持最高可到购房款 100%，另含车位和装修支持；B/C/D/E/G 类人才按每平方米标准分类享购房支持。"
+      },
+      {
+        district: "金堂县",
+        status: "",
+        summary: "A/B/C/D/E/F 类人才可租购人才公寓，优惠面积最高 200/150/120/100/90/90 平方米，并同步加大人才公寓出售优惠力度。"
+      },
+      {
+        district: "大邑县",
+        status: "",
+        summary: "符合人才补贴资格的人才申请购房补贴时，按 600 元/平方米补贴，对应优惠面积按 A/B/C/D/E 类分类执行。"
+      },
+      {
+        district: "蒲江县",
+        status: "",
+        summary: "符合条件的人才购买新建商品住房最高补贴 300 万元，租住保障性租赁住房可按规定享受租金补贴。"
+      }
+    ];
+    const talentPolicyExpiredDistricts = ["青白江区", "双流区", "都江堰市", "崇州市"];
 
     const districtZoneEntries = {
       "高新区": {
@@ -2757,9 +2847,11 @@
     const chatMessages = document.getElementById("chatMessages");
     const chatInput = document.getElementById("chatInput");
     const chatQuickList = document.getElementById("chatQuickList");
+    const qrCode = document.getElementById("qrCode");
     const qrTitle = document.getElementById("qrTitle");
     const qrDesc = document.getElementById("qrDesc");
     const qrMeta = document.getElementById("qrMeta");
+    const qrLink = document.getElementById("qrLink");
     const reportPage = document.getElementById("reportPage");
 
     let selectedCity = cityActivities[0].city;
@@ -2768,6 +2860,89 @@
     let selectedDistrict = "";
     let currentReport = null;
     let activeChatFlow = null;
+    let suspendedTalentAssessment = null;
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function formatPlainTextHtml(value) {
+      return escapeHtml(value).replace(/\n/g, "<br>");
+    }
+
+    function buildActivityRouteUrl(payload, extraParams = {}) {
+      const url = new URL(window.location.href);
+      url.hash = "";
+      url.search = "";
+      url.searchParams.set("screen", "activity");
+      url.searchParams.set("group", payload.groupIndex);
+      url.searchParams.set("item", payload.itemIndex);
+      Object.entries(extraParams).forEach(([key, value]) => {
+        if (value !== null && value !== undefined && value !== "") {
+          url.searchParams.set(key, value);
+        }
+      });
+      return url.toString();
+    }
+
+    function getTalentPolicyReply() {
+      return [
+        "<strong>政策详情</strong><br>你想先看哪个区县的人才购房政策？",
+        "点下方区县，我按人才相关政策口径给你展开。"
+      ].join("<br><br>");
+    }
+
+    function getTalentPolicyDistrictReply(district) {
+      const entry = talentPolicyEntries.find((item) => item.district === district);
+      if (!entry) {
+        return `暂时没有找到 ${escapeHtml(district)} 的人才政策摘要，你可以换一个区县继续看。`;
+      }
+
+      return [
+        `<strong>${entry.district}</strong> · ${entry.status}`,
+        entry.summary,
+        `<strong></strong><br>${talentPolicyExpiredDistricts.join("、")}等区县有过期的政策，如需我也可以继续展开。`
+      ].join("<br><br>");
+    }
+
+    function getTalentEntryActions(activityTitle) {
+      return [
+        { type: "talent-start", label: "人才评定", value: activityTitle },
+        { type: "talent-policy", label: "政策详情", value: activityTitle },
+        { type: "talent-apply", label: "人才申请" }
+      ];
+    }
+
+    function getTalentPolicyDistrictActions() {
+      return talentPolicyEntries.map((entry) => ({
+        type: "talent-policy-district",
+        label: entry.district,
+        value: entry.district
+      }));
+    }
+
+    function getTalentPolicyResultActions(activityTitle) {
+      return [
+        { type: "talent-policy", label: "继续看其他区县", value: activityTitle },
+        suspendedTalentAssessment
+          ? { type: "talent-resume", label: "继续人才评定", value: activityTitle }
+          : { type: "talent-start", label: "人才评定", value: activityTitle },
+        { type: "talent-apply", label: "人才申请" }
+      ];
+    }
+
+    function getTalentApplyReply() {
+      return [
+        "<strong>如何进行人才申请</strong><br>1. 微信搜索“成都市智慧人才服务平台”小程序。",
+        "2. 进入首页后点击“我要住在成都”，再进入人才安居相关办理入口。",
+        "3. 按页面提示提交学历、职称、劳动合同、社保缴纳等材料，等待资格核验结果。"
+      ].join("<br><br>");
+    }
 
     function showScreen(name) {
       Object.entries(screens).forEach(([key, element]) => {
@@ -3218,9 +3393,10 @@
     function addChatMessage(role, content) {
       const wrapper = document.createElement("div");
       wrapper.className = `chat-message chat-message--${role}`;
+      const bubbleContent = role === "bot" ? String(content) : formatPlainTextHtml(content);
       wrapper.innerHTML = `
         <div class="chat-avatar">${role === "bot" ? "🤖" : "我"}</div>
-        <div class="chat-bubble">${content}</div>
+        <div class="chat-bubble">${bubbleContent}</div>
       `;
       chatMessages.appendChild(wrapper);
       chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -3248,6 +3424,7 @@
 
     function resetChatQuickQuestions() {
       activeChatFlow = null;
+      suspendedTalentAssessment = null;
       chatInput.placeholder = defaultChatPlaceholder;
       renderQuickQuestions();
     }
@@ -3272,19 +3449,13 @@
         })),
         {
           type: "talent-policy",
-          label: "人才政策详情"
+          label: "政策详情"
+        },
+        {
+          type: "talent-apply",
+          label: "人才申请"
         }
       ];
-    }
-
-    function getTalentPolicyReply() {
-      return [
-        "人才政策详情示意：符合相关规定的人才，可享受对应的购房补贴",
-        "A类人才，购房款补贴10%。",
-        "B类人才，购房款补贴5%。",
-        "C类人才，享受购房贴息1%。",
-        "E类及人才，可购买人才公寓。"
-      ].join("\n");
     }
 
     function getTalentCheckConclusion(answers) {
@@ -3331,17 +3502,66 @@
 
     function startTalentEligibilityCheck(activityTitle = "成都人才安家专场") {
       activeChatFlow = {
+        type: "talent-entry",
+        activityTitle
+      };
+      suspendedTalentAssessment = null;
+
+      chatMessages.innerHTML = "";
+      openChatDrawer("", {
+        placeholder: "可先点下方入口，也可以继续补充你的问题"
+      });
+      addChatMessage("bot", `<strong>当前专场</strong><br>${escapeHtml(activityTitle)}<br><br>先选择你要办理的内容，我再继续帮你。`);
+      renderQuickQuestions(getTalentEntryActions(activityTitle), true);
+    }
+
+    function startTalentAssessmentFlow(activityTitle = "成都人才安家专场") {
+      activeChatFlow = {
         type: "talent-check",
         stepIndex: 0,
         answers: {},
         activityTitle
       };
 
-      chatMessages.innerHTML = "";
-      openChatDrawer("", {
-        placeholder: "请按下方资料选项完成初筛，也可以补充说明"
-      });
-      addChatMessage("bot", `当前专场：${activityTitle}\n我们来做一个成都人才初筛。这是演示版判断，请按下方资料选项逐步选择。`);
+      chatInput.placeholder = "请按下方资料选项完成初筛，也可以补充说明";
+      addChatMessage("bot", "先做人才评定，请按下方资料情况逐步选择。");
+      promptTalentCheckStep();
+    }
+
+    function openTalentPolicyChooser(activityTitle) {
+      const resolvedActivityTitle = activityTitle
+        || (activeChatFlow && activeChatFlow.activityTitle)
+        || (currentActivityPayload ? currentActivityPayload.item.title : "成都人才安家专场");
+
+      if (activeChatFlow && activeChatFlow.type === "talent-check") {
+        suspendedTalentAssessment = {
+          ...activeChatFlow,
+          answers: { ...activeChatFlow.answers }
+        };
+      }
+
+      activeChatFlow = {
+        type: "talent-policy-select",
+        activityTitle: resolvedActivityTitle
+      };
+      chatInput.placeholder = "先选一个区县查看政策，或继续补充你的问题";
+      addChatMessage("bot", getTalentPolicyReply());
+      renderQuickQuestions(getTalentPolicyDistrictActions(), true);
+    }
+
+    function resumeTalentAssessmentFlow() {
+      if (!suspendedTalentAssessment) {
+        startTalentAssessmentFlow(currentActivityPayload ? currentActivityPayload.item.title : "成都人才安家专场");
+        return;
+      }
+
+      activeChatFlow = {
+        ...suspendedTalentAssessment,
+        answers: { ...suspendedTalentAssessment.answers }
+      };
+      suspendedTalentAssessment = null;
+      chatInput.placeholder = "请按下方资料选项完成初筛，也可以补充说明";
+      addChatMessage("bot", "继续刚才的人才评定，请继续选择。");
       promptTalentCheckStep();
     }
 
@@ -3392,14 +3612,17 @@
             label: "进入上海人才活动",
             value: activeChatFlow.activityTitle || "上海人才安家成都专场"
           },
-          { type: "talent-policy", label: "人才政策详情" },
+          { type: "talent-policy", label: "政策详情" },
+          { type: "talent-apply", label: "人才申请" },
           { type: "talent-restart", label: "重新测评" }
         ] : [
-          { type: "talent-policy", label: "人才政策详情" },
+          { type: "talent-policy", label: "政策详情" },
+          { type: "talent-apply", label: "人才申请" },
           { type: "talent-restart", label: "重新测评" }
         ],
         true
       );
+      suspendedTalentAssessment = null;
       activeChatFlow = null;
       chatInput.placeholder = defaultChatPlaceholder;
     }
@@ -3414,16 +3637,20 @@
         return "为了判断你是否符合成都人才，请先按下方资料选项完成初筛。";
       }
 
+      if (text.includes("人才政策")) {
+        return getTalentPolicyReply();
+      }
+
+      if ((text.includes("人才") && text.includes("申请")) || text.includes("智慧人才") || text.includes("我要住在成都")) {
+        return getTalentApplyReply();
+      }
+
       if (text.includes("资格") || text.includes("条件") || text.includes("限购")) {
         return "原型示例回答：机器人会先识别你的户籍、社保和家庭名下住房情况，再返回对应区域的购房资格提示，并引导你联系顾问做正式核验。";
       }
 
       if (text.includes("人才")) {
         return "你可以进入“上海人才安家成都专场”，点击“查看我是否符合成都人才”，机器人会按学历、工作和资料情况一步步帮你做初筛。";
-      }
-
-      if (text.includes("人才政策")) {
-        return getTalentPolicyReply();
       }
 
       if (text.includes("公积金")) {
@@ -3463,13 +3690,25 @@
         return;
       }
       const payload = currentActivityPayload;
+      const isShanghaiTalentShare = payload.item.title === "上海人才安家成都专场";
+      const targetUrl = isShanghaiTalentShare
+        ? shanghaiTalentShareUrl
+        : buildActivityRouteUrl(payload);
+      const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=228x228&data=${encodeURIComponent(targetUrl)}`;
       qrTitle.textContent = `${payload.item.title} 活动二维码`;
-      qrDesc.textContent = `扫码查看 ${payload.group.city} 专场活动详情、到场报名和顾问联系方式。`;
+      qrDesc.textContent = isShanghaiTalentShare
+        ? "扫码后将直接打开《公园城市（演示）》页面，方便上海人才分享转发使用。"
+        : `扫码查看 ${payload.group.city} 专场活动详情、到场报名和顾问联系方式。`;
+      qrCode.innerHTML = `<img src="${qrImageUrl}" alt="活动二维码" />`;
       qrMeta.textContent = `原型演示 · ${payload.item.time} · ${payload.item.venue}`;
+      qrLink.href = targetUrl;
+      qrLink.textContent = isShanghaiTalentShare ? "打开上海人才分享页" : "打开活动详情链接";
       qrOverlay.classList.add("is-visible");
     }
 
     function closeQrOverlay() {
+      qrCode.innerHTML = '<div class="qr-code__pattern"></div>';
+      qrLink.href = "#";
       qrOverlay.classList.remove("is-visible");
     }
 
@@ -3540,6 +3779,7 @@
       const groupIndex = Number(params.get("group"));
       const itemIndex = Number(params.get("item"));
       const districtName = params.get("districtName");
+      const chatMode = params.get("chat");
 
       if (screen !== "activity" || Number.isNaN(groupIndex) || Number.isNaN(itemIndex) || !cityActivities[groupIndex] || !cityActivities[groupIndex].items[itemIndex]) {
         return;
@@ -3557,6 +3797,10 @@
       }
 
       showScreen("activity");
+
+      if (chatMode === "talent" && currentActivityPayload && currentActivityPayload.item.talentCheck) {
+        startTalentEligibilityCheck(currentActivityPayload.item.title);
+      }
     }
 
     function goBackOrFallback(fallbackAction) {
@@ -3675,8 +3919,42 @@
         return;
       }
 
+      if (action === "talent-start") {
+        addChatMessage("user", button.textContent.trim());
+        startTalentAssessmentFlow(button.dataset.value || (currentActivityPayload ? currentActivityPayload.item.title : "成都人才安家专场"));
+        return;
+      }
+
       if (action === "talent-policy") {
-        addChatMessage("bot", getTalentPolicyReply());
+        addChatMessage("user", button.textContent.trim());
+        openTalentPolicyChooser(button.dataset.value || (currentActivityPayload ? currentActivityPayload.item.title : "成都人才安家专场"));
+        return;
+      }
+
+      if (action === "talent-policy-district") {
+        const resolvedActivityTitle = activeChatFlow && activeChatFlow.activityTitle
+          ? activeChatFlow.activityTitle
+          : (currentActivityPayload ? currentActivityPayload.item.title : "成都人才安家专场");
+        addChatMessage("user", button.textContent.trim());
+        addChatMessage("bot", getTalentPolicyDistrictReply(button.dataset.value || ""));
+        activeChatFlow = {
+          type: "talent-entry",
+          activityTitle: resolvedActivityTitle
+        };
+        chatInput.placeholder = "可先点下方入口，也可以继续补充你的问题";
+        renderQuickQuestions(getTalentPolicyResultActions(activeChatFlow.activityTitle), true);
+        return;
+      }
+
+      if (action === "talent-apply") {
+        addChatMessage("user", button.textContent.trim());
+        addChatMessage("bot", getTalentApplyReply());
+        return;
+      }
+
+      if (action === "talent-resume") {
+        addChatMessage("user", button.textContent.trim());
+        resumeTalentAssessmentFlow();
         return;
       }
 
@@ -3697,6 +3975,11 @@
         return;
       }
       addChatMessage("user", question);
+      if (question.includes("人才政策") || question.includes("政策详情") || (question.includes("政策") && question.includes("区"))) {
+        openTalentPolicyChooser(currentActivityPayload ? currentActivityPayload.item.title : "成都人才安家专场");
+        chatInput.value = "";
+        return;
+      }
       addChatMessage("bot", getBotReply(question));
       chatInput.value = "";
     });
