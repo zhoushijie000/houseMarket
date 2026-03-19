@@ -829,8 +829,8 @@
       position: relative;
       overflow: hidden;
       display: block;
-      min-height: 102px;
-      padding: 14px 16px;
+      min-height: 92px;
+      padding: 14px 16px 13px;
       border: none;
       border-radius: 24px;
       background: #243949;
@@ -866,8 +866,8 @@
       z-index: 1;
       display: grid;
       align-content: start;
-      gap: 5px;
-      min-height: 72px;
+      gap: 6px;
+      min-height: 92px;
       color: #fff;
     }
 
@@ -889,15 +889,14 @@
 
     .city-card__name {
       display: block;
-      padding-right: 78px;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 700;
-      line-height: 1.15;
+      line-height: 1.2;
       color: #fff;
       letter-spacing: 0.01em;
     }
 
-    .city-card__theme {
+    .city-card__summary {
       display: -webkit-box;
       overflow: hidden;
       color: rgba(255, 255, 255, 0.94);
@@ -908,27 +907,97 @@
       -webkit-box-orient: vertical;
     }
 
-    .city-card__meta {
+    .city-card-grid__empty {
+      margin: 8px 0 0;
+      padding: 18px 14px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--text-secondary);
+      font-size: 13px;
+      text-align: center;
+      box-shadow: var(--shadow-card);
+    }
+
+    .city-card__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 2px;
+    }
+
+    .city-card__time {
+      min-width: 0;
       color: rgba(255, 255, 255, 0.78);
       font-size: 11px;
       line-height: 1.35;
     }
 
-    .city-card__action {
-      margin-top: auto;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      width: fit-content;
-      font-size: 12px;
-      font-weight: 700;
-      line-height: 1;
-      color: #fff3ea;
+    .city-card__activity-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 4px;
     }
 
-    .city-card__action::after {
-      content: "→";
-      font-size: 13px;
+    .city-card__activity {
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(12px);
+    }
+
+    .city-card__activity-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .city-card__activity-title {
+      flex: 1 1 auto;
+      min-width: 0;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.45;
+      color: #fff;
+      text-align: left;
+    }
+
+    .city-card__activity-time {
+      margin-top: 6px;
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 11px;
+      line-height: 1.4;
+      text-align: left;
+    }
+
+    .activity-status-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      min-height: 22px;
+      padding: 0 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .activity-status-pill--signup {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff7ef;
+    }
+
+    .activity-status-pill--live {
+      background: rgba(103, 204, 53, 0.22);
+      color: #f4ffe9;
+    }
+
+    .activity-status-pill--ended {
+      background: rgba(17, 24, 39, 0.22);
+      color: rgba(255, 255, 255, 0.82);
     }
 
     .activity-list {
@@ -1238,6 +1307,11 @@
       padding: 4px 0 18px;
       border-bottom: 1px solid rgba(228, 231, 237, 0.9);
       color: var(--text-primary);
+    }
+
+    .activity-detail-hero:empty,
+    .activity-status:empty {
+      display: none;
     }
 
     .activity-detail-hero__eyebrow {
@@ -1745,6 +1819,76 @@
       font-size: 12px;
     }
 
+    .city-detail-activity-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .city-detail-activity-card {
+      width: 100%;
+      position: relative;
+      display: grid;
+      gap: 10px;
+      padding: 16px;
+      border: none;
+      border-radius: 20px;
+      background:
+        linear-gradient(180deg, rgba(16, 24, 40, 0.18), rgba(16, 24, 40, 0.64)),
+        var(--activity-card-cover) center / cover no-repeat;
+      color: #fff;
+      box-shadow: var(--shadow-card);
+      text-align: left;
+      cursor: pointer;
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+      overflow: hidden;
+      min-height: 148px;
+    }
+
+    .city-detail-activity-card.is-active {
+      box-shadow: 0 16px 28px rgba(253, 93, 0, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .city-detail-activity-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(10, 18, 28, 0.06), rgba(10, 18, 28, 0.38));
+      pointer-events: none;
+    }
+
+    .city-detail-activity-card__head {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .city-detail-activity-card__title {
+      flex: 1 1 auto;
+      min-width: 0;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.5;
+      color: #fff;
+    }
+
+    .city-detail-activity-card__time,
+    .city-detail-activity-card__meta {
+      margin: 8px 0 0;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .city-detail-activity-card__body {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+    }
+
     .influencer-card__quote {
       margin-top: 12px;
     }
@@ -1798,158 +1942,6 @@
       color: var(--text-secondary);
       font-size: 12px;
       line-height: 1.6;
-    }
-
-    .detail-sticky-bar {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 8;
-      display: none;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      padding: 14px 16px calc(14px + env(safe-area-inset-bottom, 0px));
-      border-radius: 24px 24px 0 0;
-      background: rgba(255, 255, 255, 0.96);
-      box-shadow: 0 18px 42px rgba(48, 49, 51, 0.12);
-      backdrop-filter: blur(18px);
-    }
-
-    .detail-sticky-bar button {
-      min-height: 50px;
-    }
-
-    .phone-shell--activity .detail-sticky-bar {
-      display: grid;
-    }
-
-    .overlay {
-      position: absolute;
-      inset: 0;
-      z-index: 12;
-      display: none;
-    }
-
-    .overlay.is-visible {
-      display: block;
-    }
-
-    .overlay__backdrop {
-      position: absolute;
-      inset: 0;
-      background: rgba(25, 28, 32, 0.44);
-      backdrop-filter: blur(10px);
-    }
-
-    .splash-wrap {
-      position: absolute;
-      left: 16px;
-      right: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      border-radius: 28px;
-      overflow: hidden;
-      box-shadow: 0 24px 54px rgba(48, 49, 51, 0.22);
-      animation: modal-pop 360ms ease;
-    }
-
-    .splash-card {
-      position: relative;
-      padding: 22px;
-      background:
-        radial-gradient(circle at top right, rgba(255, 255, 255, 0.28), transparent 32%),
-        linear-gradient(160deg, #8d2300 0%, #d94d10 42%, #ff9b46 100%);
-      color: #fff;
-    }
-
-    .splash-card::after {
-      content: "";
-      position: absolute;
-      right: -28px;
-      bottom: -24px;
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.12);
-    }
-
-    .splash-card__close {
-      position: absolute;
-      right: 14px;
-      top: 14px;
-      width: 34px;
-      height: 34px;
-      border: none;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.16);
-      color: #fff;
-      cursor: pointer;
-    }
-
-    .splash-card__eyebrow {
-      display: inline-flex;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.16);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-    }
-
-    .splash-card__title {
-      margin: 16px 0 10px;
-      font-family: var(--font-display);
-      font-size: 32px;
-      line-height: 1.1;
-      font-weight: 700;
-    }
-
-    .splash-card__desc {
-      margin: 0;
-      max-width: 280px;
-      color: rgba(255, 255, 255, 0.84);
-      font-size: 14px;
-      line-height: 1.72;
-    }
-
-    .splash-card__highlights {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 16px;
-    }
-
-    .splash-card__highlights span {
-      padding: 8px 10px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.12);
-      font-size: 12px;
-    }
-
-    .splash-card__actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    .splash-card__actions button {
-      min-height: 46px;
-      border-radius: 14px;
-      border: none;
-      cursor: pointer;
-      font-weight: 700;
-    }
-
-    .splash-card__actions .enter-button {
-      background: #fff;
-      color: var(--brand-deep);
-    }
-
-    .splash-card__actions .later-button {
-      background: rgba(255, 255, 255, 0.12);
-      color: #fff;
     }
 
     .chat-drawer {
@@ -2178,36 +2170,6 @@
 
     .status-text:empty {
       display: none;
-    }
-
-    .qr-wrap {
-      position: absolute;
-      left: 16px;
-      right: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 13;
-      animation: modal-pop 280ms ease;
-    }
-
-    .qr-card {
-      position: relative;
-      padding: 22px;
-      border-radius: 28px;
-      background: linear-gradient(180deg, #ffffff 0%, #fffaf6 100%);
-      box-shadow: 0 24px 54px rgba(48, 49, 51, 0.2);
-    }
-
-    .qr-card__close {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      width: 34px;
-      height: 34px;
-      border: none;
-      border-radius: 50%;
-      background: #f5f7fa;
-      cursor: pointer;
     }
 
     .qr-card__eyebrow {
@@ -2442,13 +2404,16 @@
         <header class="topbar">
           <div class="topbar__meta">
             <button class="back-button" id="backHomeButton" type="button" aria-label="返回专题首页">&lt;</button>
-            <span class="topbar__title">活动详情</span>
+            <span class="topbar__title">城市详情</span>
           </div>
         </header>
 
         <div class="page-content">
-          <section class="activity-detail-hero" id="activityDetailHero"></section>
-          <div class="status-text activity-status" id="activityStatus"></div>
+          <section class="section">
+            <section class="activity-detail-hero" id="activityDetailHero"></section>
+            <div class="status-text activity-status" id="activityStatus"></div>
+            <div class="city-detail-activity-grid" id="cityActivityList"></div>
+          </section>
 
           <section class="section">
             <div class="section-head">
@@ -2466,7 +2431,7 @@
           <section class="section">
             <div class="section-head">
               <div>
-                <h2>活动楼盘</h2>
+                <h2>活动精品楼盘</h2>
               </div>
             </div>
             <div class="listing-grid" id="activityListingGrid"></div>
@@ -2488,11 +2453,6 @@
         </div>
       </section>
     </main>
-
-    <div class="detail-sticky-bar">
-      <button class="ghost-button" id="generateQrButton" type="button">生成活动二维码</button>
-      <button class="primary-button" id="callActivityButton" type="button">咨询活动</button>
-    </div>
 
     <button class="chat-fab" id="chatFabButton" type="button" aria-label="打开机器人咨询">
       <span class="chat-fab__icon">🤖</span>
@@ -2517,22 +2477,6 @@
       </div>
     </div>
 
-    <div class="overlay" id="qrOverlay" aria-live="polite">
-      <div class="overlay__backdrop" id="qrBackdrop"></div>
-      <div class="qr-wrap">
-        <div class="qr-card">
-          <button class="qr-card__close" id="closeQrButton" type="button" aria-label="关闭二维码">×</button>
-          <span class="qr-card__eyebrow">活动二维码</span>
-          <h3 id="qrTitle">住进成都活动码</h3>
-          <p id="qrDesc">扫码查看本场活动详情、报名信息与顾问联系方式。</p>
-          <div class="qr-code" id="qrCode" aria-hidden="true">
-            <div class="qr-code__pattern"></div>
-          </div>
-          <div class="qr-card__meta" id="qrMeta">原型演示：二维码样式占位</div>
-          <a class="qr-card__link" id="qrLink" href="#" target="_blank" rel="noreferrer noopener">打开分享链接</a>
-        </div>
-      </div>
-    </div>
   </div>
 
   <script>
@@ -2632,8 +2576,6 @@
       "成都公积金贷款额度怎么理解？",
       "买新房大概涉及哪些税费？"
     ];
-    const shanghaiTalentShareUrl = "https://app.mockplus.cn/p/45P1oHbdkN?请查看《公园城市（演示）》";
-    const talentApplicationUrl = "https://member.rc114.com/Login";
     const talentPolicyEntries = [
       {
         district: "成都东部新区",
@@ -2813,7 +2755,6 @@
       }
     ];
 
-    const activityServicePhone = "400-028-5100";
     const phoneShell = document.querySelector(".phone-shell");
     const screens = {
       home: document.getElementById("homeScreen"),
@@ -2828,20 +2769,15 @@
     const districtFilters = document.getElementById("districtFilters");
     const districtStatus = document.getElementById("districtStatus");
     const districtMediaGrid = document.getElementById("districtMediaGrid");
+    const cityActivityList = document.getElementById("cityActivityList");
     const activityListingGrid = document.getElementById("activityListingGrid");
     const decorEntryButton = document.getElementById("decorEntryButton");
     const decorEntryArrow = document.getElementById("decorEntryArrow");
     const decorDirectory = document.getElementById("decorDirectory");
     const chatDrawer = document.getElementById("chatDrawer");
-    const qrOverlay = document.getElementById("qrOverlay");
     const chatMessages = document.getElementById("chatMessages");
     const chatInput = document.getElementById("chatInput");
     const chatQuickList = document.getElementById("chatQuickList");
-    const qrCode = document.getElementById("qrCode");
-    const qrTitle = document.getElementById("qrTitle");
-    const qrDesc = document.getElementById("qrDesc");
-    const qrMeta = document.getElementById("qrMeta");
-    const qrLink = document.getElementById("qrLink");
     const reportPage = document.getElementById("reportPage");
 
     let selectedCity = cityActivities[0].city;
@@ -2863,21 +2799,6 @@
 
     function formatPlainTextHtml(value) {
       return escapeHtml(value).replace(/\n/g, "<br>");
-    }
-
-    function buildActivityRouteUrl(payload, extraParams = {}) {
-      const url = new URL(window.location.href);
-      url.hash = "";
-      url.search = "";
-      url.searchParams.set("screen", "activity");
-      url.searchParams.set("group", payload.groupIndex);
-      url.searchParams.set("item", payload.itemIndex);
-      Object.entries(extraParams).forEach(([key, value]) => {
-        if (value !== null && value !== undefined && value !== "") {
-          url.searchParams.set(key, value);
-        }
-      });
-      return url.toString();
     }
 
     function getTalentPolicyReply() {
@@ -2947,6 +2868,66 @@
         .sort((a, b) => cityDisplayOrder.indexOf(a.city) - cityDisplayOrder.indexOf(b.city));
     }
 
+    function parseActivityDatePart(value) {
+      const match = String(value).trim().match(/^(\d{4})\.(\d{2})\.(\d{2})(?:\s+(\d{1,2}):(\d{2}))?$/);
+      if (!match) {
+        return null;
+      }
+
+      const [, year, month, day, hour = "0", minute = "0"] = match;
+      return new Date(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute), 0, 0);
+    }
+
+    function getActivityTimeRange(timeText) {
+      const [startRaw, endRaw] = String(timeText).split(/\s+-\s+/);
+      const start = parseActivityDatePart(startRaw);
+      if (!start) {
+        return { start: null, end: null };
+      }
+
+      if (!String(startRaw).includes(":")) {
+        start.setHours(0, 0, 0, 0);
+      }
+
+      let end = null;
+      if (endRaw && /^\d{1,2}:\d{2}$/.test(endRaw.trim())) {
+        const [hour, minute] = endRaw.trim().split(":");
+        end = new Date(start);
+        end.setHours(Number(hour), Number(minute), 0, 0);
+      } else if (endRaw) {
+        end = parseActivityDatePart(endRaw);
+      }
+
+      if (!end) {
+        end = new Date(start);
+      }
+
+      if (!String(endRaw || "").includes(":")) {
+        end.setHours(23, 59, 59, 999);
+      }
+
+      return { start, end };
+    }
+
+    function getActivityStatusMeta(timeText) {
+      const { start, end } = getActivityTimeRange(timeText);
+      const now = new Date();
+
+      if (!start || !end) {
+        return { label: "已开展", className: "activity-status-pill--ended" };
+      }
+
+      if (now < start) {
+        return { label: "未开展", className: "activity-status-pill--signup" };
+      }
+
+      if (now > end) {
+        return { label: "已开展", className: "activity-status-pill--ended" };
+      }
+
+      return { label: "开展中", className: "activity-status-pill--live" };
+    }
+
     function renderFilters() {
       cityFilters.innerHTML = getOrderedCityGroups()
         .map((group) => {
@@ -2954,7 +2935,21 @@
           if (group.city === selectedCity) {
             classNames.push("is-active");
           }
-          const featuredItem = group.items[0];
+          const activityPreview = group.items
+            .slice(0, 2)
+            .map((item) => {
+              const status = getActivityStatusMeta(item.time);
+              return `
+                <span class="city-card__activity">
+                  <span class="city-card__activity-head">
+                    <strong class="city-card__activity-title">${item.title}</strong>
+                    <span class="activity-status-pill ${status.className}">${status.label}</span>
+                  </span>
+                  <span class="city-card__activity-time">${item.time}</span>
+                </span>
+              `;
+            })
+            .join("");
           return `
             <button
               class="${classNames.join(" ")}"
@@ -2966,9 +2961,9 @@
             >
               <span class="city-card__backdrop" aria-hidden="true"></span>
               <span class="city-card__content">
-                <strong class="city-card__name">${group.stationLabel || group.city}</strong>
-                <span class="city-card__theme">${featuredItem.title}</span>
-                <span class="city-card__meta">${featuredItem.time} · ${featuredItem.projects} 个重点项目</span>
+                <span class="city-card__eyebrow">${group.stationLabel || group.city}</span>
+                <strong class="city-card__name">${group.city}</strong>
+                <span class="city-card__activity-list">${activityPreview}</span>
               </span>
             </button>
           `;
@@ -3031,16 +3026,12 @@
             `)
             .join("");
 
-          const totalProjects = group.items.reduce((total, item) => total + item.projects, 0);
-
           return `
             <section class="activity-group">
               <div class="activity-group__head">
                 <div>
                   <h3 class="activity-group__title">${group.city}</h3>
-                  <p class="activity-group__desc">${group.theme} · 共 ${group.items.length} 场活动</p>
                 </div>
-                <span class="activity-group__badge">${totalProjects} 个项目</span>
               </div>
               ${items}
             </section>
@@ -3264,41 +3255,47 @@
         .join("");
     }
 
-    function renderActivityDetail(groupIndex, itemIndex) {
-      const payload = getActivityPayload(groupIndex, itemIndex);
-      const { item, estates, districts } = payload;
-      currentActivityPayload = payload;
-      selectedDistrict = districts[0].name;
-      if (decorDirectory) {
-        decorDirectory.classList.remove("is-open");
-      }
-      if (decorEntryButton) {
-        decorEntryButton.setAttribute("aria-expanded", "false");
-      }
-      if (decorEntryArrow) {
-        decorEntryArrow.textContent = "+";
+    function renderCityActivityCards(payload) {
+      if (!cityActivityList) {
+        return;
       }
 
-      activityDetailHero.innerHTML = `
-        <h1>${item.title}</h1>
-        <p>${item.note}</p>
-        <div class="activity-detail-hero__meta">
-          <span>活动时间：${item.time}</span>
-          <span>活动地点：${item.venue}</span>
-          <span>${item.projects} 个参展项目</span>
-        </div>
-        <div class="activity-benefits">
-          <p class="activity-benefits__title">优惠团购</p>
-          <div class="activity-benefits__list">
-            ${activityGroupBuyingBenefits.map((benefit) => `
-              <div class="activity-benefits__item">
-                <strong>${benefit.label}</strong>
-                <span>${benefit.desc}</span>
+      cityActivityList.innerHTML = payload.group.items
+        .map((activity, index) => {
+          const status = getActivityStatusMeta(activity.time);
+          const isActive = index === payload.itemIndex;
+          const cover = payload.group.cover;
+          return `
+            <button
+              class="city-detail-activity-card ${isActive ? "is-active" : ""}"
+              type="button"
+              data-city-activity-switch
+              data-group-index="${payload.groupIndex}"
+              data-item-index="${index}"
+              style="--activity-card-cover:url('${cover}')"
+            >
+              <div class="city-detail-activity-card__head">
+                <strong class="city-detail-activity-card__title">${activity.title}</strong>
+                <span class="activity-status-pill ${status.className}">${status.label}</span>
               </div>
-            `).join("")}
-          </div>
-        </div>
-      `;
+              <div class="city-detail-activity-card__body">
+                <p class="city-detail-activity-card__time">活动时间：${activity.time}</p>
+                <p class="city-detail-activity-card__meta">活动地点：${activity.venue}</p>
+              </div>
+            </button>
+          `;
+        })
+        .join("");
+    }
+
+    function renderActivityDetail(groupIndex, itemIndex) {
+      const payload = getActivityPayload(groupIndex, itemIndex);
+      const { estates, districts } = payload;
+      currentActivityPayload = payload;
+      selectedDistrict = districts[0] ? districts[0].name : "";
+      activityDetailHero.innerHTML = "";
+
+      renderCityActivityCards(payload);
 
       activityStatus.classList.remove("status-text--entry");
       activityStatus.removeAttribute("data-open-talent-check");
@@ -3327,6 +3324,7 @@
           </article>
         `)
         .join("");
+
       renderDistrictContent();
     }
 
@@ -3629,49 +3627,6 @@
       resetChatQuickQuestions();
     }
 
-    function openQrOverlay() {
-      if (!currentActivityPayload) {
-        return;
-      }
-      const payload = currentActivityPayload;
-      const isShanghaiTalentShare = payload.item.title === "上海人才安家成都专场";
-      const targetUrl = isShanghaiTalentShare
-        ? shanghaiTalentShareUrl
-        : buildActivityRouteUrl(payload);
-      const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=228x228&data=${encodeURIComponent(targetUrl)}`;
-      qrTitle.textContent = `${payload.item.title} 活动二维码`;
-      qrDesc.textContent = isShanghaiTalentShare
-        ? "扫码后将直接打开《公园城市（演示）》页面，方便上海人才分享转发使用。"
-        : `扫码查看 ${payload.group.city} 专场活动详情、到场报名和顾问联系方式。`;
-      qrCode.innerHTML = `<img src="${qrImageUrl}" alt="活动二维码" />`;
-      qrMeta.textContent = `原型演示 · ${payload.item.time} · ${payload.item.venue}`;
-      qrLink.href = targetUrl;
-      qrLink.textContent = isShanghaiTalentShare ? "打开上海人才分享页" : "打开活动详情链接";
-      qrOverlay.classList.add("is-visible");
-    }
-
-    function closeQrOverlay() {
-      qrCode.innerHTML = '<div class="qr-code__pattern"></div>';
-      qrLink.href = "#";
-      qrOverlay.classList.remove("is-visible");
-    }
-
-    function confirmActivityCall() {
-      if (!currentActivityPayload) {
-        return;
-      }
-      const payload = currentActivityPayload;
-      const shouldCall = window.confirm(`确认拨打 ${activityServicePhone} 咨询“${payload.item.title}”吗？`);
-      if (!shouldCall) {
-        return;
-      }
-      activityStatus.classList.remove("status-text--entry");
-      activityStatus.removeAttribute("data-open-talent-check");
-      activityStatus.removeAttribute("role");
-      activityStatus.removeAttribute("tabindex");
-      activityStatus.innerHTML = `已模拟发起拨号：<strong>${activityServicePhone}</strong>，顾问将继续跟进 ${payload.item.title}。`;
-    }
-
     function applyInitialRoute() {
       const params = new URLSearchParams(window.location.search);
       const screen = params.get("screen");
@@ -3714,20 +3669,13 @@
 
     document.getElementById("backPreviousButton").addEventListener("click", () => goBackOrFallback());
     document.getElementById("backHomeButton").addEventListener("click", () => {
-      closeQrOverlay();
       showScreen("home");
     });
     document.getElementById("backActivityButton").addEventListener("click", () => {
-      closeQrOverlay();
       showScreen("activity");
     });
-    document.getElementById("generateQrButton").addEventListener("click", openQrOverlay);
-    document.getElementById("callActivityButton").addEventListener("click", confirmActivityCall);
     document.getElementById("chatFabButton").addEventListener("click", () => openChatDrawer(""));
     document.getElementById("closeChatButton").addEventListener("click", closeChatDrawer);
-    document.getElementById("closeQrButton").addEventListener("click", closeQrOverlay);
-    document.getElementById("qrBackdrop").addEventListener("click", closeQrOverlay);
-
     cityFilters.addEventListener("click", (event) => {
       const button = event.target.closest("[data-group-index][data-item-index]");
       if (!button) {
@@ -3738,6 +3686,17 @@
       renderActivities();
       openActivityDetail(Number(button.dataset.groupIndex), Number(button.dataset.itemIndex));
     });
+
+    if (cityActivityList) {
+      cityActivityList.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-city-activity-switch]");
+        if (!button) {
+          return;
+        }
+
+        renderActivityDetail(Number(button.dataset.groupIndex), Number(button.dataset.itemIndex));
+      });
+    }
 
     if (activityList) {
       activityList.addEventListener("click", (event) => {
