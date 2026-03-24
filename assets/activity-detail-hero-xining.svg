@@ -1,0 +1,28 @@
+<svg width="1149" height="737" viewBox="0 0 1149 737" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1149" height="737" fill="#000000"/>
+  <defs>
+    <radialGradient id="leftGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(210 312) rotate(90) scale(286)">
+      <stop offset="0" stop-color="#FFCA34"/>
+      <stop offset="0.62" stop-color="#FFAE00"/>
+      <stop offset="1" stop-color="#FF8A00"/>
+    </radialGradient>
+    <clipPath id="rightCircle">
+      <circle cx="922" cy="331" r="377"/>
+    </clipPath>
+    <filter id="titleShadow" x="30" y="108" width="410" height="190" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feOffset dx="10" dy="12"/>
+      <feGaussianBlur stdDeviation="1.5"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.933333 0 0 0 0 0.737255 0 0 0 0 0 0 0 0 0.95 0"/>
+      <feBlend in2="SourceGraphic" result="shape"/>
+    </filter>
+  </defs>
+  <circle cx="210" cy="312" r="286" fill="url(#leftGlow)"/>
+  <circle cx="210" cy="312" r="286" stroke="rgba(255,255,255,0.88)" stroke-width="6"/>
+  <path d="M62 308C228 285 426 252 676 132C787 79 891 52 1012 44" stroke="#FFF36A" stroke-opacity="0.7" stroke-width="20" stroke-linecap="round"/>
+  <path d="M33 415C17 328 15 269 37 190C73 63 170 18 304 28" stroke="rgba(255,255,255,0.88)" stroke-width="6" stroke-linecap="round"/>
+  <g clip-path="url(#rightCircle)">
+    <image href="./西宁.png" x="505" y="-62" width="704" height="793" preserveAspectRatio="xMidYMid slice"/>
+  </g>
+  <text x="62" y="263" fill="#FFC400" font-size="116" font-weight="900" font-family="Microsoft YaHei, PingFang SC, sans-serif" filter="url(#titleShadow)">西宁站</text>
+  <text x="52" y="251" fill="#FFFFFF" font-size="116" font-weight="900" font-family="Microsoft YaHei, PingFang SC, sans-serif">西宁站</text>
+</svg>

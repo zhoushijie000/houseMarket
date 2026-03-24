@@ -71,28 +71,17 @@
 
     .phone-shell {
       position: relative;
-      width: min(100%, 390px);
-      min-height: 844px;
-      background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.98)),
-        var(--page-bg);
-      border-radius: 34px;
-      box-shadow:
-        0 24px 60px rgba(48, 49, 51, 0.12),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.75);
+      width: min(100%, 375px);
+      min-height: 812px;
+      background: linear-gradient(180deg, rgba(253, 107, 0, 1) 0%, rgba(253, 107, 0, 1) 52.08%, rgba(252, 126, 0, 1) 100%);
+      border-radius: 0;
+      box-shadow: 0 18px 44px rgba(48, 49, 51, 0.14);
       overflow: hidden;
       isolation: isolate;
     }
 
     .phone-shell::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(140deg, rgba(255, 244, 232, 0.95), transparent 36%),
-        radial-gradient(circle at right top, rgba(253, 93, 0, 0.08), transparent 36%);
-      pointer-events: none;
-      z-index: 0;
+      display: none;
     }
 
     .page-stack,
@@ -104,7 +93,7 @@
 
     .screen {
       display: none;
-      height: 844px;
+      height: 812px;
       overflow-y: auto;
       scrollbar-width: none;
       animation: screen-enter 320ms ease;
@@ -164,7 +153,7 @@
       left: 50%;
       transform: translateX(-50%);
       font-family: var(--font-display);
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 700;
       letter-spacing: 0.02em;
       text-align: center;
@@ -1824,6 +1813,10 @@
       gap: 10px;
     }
 
+    .activity-list__filters {
+      margin-top: 0;
+    }
+
     .city-detail-activity-card {
       width: 100%;
       position: relative;
@@ -2342,6 +2335,749 @@
       }
     }
 
+    .topbar--ios {
+      padding: calc(10px + env(safe-area-inset-top, 0px)) 16px 12px;
+      background: #fff;
+      backdrop-filter: none;
+      border-bottom: none;
+      box-shadow: 0 1px 0 rgba(17, 24, 39, 0.06);
+    }
+
+    .topbar--ios .topbar__meta {
+      justify-content: space-between;
+      min-height: 54px;
+    }
+
+    .topbar-pill {
+      display: inline-flex;
+      align-items: stretch;
+      min-height: 42px;
+      padding: 0 6px;
+      border: 1px solid rgba(17, 24, 39, 0.1);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 6px 16px rgba(17, 24, 39, 0.05);
+    }
+
+    .topbar-pill__button {
+      min-width: 38px;
+      border: none;
+      background: transparent;
+      color: #101828;
+      cursor: pointer;
+    }
+
+    .topbar-pill__button + .topbar-pill__button {
+      border-left: 1px solid rgba(17, 24, 39, 0.08);
+    }
+
+    .topbar-pill__icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      min-height: 20px;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .topbar-pill__icon--more {
+      letter-spacing: -2px;
+      transform: translateY(-1px);
+    }
+
+    .topbar-pill__icon--target {
+      font-size: 20px;
+    }
+
+    #homeScreen {
+      background: linear-gradient(180deg, rgba(253, 107, 0, 1) 0%, rgba(253, 107, 0, 1) 52.08%, rgba(252, 126, 0, 1) 100%);
+    }
+
+    #homeScreen .page-content {
+      padding: 0 0 calc(34px + env(safe-area-inset-bottom, 0px));
+    }
+
+    #homeScreen .hero-card {
+      padding: 0 0 20px;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      overflow: visible;
+    }
+
+    #homeScreen .hero-card__cover {
+      width: 375px;
+      min-height: 215px;
+      border-radius: 0;
+      background: linear-gradient(180deg, rgba(253, 107, 0, 0.14) 0%, rgba(253, 107, 0, 0.02) 100%);
+      box-shadow: none;
+    }
+
+    #homeScreen .hero-card__cover-image {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    #homeScreen .hero-card__cover::after {
+      display: block;
+      background: linear-gradient(180deg, rgba(253, 107, 0, 0.18) 0%, rgba(253, 107, 0, 0) 44%, rgba(253, 107, 0, 0.06) 100%);
+    }
+
+    #homeScreen .hero-card__cover-badge {
+      left: 16px;
+      top: 30px;
+      z-index: 2;
+      padding: 9px 16px;
+      background: #ffe6a5;
+      color: #3f2a00;
+      font-size: 14px;
+      letter-spacing: 0;
+      box-shadow: 0 8px 18px rgba(255, 173, 56, 0.24);
+    }
+
+    #homeScreen .hero-card__cover-play {
+      left: 50%;
+      top: 48%;
+      right: auto;
+      bottom: auto;
+      z-index: 2;
+      width: 86px;
+      height: 86px;
+      transform: translate(-50%, -50%);
+      background: rgba(18, 24, 39, 0.28);
+      font-size: 32px;
+      box-shadow: 0 14px 34px rgba(17, 24, 39, 0.16);
+    }
+
+    #homeScreen .hero-card__heading {
+      margin-top: -12px;
+      padding: 0 16px;
+    }
+
+    #homeScreen .hero-card__title {
+      display: grid;
+      gap: 4px;
+      font-size: 32px;
+      line-height: 1.03;
+      font-style: italic;
+      font-weight: 900;
+      color: #fff;
+      text-shadow:
+        0 4px 0 rgba(255, 122, 0, 0.65),
+        0 0 18px rgba(255, 122, 0, 0.26);
+    }
+
+    #homeScreen .hero-card__title span:last-child {
+      margin-left: 52px;
+    }
+
+    #homeScreen .activity-list__filters {
+      margin: 12px 12px 0;
+      padding-bottom: 0;
+    }
+
+    #homeScreen .chip {
+      min-height: 38px;
+      padding: 0 16px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      box-shadow: none;
+    }
+
+    #homeScreen .chip.is-active {
+      background: #fff;
+      color: var(--brand-primary);
+      box-shadow: 0 10px 18px rgba(255, 255, 255, 0.18);
+    }
+
+    #homeScreen .city-card-grid {
+      gap: 12px;
+      margin-top: 12px;
+      padding: 0 12px;
+    }
+
+    #homeScreen .city-card {
+      min-height: auto;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      overflow: visible;
+    }
+
+    #homeScreen .city-card.is-active {
+      box-shadow: none;
+    }
+
+    #homeScreen .city-card__station {
+      position: relative;
+      z-index: 4;
+      display: block;
+      margin: 0 0 4px 14px;
+      font-size: 24px;
+      font-weight: 900;
+      line-height: 1;
+      color: #101828;
+      text-shadow:
+        -2px -2px 0 #fff,
+        2px -2px 0 #fff,
+        -2px 2px 0 #fff,
+        2px 2px 0 #fff;
+    }
+
+    #homeScreen .city-card__panel {
+      position: relative;
+      display: block;
+      width: 351px;
+      min-height: 143px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: linear-gradient(0deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1)), rgba(255, 255, 255, 1);
+      box-shadow: none;
+    }
+
+    #homeScreen .city-card__panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.98) 42%, rgba(255, 255, 255, 0.58) 66%, rgba(255, 255, 255, 0.12) 84%, rgba(255, 255, 255, 0) 100%);
+    }
+
+    #homeScreen .city-card__backdrop {
+      position: absolute;
+      left: 141.45px;
+      top: -1.39px;
+      width: 333.49px;
+      height: 211.08px;
+      z-index: 1;
+      border-radius: 16px;
+      background:
+        var(--city-card-cover) center / cover no-repeat,
+        url(https://img.js.design/assets/img/69b9c1acd3013295f8601fee.png#06f11d1e0e4fb674556d43698214ebce) center / cover no-repeat;
+      box-shadow: 0 1px 4px rgba(171, 63, 0, 1), 0 4px 8px rgba(0, 0, 0, 0.25);
+      opacity: 1;
+      transform: none;
+    }
+
+    #homeScreen .city-card__content {
+      position: relative;
+      z-index: 3;
+      min-height: 143px;
+      padding: 14px 16px 14px;
+      color: #101828;
+    }
+
+    #homeScreen .city-card__eyebrow {
+      display: none;
+    }
+
+    #homeScreen .city-card__name {
+      display: none;
+    }
+
+    #homeScreen .city-card__activity-list {
+      width: 202px;
+      gap: 10px;
+      margin-top: 0;
+    }
+
+    #homeScreen .city-card__activity {
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      backdrop-filter: none;
+    }
+
+    #homeScreen .city-card__activity-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+
+    #homeScreen .city-card__activity-title {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      flex: 1 1 auto;
+      min-width: 0;
+      width: auto;
+      min-height: 27px;
+      padding: 2px 10px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, rgba(253, 93, 0, 1) 0%, rgba(252, 147, 0, 1) 100%);
+      color: #fff;
+      font-size: 12px;
+      line-height: 1.25;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      box-shadow: none;
+    }
+
+    #homeScreen .activity-status-pill {
+      min-height: 24px;
+      padding: 0 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+      box-shadow: none;
+    }
+
+    #homeScreen .activity-status-pill--signup {
+      background: #fff2e8;
+      color: #fd5d00;
+    }
+
+    #homeScreen .activity-status-pill--live {
+      background: #e9f8dd;
+      color: #4e9a28;
+    }
+
+    #homeScreen .activity-status-pill--ended {
+      background: #f0f2f5;
+      color: #7a818e;
+    }
+
+    #homeScreen .city-card__activity-time {
+      margin-top: 10px;
+      color: #101828;
+      font-size: 12px;
+      line-height: 1.2;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    #homeScreen .city-card-grid__empty {
+      margin: 18px 16px 0;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    #activityDetailScreen {
+      background: linear-gradient(180deg, #ffffff 0 92px, #ff7a00 92px 100%);
+    }
+
+    #activityDetailScreen .page-content {
+      padding: 0 10px calc(34px + env(safe-area-inset-bottom, 0px));
+    }
+
+    #activityDetailScreen .section {
+      margin-top: 24px;
+    }
+
+    #activityDetailScreen .section-head {
+      margin: 0 0 12px;
+      padding: 0 8px;
+    }
+
+    #activityDetailScreen .section-head h2 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #111827;
+    }
+
+    #activityDetailScreen .section-head h2 span {
+      color: var(--brand-primary);
+    }
+
+    #activityDetailScreen .activity-detail-hero {
+      padding: 0;
+      border-bottom: none;
+    }
+
+    #activityDetailScreen .activity-detail-hero__cover {
+      display: block;
+      width: 100%;
+      height: 248px;
+      border-radius: 0 0 24px 24px;
+      object-fit: cover;
+    }
+
+    #activityDetailScreen .activity-hero-card {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 104px minmax(0, 1fr);
+      gap: 14px;
+      margin: -34px 6px 0;
+      padding: 12px;
+      border: 5px solid #f0d400;
+      border-radius: 24px;
+      background: #fffdf6;
+      box-shadow: 0 18px 34px rgba(17, 24, 39, 0.16);
+    }
+
+    #activityDetailScreen .activity-hero-card__thumb {
+      width: 104px;
+      height: 126px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #fff5ea;
+    }
+
+    #activityDetailScreen .activity-hero-card__thumb img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    #activityDetailScreen .activity-hero-card__body {
+      min-width: 0;
+      display: grid;
+      gap: 8px;
+      align-content: start;
+    }
+
+    #activityDetailScreen .activity-hero-card__head {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    #activityDetailScreen .activity-hero-card__head h1 {
+      flex: 1 1 auto;
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.4;
+      font-weight: 800;
+      color: #111827;
+    }
+
+    #activityDetailScreen .activity-hero-card__mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #ffe800;
+      color: #101828;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    #activityDetailScreen .activity-hero-card__body p {
+      margin: 0;
+      color: #5b6473;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    #activityDetailScreen .activity-hero-card__meta {
+      display: grid;
+      gap: 10px;
+      grid-column: 1 / -1;
+    }
+
+    #activityDetailScreen .activity-hero-card__row,
+    #activityDetailScreen .city-detail-activity-card__time,
+    #activityDetailScreen .city-detail-activity-card__meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0;
+      padding: 15px 14px;
+      border-radius: 16px;
+      background: #f3f3f3;
+      color: #161b26;
+      font-size: 13px;
+      line-height: 1.5;
+      font-weight: 600;
+    }
+
+    #activityDetailScreen .activity-hero-card__row::before,
+    #activityDetailScreen .city-detail-activity-card__time::before,
+    #activityDetailScreen .city-detail-activity-card__meta::before {
+      flex: 0 0 auto;
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    #activityDetailScreen .activity-hero-card__row--time::before,
+    #activityDetailScreen .city-detail-activity-card__time::before {
+      content: "🗓";
+    }
+
+    #activityDetailScreen .activity-hero-card__row--venue::before,
+    #activityDetailScreen .city-detail-activity-card__meta::before {
+      content: "⌖";
+    }
+
+    #activityDetailScreen .city-detail-activity-grid {
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    #activityDetailScreen .city-detail-activity-grid:empty {
+      display: none;
+    }
+
+    #activityDetailScreen .city-detail-activity-card {
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr);
+      gap: 14px;
+      min-height: auto;
+      padding: 14px;
+      border: 5px solid transparent;
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: 0 14px 28px rgba(17, 24, 39, 0.12);
+      color: #111827;
+      transform: none;
+    }
+
+    #activityDetailScreen .city-detail-activity-card::after {
+      display: none;
+    }
+
+    #activityDetailScreen .city-detail-activity-card.is-active {
+      transform: none;
+      border-color: #f0d400;
+      background: #fffdf6;
+      box-shadow: 0 18px 34px rgba(17, 24, 39, 0.16);
+    }
+
+    #activityDetailScreen .city-detail-activity-card__thumb {
+      width: 120px;
+      height: 126px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #f6f6f6;
+    }
+
+    #activityDetailScreen .city-detail-activity-card__thumb img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    #activityDetailScreen .city-detail-activity-card__content {
+      display: grid;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    #activityDetailScreen .city-detail-activity-card__mark {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #ffe800;
+      color: #101828;
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1;
+      box-shadow: 0 8px 16px rgba(240, 212, 0, 0.32);
+    }
+
+    #activityDetailScreen .city-detail-activity-card__head {
+      display: block;
+      position: static;
+      z-index: auto;
+    }
+
+    #activityDetailScreen .city-detail-activity-card__title {
+      display: block;
+      font-size: 16px;
+      line-height: 1.28;
+      color: #111827;
+    }
+
+    #activityDetailScreen .city-detail-activity-card__desc {
+      margin: 0;
+      color: #5b6473;
+      font-size: 13px;
+      line-height: 1.5;
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+
+    #activityDetailScreen .city-detail-activity-card__meta-wrap {
+      display: grid;
+      gap: 10px;
+      grid-column: 1 / -1;
+    }
+
+    #activityDetailScreen .activity-status-pill {
+      display: none;
+    }
+
+    #activityDetailScreen .district-panel {
+      gap: 0;
+      padding: 10px 18px;
+      border-radius: 26px;
+      background: #fff;
+      box-shadow: 0 14px 30px rgba(17, 24, 39, 0.12);
+    }
+
+    #activityDetailScreen .district-media-grid {
+      gap: 0;
+    }
+
+    #activityDetailScreen .district-entry-card {
+      padding: 18px 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    #activityDetailScreen .district-entry-card + .district-entry-card {
+      border-top: 1px dashed rgba(17, 24, 39, 0.1);
+    }
+
+    #activityDetailScreen .district-entry-card::after {
+      display: none;
+    }
+
+    #activityDetailScreen .district-entry-card__head {
+      align-items: center;
+    }
+
+    #activityDetailScreen .district-entry-card__name {
+      position: relative;
+      padding-left: 16px;
+      font-size: 18px;
+    }
+
+    #activityDetailScreen .district-entry-card__name::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      color: var(--brand-primary);
+      font-size: 22px;
+      transform: translateY(-52%);
+    }
+
+    #activityDetailScreen .district-entry-card__desc {
+      padding-left: 16px;
+      max-width: calc(100% - 124px);
+      font-size: 13px;
+      line-height: 1.7;
+      color: #5b6473;
+      -webkit-line-clamp: unset;
+    }
+
+    #activityDetailScreen .district-entry-card__cta {
+      min-width: 112px;
+      min-height: 38px;
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+      color: #fff;
+      font-size: 12px;
+    }
+
+    #activityDetailScreen .listing-grid {
+      gap: 0;
+      padding: 8px 18px;
+      border-radius: 26px;
+      background: #fff;
+      box-shadow: 0 14px 30px rgba(17, 24, 39, 0.12);
+    }
+
+    #activityDetailScreen .listing-card {
+      grid-template-columns: 126px minmax(0, 1fr) 60px;
+      gap: 14px;
+      padding: 18px 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    #activityDetailScreen .listing-card + .listing-card {
+      border-top: 1px dashed rgba(17, 24, 39, 0.1);
+    }
+
+    #activityDetailScreen .listing-card__media {
+      width: 126px;
+      min-width: 126px;
+      height: 96px;
+      border-radius: 12px;
+    }
+
+    #activityDetailScreen .listing-card__body {
+      gap: 5px;
+      padding-right: 8px;
+    }
+
+    #activityDetailScreen .listing-card__title {
+      font-size: 17px;
+      line-height: 1.28;
+    }
+
+    #activityDetailScreen .listing-card__meta,
+    #activityDetailScreen .listing-card__tagline {
+      font-size: 12px;
+      color: #5b6473;
+    }
+
+    #activityDetailScreen .listing-card__tag-row {
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    #activityDetailScreen .listing-card__tag {
+      min-height: 22px;
+      padding: 0 8px;
+      border-radius: 8px;
+      background: #f4f4f4;
+      color: #737b8c;
+      font-size: 11px;
+    }
+
+    #activityDetailScreen .listing-card__footer {
+      margin-top: 6px;
+      justify-content: flex-start;
+    }
+
+    #activityDetailScreen .listing-card__price {
+      gap: 2px;
+      font-size: 20px;
+      color: #ff3b30;
+    }
+
+    #activityDetailScreen .listing-card__price span,
+    #activityDetailScreen .listing-card__price small {
+      color: #ff3b30;
+    }
+
+    #activityDetailScreen .listing-card__stock {
+      align-self: center;
+      min-width: 50px;
+      max-width: 50px;
+      min-height: 58px;
+      padding: 10px 4px;
+      border-radius: 10px;
+      background: rgba(255, 122, 0, 0.08);
+      color: var(--brand-primary);
+      white-space: pre-line;
+    }
+
     @keyframes screen-enter {
       from {
         opacity: 0;
@@ -2379,32 +3115,67 @@
   <div class="phone-shell">
     <main class="page-stack">
       <section class="screen is-active" id="homeScreen" aria-label="住进成都专题首页">
-        <header class="topbar">
+        <header class="topbar topbar--ios">
           <div class="topbar__meta">
-            <button class="back-button" id="backPreviousButton" type="button" aria-label="返回上一页">&lt;</button>
+            <div class="topbar-pill">
+              <button class="topbar-pill__button" id="backPreviousButton" type="button" aria-label="返回上一页">
+                <span class="topbar-pill__icon topbar-pill__icon--back">‹</span>
+              </button>
+              <button class="topbar-pill__button" type="button" aria-label="首页">
+                <span class="topbar-pill__icon topbar-pill__icon--home">⌂</span>
+              </button>
+            </div>
             <span class="topbar__title">住进成都</span>
+            <div class="topbar-pill topbar-pill--trailing">
+              <button class="topbar-pill__button" type="button" aria-label="更多操作">
+                <span class="topbar-pill__icon topbar-pill__icon--more">•••</span>
+              </button>
+              <button class="topbar-pill__button" type="button" aria-label="圆点入口">
+                <span class="topbar-pill__icon topbar-pill__icon--target">◎</span>
+              </button>
+            </div>
           </div>
         </header>
 
         <div class="page-content">
           <section class="hero-card">
             <div class="hero-card__cover" aria-label="城市专题视频封面">
+              <img class="hero-card__cover-image" src="./assets/d86e2b37c94f42fcb022f0376ae8a0cf.jpg" alt="住进成都视频封面" loading="eager" decoding="async" />
               <span class="hero-card__cover-badge">城市专题视频</span>
               <span class="hero-card__cover-play">▶</span>
             </div>
             <div class="hero-card__heading">
-              <h1 class="hero-card__title">把成都好房带到你的城市里</h1>
+              <h1 class="hero-card__title">
+                <span>把成都好房</span>
+                <span>带到你的城市里</span>
+              </h1>
             </div>
+            <div class="filter-chips activity-list__filters" id="activityStatusFilters" aria-label="活动状态筛选"></div>
             <div class="city-card-grid" id="cityFilters" aria-label="城市站点入口"></div>
           </section>
         </div>
       </section>
 
       <section class="screen" id="activityDetailScreen" aria-label="活动详情">
-        <header class="topbar">
+        <header class="topbar topbar--ios">
           <div class="topbar__meta">
-            <button class="back-button" id="backHomeButton" type="button" aria-label="返回专题首页">&lt;</button>
-            <span class="topbar__title">城市详情</span>
+            <div class="topbar-pill">
+              <button class="topbar-pill__button" id="backHomeButton" type="button" aria-label="返回专题首页">
+                <span class="topbar-pill__icon topbar-pill__icon--back">‹</span>
+              </button>
+              <button class="topbar-pill__button" id="detailHomeShortcutButton" type="button" aria-label="返回首页">
+                <span class="topbar-pill__icon topbar-pill__icon--home">⌂</span>
+              </button>
+            </div>
+            <span class="topbar__title">活动详情</span>
+            <div class="topbar-pill topbar-pill--trailing">
+              <button class="topbar-pill__button" type="button" aria-label="更多操作">
+                <span class="topbar-pill__icon topbar-pill__icon--more">•••</span>
+              </button>
+              <button class="topbar-pill__button" type="button" aria-label="圆点入口">
+                <span class="topbar-pill__icon topbar-pill__icon--target">◎</span>
+              </button>
+            </div>
           </div>
         </header>
 
@@ -2418,7 +3189,7 @@
           <section class="section">
             <div class="section-head">
               <div>
-                <h2>参与区县</h2>
+                <h2>参与<span>区县</span></h2>
               </div>
             </div>
             <div class="district-panel">
@@ -2431,7 +3202,7 @@
           <section class="section">
             <div class="section-head">
               <div>
-                <h2>活动精品楼盘</h2>
+                <h2>活动<span>楼盘</span></h2>
               </div>
             </div>
             <div class="listing-grid" id="activityListingGrid"></div>
@@ -2763,9 +3534,10 @@
     };
 
     const cityFilters = document.getElementById("cityFilters");
-    const activityList = document.getElementById("activityList");
     const activityDetailHero = document.getElementById("activityDetailHero");
     const activityStatus = document.getElementById("activityStatus");
+    const activityStatusFilters = document.getElementById("activityStatusFilters");
+    const detailHomeShortcutButton = document.getElementById("detailHomeShortcutButton");
     const districtFilters = document.getElementById("districtFilters");
     const districtStatus = document.getElementById("districtStatus");
     const districtMediaGrid = document.getElementById("districtMediaGrid");
@@ -2782,11 +3554,23 @@
 
     let selectedCity = cityActivities[0].city;
     let currentActivityPayload = null;
+    let selectedActivityStatus = "all";
     let selectedDistrict = "";
     let currentReport = null;
     let activeChatFlow = null;
     let suspendedTalentAssessment = null;
     const cityDisplayOrder = ["上海", "西宁", "北京"];
+    const activityStatusFilterOptions = [
+      { value: "all", label: "全部" },
+      { value: "upcoming", label: "未开展" },
+      { value: "live", label: "开展中" },
+      { value: "ended", label: "已开展" }
+    ];
+    const cityVisualMetaMap = {
+      上海: { accent: "#ff7a00" },
+      西宁: { accent: "#45c79a" },
+      北京: { accent: "#2875f5" }
+    };
 
     function escapeHtml(value) {
       return String(value)
@@ -2799,6 +3583,84 @@
 
     function formatPlainTextHtml(value) {
       return escapeHtml(value).replace(/\n/g, "<br>");
+    }
+
+    function getCityVisualMeta(city) {
+      return cityVisualMetaMap[city] || { accent: "#ff7a00" };
+    }
+
+    function getActivityHeroImage(group) {
+      const coverMap = {
+        上海: "./assets/shanghai.png",
+        北京: "./assets/shanghai.png",
+        西宁: "./assets/shanghai.png"
+      };
+
+      return coverMap[group.city] || group.cover;
+    }
+
+    function padNumber(value) {
+      return String(value).padStart(2, "0");
+    }
+
+    function formatDateCn(date, withTime = false) {
+      if (!date) {
+        return "";
+      }
+
+      const datePart = `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+      if (!withTime) {
+        return datePart;
+      }
+
+      return `${datePart} ${padNumber(date.getHours())}:${padNumber(date.getMinutes())}`;
+    }
+
+    function formatActivityTimeDisplay(timeText) {
+      const [startRaw, endRaw] = String(timeText).split(/\s+-\s+/);
+      const start = parseActivityDatePart(startRaw);
+      if (!start) {
+        return String(timeText);
+      }
+
+      const hasStartTime = String(startRaw).includes(":");
+      if (!endRaw) {
+        return formatDateCn(start, hasStartTime);
+      }
+
+      if (/^\d{1,2}:\d{2}$/.test(endRaw.trim())) {
+        const endLabel = endRaw.trim();
+        return `${formatDateCn(start)} ${padNumber(start.getHours())}:${padNumber(start.getMinutes())}-${endLabel}`;
+      }
+
+      const end = parseActivityDatePart(endRaw);
+      if (!end) {
+        return String(timeText);
+      }
+
+      const hasEndTime = String(endRaw).includes(":");
+      const sameDay = start.getFullYear() === end.getFullYear()
+        && start.getMonth() === end.getMonth()
+        && start.getDate() === end.getDate();
+
+      if (sameDay && hasStartTime && hasEndTime) {
+        return `${formatDateCn(start)} ${padNumber(start.getHours())}:${padNumber(start.getMinutes())}-${padNumber(end.getHours())}:${padNumber(end.getMinutes())}`;
+      }
+
+      return `${formatDateCn(start, hasStartTime)}-${formatDateCn(end, hasEndTime)}`;
+    }
+
+    function formatEstateMeta(metaText) {
+      return String(metaText).replace(/\s*·\s*/g, " / ").replace(/\s+/g, " ").trim();
+    }
+
+    function formatStockBadge(stockText) {
+      const match = String(stockText).match(/(\d+)/);
+      if (!match) {
+        return String(stockText);
+      }
+
+      return `${match[1]}套<br>剩余`;
     }
 
     function getTalentPolicyReply() {
@@ -2914,38 +3776,117 @@
       const now = new Date();
 
       if (!start || !end) {
-        return { label: "已开展", className: "activity-status-pill--ended" };
+        return { key: "ended", label: "已开展", className: "activity-status-pill--ended", sortOrder: 2 };
       }
 
       if (now < start) {
-        return { label: "未开展", className: "activity-status-pill--signup" };
+        return { key: "upcoming", label: "未开展", className: "activity-status-pill--signup", sortOrder: 0 };
       }
 
       if (now > end) {
-        return { label: "已开展", className: "activity-status-pill--ended" };
+        return { key: "ended", label: "已开展", className: "activity-status-pill--ended", sortOrder: 2 };
       }
 
-      return { label: "开展中", className: "activity-status-pill--live" };
+      return { key: "live", label: "开展中", className: "activity-status-pill--live", sortOrder: 1 };
+    }
+
+    function getActivityEntries(group, statusFilter = "all") {
+      const entries = group.items
+        .map((item, itemIndex) => {
+          const status = getActivityStatusMeta(item.time);
+          const { start } = getActivityTimeRange(item.time);
+          return {
+            ...item,
+            itemIndex,
+            status,
+            startTime: start ? start.getTime() : Number.MAX_SAFE_INTEGER
+          };
+        })
+        .sort((a, b) => {
+          const statusDiff = a.status.sortOrder - b.status.sortOrder;
+          if (statusDiff) {
+            return statusDiff;
+          }
+
+          const timeDiff = a.startTime - b.startTime;
+          if (timeDiff) {
+            return timeDiff;
+          }
+
+          return a.itemIndex - b.itemIndex;
+        });
+
+      if (statusFilter === "all") {
+        return entries;
+      }
+
+      return entries.filter((entry) => entry.status.key === statusFilter);
+    }
+
+    function renderActivityStatusFilters() {
+      if (!activityStatusFilters) {
+        return;
+      }
+
+      const entries = cityActivities.flatMap((group) => getActivityEntries(group));
+      const counts = entries.reduce((result, entry) => {
+        result[entry.status.key] += 1;
+        return result;
+      }, {
+        all: entries.length,
+        upcoming: 0,
+        live: 0,
+        ended: 0
+      });
+
+      activityStatusFilters.innerHTML = activityStatusFilterOptions
+        .map((option) => `
+          <button
+            class="chip ${selectedActivityStatus === option.value ? "is-active" : ""}"
+            type="button"
+            data-activity-status-filter="${option.value}"
+          >
+            ${option.label} ${counts[option.value] || 0}
+          </button>
+        `)
+        .join("");
     }
 
     function renderFilters() {
-      cityFilters.innerHTML = getOrderedCityGroups()
+      const list = getOrderedCityGroups()
+        .map((group) => ({
+          ...group,
+          filteredItems: getActivityEntries(group, selectedActivityStatus)
+        }))
+        .filter((group) => group.filteredItems.length);
+
+      if (!list.length) {
+        cityFilters.innerHTML = '<div class="city-card-grid__empty">当前状态下暂无活动，先看看其他状态。</div>';
+        return;
+      }
+
+      if (!list.some((group) => group.city === selectedCity)) {
+        selectedCity = list[0].city;
+      }
+
+      cityFilters.innerHTML = list
         .map((group) => {
+          const defaultItem = group.filteredItems[0];
+          const visualMeta = getCityVisualMeta(group.city);
           const classNames = ["city-card"];
           if (group.city === selectedCity) {
             classNames.push("is-active");
           }
-          const activityPreview = group.items
-            .slice(0, 2)
+          const activityPreview = group.filteredItems
+            .slice(0, 3)
             .map((item) => {
-              const status = getActivityStatusMeta(item.time);
               return `
                 <span class="city-card__activity">
                   <span class="city-card__activity-head">
                     <strong class="city-card__activity-title">${item.title}</strong>
-                    <span class="activity-status-pill ${status.className}">${status.label}</span>
+                    <span class="activity-status-pill ${item.status.className}">${item.status.label}</span>
                   </span>
-                  <span class="city-card__activity-time">${item.time}</span>
+                  <span class="city-card__activity-time">${formatActivityTimeDisplay(item.time)}</span>
                 </span>
               `;
             })
@@ -2956,14 +3897,15 @@
               type="button"
               data-city="${group.city}"
               data-group-index="${group.groupIndex}"
-              data-item-index="0"
-              style="--city-card-cover:url('${group.cover}')"
+              data-item-index="${defaultItem ? defaultItem.itemIndex : 0}"
+              style="--city-card-cover:url('${group.cover}'); --city-accent:${visualMeta.accent};"
             >
-              <span class="city-card__backdrop" aria-hidden="true"></span>
-              <span class="city-card__content">
-                <span class="city-card__eyebrow">${group.stationLabel || group.city}</span>
-                <strong class="city-card__name">${group.city}</strong>
-                <span class="city-card__activity-list">${activityPreview}</span>
+              <span class="city-card__station">${group.stationLabel || `${group.city}站`}</span>
+              <span class="city-card__panel">
+                <span class="city-card__backdrop" aria-hidden="true"></span>
+                <span class="city-card__content">
+                  <span class="city-card__activity-list">${activityPreview}</span>
+                </span>
               </span>
             </button>
           `;
@@ -2972,72 +3914,8 @@
     }
 
     function renderActivities() {
-      if (!activityList) {
-        return;
-      }
-
-      const list = cityActivities
-        .map((item, groupIndex) => ({ ...item, groupIndex }))
-        .filter((item) => item.city === selectedCity);
-
-      activityList.innerHTML = list
-        .map((group) => {
-          const items = group.items
-            .map((item, itemIndex) => `
-              <article class="activity-item">
-                <button
-                  class="activity-item__main"
-                  type="button"
-                  data-group-index="${group.groupIndex}"
-                  data-item-index="${itemIndex}"
-                >
-                  <div class="activity-item__title">
-                    <strong>${item.title}</strong>
-                    <span class="activity-item__count">${item.projects} 个参展项目</span>
-                  </div>
-                  <p class="activity-item__meta">活动时间：${item.time}</p>
-                  <p class="activity-item__meta">活动地点：${item.venue}</p>
-                  <p class="activity-item__meta">${item.note}</p>
-                </button>
-                <div class="activity-item__footer">
-                  ${item.talentCheck ? `
-                    <button
-                      class="activity-item__talent"
-                      type="button"
-                      data-open-list-talent-check
-                      data-activity-title="${item.title}"
-                      data-group-index="${group.groupIndex}"
-                      data-item-index="${itemIndex}"
-                    >
-                      查看我是否符合成都人才
-                    </button>
-                  ` : "<span></span>"}
-                  <button
-                    class="activity-item__detail"
-                    type="button"
-                    data-group-index="${group.groupIndex}"
-                    data-item-index="${itemIndex}"
-                    aria-label="进入活动详情"
-                  >
-                    <span class="activity-item__arrow">→</span>
-                  </button>
-                </div>
-              </article>
-            `)
-            .join("");
-
-          return `
-            <section class="activity-group">
-              <div class="activity-group__head">
-                <div>
-                  <h3 class="activity-group__title">${group.city}</h3>
-                </div>
-              </div>
-              ${items}
-            </section>
-          `;
-        })
-        .join("");
+      renderActivityStatusFilters();
+      renderFilters();
     }
 
     function getActivityPayload(groupIndex, itemIndex) {
@@ -3260,27 +4138,36 @@
         return;
       }
 
-      cityActivityList.innerHTML = payload.group.items
-        .map((activity, index) => {
-          const status = getActivityStatusMeta(activity.time);
-          const isActive = index === payload.itemIndex;
-          const cover = payload.group.cover;
+      const activities = getActivityEntries(payload.group);
+      if (!activities.length) {
+        cityActivityList.innerHTML = "";
+        return;
+      }
+
+      cityActivityList.innerHTML = activities
+        .map((activity) => {
+          const isActive = activity.itemIndex === payload.itemIndex;
           return `
             <button
               class="city-detail-activity-card ${isActive ? "is-active" : ""}"
               type="button"
               data-city-activity-switch
               data-group-index="${payload.groupIndex}"
-              data-item-index="${index}"
-              style="--activity-card-cover:url('${cover}')"
+              data-item-index="${activity.itemIndex}"
             >
-              <div class="city-detail-activity-card__head">
-                <strong class="city-detail-activity-card__title">${activity.title}</strong>
-                <span class="activity-status-pill ${status.className}">${status.label}</span>
+              ${isActive ? '<span class="city-detail-activity-card__mark" aria-hidden="true">✓</span>' : ""}
+              <div class="city-detail-activity-card__thumb">
+                <img src="${payload.group.cover}" alt="${activity.title}" loading="lazy" decoding="async" />
               </div>
-              <div class="city-detail-activity-card__body">
-                <p class="city-detail-activity-card__time">活动时间：${activity.time}</p>
-                <p class="city-detail-activity-card__meta">活动地点：${activity.venue}</p>
+              <div class="city-detail-activity-card__content">
+                <div class="city-detail-activity-card__head">
+                  <strong class="city-detail-activity-card__title">${activity.title}</strong>
+                </div>
+                <p class="city-detail-activity-card__desc">${activity.note}</p>
+              </div>
+              <div class="city-detail-activity-card__meta-wrap">
+                <p class="city-detail-activity-card__time">${formatActivityTimeDisplay(activity.time)}</p>
+                <p class="city-detail-activity-card__meta">${activity.venue}</p>
               </div>
             </button>
           `;
@@ -3289,11 +4176,26 @@
     }
 
     function renderActivityDetail(groupIndex, itemIndex) {
+      const group = cityActivities[groupIndex];
+      if (!group) {
+        return;
+      }
+
+      const previousPayload = currentActivityPayload;
+      const previousDistrict = previousPayload
+        && previousPayload.groupIndex === groupIndex
+        && previousPayload.itemIndex === itemIndex
+        ? selectedDistrict
+        : "";
       const payload = getActivityPayload(groupIndex, itemIndex);
       const { estates, districts } = payload;
       currentActivityPayload = payload;
-      selectedDistrict = districts[0] ? districts[0].name : "";
-      activityDetailHero.innerHTML = "";
+      selectedDistrict = districts.some((district) => district.name === previousDistrict)
+        ? previousDistrict
+        : (districts[0] ? districts[0].name : "");
+      activityDetailHero.innerHTML = `
+        <img class="activity-detail-hero__cover" src="${getActivityHeroImage(group)}" alt="${group.stationLabel || `${group.city}站`}活动顶部封面" loading="eager" decoding="async" />
+      `;
 
       renderCityActivityCards(payload);
 
@@ -3311,16 +4213,16 @@
             </div>
             <div class="listing-card__body">
               <h3 class="listing-card__title">${estate.title}</h3>
-              <p class="listing-card__meta">${estate.meta}</p>
+              <p class="listing-card__meta">${formatEstateMeta(estate.meta)}</p>
               <p class="listing-card__tagline">${estate.desc}</p>
               <div class="listing-card__tag-row">
                 ${estate.tags.map((tag) => `<span class="listing-card__tag">${tag}</span>`).join("")}
               </div>
               <div class="listing-card__footer">
-                <div class="listing-card__price">${estate.price}<span> 万起</span> <small>总价</small></div>
-                <div class="listing-card__stock">${estate.stock}</div>
+                <div class="listing-card__price"><small>总价</small>${estate.price}<span>万起</span></div>
               </div>
             </div>
+            <div class="listing-card__stock">${formatStockBadge(estate.stock)}</div>
           </article>
         `)
         .join("");
@@ -3671,6 +4573,11 @@
     document.getElementById("backHomeButton").addEventListener("click", () => {
       showScreen("home");
     });
+    if (detailHomeShortcutButton) {
+      detailHomeShortcutButton.addEventListener("click", () => {
+        showScreen("home");
+      });
+    }
     document.getElementById("backActivityButton").addEventListener("click", () => {
       showScreen("activity");
     });
@@ -3698,13 +4605,15 @@
       });
     }
 
-    if (activityList) {
-      activityList.addEventListener("click", (event) => {
-        const button = event.target.closest("[data-group-index][data-item-index]");
+    if (activityStatusFilters) {
+      activityStatusFilters.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-activity-status-filter]");
         if (!button) {
           return;
         }
-        openActivityDetail(Number(button.dataset.groupIndex), Number(button.dataset.itemIndex));
+
+        selectedActivityStatus = button.dataset.activityStatusFilter;
+        renderActivities();
       });
     }
 
