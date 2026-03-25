@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>登记工作台入口</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, #fff8f2 0%, #f5f7fb 100%);
+      color: #2d2f33;
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+
+    a {
+      color: #e85100;
+      font-weight: 700;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <a href="./registration-workbench/index.html">进入登记工作台</a>
+  <script>
+    const targetUrl = "./registration-workbench/index.html" + window.location.search + window.location.hash;
+    window.location.replace(targetUrl);
+  </script>
+</body>
+</html>

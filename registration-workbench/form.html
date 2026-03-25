@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>登记页</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body class="app-body app-body--form">
+  <div class="mobile-shell">
+    <div class="mobile-topbar">
+      <a class="inline-link" href="./index.html">返回登记入口</a>
+      <a class="inline-link" href="./admin.html" target="_blank" rel="noreferrer">打开管理后台</a>
+    </div>
+
+    <section class="mobile-hero">
+      <div class="mobile-hero__badge" id="formNameBadge">房产超市登记</div>
+      <h1 class="mobile-hero__title" id="pageTitle"></h1>
+      <p class="mobile-hero__desc" id="pageSubtitle"></p>
+      <div class="mobile-hero__meta" id="pageMeta"></div>
+    </section>
+
+    <section class="mobile-card">
+      <div class="section-heading">
+        <div class="section-heading__eyebrow">在线登记</div>
+        <h2 class="section-heading__title">填写登记信息</h2>
+      </div>
+
+      <form id="registrationForm" novalidate></form>
+
+      <div class="form-error" id="formError" hidden></div>
+      <div class="privacy-note" id="privacyNote"></div>
+    </section>
+
+    <section class="mobile-card">
+      <div class="section-heading">
+        <div class="section-heading__eyebrow">服务说明</div>
+        <h2 class="section-heading__title">登记提交后会发生什么</h2>
+      </div>
+
+      <div class="info-list">
+        <div class="info-item">
+          <div class="info-item__step">01</div>
+          <div>
+            <div class="info-item__title">系统记录登记信息</div>
+            <div class="info-item__desc">后台会保存您的登记内容，并自动归档到所选登记表单下，方便后续运营跟进。</div>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-item__step">02</div>
+          <div>
+            <div class="info-item__title">顾问按字段筛选线索</div>
+            <div class="info-item__desc">管理端可根据登记表单、预算、意向区域等字段精准筛选用户并安排顾问跟进。</div>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-item__step">03</div>
+          <div>
+            <div class="info-item__title">批量推送匹配信息</div>
+            <div class="info-item__desc">筛选完成后，可向符合条件的登记用户统一推送活动通知、楼盘信息或回访提醒。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="success-sheet" id="successSheet" hidden>
+    <div class="success-sheet__dialog">
+      <div class="success-sheet__badge">登记完成</div>
+      <h2 class="success-sheet__title" id="successTitle"></h2>
+      <p class="success-sheet__desc" id="successMessage"></p>
+      <div class="success-sheet__actions">
+        <button class="button button--primary" type="button" id="submitAnotherBtn">继续登记</button>
+        <a class="button button--secondary" href="./admin.html" target="_blank" rel="noreferrer">查看管理后台</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="./shared.js"></script>
+  <script src="./form.js"></script>
+</body>
+</html>

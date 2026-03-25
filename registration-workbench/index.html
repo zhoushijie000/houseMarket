@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>登记工作台入口</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body class="app-body app-body--hub">
+  <main class="hub-shell">
+    <section class="hub-hero">
+      <div class="eyebrow">房产超市原型</div>
+      <h1 class="hub-hero__title">登记表单与后台管理联动入口</h1>
+      <p class="hub-hero__desc">
+        这套原型包含“登记表单管理”和“登记用户管理”两个后台列表视图，并支持为每个表单生成独立的登记页入口和二维码承接地址。
+      </p>
+    </section>
+
+    <section class="hub-grid" id="formHubGrid"></section>
+
+    <section class="hub-flow">
+      <div class="section-heading">
+        <div class="section-heading__eyebrow">链路说明</div>
+        <h2 class="section-heading__title">当前原型支持的完整流程</h2>
+      </div>
+
+      <div class="flow-list">
+        <div class="flow-item">
+          <div class="flow-item__index">1</div>
+          <div>
+            <div class="flow-item__title">后台新增登记表单</div>
+            <div class="flow-item__desc">配置登记时间范围、绑定专场活动、登记页文案和字段结构，并自动生成小程序路径与二维码承接地址。</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-item__index">2</div>
+          <div>
+            <div class="flow-item__title">前台按表单进入登记页</div>
+            <div class="flow-item__desc">每个表单都有独立的 `formId` 入口，登记页会按表单配置动态渲染字段并校验登记时间。</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-item__index">3</div>
+          <div>
+            <div class="flow-item__title">后台按表单和字段筛选用户</div>
+            <div class="flow-item__desc">登记用户列表支持按表单、登记字段和跟进状态筛选，并对筛选结果批量推送活动或房源信息。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="./shared.js"></script>
+  <script>
+    (() => {
+      const workbench = window.registrationWorkbench;
+      const container = document.getElementById("formHubGrid");
+      const escapeHtml = workbench ? workbench.escapeHtml : (value) => value;
+
+      if (!workbench || !container) {
+        return;
+      }
+
+      const state = workbench.loadState();
+
+      const formCards = state.forms
+        .map((form) => {
+          const status = workbench.getFormRuntimeStatus(form);
+          const statusMeta = workbench.getFormStatusMeta(status);
+          return `
+            <a class="hub-card" href="./form.html?formId=${encodeURIComponent(form.id)}">
+              <div class="hub-card__eyebrow">${escapeHtml(form.activityName || "登记表单")}</div>
+              <h2 class="hub-card__title">${escapeHtml(form.name)}</h2>
+              <p class="hub-card__desc">${escapeHtml(form.page.prompt.replace(/\n/g, " "))}</p>
+              <div class="hub-card__meta">
+                <span class="status-pill status-pill--${escapeHtml(statusMeta.tone)}">${escapeHtml(statusMeta.label)}</span>
+                <span>${escapeHtml(workbench.formatDateRange(form.registrationStart, form.registrationEnd))}</span>
+              </div>
+              <span class="hub-card__action">进入登记页</span>
+            </a>
+          `;
+        })
+        .join("");
+
+      const adminCard = `
+        <a class="hub-card" href="./admin.html">
+          <div class="hub-card__eyebrow">后台</div>
+          <h2 class="hub-card__title">登记工作台后台</h2>
+          <p class="hub-card__desc">统一管理登记表单、登记用户列表、字段筛选和批量推送记录。</p>
+          <span class="hub-card__action">进入管理后台</span>
+        </a>
+      `;
+
+      container.innerHTML = formCards + adminCard;
+    })();
+  </script>
+</body>
+</html>

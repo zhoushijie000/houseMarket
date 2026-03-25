@@ -2479,8 +2479,7 @@
     }
 
     #homeScreen .activity-list__filters {
-      margin: 12px 12px 0;
-      padding-bottom: 0;
+      display: none;
     }
 
     #homeScreen .chip {
@@ -2499,9 +2498,195 @@
     }
 
     #homeScreen .city-card-grid {
-      gap: 12px;
+      gap: 20px;
       margin-top: 12px;
+      padding: 0;
+    }
+
+    #homeScreen .home-activity-section {
+      display: grid;
+      gap: 14px;
+    }
+
+    #homeScreen .home-activity-section__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 0 16px;
+    }
+
+    #homeScreen .home-activity-section__title-wrap {
+      position: relative;
+      flex: 1 1 auto;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-left: 14px;
+    }
+
+    #homeScreen .home-activity-section__title-wrap::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 6px;
+      height: 22px;
+      border-radius: 999px;
+      transform: translateY(-50%);
+      background: linear-gradient(180deg, rgba(255, 244, 191, 1) 0%, rgba(255, 199, 81, 1) 100%);
+    }
+
+    #homeScreen .home-activity-section__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      min-height: 24px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.18);
+      color: rgba(255, 247, 216, 0.98);
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    #homeScreen .home-activity-section__heading {
+      margin: 0;
+      color: #fff;
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: 0.02em;
+      text-shadow: 0 6px 16px rgba(134, 55, 0, 0.16);
+    }
+
+    #homeScreen .home-activity-section__meta {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.84);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    #homeScreen .home-activity-section__count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      min-width: 58px;
+      min-height: 32px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.38);
+      background: rgba(255, 250, 239, 0.92);
+      color: #b96000;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1;
+      box-shadow: 0 10px 18px rgba(160, 63, 0, 0.12);
+      white-space: nowrap;
+      backdrop-filter: blur(8px);
+      font-variant-numeric: tabular-nums;
+    }
+
+    #homeScreen .home-activity-section[data-activity-section="live"] .home-activity-section__title-wrap::before {
+      background: linear-gradient(180deg, rgba(255, 246, 190, 1) 0%, rgba(255, 215, 86, 1) 100%);
+      box-shadow: 0 0 18px rgba(255, 216, 103, 0.3);
+    }
+
+    #homeScreen .home-activity-section[data-activity-section="live"] .home-activity-section__count {
+      background: linear-gradient(135deg, rgba(255, 248, 214, 0.98) 0%, rgba(255, 231, 150, 0.98) 100%);
+      color: #9c5b00;
+    }
+
+    #homeScreen .home-activity-section[data-activity-section="upcoming"] .home-activity-section__title-wrap::before {
+      background: linear-gradient(180deg, rgba(255, 235, 223, 1) 0%, rgba(255, 165, 101, 1) 100%);
+    }
+
+    #homeScreen .home-activity-section[data-activity-section="upcoming"] .home-activity-section__count {
+      background: rgba(255, 243, 234, 0.96);
+      color: #d86b11;
+    }
+
+    #homeScreen .home-activity-section[data-activity-section="ended"] .home-activity-section__title-wrap::before {
+      background: linear-gradient(180deg, rgba(239, 244, 249, 1) 0%, rgba(176, 188, 204, 1) 100%);
+    }
+
+    #homeScreen .home-activity-section[data-activity-section="ended"] .home-activity-section__count {
+      background: rgba(244, 247, 250, 0.96);
+      color: #6f7c8c;
+    }
+
+    #homeScreen .home-activity-section__rail {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 4px 12px 2px;
+      scrollbar-width: none;
+    }
+
+    #homeScreen .home-activity-section__rail::-webkit-scrollbar {
+      display: none;
+    }
+
+    #homeScreen .home-activity-section__list {
+      display: grid;
+      gap: 12px;
       padding: 0 12px;
+    }
+
+    #homeScreen .home-activity-section__rail .city-card {
+      flex: 0 0 auto;
+    }
+
+    #homeScreen .home-activity-section__rail .city-card__panel {
+      width: 332px;
+      min-height: 156px;
+    }
+
+    #homeScreen .home-activity-section__rail .city-card__content {
+      min-height: 156px;
+      padding: 16px;
+    }
+
+    #homeScreen .home-activity-section__rail .city-card__activity-list {
+      width: 208px;
+    }
+
+    #homeScreen .city-card--single .city-card__panel {
+      min-height: 112px;
+    }
+
+    #homeScreen .city-card--single .city-card__content {
+      min-height: 112px;
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+
+    #homeScreen .home-activity-section__rail .city-card--single .city-card__panel {
+      min-height: 128px;
+    }
+
+    #homeScreen .home-activity-section__rail .city-card--single .city-card__content {
+      min-height: 128px;
+      padding-top: 14px;
+      padding-bottom: 14px;
+    }
+
+    #homeScreen .city-card--featured .city-card__panel {
+      box-shadow: 0 18px 32px rgba(114, 43, 0, 0.24);
+    }
+
+    #homeScreen .city-card--featured .city-card__panel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      border-radius: 16px;
+      box-shadow: inset 0 0 0 3px rgba(248, 222, 78, 0.96);
+      pointer-events: none;
     }
 
     #homeScreen .city-card {
@@ -2663,7 +2848,7 @@
     }
 
     #homeScreen .city-card-grid__empty {
-      margin: 18px 16px 0;
+      margin: 0 12px;
       border-radius: 22px;
       background: rgba(255, 255, 255, 0.96);
     }
@@ -3150,8 +3335,7 @@
                 <span>带到你的城市里</span>
               </h1>
             </div>
-            <div class="filter-chips activity-list__filters" id="activityStatusFilters" aria-label="活动状态筛选"></div>
-            <div class="city-card-grid" id="cityFilters" aria-label="城市站点入口"></div>
+            <div class="city-card-grid" id="cityFilters" aria-label="城市活动列表"></div>
           </section>
         </div>
       </section>
@@ -3282,6 +3466,13 @@
         cover: "./assets/上海.png",
         coords: [31.2304, 121.4737],
         items: [
+          {
+            title: "上海春季成都好房展",
+            time: "2026.03.24 10:00 - 2026.03.26 18:00",
+            venue: "上海静安瑞吉酒店 2F 展厅",
+            projects: 15,
+            note: "面向上海客群的成都好房联展正在进行中，可现场看盘、咨询政策与预约顾问。"
+          },
           {
             title: "上海人才安家成都专场",
             time: "2026.03.28 13:30 - 18:30",
@@ -3536,7 +3727,6 @@
     const cityFilters = document.getElementById("cityFilters");
     const activityDetailHero = document.getElementById("activityDetailHero");
     const activityStatus = document.getElementById("activityStatus");
-    const activityStatusFilters = document.getElementById("activityStatusFilters");
     const detailHomeShortcutButton = document.getElementById("detailHomeShortcutButton");
     const districtFilters = document.getElementById("districtFilters");
     const districtStatus = document.getElementById("districtStatus");
@@ -3554,18 +3744,11 @@
 
     let selectedCity = cityActivities[0].city;
     let currentActivityPayload = null;
-    let selectedActivityStatus = "all";
     let selectedDistrict = "";
     let currentReport = null;
     let activeChatFlow = null;
     let suspendedTalentAssessment = null;
     const cityDisplayOrder = ["上海", "西宁", "北京"];
-    const activityStatusFilterOptions = [
-      { value: "all", label: "全部" },
-      { value: "upcoming", label: "未开展" },
-      { value: "live", label: "开展中" },
-      { value: "ended", label: "已开展" }
-    ];
     const cityVisualMetaMap = {
       上海: { accent: "#ff7a00" },
       西宁: { accent: "#45c79a" },
@@ -3791,6 +3974,12 @@
     }
 
     function getActivityEntries(group, statusFilter = "all") {
+      const detailStatusPriority = {
+        live: 0,
+        upcoming: 1,
+        ended: 2
+      };
+
       const entries = group.items
         .map((item, itemIndex) => {
           const status = getActivityStatusMeta(item.time);
@@ -3803,14 +3992,21 @@
           };
         })
         .sort((a, b) => {
-          const statusDiff = a.status.sortOrder - b.status.sortOrder;
+          const statusDiff = detailStatusPriority[a.status.key] - detailStatusPriority[b.status.key];
           if (statusDiff) {
             return statusDiff;
           }
 
-          const timeDiff = a.startTime - b.startTime;
-          if (timeDiff) {
-            return timeDiff;
+          if (a.status.key === "upcoming" || a.status.key === "ended") {
+            const timeDiff = b.startTime - a.startTime;
+            if (timeDiff) {
+              return timeDiff;
+            }
+          } else {
+            const liveTimeDiff = a.startTime - b.startTime;
+            if (liveTimeDiff) {
+              return liveTimeDiff;
+            }
           }
 
           return a.itemIndex - b.itemIndex;
@@ -3823,98 +4019,176 @@
       return entries.filter((entry) => entry.status.key === statusFilter);
     }
 
-    function renderActivityStatusFilters() {
-      if (!activityStatusFilters) {
-        return;
+    function getHomeCardActivityEntries(group) {
+      const statusPriority = {
+        live: 0,
+        upcoming: 1,
+        ended: 2
+      };
+
+      return group.items
+        .map((item, itemIndex) => {
+          const status = getActivityStatusMeta(item.time);
+          const { start } = getActivityTimeRange(item.time);
+          return {
+            ...item,
+            itemIndex,
+            status,
+            startTime: start ? start.getTime() : Number.MAX_SAFE_INTEGER
+          };
+        })
+        .sort((a, b) => {
+          const statusDiff = statusPriority[a.status.key] - statusPriority[b.status.key];
+          if (statusDiff) {
+            return statusDiff;
+          }
+
+          const timeDiff = a.startTime - b.startTime;
+          if (timeDiff) {
+            return timeDiff;
+          }
+
+          return a.itemIndex - b.itemIndex;
+        });
+    }
+
+    function getHomeCityGroups() {
+      const statusOrder = ["live", "upcoming", "ended"];
+
+      return getOrderedCityGroups().flatMap((group) => {
+        const activities = getHomeCardActivityEntries(group);
+        const stationLabel = group.stationLabel || `${group.city}站`;
+        const visualMeta = getCityVisualMeta(group.city);
+
+        return statusOrder
+          .map((sectionKey) => {
+            const statusActivities = activities.filter((item) => item.status.key === sectionKey);
+            if (!statusActivities.length) {
+              return null;
+            }
+
+            return {
+              group,
+              groupIndex: group.groupIndex,
+              stationLabel,
+              visualMeta,
+              activities: statusActivities,
+              defaultItemIndex: statusActivities[0].itemIndex,
+              sectionKey
+            };
+          })
+          .filter(Boolean);
+      });
+    }
+
+    function renderHomeActivityCard(entry, { featured = false } = {}) {
+      const classNames = ["city-card"];
+      if (featured) {
+        classNames.push("city-card--featured");
+      }
+      if (entry.activities.length === 1) {
+        classNames.push("city-card--single");
       }
 
-      const entries = cityActivities.flatMap((group) => getActivityEntries(group));
-      const counts = entries.reduce((result, entry) => {
-        result[entry.status.key] += 1;
-        return result;
-      }, {
-        all: entries.length,
-        upcoming: 0,
-        live: 0,
-        ended: 0
-      });
-
-      activityStatusFilters.innerHTML = activityStatusFilterOptions
-        .map((option) => `
-          <button
-            class="chip ${selectedActivityStatus === option.value ? "is-active" : ""}"
-            type="button"
-            data-activity-status-filter="${option.value}"
-          >
-            ${option.label} ${counts[option.value] || 0}
-          </button>
+      const activityPreview = entry.activities
+        .slice(0, 3)
+        .map((item) => `
+          <span class="city-card__activity">
+            <span class="city-card__activity-head">
+              <strong class="city-card__activity-title">${item.title}</strong>
+              <span class="activity-status-pill ${item.status.className}">${item.status.label}</span>
+            </span>
+            <span class="city-card__activity-time">${formatActivityTimeDisplay(item.time)}</span>
+          </span>
         `)
         .join("");
+
+      return `
+        <button
+          class="${classNames.join(" ")}"
+          type="button"
+          data-city="${entry.group.city}"
+          data-group-index="${entry.groupIndex}"
+          data-item-index="${entry.defaultItemIndex}"
+          style="--city-card-cover:url('${entry.group.cover}'); --city-accent:${entry.visualMeta.accent};"
+        >
+          <span class="city-card__station">${entry.stationLabel}</span>
+          <span class="city-card__panel">
+            <span class="city-card__backdrop" aria-hidden="true"></span>
+            <span class="city-card__content">
+              <span class="city-card__activity-list">${activityPreview}</span>
+            </span>
+          </span>
+        </button>
+      `;
+    }
+
+    function renderHomeActivitySection({ title, eyebrow, meta, entries, featured = false, state = "live" }) {
+      if (!entries.length) {
+        return "";
+      }
+
+      const activityCount = entries.reduce((total, entry) => total + entry.activities.length, 0);
+
+      const containerClass = featured
+        ? "home-activity-section__rail"
+        : "home-activity-section__list";
+
+      return `
+        <section class="home-activity-section ${featured ? "home-activity-section--featured" : ""}" data-activity-section="${state}">
+          <div class="home-activity-section__head">
+            <div class="home-activity-section__title-wrap">
+              ${eyebrow ? `<span class="home-activity-section__eyebrow">${eyebrow}</span>` : ""}
+              <h3 class="home-activity-section__heading">${title}</h3>
+              ${meta ? `<p class="home-activity-section__meta">${meta}</p>` : ""}
+            </div>
+            <span class="home-activity-section__count">${activityCount}场</span>
+          </div>
+          <div class="${containerClass}" aria-label="${title}">
+            ${entries.map((entry) => renderHomeActivityCard(entry, { featured })).join("")}
+          </div>
+        </section>
+      `;
     }
 
     function renderFilters() {
-      const list = getOrderedCityGroups()
-        .map((group) => ({
-          ...group,
-          filteredItems: getActivityEntries(group, selectedActivityStatus)
-        }))
-        .filter((group) => group.filteredItems.length);
+      const cityEntries = getHomeCityGroups();
+      const liveEntries = cityEntries.filter((entry) => entry.sectionKey === "live");
+      const upcomingEntries = cityEntries.filter((entry) => entry.sectionKey === "upcoming");
+      const endedEntries = cityEntries.filter((entry) => entry.sectionKey === "ended");
 
-      if (!list.length) {
-        cityFilters.innerHTML = '<div class="city-card-grid__empty">当前状态下暂无活动，先看看其他状态。</div>';
+      if (!cityEntries.length) {
+        cityFilters.innerHTML = '<div class="city-card-grid__empty">当前暂无可展示的活动内容。</div>';
         return;
       }
 
-      if (!list.some((group) => group.city === selectedCity)) {
-        selectedCity = list[0].city;
-      }
-
-      cityFilters.innerHTML = list
-        .map((group) => {
-          const defaultItem = group.filteredItems[0];
-          const visualMeta = getCityVisualMeta(group.city);
-          const classNames = ["city-card"];
-          if (group.city === selectedCity) {
-            classNames.push("is-active");
-          }
-          const activityPreview = group.filteredItems
-            .slice(0, 3)
-            .map((item) => {
-              return `
-                <span class="city-card__activity">
-                  <span class="city-card__activity-head">
-                    <strong class="city-card__activity-title">${item.title}</strong>
-                    <span class="activity-status-pill ${item.status.className}">${item.status.label}</span>
-                  </span>
-                  <span class="city-card__activity-time">${formatActivityTimeDisplay(item.time)}</span>
-                </span>
-              `;
-            })
-            .join("");
-          return `
-            <button
-              class="${classNames.join(" ")}"
-              type="button"
-              data-city="${group.city}"
-              data-group-index="${group.groupIndex}"
-              data-item-index="${defaultItem ? defaultItem.itemIndex : 0}"
-              style="--city-card-cover:url('${group.cover}'); --city-accent:${visualMeta.accent};"
-            >
-              <span class="city-card__station">${group.stationLabel || `${group.city}站`}</span>
-              <span class="city-card__panel">
-                <span class="city-card__backdrop" aria-hidden="true"></span>
-                <span class="city-card__content">
-                  <span class="city-card__activity-list">${activityPreview}</span>
-                </span>
-              </span>
-            </button>
-          `;
+      cityFilters.innerHTML = [
+        renderHomeActivitySection({
+          title: "正在进行",
+          eyebrow: "",
+          meta: "",
+          entries: liveEntries,
+          featured: true,
+          state: "live"
+        }),
+        renderHomeActivitySection({
+          title: "即将开启",
+          eyebrow: "",
+          meta: "",
+          entries: upcomingEntries,
+          state: "upcoming"
+        }),
+        renderHomeActivitySection({
+          title: "往期回顾",
+          eyebrow: "",
+          meta: "",
+          entries: endedEntries,
+          state: "ended"
         })
-        .join("");
+      ].join("");
     }
 
     function renderActivities() {
-      renderActivityStatusFilters();
       renderFilters();
     }
 
@@ -4422,7 +4696,6 @@
 
       const matchedItemIndex = cityActivities[matchedGroupIndex].items.findIndex((item) => item.title === activityTitle);
       selectedCity = cityActivities[matchedGroupIndex].city;
-      renderFilters();
       renderActivities();
       closeChatDrawer();
       openActivityDetail(matchedGroupIndex, matchedItemIndex);
@@ -4542,7 +4815,6 @@
       }
 
       selectedCity = cityActivities[groupIndex].city;
-      renderFilters();
       renderActivities();
       renderActivityDetail(groupIndex, itemIndex);
 
@@ -4589,7 +4861,6 @@
         return;
       }
       selectedCity = button.dataset.city;
-      renderFilters();
       renderActivities();
       openActivityDetail(Number(button.dataset.groupIndex), Number(button.dataset.itemIndex));
     });
@@ -4602,18 +4873,6 @@
         }
 
         renderActivityDetail(Number(button.dataset.groupIndex), Number(button.dataset.itemIndex));
-      });
-    }
-
-    if (activityStatusFilters) {
-      activityStatusFilters.addEventListener("click", (event) => {
-        const button = event.target.closest("[data-activity-status-filter]");
-        if (!button) {
-          return;
-        }
-
-        selectedActivityStatus = button.dataset.activityStatusFilter;
-        renderActivities();
       });
     }
 
@@ -4750,7 +5009,6 @@
       chatInput.value = "";
     });
 
-    renderFilters();
     renderActivities();
     renderDecorDirectory();
     renderActivityDetail(0, 0);
