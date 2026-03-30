@@ -2493,11 +2493,33 @@
       white-space: nowrap;
     }
 
+    #messageScreen .message-list-item__aside {
+      display: grid;
+      justify-items: end;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    #messageScreen .message-list-item__badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: #ff4d4f;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+      box-shadow: 0 8px 18px rgba(255, 77, 79, 0.2);
+    }
+
     #messageScreen .message-list-item__meta {
       color: #c0c4cc;
       font-size: 12px;
       line-height: 1;
-      flex-shrink: 0;
     }
 
     #messageDetailScreen {
@@ -4136,6 +4158,7 @@
         id: "message-shanghai-001",
         sender: "成都住建房产超市",
         avatarText: "成",
+        unreadCount: 3,
         latestMessage: "走进上海的活动开始啦，立即查看。",
         content: "走进上海的活动开始啦，立即查看。",
         timeLabel: "刚刚",
@@ -4381,6 +4404,8 @@
 let currentActivityPayload = null;
 let selectedDistrict = "";
 let currentMessageNotification = null;
+let currentScreenName = "home";
+let previousScreenName = "home";
 const ACTIVITY_SIGNUP_FORM_ID = "form-city-activity-signup";
 const ACTIVITY_SIGNUP_CONFIRM_TEXT = "登记参加本次活动，即表示您同意我们获取并使用您的相关用户信息。";
 const ACTIVITY_SIGNUP_IDLE_TEXT = "登记参加本次活动后，可接收活动提醒与相关房源消息。";
@@ -4541,11 +4566,21 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动登记，后续消息
     }
 
     function showScreen(name) {
+      if (name !== currentScreenName) {
+        previousScreenName = currentScreenName;
+        currentScreenName = name;
+      }
+
       Object.entries(screens).forEach(([key, element]) => {
         element.classList.toggle("is-active", key === name);
       });
       phoneShell.classList.toggle("phone-shell--activity", name === "activity");
       phoneShell.classList.toggle("phone-shell--registration", name === "registration");
+    }
+
+    function showPreviousScreen(fallback = "home") {
+      const target = previousScreenName && screens[previousScreenName] ? previousScreenName : fallback;
+      showScreen(target);
     }
 
     function getOrderedCityGroups() {
@@ -5443,7 +5478,10 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动登记，后续消息
               </div>
               <div class="message-list-item__preview">${item.latestMessage || item.content}</div>
             </div>
-            <span class="message-list-item__meta">›</span>
+            <div class="message-list-item__aside">
+              ${item.unreadCount ? `<span class="message-list-item__badge">${item.unreadCount}</span>` : "<span></span>"}
+              <span class="message-list-item__meta">›</span>
+            </div>
           </button>
         `)
         .join("");
@@ -5879,7 +5917,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动登记，后续消息
       });
     }
     document.getElementById("backHomeButton").addEventListener("click", () => {
-      showScreen("home");
+      showPreviousScreen("home");
     });
     if (detailHomeShortcutButton) {
       detailHomeShortcutButton.addEventListener("click", () => {
