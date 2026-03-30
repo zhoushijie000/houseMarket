@@ -65,7 +65,9 @@
     }
 
     button,
-    input {
+    input,
+    select,
+    textarea {
       font: inherit;
     }
 
@@ -2139,6 +2141,10 @@
       bottom: calc(110px + env(safe-area-inset-bottom, 0px));
     }
 
+    .phone-shell--registration .chat-fab {
+      display: none;
+    }
+
     .chat-fab__icon {
       font-size: 24px;
       line-height: 1;
@@ -2365,6 +2371,7 @@
       background: transparent;
       color: #101828;
       cursor: pointer;
+      position: relative;
     }
 
     .topbar-pill__button + .topbar-pill__button {
@@ -2397,6 +2404,251 @@
 
     #homeScreen .page-content {
       padding: 0 0 calc(34px + env(safe-area-inset-bottom, 0px));
+    }
+
+    #messageScreen {
+      background: #ffffff;
+    }
+
+    #messageScreen .page-content {
+      padding: 0 0 calc(32px + env(safe-area-inset-bottom, 0px));
+    }
+
+    #messageScreen .message-page {
+      background: #ffffff;
+    }
+
+    #messageScreen .message-list {
+      display: grid;
+    }
+
+    #messageScreen .message-list-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 14px 16px;
+      border: none;
+      border-bottom: 1px solid rgba(228, 231, 237, 0.92);
+      background: #ffffff;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    #messageScreen .message-list-item__avatar,
+    #messageDetailScreen .message-thread__avatar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #fd7c00, #ffaf66);
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1;
+      flex-shrink: 0;
+      box-shadow: 0 10px 20px rgba(253, 93, 0, 0.18);
+    }
+
+    #messageScreen .message-list-item__main {
+      flex: 1;
+      min-width: 0;
+      display: grid;
+      gap: 4px;
+    }
+
+    #messageScreen .message-list-item__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    #messageScreen .message-list-item__sender {
+      color: #111827;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    #messageScreen .message-list-item__time {
+      color: #909399;
+      font-size: 12px;
+      line-height: 1.4;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    #messageScreen .message-list-item__preview {
+      color: #606266;
+      font-size: 13px;
+      line-height: 1.5;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    #messageScreen .message-list-item__meta {
+      color: #c0c4cc;
+      font-size: 12px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    #messageDetailScreen {
+      background: #f4f5f7;
+    }
+
+    #messageDetailScreen .page-content {
+      padding: 12px 0 calc(88px + env(safe-area-inset-bottom, 0px));
+    }
+
+    #messageDetailScreen .message-thread {
+      display: grid;
+      gap: 18px;
+      min-height: 100%;
+    }
+
+    #messageDetailScreen .message-thread__body {
+      display: grid;
+      gap: 18px;
+      padding: 0 16px;
+    }
+
+    #messageDetailScreen .message-thread__time {
+      justify-self: center;
+      min-height: 24px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: rgba(17, 24, 39, 0.08);
+      color: #909399;
+      font-size: 11px;
+      line-height: 24px;
+    }
+
+    #messageDetailScreen .message-thread__row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    #messageDetailScreen .message-thread__stack {
+      display: grid;
+      gap: 6px;
+      max-width: calc(100% - 56px);
+    }
+
+    #messageDetailScreen .message-thread__sender {
+      color: #909399;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    #messageDetailScreen .message-thread__bubble {
+      width: fit-content;
+      max-width: 100%;
+      padding: 12px 14px;
+      border-radius: 4px 16px 16px 16px;
+      background: #ffffff;
+      color: #303133;
+      font-size: 15px;
+      line-height: 1.8;
+      box-shadow: 0 10px 22px rgba(17, 24, 39, 0.06);
+      word-break: break-word;
+    }
+
+    #messageDetailScreen .message-thread__card {
+      display: grid;
+      gap: 8px;
+      margin-top: 2px;
+      border-radius: 16px;
+      background: #ffffff;
+      box-shadow: 0 10px 22px rgba(17, 24, 39, 0.06);
+      padding: 14px;
+      border: 1px solid rgba(228, 231, 237, 0.92);
+    }
+
+    #messageDetailScreen .message-thread__card-body {
+      display: grid;
+      gap: 8px;
+    }
+
+    #messageDetailScreen .message-thread__card-title {
+      margin: 0;
+      color: #111827;
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    #messageDetailScreen .message-thread__card-meta {
+      margin: 0;
+      color: #606266;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    #messageDetailScreen .message-thread__card-button {
+      width: fit-content;
+      min-height: 34px;
+      padding: 0 16px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 12px 22px rgba(253, 93, 0, 0.18);
+      cursor: pointer;
+    }
+
+    #messageDetailScreen .message-thread__composer {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 8;
+      padding: 12px 16px calc(18px + env(safe-area-inset-bottom, 0px));
+      background: linear-gradient(180deg, rgba(244, 245, 247, 0) 0%, rgba(244, 245, 247, 0.96) 26%, rgba(244, 245, 247, 1) 100%);
+    }
+
+    #messageDetailScreen .message-thread__composer-inner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 12px 24px rgba(17, 24, 39, 0.08);
+    }
+
+    #messageDetailScreen .message-thread__composer-input {
+      flex: 1;
+      min-height: 42px;
+      padding: 0 14px;
+      border: none;
+      background: transparent;
+      color: #303133;
+      font-size: 14px;
+      outline: none;
+    }
+
+    #messageDetailScreen .message-thread__composer-send {
+      min-width: 78px;
+      min-height: 42px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      box-shadow: 0 14px 26px rgba(253, 93, 0, 0.24);
+      cursor: pointer;
     }
 
     #homeScreen .hero-card {
@@ -2858,7 +3110,7 @@
     }
 
     #activityDetailScreen .page-content {
-      padding: 0 10px calc(34px + env(safe-area-inset-bottom, 0px));
+      padding: 0 10px calc(156px + env(safe-area-inset-bottom, 0px));
     }
 
     #activityDetailScreen .section {
@@ -3113,6 +3365,197 @@
       display: none;
     }
 
+    .phone-shell .activity-entry-bar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 18;
+      display: none;
+      padding: 12px 12px calc(18px + env(safe-area-inset-bottom, 0px));
+      pointer-events: none;
+      background: #ffffff;
+      box-shadow: 0 -10px 24px rgba(17, 24, 39, 0.08);
+    }
+
+    .phone-shell--activity .activity-entry-bar {
+      display: block;
+    }
+
+    .phone-shell .activity-entry-bar__inner {
+      pointer-events: auto;
+      display: grid;
+      gap: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .phone-shell .activity-entry-bar__content {
+      min-width: 0;
+    }
+
+    .phone-shell .activity-entry-bar__desc {
+      margin: 0;
+      color: #303133;
+      font-size: 13px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .phone-shell .activity-entry-bar .primary-button {
+      width: 100%;
+      min-height: 48px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+      color: #fff;
+      box-shadow: 0 16px 28px rgba(253, 93, 0, 0.2);
+    }
+
+    .phone-shell .activity-entry-bar .primary-button:disabled {
+      opacity: 0.72;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    #registrationScreen {
+      background: linear-gradient(180deg, #ffffff 0%, #fff6ee 100%);
+    }
+
+    #registrationScreen .page-content {
+      padding: 18px 16px calc(132px + env(safe-area-inset-bottom, 0px));
+    }
+
+    #registrationScreen .registration-intro {
+      display: grid;
+      gap: 10px;
+      padding: 20px 18px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 245, 236, 0.98));
+      box-shadow: 0 18px 38px rgba(17, 24, 39, 0.08);
+    }
+
+    #registrationScreen .registration-intro__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      min-height: 24px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: rgba(253, 93, 0, 0.1);
+      color: var(--brand-deep);
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    #registrationScreen .registration-intro__title {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1.35;
+      color: #111827;
+    }
+
+    #registrationScreen .registration-intro__meta {
+      margin: 0;
+      color: #606266;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    #registrationScreen .registration-form {
+      display: grid;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    #registrationScreen .registration-field {
+      display: grid;
+      gap: 8px;
+    }
+
+    #registrationScreen .registration-field label {
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: #303133;
+    }
+
+    #registrationScreen .registration-field input,
+    #registrationScreen .registration-field select,
+    #registrationScreen .registration-field textarea {
+      width: 100%;
+      border: 1px solid rgba(228, 231, 237, 0.96);
+      border-radius: 16px;
+      background: #fff;
+      color: #303133;
+      box-shadow: 0 10px 24px rgba(17, 24, 39, 0.04);
+      outline: none;
+    }
+
+    #registrationScreen .registration-field input,
+    #registrationScreen .registration-field select {
+      min-height: 50px;
+      padding: 0 14px;
+    }
+
+    #registrationScreen .registration-field textarea {
+      min-height: 108px;
+      padding: 12px 14px;
+      resize: none;
+    }
+
+    #registrationScreen .registration-field input[readonly] {
+      background: #f7f8fa;
+      color: #606266;
+    }
+
+    #registrationScreen .registration-field input:focus,
+    #registrationScreen .registration-field select:focus,
+    #registrationScreen .registration-field textarea:focus {
+      border-color: rgba(253, 93, 0, 0.38);
+      box-shadow:
+        0 10px 24px rgba(17, 24, 39, 0.04),
+        0 0 0 4px rgba(253, 93, 0, 0.08);
+    }
+
+    #registrationScreen .registration-status {
+      min-height: 18px;
+      margin: 2px 2px 0;
+      color: var(--brand-deep);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    #registrationScreen .registration-status[data-state="success"] {
+      color: #32871f;
+    }
+
+    .phone-shell .registration-submit-bar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 18;
+      display: none;
+      padding: 12px 16px calc(18px + env(safe-area-inset-bottom, 0px));
+      background: linear-gradient(180deg, rgba(255, 246, 238, 0) 0%, rgba(255, 246, 238, 0.96) 26%, rgba(255, 246, 238, 0.99) 100%);
+    }
+
+    .phone-shell--registration .registration-submit-bar {
+      display: block;
+    }
+
+    .phone-shell .registration-submit-bar .primary-button {
+      width: 100%;
+      min-height: 48px;
+      border-radius: 16px;
+      box-shadow: 0 16px 28px rgba(253, 93, 0, 0.2);
+    }
+
     #activityDetailScreen .district-panel {
       gap: 0;
       padding: 10px 18px;
@@ -3340,6 +3783,89 @@
         </div>
       </section>
 
+      <section class="screen" id="messageScreen" aria-label="消息通知">
+        <header class="topbar topbar--ios">
+          <div class="topbar__meta">
+            <div class="topbar-pill">
+              <button class="topbar-pill__button" id="backMessageButton" type="button" aria-label="返回上一页">
+                <span class="topbar-pill__icon topbar-pill__icon--back">‹</span>
+              </button>
+              <button class="topbar-pill__button" id="messageHomeShortcutButton" type="button" aria-label="返回首页">
+                <span class="topbar-pill__icon topbar-pill__icon--home">⌂</span>
+              </button>
+            </div>
+            <span class="topbar__title">消息通知</span>
+            <div class="topbar-pill topbar-pill--trailing">
+              <button class="topbar-pill__button" type="button" aria-label="更多操作">
+                <span class="topbar-pill__icon topbar-pill__icon--more">•••</span>
+              </button>
+              <button class="topbar-pill__button" type="button" aria-label="消息已读">
+                <span class="topbar-pill__icon topbar-pill__icon--target">◎</span>
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <section class="message-page">
+            <div class="message-list" id="messageList"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen" id="messageDetailScreen" aria-label="消息详情">
+        <header class="topbar topbar--ios">
+          <div class="topbar__meta">
+            <div class="topbar-pill">
+              <button class="topbar-pill__button" id="backMessageDetailButton" type="button" aria-label="返回消息列表">
+                <span class="topbar-pill__icon topbar-pill__icon--back">‹</span>
+              </button>
+              <button class="topbar-pill__button" id="messageDetailHomeShortcutButton" type="button" aria-label="返回首页">
+                <span class="topbar-pill__icon topbar-pill__icon--home">⌂</span>
+              </button>
+            </div>
+            <span class="topbar__title" id="messageDetailTopbarTitle">成都住建房产超市</span>
+            <div class="topbar-pill topbar-pill--trailing">
+              <button class="topbar-pill__button" type="button" aria-label="更多操作">
+                <span class="topbar-pill__icon topbar-pill__icon--more">•••</span>
+              </button>
+              <button class="topbar-pill__button" type="button" aria-label="消息详情">
+                <span class="topbar-pill__icon topbar-pill__icon--target">◎</span>
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <section class="message-thread">
+            <div class="message-thread__body">
+              <div class="message-thread__time" id="messageDetailTime">刚刚</div>
+              <div class="message-thread__row">
+                <div class="message-thread__avatar" id="messageDetailAvatar">成</div>
+                <div class="message-thread__stack">
+                  <div class="message-thread__sender" id="messageDetailSender">成都住建房产超市</div>
+                  <div class="message-thread__bubble" id="messageDetailContent">走进上海的活动开始啦，立即查看。</div>
+                  <div class="message-thread__card">
+                    <div class="message-thread__card-body">
+                      <h3 class="message-thread__card-title" id="messageDetailCardTitle">上海活动详情页</h3>
+                      <p class="message-thread__card-meta" id="messageDetailCardMeta">上海春季成都好房展 · 上海静安瑞吉酒店 2F 展厅</p>
+                      <button class="message-thread__card-button" id="openShanghaiActivityFromMessageDetail" type="button">立即查看</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="message-thread__composer">
+              <div class="message-thread__composer-inner">
+                <input class="message-thread__composer-input" type="text" placeholder="发送消息" />
+                <button class="message-thread__composer-send" type="button">发送</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
       <section class="screen" id="activityDetailScreen" aria-label="活动详情">
         <header class="topbar topbar--ios">
           <div class="topbar__meta">
@@ -3395,6 +3921,66 @@
         </div>
       </section>
 
+      <section class="screen" id="registrationScreen" aria-label="资料登记">
+        <header class="topbar topbar--ios">
+          <div class="topbar__meta">
+            <div class="topbar-pill">
+              <button class="topbar-pill__button" id="backRegistrationButton" type="button" aria-label="返回活动详情">
+                <span class="topbar-pill__icon topbar-pill__icon--back">‹</span>
+              </button>
+              <button class="topbar-pill__button" id="registrationHomeShortcutButton" type="button" aria-label="返回首页">
+                <span class="topbar-pill__icon topbar-pill__icon--home">⌂</span>
+              </button>
+            </div>
+            <span class="topbar__title">资料登记</span>
+            <div class="topbar-pill topbar-pill--trailing">
+              <button class="topbar-pill__button" type="button" aria-label="更多操作">
+                <span class="topbar-pill__icon topbar-pill__icon--more">•••</span>
+              </button>
+              <button class="topbar-pill__button" type="button" aria-label="圆点入口">
+                <span class="topbar-pill__icon topbar-pill__icon--target">◎</span>
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <section class="registration-intro">
+            <span class="registration-intro__eyebrow">活动留资</span>
+            <h2 class="registration-intro__title">提交资料后，专属顾问会尽快联系你</h2>
+            <p class="registration-intro__meta" id="registrationActivityMeta">当前活动信息将在这里展示。</p>
+          </section>
+
+          <form class="registration-form" id="registrationForm">
+            <div class="registration-field">
+              <label for="registrationActivityInput">活动场次</label>
+              <input id="registrationActivityInput" type="text" readonly />
+            </div>
+            <div class="registration-field">
+              <label for="registrationTimeInput">活动时间</label>
+              <input id="registrationTimeInput" type="text" readonly />
+            </div>
+            <div class="registration-field">
+              <label for="registrationNameInput">联系人</label>
+              <input id="registrationNameInput" type="text" placeholder="请输入联系人姓名" />
+            </div>
+            <div class="registration-field">
+              <label for="registrationPhoneInput">手机号</label>
+              <input id="registrationPhoneInput" type="tel" inputmode="numeric" maxlength="11" placeholder="请输入手机号" />
+            </div>
+            <div class="registration-field">
+              <label for="registrationDistrictSelect">意向区县</label>
+              <select id="registrationDistrictSelect"></select>
+            </div>
+            <div class="registration-field">
+              <label for="registrationRemarkInput">补充说明</label>
+              <textarea id="registrationRemarkInput" placeholder="例如：计划到场人数、关注楼盘、方便联系的时间段"></textarea>
+            </div>
+            <p class="registration-status" id="registrationStatus"></p>
+          </form>
+        </div>
+      </section>
+
       <section class="screen" id="reportDetailScreen" aria-label="评测报告详情">
         <header class="topbar">
           <div class="topbar__meta">
@@ -3408,6 +3994,19 @@
         </div>
       </section>
     </main>
+
+    <div class="activity-entry-bar">
+      <div class="activity-entry-bar__inner">
+        <div class="activity-entry-bar__content">
+          <p class="activity-entry-bar__desc" id="activityEntryBarDesc">登记参加本次活动后，可接收活动提醒与相关房源消息。</p>
+        </div>
+        <button class="primary-button" id="openRegistrationButton" type="button">登记活动</button>
+      </div>
+    </div>
+
+    <div class="registration-submit-bar">
+      <button class="primary-button" id="submitRegistrationButton" type="submit" form="registrationForm">提交登记</button>
+    </div>
 
     <button class="chat-fab" id="chatFabButton" type="button" aria-label="打开机器人咨询">
       <span class="chat-fab__icon">🤖</span>
@@ -3434,7 +4033,8 @@
 
   </div>
 
-  <script>
+<script src="./registration-workbench/shared.js"></script>
+<script>
     const cityActivities = [
       {
         city: "西宁",
@@ -3480,13 +4080,6 @@
             projects: 12,
             note: "面向上海人才客群，支持先做成都人才初筛，再预约专场顾问。",
             talentCheck: true
-          },
-          {
-            title: "虹桥商务区房V直播联展",
-            time: "2026.04.10 - 2026.04.11",
-            venue: "虹桥天地路演空间",
-            projects: 7,
-            note: "直播看房与跨城签约咨询同步开启。"
           }
         ]
       },
@@ -3499,7 +4092,7 @@
         items: [
           {
             title: "北京国贸成都改善盘巡展",
-            time: "2026.04.18 - 2026.04.19",
+            time: "2026.03.29 - 2026.03.31",
             venue: "国贸大酒店 2F",
             projects: 11,
             note: "面向换房家庭，突出教育、医疗和通勤资源。"
@@ -3537,6 +4130,19 @@
       "外地人在成都购房需要什么条件？",
       "成都公积金贷款额度怎么理解？",
       "买新房大概涉及哪些税费？"
+    ];
+    const messageNotifications = [
+      {
+        id: "message-shanghai-001",
+        sender: "成都住建房产超市",
+        avatarText: "成",
+        latestMessage: "走进上海的活动开始啦，立即查看。",
+        content: "走进上海的活动开始啦，立即查看。",
+        timeLabel: "刚刚",
+        activityCity: "上海",
+        activityTitle: "上海春季成都好房展",
+        activityMeta: "上海春季成都好房展 · 上海静安瑞吉酒店 2F 展厅"
+      }
     ];
     const talentPolicyEntries = [
       {
@@ -3720,14 +4326,43 @@
     const phoneShell = document.querySelector(".phone-shell");
     const screens = {
       home: document.getElementById("homeScreen"),
+      message: document.getElementById("messageScreen"),
+      messageDetail: document.getElementById("messageDetailScreen"),
       activity: document.getElementById("activityDetailScreen"),
+      registration: document.getElementById("registrationScreen"),
       report: document.getElementById("reportDetailScreen")
     };
 
     const cityFilters = document.getElementById("cityFilters");
+    const backMessageButton = document.getElementById("backMessageButton");
+    const messageHomeShortcutButton = document.getElementById("messageHomeShortcutButton");
+    const messageList = document.getElementById("messageList");
+    const backMessageDetailButton = document.getElementById("backMessageDetailButton");
+    const messageDetailHomeShortcutButton = document.getElementById("messageDetailHomeShortcutButton");
+    const messageDetailTopbarTitle = document.getElementById("messageDetailTopbarTitle");
+    const messageDetailAvatar = document.getElementById("messageDetailAvatar");
+    const messageDetailSender = document.getElementById("messageDetailSender");
+    const messageDetailTime = document.getElementById("messageDetailTime");
+    const messageDetailContent = document.getElementById("messageDetailContent");
+    const messageDetailCardTitle = document.getElementById("messageDetailCardTitle");
+    const messageDetailCardMeta = document.getElementById("messageDetailCardMeta");
+    const openShanghaiActivityFromMessageDetail = document.getElementById("openShanghaiActivityFromMessageDetail");
     const activityDetailHero = document.getElementById("activityDetailHero");
     const activityStatus = document.getElementById("activityStatus");
+    const activityEntryBarDesc = document.getElementById("activityEntryBarDesc");
     const detailHomeShortcutButton = document.getElementById("detailHomeShortcutButton");
+    const openRegistrationButton = document.getElementById("openRegistrationButton");
+    const backRegistrationButton = document.getElementById("backRegistrationButton");
+    const registrationHomeShortcutButton = document.getElementById("registrationHomeShortcutButton");
+    const registrationForm = document.getElementById("registrationForm");
+    const registrationActivityMeta = document.getElementById("registrationActivityMeta");
+    const registrationActivityInput = document.getElementById("registrationActivityInput");
+    const registrationTimeInput = document.getElementById("registrationTimeInput");
+    const registrationNameInput = document.getElementById("registrationNameInput");
+    const registrationPhoneInput = document.getElementById("registrationPhoneInput");
+    const registrationDistrictSelect = document.getElementById("registrationDistrictSelect");
+    const registrationRemarkInput = document.getElementById("registrationRemarkInput");
+    const registrationStatus = document.getElementById("registrationStatus");
     const districtFilters = document.getElementById("districtFilters");
     const districtStatus = document.getElementById("districtStatus");
     const districtMediaGrid = document.getElementById("districtMediaGrid");
@@ -3743,8 +4378,13 @@
     const reportPage = document.getElementById("reportPage");
 
     let selectedCity = cityActivities[0].city;
-    let currentActivityPayload = null;
-    let selectedDistrict = "";
+let currentActivityPayload = null;
+let selectedDistrict = "";
+let currentMessageNotification = null;
+const ACTIVITY_SIGNUP_FORM_ID = "form-city-activity-signup";
+const ACTIVITY_SIGNUP_CONFIRM_TEXT = "登记参加本次活动，即表示您同意我们获取并使用您的相关用户信息。";
+const ACTIVITY_SIGNUP_IDLE_TEXT = "登记参加本次活动后，可接收活动提醒与相关房源消息。";
+const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动登记，后续消息会在房产超市内展示。";
     let currentReport = null;
     let activeChatFlow = null;
     let suspendedTalentAssessment = null;
@@ -3905,6 +4545,7 @@
         element.classList.toggle("is-active", key === name);
       });
       phoneShell.classList.toggle("phone-shell--activity", name === "activity");
+      phoneShell.classList.toggle("phone-shell--registration", name === "registration");
     }
 
     function getOrderedCityGroups() {
@@ -4462,7 +5103,7 @@
         ? selectedDistrict
         : "";
       const payload = getActivityPayload(groupIndex, itemIndex);
-      const { estates, districts } = payload;
+      const { item, estates, districts } = payload;
       currentActivityPayload = payload;
       selectedDistrict = districts.some((district) => district.name === previousDistrict)
         ? previousDistrict
@@ -4501,12 +5142,362 @@
         `)
         .join("");
 
+      updateActivityEntryBarState(payload);
       renderDistrictContent();
+    }
+
+    function getRegistrationWorkbench() {
+      return window.registrationWorkbench || null;
+    }
+
+    function createActivitySignupFields(workbenchApi) {
+      return [
+        workbenchApi.createField({
+          id: "name",
+          label: "登记用户",
+          type: "text",
+          required: false,
+          filterable: true,
+          listable: true
+        }),
+        workbenchApi.createField({
+          id: "mobile",
+          label: "手机号",
+          type: "phone",
+          required: false,
+          filterable: true,
+          listable: true
+        }),
+        workbenchApi.createField({
+          id: "city",
+          label: "城市",
+          type: "text",
+          required: false,
+          filterable: true,
+          listable: true
+        }),
+        workbenchApi.createField({
+          id: "district",
+          label: "区县",
+          type: "text",
+          required: false,
+          filterable: true,
+          listable: true
+        }),
+        workbenchApi.createField({
+          id: "activityName",
+          label: "活动名称",
+          type: "text",
+          required: false,
+          filterable: true,
+          listable: true
+        }),
+        workbenchApi.createField({
+          id: "activityTime",
+          label: "活动时间",
+          type: "text",
+          required: false,
+          filterable: false,
+          listable: true
+        }),
+        workbenchApi.createField({
+          id: "activityVenue",
+          label: "活动地点",
+          type: "text",
+          required: false,
+          filterable: false,
+          listable: false
+        }),
+        workbenchApi.createField({
+          id: "activityKey",
+          label: "活动标识",
+          type: "text",
+          required: false,
+          filterable: false,
+          listable: false
+        })
+      ];
+    }
+
+    function ensureActivitySignupForm(state) {
+      const workbenchApi = getRegistrationWorkbench();
+      if (!workbenchApi) {
+        return;
+      }
+
+      const fields = createActivitySignupFields(workbenchApi);
+      const defaultForm = workbenchApi.createForm({
+        id: ACTIVITY_SIGNUP_FORM_ID,
+        name: "活动登记用户信息表",
+        activityName: "城市专场活动登记",
+        registrationStart: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+        registrationEnd: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+        page: {
+          title: "活动登记用户信息表",
+          prompt: "系统自动沉淀活动登记用户信息，供后台筛选和消息推送。"
+        },
+        fields,
+        createdBy: "系统"
+      });
+
+      const formIndex = state.forms.findIndex((form) => form.id === ACTIVITY_SIGNUP_FORM_ID);
+      if (formIndex === -1) {
+        state.forms.unshift(defaultForm);
+        return;
+      }
+
+      const currentForm = state.forms[formIndex];
+      state.forms[formIndex] = {
+        ...currentForm,
+        ...defaultForm,
+        createdAt: currentForm.createdAt || defaultForm.createdAt
+      };
+    }
+
+    function stringifyActivityValue(value) {
+      if (Array.isArray(value)) {
+        return value.join("~");
+      }
+      if (value && typeof value === "object") {
+        return JSON.stringify(value);
+      }
+      return String(value || "");
+    }
+
+    function buildActivityRegistrationKey(payload) {
+      if (!payload || !payload.item || !payload.group) {
+        return "";
+      }
+
+      return [
+        payload.group.city || "",
+        payload.item.title || "",
+        stringifyActivityValue(payload.item.time),
+        payload.item.venue || ""
+      ]
+        .map((item) => String(item).trim())
+        .join("::");
+    }
+
+    function findActivityRegistration(payload) {
+      const workbenchApi = getRegistrationWorkbench();
+      if (!workbenchApi) {
+        return null;
+      }
+
+      const registrationKey = buildActivityRegistrationKey(payload);
+      if (!registrationKey) {
+        return null;
+      }
+
+      const state = workbenchApi.loadState();
+      return state.records.find((record) => record && record.data && record.data.activityKey === registrationKey) || null;
+    }
+
+    function updateActivityEntryBarState(payload) {
+      const registered = Boolean(findActivityRegistration(payload));
+      if (activityEntryBarDesc) {
+        activityEntryBarDesc.textContent = registered ? ACTIVITY_SIGNUP_DONE_TEXT : ACTIVITY_SIGNUP_IDLE_TEXT;
+      }
+      if (openRegistrationButton) {
+        openRegistrationButton.textContent = registered ? "已登记" : "登记活动";
+        openRegistrationButton.disabled = registered;
+        openRegistrationButton.setAttribute("aria-disabled", registered ? "true" : "false");
+      }
+    }
+
+    function createActivityRegistrationRecord(payload) {
+      if (!payload || !payload.item || !payload.group) {
+        return null;
+      }
+
+      const workbenchApi = getRegistrationWorkbench();
+      if (!workbenchApi) {
+        return null;
+      }
+
+      const registrationKey = buildActivityRegistrationKey(payload);
+      const activityTimeText = formatActivityTimeDisplay(payload.item.time);
+      const districtValue = selectedDistrict || (payload.districts[0] ? payload.districts[0].name : "");
+
+      workbenchApi.updateState((state) => {
+        ensureActivitySignupForm(state);
+        const existed = state.records.some((record) => record && record.data && record.data.activityKey === registrationKey);
+        if (existed) {
+          return;
+        }
+
+        state.records.unshift({
+          id: `lead-activity-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`,
+          formId: ACTIVITY_SIGNUP_FORM_ID,
+          createdAt: new Date().toISOString(),
+          status: "new",
+          pushCount: 0,
+          lastPushAt: "",
+          lastPushChannel: "",
+          lastPushTitle: "",
+          data: {
+            name: "小程序用户",
+            mobile: "待同步",
+            city: payload.group.city || "成都",
+            district: districtValue,
+            activityName: payload.item.title || "活动登记",
+            activityTime: activityTimeText,
+            activityVenue: payload.item.venue || "",
+            activityKey: registrationKey
+          }
+        });
+      });
+
+      return true;
+    }
+
+    function registerCurrentActivity() {
+      if (!currentActivityPayload) {
+        return;
+      }
+
+      if (findActivityRegistration(currentActivityPayload)) {
+        updateActivityEntryBarState(currentActivityPayload);
+        return;
+      }
+
+      if (!window.confirm(ACTIVITY_SIGNUP_CONFIRM_TEXT)) {
+        return;
+      }
+
+      createActivityRegistrationRecord(currentActivityPayload);
+      updateActivityEntryBarState(currentActivityPayload);
+    }
+
+    function fillRegistrationForm() {
+      if (!currentActivityPayload) {
+        return;
+      }
+
+      const { group, item, districts } = currentActivityPayload;
+      const stationLabel = group.stationLabel || `${group.city}站`;
+      if (registrationActivityMeta) {
+        registrationActivityMeta.textContent = `${stationLabel} · ${formatActivityTimeDisplay(item.time)} · ${item.venue}`;
+      }
+      if (registrationActivityInput) {
+        registrationActivityInput.value = item.title;
+      }
+      if (registrationTimeInput) {
+        registrationTimeInput.value = formatActivityTimeDisplay(item.time);
+      }
+      if (registrationDistrictSelect) {
+        registrationDistrictSelect.innerHTML = districts.length
+          ? districts.map((district) => `<option value="${district.name}">${district.name}</option>`).join("")
+          : '<option value="">暂无可选区县</option>';
+      }
+      if (registrationStatus) {
+        registrationStatus.textContent = "";
+        registrationStatus.removeAttribute("data-state");
+      }
+    }
+
+    function openRegistrationPage() {
+      fillRegistrationForm();
+      showScreen("registration");
     }
 
     function openActivityDetail(groupIndex, itemIndex) {
       renderActivityDetail(groupIndex, itemIndex);
       showScreen("activity");
+    }
+
+    function getMessageNotificationById(messageId) {
+      return messageNotifications.find((item) => item.id === messageId) || null;
+    }
+
+    function openActivityByCityAndTitle(cityName, activityTitle) {
+      const groupIndex = cityActivities.findIndex((group) => group.city === cityName);
+      if (groupIndex === -1) {
+        return;
+      }
+
+      const itemIndex = cityActivities[groupIndex].items.findIndex((item) => item.title === activityTitle);
+      if (itemIndex === -1) {
+        return;
+      }
+
+      selectedCity = cityName;
+      renderActivities();
+      openActivityDetail(groupIndex, itemIndex);
+    }
+
+    function renderMessageList() {
+      if (!messageList) {
+        return;
+      }
+
+      messageList.innerHTML = messageNotifications
+        .map((item) => `
+          <button class="message-list-item" type="button" data-open-message="${item.id}">
+            <div class="message-list-item__avatar">${item.avatarText || item.sender.slice(0, 1)}</div>
+            <div class="message-list-item__main">
+              <div class="message-list-item__head">
+                <strong class="message-list-item__sender">${item.sender}</strong>
+                <span class="message-list-item__time">${item.timeLabel}</span>
+              </div>
+              <div class="message-list-item__preview">${item.latestMessage || item.content}</div>
+            </div>
+            <span class="message-list-item__meta">›</span>
+          </button>
+        `)
+        .join("");
+    }
+
+    function renderMessageDetail(messageId) {
+      const messageItem = getMessageNotificationById(messageId) || messageNotifications[0] || null;
+      if (!messageItem) {
+        return;
+      }
+
+      currentMessageNotification = messageItem;
+
+      if (messageDetailTopbarTitle) {
+        messageDetailTopbarTitle.textContent = messageItem.sender;
+      }
+      if (messageDetailAvatar) {
+        messageDetailAvatar.textContent = messageItem.avatarText || messageItem.sender.slice(0, 1);
+      }
+      if (messageDetailSender) {
+        messageDetailSender.textContent = messageItem.sender;
+      }
+      if (messageDetailTime) {
+        messageDetailTime.textContent = messageItem.timeLabel;
+      }
+      if (messageDetailContent) {
+        messageDetailContent.textContent = messageItem.content;
+      }
+      if (messageDetailCardTitle) {
+        messageDetailCardTitle.textContent = `${messageItem.activityCity}活动详情页`;
+      }
+      if (messageDetailCardMeta) {
+        messageDetailCardMeta.textContent = messageItem.activityMeta;
+      }
+      if (openShanghaiActivityFromMessageDetail) {
+        openShanghaiActivityFromMessageDetail.textContent = "立即查看";
+      }
+    }
+
+    function openMessageListScreen() {
+      renderMessageList();
+      showScreen("message");
+    }
+
+    function openMessageDetailScreen(messageId) {
+      renderMessageDetail(messageId);
+      showScreen("messageDetail");
+    }
+
+    function openCurrentMessageTarget() {
+      if (!currentMessageNotification) {
+        return;
+      }
+      openActivityByCityAndTitle(currentMessageNotification.activityCity, currentMessageNotification.activityTitle);
     }
 
     function addChatMessage(role, content) {
@@ -4805,10 +5796,21 @@
     function applyInitialRoute() {
       const params = new URLSearchParams(window.location.search);
       const screen = params.get("screen");
+      const messageId = params.get("messageId");
       const groupIndex = Number(params.get("group"));
       const itemIndex = Number(params.get("item"));
       const districtName = params.get("districtName");
       const chatMode = params.get("chat");
+
+      if (screen === "message") {
+        openMessageListScreen();
+        return;
+      }
+
+      if (screen === "message-detail") {
+        openMessageDetailScreen(messageId || (messageNotifications[0] ? messageNotifications[0].id : ""));
+        return;
+      }
 
       if (screen !== "activity" || Number.isNaN(groupIndex) || Number.isNaN(itemIndex) || !cityActivities[groupIndex] || !cityActivities[groupIndex].items[itemIndex]) {
         return;
@@ -4842,12 +5844,61 @@
     }
 
     document.getElementById("backPreviousButton").addEventListener("click", () => goBackOrFallback());
+    if (backMessageButton) {
+      backMessageButton.addEventListener("click", () => {
+        goBackOrFallback(() => showScreen("home"));
+      });
+    }
+    if (messageHomeShortcutButton) {
+      messageHomeShortcutButton.addEventListener("click", () => {
+        showScreen("home");
+      });
+    }
+    if (messageList) {
+      messageList.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-open-message]");
+        if (!button) {
+          return;
+        }
+        openMessageDetailScreen(button.getAttribute("data-open-message"));
+      });
+    }
+    if (backMessageDetailButton) {
+      backMessageDetailButton.addEventListener("click", () => {
+        openMessageListScreen();
+      });
+    }
+    if (messageDetailHomeShortcutButton) {
+      messageDetailHomeShortcutButton.addEventListener("click", () => {
+        showScreen("home");
+      });
+    }
+    if (openShanghaiActivityFromMessageDetail) {
+      openShanghaiActivityFromMessageDetail.addEventListener("click", () => {
+        openCurrentMessageTarget();
+      });
+    }
     document.getElementById("backHomeButton").addEventListener("click", () => {
       showScreen("home");
     });
     if (detailHomeShortcutButton) {
       detailHomeShortcutButton.addEventListener("click", () => {
         showScreen("home");
+      });
+    }
+    if (backRegistrationButton) {
+      backRegistrationButton.addEventListener("click", () => {
+        showScreen("activity");
+      });
+    }
+    if (registrationHomeShortcutButton) {
+      registrationHomeShortcutButton.addEventListener("click", () => {
+        showScreen("home");
+      });
+    }
+    if (openRegistrationButton) {
+      openRegistrationButton.addEventListener("click", () => {
+        registerCurrentActivity();
       });
     }
     document.getElementById("backActivityButton").addEventListener("click", () => {
@@ -4887,6 +5938,36 @@
       }
       openReportDetail(estate);
     });
+
+    if (registrationForm) {
+      registrationForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const name = registrationNameInput ? registrationNameInput.value.trim() : "";
+        const phone = registrationPhoneInput ? registrationPhoneInput.value.trim() : "";
+
+        if (!name) {
+          registrationStatus.textContent = "请先填写联系人姓名。";
+          registrationStatus.removeAttribute("data-state");
+          if (registrationNameInput) {
+            registrationNameInput.focus();
+          }
+          return;
+        }
+
+        if (!/^1\d{10}$/.test(phone)) {
+          registrationStatus.textContent = "请输入正确的 11 位手机号。";
+          registrationStatus.removeAttribute("data-state");
+          if (registrationPhoneInput) {
+            registrationPhoneInput.focus();
+          }
+          return;
+        }
+
+        registrationStatus.textContent = "资料已登记成功，专属顾问会尽快联系你。";
+        registrationStatus.dataset.state = "success";
+      });
+    }
 
     districtFilters.addEventListener("click", (event) => {
       const button = event.target.closest("[data-district]");
@@ -5010,6 +6091,7 @@
     });
 
     renderActivities();
+    renderMessageList();
     renderDecorDirectory();
     renderActivityDetail(0, 0);
     renderQuickQuestions();

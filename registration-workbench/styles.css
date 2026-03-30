@@ -1631,6 +1631,44 @@ textarea {
   background: #f5f8ff;
 }
 
+.table-user {
+  display: grid;
+  gap: 4px;
+}
+
+.table-user__name {
+  color: var(--ink-1);
+  font-weight: 700;
+}
+
+.table-user__meta {
+  color: var(--ink-3);
+  font-size: 12px;
+}
+
+.message-snippet {
+  display: grid;
+  gap: 4px;
+  min-width: 220px;
+}
+
+.message-snippet strong {
+  color: var(--ink-1);
+  font-size: 13px;
+}
+
+.message-snippet span,
+.message-snippet small,
+.message-empty {
+  color: var(--ink-2);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.message-empty {
+  display: inline-block;
+}
+
 .table-title {
   font-weight: 700;
   line-height: 1.5;

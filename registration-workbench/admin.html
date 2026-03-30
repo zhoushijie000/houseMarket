@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>登记表单管理后台</title>
+  <title>登记用户信息表后台</title>
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body class="admin-body">
@@ -12,7 +12,7 @@
       <div class="admin-logo">H</div>
       <div>
         <div class="admin-topbar__title">成都住建线上房产超市管理平台</div>
-        <div class="admin-topbar__subtitle">运营中心 / 登记表单与登记用户管理</div>
+        <div class="admin-topbar__subtitle">运营中心 / 登记用户信息表</div>
       </div>
     </div>
 
@@ -33,331 +33,122 @@
   <main class="admin-shell admin-shell--compact">
     <section class="admin-pagehead">
       <div>
-        <div class="admin-pagehead__eyebrow">登记运营工作台</div>
-        <h1 class="admin-pagehead__title">登记表单与登记用户列表</h1>
-        <p class="admin-pagehead__desc">主页面仅保留查询和列表，新增、编辑、二维码和批量推送统一改为弹窗处理。</p>
+        <div class="admin-pagehead__eyebrow">登记活动运营</div>
+        <h1 class="admin-pagehead__title">登记用户信息表</h1>
+        <p class="admin-pagehead__desc">主页面只保留查询和列表，消息推送通过弹窗处理，最近一条推送文案会直接回写到列表中展示。</p>
       </div>
       <div class="admin-pagehead__actions">
-        <a class="button button--secondary" href="./index.html" target="_blank" rel="noreferrer">查看登记入口</a>
+        <a class="button button--secondary" href="../房产超市_住进成都.html" target="_blank" rel="noreferrer">查看活动详情页</a>
         <button class="button button--ghost" type="button" id="resetDemoBtn">重置示例数据</button>
       </div>
     </section>
 
-    <div class="workspace-tabs" role="tablist" aria-label="管理视图切换">
-      <button class="workspace-tab is-active" type="button" data-tab="forms">登记表单管理</button>
-      <button class="workspace-tab" type="button" data-tab="records">登记用户管理</button>
-    </div>
-
-    <section class="workspace-view" data-view="forms">
-      <div class="panel panel--filter">
-        <div class="list-toolbar">
-          <div>
-            <div class="panel__eyebrow">查询条件</div>
-            <h2 class="panel__title">登记表单列表</h2>
-          </div>
-          <button class="button button--primary" type="button" id="createFormBtn">新增登记表单</button>
+    <section class="panel panel--filter">
+      <div class="list-toolbar">
+        <div>
+          <div class="panel__eyebrow">查询条件</div>
+          <h2 class="panel__title">登记用户列表</h2>
+          <p class="panel__desc">支持按城市、区县、活动和跟进状态筛选；有勾选时优先对已选用户批量推送，否则默认对当前筛选结果推送。</p>
         </div>
-
-        <div class="filter-grid">
-          <label class="form-item">
-            <span class="form-item__label">表单名称</span>
-            <input class="form-item__control" id="formKeywordInput" type="text" placeholder="请输入表单名称或登记页标题" />
-          </label>
-          <label class="form-item">
-            <span class="form-item__label">状态</span>
-            <select class="form-item__control" id="formStatusSelect">
-              <option value="all">全部状态</option>
-              <option value="active">进行中</option>
-              <option value="upcoming">未开始</option>
-              <option value="expired">已结束</option>
-            </select>
-          </label>
-          <label class="form-item">
-            <span class="form-item__label">专场活动</span>
-            <select class="form-item__control" id="formActivitySelect"></select>
-          </label>
-        </div>
+        <button class="button button--primary" type="button" id="batchPushBtn">批量推送</button>
       </div>
 
-      <section class="panel">
-        <div class="table-shell">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>表单名称</th>
-                <th>登记时间范围</th>
-                <th>专场活动</th>
-                <th>登记用户</th>
-                <th>状态</th>
-                <th>操作</th>
-              </tr>
-            </thead>
-            <tbody id="formTableBody"></tbody>
-          </table>
-        </div>
-      </section>
+      <div class="filter-grid filter-grid--records">
+        <label class="form-item">
+          <span class="form-item__label">城市</span>
+          <select class="form-item__control" id="cityFilterSelect"></select>
+        </label>
+        <label class="form-item">
+          <span class="form-item__label">区县</span>
+          <select class="form-item__control" id="districtFilterSelect"></select>
+        </label>
+        <label class="form-item">
+          <span class="form-item__label">活动名称</span>
+          <select class="form-item__control" id="activityFilterSelect"></select>
+        </label>
+        <label class="form-item">
+          <span class="form-item__label">跟进状态</span>
+          <select class="form-item__control" id="recordStatusFilterSelect">
+            <option value="all">全部状态</option>
+            <option value="new">待跟进</option>
+            <option value="pushed">已推送</option>
+            <option value="contacted">已联系</option>
+          </select>
+        </label>
+        <label class="form-item form-item--stretch">
+          <span class="form-item__label">关键词</span>
+          <input class="form-item__control" id="keywordFilterInput" type="text" placeholder="搜索姓名、手机号、活动名称或区县" />
+        </label>
+      </div>
     </section>
 
-    <section class="workspace-view" data-view="records" hidden>
-      <div class="panel panel--filter">
-        <div class="list-toolbar">
-          <div>
-            <div class="panel__eyebrow">查询条件</div>
-            <h2 class="panel__title">登记用户列表</h2>
-          </div>
-          <button class="button button--primary" type="button" id="openPushModalBtn">批量推送</button>
-        </div>
-
-        <div class="filter-grid filter-grid--records">
-          <label class="form-item">
-            <span class="form-item__label">所属表单</span>
-            <select class="form-item__control" id="recordFormFilterSelect"></select>
-          </label>
-          <label class="form-item">
-            <span class="form-item__label">跟进状态</span>
-            <select class="form-item__control" id="recordStatusFilterSelect">
-              <option value="all">全部状态</option>
-              <option value="new">待跟进</option>
-              <option value="pushed">已推送</option>
-              <option value="contacted">已联系</option>
-            </select>
-          </label>
-          <label class="form-item form-item--stretch">
-            <span class="form-item__label">关键词</span>
-            <input class="form-item__control" id="recordKeywordFilterInput" type="text" placeholder="搜索手机号、姓名或登记内容" />
-          </label>
-        </div>
-
-        <div class="dynamic-filter-bar" id="dynamicFilterBar"></div>
+    <div class="selection-toolbar">
+      <div class="selection-toolbar__summary" id="selectionSummary">当前未选择登记用户</div>
+      <div class="toolbar-actions">
+        <button class="button button--ghost button--small" type="button" id="selectFilteredBtn">全选当前筛选结果</button>
+        <button class="button button--ghost button--small" type="button" id="clearSelectionBtn">清空已选</button>
       </div>
+    </div>
 
-      <div class="selection-toolbar">
-        <div class="selection-toolbar__summary" id="selectionSummary">当前未选择登记用户</div>
-        <div class="toolbar-actions">
-          <button class="button button--ghost button--small" type="button" id="selectFilteredBtn">全选当前筛选结果</button>
-          <button class="button button--ghost button--small" type="button" id="clearSelectionBtn">清空已选</button>
-        </div>
+    <section class="panel">
+      <div class="table-shell">
+        <table class="admin-table admin-table--records">
+          <thead>
+            <tr>
+              <th class="table-check"></th>
+              <th>登记用户</th>
+              <th>手机号</th>
+              <th>城市</th>
+              <th>区县</th>
+              <th>活动名称</th>
+              <th>活动时间</th>
+              <th>登记时间</th>
+              <th>状态</th>
+              <th>消息展示</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="recordTableBody"></tbody>
+        </table>
       </div>
-
-      <section class="panel">
-        <div class="table-shell">
-          <table class="admin-table admin-table--records">
-            <thead>
-              <tr>
-                <th class="table-check"></th>
-                <th>登记用户</th>
-                <th>手机号</th>
-                <th>所属表单</th>
-                <th>登记摘要</th>
-                <th>登记时间</th>
-                <th>状态</th>
-                <th>推送次数</th>
-                <th>操作</th>
-              </tr>
-            </thead>
-            <tbody id="recordTableBody"></tbody>
-          </table>
-        </div>
-      </section>
     </section>
   </main>
 
   <div class="modal-backdrop" id="modalBackdrop" hidden></div>
 
-  <section class="modal" id="formModal" hidden aria-hidden="true">
-    <div class="modal__dialog modal__dialog--xl">
-      <header class="modal__header">
-        <div>
-          <div class="modal__eyebrow">登记表单</div>
-          <h2 class="modal__title" id="formModalTitle">新增登记表单</h2>
-          <p class="modal__desc">在弹窗内完成登记页和字段管理，保存后再同步到列表。</p>
-        </div>
-        <button class="modal__close" type="button" data-close-modal="formModal" aria-label="关闭">×</button>
-      </header>
-
-      <div class="modal__body modal__body--stack">
-        <section class="modal-section">
-          <div class="modal-section__title">基础信息</div>
-          <div class="form-grid form-grid--4">
-            <label class="form-item">
-              <span class="form-item__label">表单名称</span>
-              <input class="form-item__control" id="formNameInput" type="text" placeholder="请输入表单名称" />
-            </label>
-            <label class="form-item">
-              <span class="form-item__label">登记开始时间</span>
-              <input class="form-item__control" id="formStartInput" type="datetime-local" />
-            </label>
-            <label class="form-item">
-              <span class="form-item__label">登记结束时间</span>
-              <input class="form-item__control" id="formEndInput" type="datetime-local" />
-            </label>
-            <label class="form-item">
-              <span class="form-item__label">绑定专场活动</span>
-              <input class="form-item__control" id="formActivityInput" type="text" placeholder="非必填，可留空" />
-            </label>
-          </div>
-        </section>
-
-        <section class="modal-section">
-          <div class="modal-section__title">登记页管理</div>
-          <div class="form-grid form-grid--2">
-            <label class="form-item">
-              <span class="form-item__label">登记页标题</span>
-              <input class="form-item__control" id="pageTitleInput" type="text" placeholder="请输入登记页标题" />
-            </label>
-            <label class="form-item form-item--full">
-              <span class="form-item__label">登记页提示</span>
-              <textarea class="form-item__control form-item__control--textarea" id="pagePromptInput" placeholder="请输入多行提示文案"></textarea>
-            </label>
-          </div>
-        </section>
-
-        <section class="modal-section">
-          <div class="modal-section__head">
-            <div class="modal-section__title">字段管理</div>
-            <button class="button button--primary button--small" type="button" id="addFieldBtn">新增字段</button>
-          </div>
-
-          <div class="field-workspace field-workspace--modal">
-            <div class="field-list" id="fieldList"></div>
-
-            <section class="field-editor">
-              <div class="field-editor__header">
-                <div>
-                  <div class="field-editor__eyebrow">字段编辑</div>
-                  <h3 class="field-editor__title" id="fieldEditorTitle">请选择字段</h3>
-                  <div class="field-editor__meta" id="fieldEditorMeta">字段顺序会影响登记页展示顺序和登记用户摘要展示。</div>
-                </div>
-                <div class="toolbar-actions">
-                  <button class="button button--ghost button--small" type="button" id="moveFieldUpBtn">上移</button>
-                  <button class="button button--ghost button--small" type="button" id="moveFieldDownBtn">下移</button>
-                  <button class="button button--danger button--small" type="button" id="deleteFieldBtn">删除</button>
-                </div>
-              </div>
-
-              <div class="form-grid form-grid--2">
-                <label class="form-item">
-                  <span class="form-item__label">字段名称</span>
-                  <input class="form-item__control" id="fieldLabelInput" type="text" />
-                </label>
-                <label class="form-item">
-                  <span class="form-item__label">字段类型</span>
-                  <select class="form-item__control" id="fieldTypeSelect"></select>
-                </label>
-                <label class="form-item form-item--full">
-                  <span class="form-item__label">占位提示</span>
-                  <input class="form-item__control" id="fieldPlaceholderInput" type="text" />
-                </label>
-                <label class="form-item form-item--full">
-                  <span class="form-item__label">辅助说明</span>
-                  <input class="form-item__control" id="fieldHintInput" type="text" />
-                </label>
-              </div>
-
-              <div class="toggle-row">
-                <label class="form-toggle">
-                  <input id="fieldRequiredInput" type="checkbox" />
-                  <span>设为必填</span>
-                </label>
-                <label class="form-toggle">
-                  <input id="fieldFilterableInput" type="checkbox" />
-                  <span>允许筛选</span>
-                </label>
-                <label class="form-toggle">
-                  <input id="fieldListableInput" type="checkbox" />
-                  <span>列表展示</span>
-                </label>
-              </div>
-
-              <label class="form-item" id="fieldOptionsGroup">
-                <span class="form-item__label">选项列表</span>
-                <textarea class="form-item__control form-item__control--textarea" id="fieldOptionsInput" placeholder="每行一个选项"></textarea>
-              </label>
-            </section>
-          </div>
-        </section>
-      </div>
-
-      <footer class="modal__footer">
-        <button class="button button--ghost" type="button" data-close-modal="formModal">取消</button>
-        <button class="button button--primary" type="button" id="saveFormBtn">保存表单</button>
-      </footer>
-    </div>
-  </section>
-
-  <section class="modal" id="qrModal" hidden aria-hidden="true">
+  <section class="modal" id="pushModal" hidden aria-hidden="true">
     <div class="modal__dialog modal__dialog--md">
       <header class="modal__header">
         <div>
-          <div class="modal__eyebrow">表单二维码</div>
-          <h2 class="modal__title" id="qrModalTitle">登记页二维码</h2>
-        </div>
-        <button class="modal__close" type="button" data-close-modal="qrModal" aria-label="关闭">×</button>
-      </header>
-
-      <div class="modal__body">
-        <div class="qr-card">
-          <div class="qr-card__preview">
-            <img id="qrCodeImage" alt="登记页二维码" />
-            <div class="qr-fallback" id="qrFallback"></div>
-          </div>
-          <div class="qr-card__meta">
-            <div class="qr-card__label">小程序路径</div>
-            <div class="qr-card__value" id="miniProgramPathOutput"></div>
-            <div class="qr-card__label">二维码承接地址</div>
-            <div class="qr-card__value" id="qrLandingOutput"></div>
-          </div>
-        </div>
-      </div>
-
-      <footer class="modal__footer">
-        <button class="button button--ghost" type="button" id="copyMiniPathBtn">复制路径</button>
-        <a class="button button--secondary" id="openFormLink" href="./form.html" target="_blank" rel="noreferrer">打开登记页</a>
-      </footer>
-    </div>
-  </section>
-
-  <section class="modal" id="pushModal" hidden aria-hidden="true">
-    <div class="modal__dialog modal__dialog--lg">
-      <header class="modal__header">
-        <div>
-          <div class="modal__eyebrow">批量推送</div>
-          <h2 class="modal__title">向登记用户批量推送</h2>
-          <p class="modal__desc">可按当前已选用户或当前筛选结果发起推送。</p>
+          <div class="modal__eyebrow">消息推送</div>
+          <h2 class="modal__title" id="pushModalTitle">批量推送</h2>
+          <p class="modal__desc">输入推送文案后即可发送，最近一条消息会同步展示在登记用户列表中。</p>
         </div>
         <button class="modal__close" type="button" data-close-modal="pushModal" aria-label="关闭">×</button>
       </header>
 
       <div class="modal__body modal__body--stack">
-        <div class="form-grid form-grid--2">
-          <label class="form-item">
-            <span class="form-item__label">推送渠道</span>
-            <select class="form-item__control" id="pushChannelSelect"></select>
-          </label>
-          <label class="form-item">
-            <span class="form-item__label">推送标题</span>
-            <input class="form-item__control" id="pushTitleInput" type="text" placeholder="请输入推送标题" />
-          </label>
-          <label class="form-item form-item--full">
-            <span class="form-item__label">推送内容</span>
-            <textarea class="form-item__control form-item__control--textarea form-item__control--tall" id="pushContentInput" placeholder="请输入推送内容"></textarea>
-          </label>
-        </div>
-
-        <div class="push-target-note" id="pushTargetSummary">请选择筛选条件或已选用户后，再发起推送。</div>
+        <label class="form-item">
+          <span class="form-item__label">推送渠道</span>
+          <select class="form-item__control" id="pushChannelSelect"></select>
+        </label>
+        <label class="form-item">
+          <span class="form-item__label">推送标题</span>
+          <input class="form-item__control" id="pushTitleInput" type="text" placeholder="请输入推送标题" />
+        </label>
+        <label class="form-item">
+          <span class="form-item__label">推送文案</span>
+          <textarea class="form-item__control form-item__control--textarea form-item__control--tall" id="pushContentInput" placeholder="请输入推送文案"></textarea>
+        </label>
+        <div class="push-target-note" id="pushTargetSummary">请选择用户后再发起推送。</div>
       </div>
 
-      <footer class="modal__footer modal__footer--split">
+      <footer class="modal__footer">
         <button class="button button--ghost" type="button" data-close-modal="pushModal">取消</button>
-        <div class="toolbar-actions">
-          <button class="button button--secondary" type="button" id="pushFilteredBtn">推送给当前筛选结果</button>
-          <button class="button button--primary" type="button" id="pushSelectedBtn">推送给已选用户</button>
-        </div>
+        <button class="button button--primary" type="button" id="confirmPushBtn">确认推送</button>
       </footer>
     </div>
   </section>
-
-  <div class="toast" id="toast" aria-live="polite"></div>
 
   <script src="./shared.js"></script>
   <script src="./admin.js"></script>
