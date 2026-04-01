@@ -3441,6 +3441,114 @@
       box-shadow: none;
     }
 
+    .activity-signup-modal {
+      position: absolute;
+      inset: 0;
+      z-index: 36;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 20px 16px calc(20px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .activity-signup-modal[hidden] {
+      display: none;
+    }
+
+    .activity-signup-modal__backdrop {
+      position: absolute;
+      inset: 0;
+      border: none;
+      background: rgba(17, 24, 39, 0.38);
+      cursor: pointer;
+    }
+
+    .activity-signup-modal__panel {
+      position: relative;
+      width: 100%;
+      display: grid;
+      gap: 14px;
+      padding: 18px 16px 16px;
+      border-radius: 22px 22px 0 0;
+      background: #ffffff;
+      box-shadow: 0 18px 36px rgba(17, 24, 39, 0.14);
+      animation: modal-pop 0.22s ease;
+    }
+
+    .activity-signup-modal__eyebrow {
+      color: var(--brand-primary);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.4;
+      letter-spacing: 0.08em;
+    }
+
+    .activity-signup-modal__title {
+      margin: 0;
+      color: #111827;
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .activity-signup-modal__desc {
+      margin: -4px 0 0;
+      color: #606266;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .activity-signup-modal__detail-list {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      background: linear-gradient(180deg, rgba(255, 244, 233, 0.72), rgba(255, 248, 242, 0.96));
+    }
+
+    .activity-signup-modal__detail-item {
+      display: grid;
+      gap: 4px;
+    }
+
+    .activity-signup-modal__detail-label {
+      color: #909399;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .activity-signup-modal__detail-value {
+      color: #303133;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    .activity-signup-modal__actions {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+      gap: 10px;
+    }
+
+    .activity-signup-modal__ghost,
+    .activity-signup-modal__primary {
+      min-height: 46px;
+      border: none;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .activity-signup-modal__ghost {
+      background: #f4f5f7;
+      color: #606266;
+    }
+
+    .activity-signup-modal__primary {
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+      color: #ffffff;
+      box-shadow: 0 14px 26px rgba(253, 93, 0, 0.18);
+    }
+
     #registrationScreen {
       background: linear-gradient(180deg, #ffffff 0%, #fff6ee 100%);
     }
@@ -3943,7 +4051,7 @@
         </div>
       </section>
 
-      <section class="screen" id="registrationScreen" aria-label="资料登记">
+      <section class="screen" id="registrationScreen" aria-label="资料报名">
         <header class="topbar topbar--ios">
           <div class="topbar__meta">
             <div class="topbar-pill">
@@ -3954,7 +4062,7 @@
                 <span class="topbar-pill__icon topbar-pill__icon--home">⌂</span>
               </button>
             </div>
-            <span class="topbar__title">资料登记</span>
+            <span class="topbar__title">资料报名</span>
             <div class="topbar-pill topbar-pill--trailing">
               <button class="topbar-pill__button" type="button" aria-label="更多操作">
                 <span class="topbar-pill__icon topbar-pill__icon--more">•••</span>
@@ -3968,7 +4076,7 @@
 
         <div class="page-content">
           <section class="registration-intro">
-            <span class="registration-intro__eyebrow">活动留资</span>
+            <span class="registration-intro__eyebrow">活动报名</span>
             <h2 class="registration-intro__title">提交资料后，专属顾问会尽快联系你</h2>
             <p class="registration-intro__meta" id="registrationActivityMeta">当前活动信息将在这里展示。</p>
           </section>
@@ -4020,14 +4128,37 @@
     <div class="activity-entry-bar">
       <div class="activity-entry-bar__inner">
         <div class="activity-entry-bar__content">
-          <p class="activity-entry-bar__desc" id="activityEntryBarDesc">登记参加本次活动后，可接收活动提醒与相关房源消息。</p>
+          <p class="activity-entry-bar__desc" id="activityEntryBarDesc">报名参加本次活动后，可接收活动提醒与相关房源消息。</p>
         </div>
-        <button class="primary-button" id="openRegistrationButton" type="button">登记活动</button>
+        <button class="primary-button" id="openRegistrationButton" type="button">报名活动</button>
+      </div>
+    </div>
+
+    <div class="activity-signup-modal" id="activitySignupModal" hidden>
+      <button class="activity-signup-modal__backdrop" id="activitySignupModalBackdrop" type="button" aria-label="关闭报名成功弹窗"></button>
+      <div class="activity-signup-modal__panel" role="dialog" aria-modal="true" aria-labelledby="activitySignupModalTitle">
+        <span class="activity-signup-modal__eyebrow">报名成功</span>
+        <h3 class="activity-signup-modal__title" id="activitySignupModalTitle">当前活动信息</h3>
+        <p class="activity-signup-modal__desc">活动时间和地点已同步，点击下方按钮可继续查看本场活动。</p>
+        <div class="activity-signup-modal__detail-list">
+          <div class="activity-signup-modal__detail-item">
+            <span class="activity-signup-modal__detail-label">活动时间</span>
+            <strong class="activity-signup-modal__detail-value" id="activitySignupModalTime">-</strong>
+          </div>
+          <div class="activity-signup-modal__detail-item">
+            <span class="activity-signup-modal__detail-label">活动地点</span>
+            <strong class="activity-signup-modal__detail-value" id="activitySignupModalVenue">-</strong>
+          </div>
+        </div>
+        <div class="activity-signup-modal__actions">
+          <button class="activity-signup-modal__ghost" id="activitySignupModalClose" type="button">我知道了</button>
+          <button class="activity-signup-modal__primary" id="activitySignupModalAction" type="button">查看活动</button>
+        </div>
       </div>
     </div>
 
     <div class="registration-submit-bar">
-      <button class="primary-button" id="submitRegistrationButton" type="submit" form="registrationForm">提交登记</button>
+      <button class="primary-button" id="submitRegistrationButton" type="submit" form="registrationForm">提交报名</button>
     </div>
 
     <button class="chat-fab" id="chatFabButton" type="button" aria-label="打开机器人咨询">
@@ -4114,7 +4245,7 @@
         items: [
           {
             title: "北京国贸成都改善盘巡展",
-            time: "2026.03.29 - 2026.03.31",
+            time: "2026.03.31 - 2026.04.31",
             venue: "国贸大酒店 2F",
             projects: 11,
             note: "面向换房家庭，突出教育、医疗和通勤资源。"
@@ -4375,6 +4506,13 @@
     const activityEntryBarDesc = document.getElementById("activityEntryBarDesc");
     const detailHomeShortcutButton = document.getElementById("detailHomeShortcutButton");
     const openRegistrationButton = document.getElementById("openRegistrationButton");
+    const activitySignupModal = document.getElementById("activitySignupModal");
+    const activitySignupModalBackdrop = document.getElementById("activitySignupModalBackdrop");
+    const activitySignupModalTitle = document.getElementById("activitySignupModalTitle");
+    const activitySignupModalTime = document.getElementById("activitySignupModalTime");
+    const activitySignupModalVenue = document.getElementById("activitySignupModalVenue");
+    const activitySignupModalClose = document.getElementById("activitySignupModalClose");
+    const activitySignupModalAction = document.getElementById("activitySignupModalAction");
     const backRegistrationButton = document.getElementById("backRegistrationButton");
     const registrationHomeShortcutButton = document.getElementById("registrationHomeShortcutButton");
     const registrationForm = document.getElementById("registrationForm");
@@ -4407,9 +4545,9 @@ let currentMessageNotification = null;
 let currentScreenName = "home";
 let previousScreenName = "home";
 const ACTIVITY_SIGNUP_FORM_ID = "form-city-activity-signup";
-const ACTIVITY_SIGNUP_CONFIRM_TEXT = "登记参加本次活动，即表示您同意我们获取并使用您的相关用户信息。";
-const ACTIVITY_SIGNUP_IDLE_TEXT = "登记参加本次活动后，可接收活动提醒与相关房源消息。";
-const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动登记，后续消息会在房产超市内展示。";
+const ACTIVITY_SIGNUP_CONFIRM_TEXT = "报名参加本次活动，即表示您同意我们获取并使用您的相关用户信息。";
+const ACTIVITY_SIGNUP_IDLE_TEXT = "报名参加本次活动后，可接收活动提醒与相关房源消息。";
+const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名，活动时间和地点已同步给您。";
     let currentReport = null;
     let activeChatFlow = null;
     let suspendedTalentAssessment = null;
@@ -5189,7 +5327,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动登记，后续消息
       return [
         workbenchApi.createField({
           id: "name",
-          label: "登记用户",
+          label: "报名用户",
           type: "text",
           required: false,
           filterable: true,
@@ -5263,13 +5401,13 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动登记，后续消息
       const fields = createActivitySignupFields(workbenchApi);
       const defaultForm = workbenchApi.createForm({
         id: ACTIVITY_SIGNUP_FORM_ID,
-        name: "活动登记用户信息表",
-        activityName: "城市专场活动登记",
+        name: "活动报名用户信息表",
+        activityName: "城市专场活动报名",
         registrationStart: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
         registrationEnd: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
         page: {
-          title: "活动登记用户信息表",
-          prompt: "系统自动沉淀活动登记用户信息，供后台筛选和消息推送。"
+          title: "活动报名用户信息表",
+          prompt: "系统自动沉淀活动报名用户信息，供后台筛选和消息推送。"
         },
         fields,
         createdBy: "系统"
@@ -5335,9 +5473,47 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动登记，后续消息
         activityEntryBarDesc.textContent = registered ? ACTIVITY_SIGNUP_DONE_TEXT : ACTIVITY_SIGNUP_IDLE_TEXT;
       }
       if (openRegistrationButton) {
-        openRegistrationButton.textContent = registered ? "已登记" : "登记活动";
+        openRegistrationButton.textContent = registered ? "已报名" : "报名活动";
         openRegistrationButton.disabled = registered;
         openRegistrationButton.setAttribute("aria-disabled", registered ? "true" : "false");
+      }
+    }
+
+    function fillActivitySignupModal(payload) {
+      if (!payload || !payload.item) {
+        return;
+      }
+
+      const { item } = payload;
+      if (activitySignupModalTitle) {
+        activitySignupModalTitle.textContent = item.title || "当前活动";
+      }
+      if (activitySignupModalTime) {
+        activitySignupModalTime.textContent = formatActivityTimeDisplay(item.time);
+      }
+      if (activitySignupModalVenue) {
+        activitySignupModalVenue.textContent = item.venue || "活动地点待同步";
+      }
+    }
+
+    function closeActivitySignupModal() {
+      if (!activitySignupModal) {
+        return;
+      }
+      activitySignupModal.hidden = true;
+    }
+
+    function openActivitySignupModal(payload) {
+      if (!activitySignupModal) {
+        return;
+      }
+
+      fillActivitySignupModal(payload);
+      activitySignupModal.hidden = false;
+      if (activitySignupModalAction) {
+        window.requestAnimationFrame(() => {
+          activitySignupModalAction.focus();
+        });
       }
     }
 
@@ -5403,6 +5579,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动登记，后续消息
 
       createActivityRegistrationRecord(currentActivityPayload);
       updateActivityEntryBarState(currentActivityPayload);
+      openActivitySignupModal(currentActivityPayload);
     }
 
     function fillRegistrationForm() {
@@ -5916,6 +6093,27 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动登记，后续消息
         openCurrentMessageTarget();
       });
     }
+    if (activitySignupModalBackdrop) {
+      activitySignupModalBackdrop.addEventListener("click", () => {
+        closeActivitySignupModal();
+      });
+    }
+    if (activitySignupModalClose) {
+      activitySignupModalClose.addEventListener("click", () => {
+        closeActivitySignupModal();
+      });
+    }
+    if (activitySignupModalAction) {
+      activitySignupModalAction.addEventListener("click", () => {
+        closeActivitySignupModal();
+        if (activityDetailHero) {
+          activityDetailHero.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+        }
+      });
+    }
     document.getElementById("backHomeButton").addEventListener("click", () => {
       showPreviousScreen("home");
     });
@@ -6002,7 +6200,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动登记，后续消息
           return;
         }
 
-        registrationStatus.textContent = "资料已登记成功，专属顾问会尽快联系你。";
+        registrationStatus.textContent = "资料已报名成功，专属顾问会尽快联系你。";
         registrationStatus.dataset.state = "success";
       });
     }

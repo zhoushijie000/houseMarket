@@ -45,6 +45,10 @@
       font: inherit;
     }
 
+    [hidden] {
+      display: none !important;
+    }
+
     .phone-shell {
       position: relative;
       width: min(100%, 375px);
@@ -75,158 +79,15 @@
     }
 
     .page-content {
-      padding: 16px 16px calc(110px + env(safe-area-inset-bottom, 0px));
+      padding: 18px 16px calc(110px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .form-card {
       display: grid;
       gap: 16px;
-    }
-
-    .map-card,
-    .form-card {
+      padding: 20px 16px;
       background: var(--surface);
       box-shadow: 0 14px 30px rgba(17, 24, 39, 0.08);
-    }
-
-    .map-card {
-      overflow: hidden;
-    }
-
-    .map-stage {
-      position: relative;
-      min-height: 240px;
-      background:
-        linear-gradient(90deg, rgba(255,255,255,0.48) 0 8%, transparent 8% 92%, rgba(255,255,255,0.48) 92% 100%),
-        linear-gradient(0deg, rgba(255,255,255,0.48) 0 12%, transparent 12% 88%, rgba(255,255,255,0.48) 88% 100%),
-        linear-gradient(135deg, rgba(255, 225, 203, 0.92), rgba(255, 244, 233, 0.96));
-    }
-
-    .map-stage::before,
-    .map-stage::after {
-      content: "";
-      position: absolute;
-      border-radius: 999px;
-      background: rgba(116, 190, 105, 0.18);
-    }
-
-    .map-stage::before {
-      width: 124px;
-      height: 124px;
-      left: 24px;
-      top: 18px;
-    }
-
-    .map-stage::after {
-      width: 92px;
-      height: 92px;
-      right: 28px;
-      bottom: 28px;
-    }
-
-    .map-road {
-      position: absolute;
-      background: rgba(255, 255, 255, 0.9);
-      box-shadow: inset 0 0 0 1px rgba(253, 93, 0, 0.08);
-    }
-
-    .map-road--horizontal {
-      left: -10%;
-      right: -10%;
-      top: 52%;
-      height: 18px;
-      transform: rotate(-8deg);
-    }
-
-    .map-road--vertical {
-      top: -8%;
-      bottom: -8%;
-      left: 58%;
-      width: 18px;
-      transform: rotate(12deg);
-    }
-
-    .map-radius {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 190px;
-      height: 190px;
-      border-radius: 50%;
-      border: 2px dashed rgba(253, 93, 0, 0.36);
-      background: rgba(253, 93, 0, 0.08);
-      transform: translate(-50%, -50%);
-    }
-
-    .map-pin,
-    .map-user {
-      position: absolute;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      box-shadow: 0 8px 18px rgba(17, 24, 39, 0.16);
-    }
-
-    .map-pin {
-      left: 50%;
-      top: 50%;
-      width: 26px;
-      height: 26px;
-      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
-      color: #fff;
-      font-size: 12px;
-      font-weight: 700;
-      transform: translate(-50%, -50%);
-    }
-
-    .map-user {
-      background: #2f80ed;
-      border: 3px solid #fff;
-      transform: translate(-50%, -50%);
-    }
-
-    .map-legend {
-      position: absolute;
-      left: 12px;
-      right: 12px;
-      bottom: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 12px 14px;
-      background: rgba(255, 255, 255, 0.92);
-      box-shadow: 0 10px 24px rgba(17, 24, 39, 0.08);
-    }
-
-    .map-legend__title {
-      margin: 0;
-      font-size: 15px;
-      font-weight: 700;
-      line-height: 1.4;
-    }
-
-    .map-legend__meta {
-      margin: 4px 0 0;
-      color: var(--text-secondary);
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .ghost-button {
-      min-width: 88px;
-      min-height: 36px;
-      padding: 0 14px;
-      border: 1px solid rgba(253, 93, 0, 0.16);
-      background: rgba(255, 245, 235, 0.96);
-      color: var(--brand-deep);
-      cursor: pointer;
-    }
-
-    .form-card {
-      padding: 18px 16px;
-      display: grid;
-      gap: 14px;
     }
 
     .eyebrow {
@@ -249,6 +110,11 @@
       color: var(--text-secondary);
       font-size: 13px;
       line-height: 1.7;
+    }
+
+    #checkinForm {
+      display: grid;
+      gap: 14px;
     }
 
     .field {
@@ -276,6 +142,66 @@
     .field input:focus {
       border-color: rgba(253, 93, 0, 0.38);
       box-shadow: 0 0 0 4px rgba(253, 93, 0, 0.08);
+    }
+
+    .radio-group {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .radio-card {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 12px;
+      border: 1px solid rgba(228, 231, 237, 0.96);
+      background: #ffffff;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.5;
+      cursor: pointer;
+      transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .radio-card input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .radio-card.is-active {
+      border-color: rgba(253, 93, 0, 0.36);
+      background: rgba(255, 242, 233, 0.98);
+      color: var(--brand-deep);
+      box-shadow: 0 10px 20px rgba(253, 93, 0, 0.08);
+    }
+
+    .mobile-row {
+      display: flex;
+      align-items: stretch;
+      gap: 10px;
+    }
+
+    .mobile-row input {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .ghost-button {
+      min-width: 118px;
+      min-height: 48px;
+      padding: 0 14px;
+      border: 1px solid rgba(253, 93, 0, 0.18);
+      background: rgba(255, 245, 235, 0.96);
+      color: var(--brand-deep);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
     }
 
     .status-box {
@@ -314,7 +240,7 @@
       right: 0;
       bottom: 0;
       padding: 12px 16px calc(18px + env(safe-area-inset-bottom, 0px));
-      background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.94) 26%, #fff 100%);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.94) 26%, #fff 100%);
     }
 
     .primary-button {
@@ -329,10 +255,14 @@
       cursor: pointer;
     }
 
-    .primary-button:disabled {
-      opacity: 0.56;
-      cursor: not-allowed;
-      box-shadow: none;
+    @media (max-width: 360px) {
+      .mobile-row {
+        flex-direction: column;
+      }
+
+      .ghost-button {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -343,68 +273,67 @@
     </header>
 
     <main class="page-content">
-      <section class="map-card">
-        <div class="map-stage" id="mapStage">
-          <div class="map-road map-road--horizontal"></div>
-          <div class="map-road map-road--vertical"></div>
-          <div class="map-radius"></div>
-          <div class="map-pin" title="签到点">签</div>
-          <div class="map-user" id="mapUserPoint" title="当前位置"></div>
-          <div class="map-legend">
-            <div>
-              <p class="map-legend__title">上海活动签到点</p>
-              <p class="map-legend__meta" id="locationMeta">正在获取定位...</p>
-            </div>
-            <button class="ghost-button" type="button" id="relocateButton">重新定位</button>
-          </div>
-        </div>
-      </section>
-
       <section class="form-card">
-              <form id="checkinForm">
+        <span class="eyebrow">活动签到</span>
+        <h1 class="section-title">填写签到信息</h1>
+        <p class="section-desc">请选择邀请方式后填写基础信息，提交即可完成签到。</p>
+
+        <form id="checkinForm">
           <div class="field">
-            <label for="nameInput">姓名 / 称呼</label>
-            <input id="nameInput" type="text" placeholder="例如：张先生 / 李女士 / 张三" />
+            <label>是否定向邀请</label>
+            <div class="radio-group" role="radiogroup" aria-label="是否定向邀请">
+              <label class="radio-card is-active">
+                <input type="radio" name="inviteType" value="no" checked />
+                <span>非定向邀请</span>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="inviteType" value="yes" />
+                <span>定向邀请</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="salutationInput">称呼</label>
+            <input id="salutationInput" type="text" placeholder="例如：张先生 / 李女士" />
           </div>
 
           <div class="field">
             <label for="mobileInput">手机号</label>
-            <input id="mobileInput" type="tel" inputmode="numeric" maxlength="11" placeholder="请输入手机号" />
+            <div class="mobile-row">
+              <input id="mobileInput" type="tel" inputmode="numeric" maxlength="11" placeholder="请输入手机号" />
+              <button class="ghost-button" id="authorizeMobileButton" type="button">授权获取手机号</button>
+            </div>
+          </div>
+
+          <div class="field" id="companyField" hidden>
+            <label for="companyInput">单位</label>
+            <input id="companyInput" type="text" placeholder="请输入单位名称" />
+          </div>
+
+          <div class="status-box" id="checkinStatus">
+            <p class="status-box__title">请先填写签到信息</p>
+            <p class="status-box__desc">非定向邀请填写称呼和手机号，定向邀请需要额外填写单位。</p>
           </div>
         </form>
-            </section>
+      </section>
     </main>
 
     <div class="submit-bar">
-      <button class="primary-button" id="submitButton" type="submit" form="checkinForm" disabled>完成签到</button>
+      <button class="primary-button" id="submitButton" type="submit" form="checkinForm">完成签到</button>
     </div>
   </div>
 
   <script>
-    const targetLocation = {
-      lat: 31.2304,
-      lng: 121.4737,
-      name: "上海活动签到点"
-    };
-
-    const state = {
-      distance: null,
-      canCheckIn: false
-    };
-
-    const mapStage = document.getElementById("mapStage");
-    const mapUserPoint = document.getElementById("mapUserPoint");
-    const locationMeta = document.getElementById("locationMeta");
-    const relocateButton = document.getElementById("relocateButton");
+    const inviteTypeInputs = Array.from(document.querySelectorAll('input[name="inviteType"]'));
+    const radioCards = Array.from(document.querySelectorAll(".radio-card"));
     const checkinForm = document.getElementById("checkinForm");
-    const submitButton = document.getElementById("submitButton");
     const checkinStatus = document.getElementById("checkinStatus");
-    const nameInput = document.getElementById("nameInput");
+    const salutationInput = document.getElementById("salutationInput");
     const mobileInput = document.getElementById("mobileInput");
-
-    function clamp(value, min, max) {
-      return Math.min(max, Math.max(min, value));
-    }
+    const companyField = document.getElementById("companyField");
+    const companyInput = document.getElementById("companyInput");
+    const authorizeMobileButton = document.getElementById("authorizeMobileButton");
 
     function setStatus(title, desc, stateName) {
       checkinStatus.dataset.state = stateName || "";
@@ -414,112 +343,118 @@
       `;
     }
 
-    function updateSubmitState() {
-      state.canCheckIn = typeof state.distance === "number" && state.distance <= 500;
-      submitButton.disabled = !state.canCheckIn;
+    function normalizeMobile(value) {
+      return String(value || "").replace(/\D/g, "").slice(0, 11);
     }
 
-    function renderLocation(distance, sourceLabel) {
-      state.distance = Math.round(distance);
-      updateSubmitState();
-
-      const angle = Math.PI / 3;
-      const radius = clamp((state.distance / 500) * 70, 12, 88);
-      const offsetX = Math.cos(angle) * radius;
-      const offsetY = Math.sin(angle) * radius;
-
-      mapUserPoint.style.left = `calc(50% + ${offsetX}px)`;
-      mapUserPoint.style.top = `calc(50% - ${offsetY}px)`;
-
-      const inRange = state.distance <= 500;
-      locationMeta.textContent = `${sourceLabel} · 距签到点约 ${state.distance}m`;
-
-      if (inRange) {
-        setStatus("定位成功，可完成签到", `当前位置距离签到点约 ${state.distance}m，已满足 500m 内签到要求。`, "success");
-      } else {
-        setStatus("定位成功，但超出签到范围", `当前位置距离签到点约 ${state.distance}m，请移动到签到点附近 500m 内再完成签到。`, "error");
-      }
+    function getInviteType() {
+      const checked = inviteTypeInputs.find((input) => input.checked);
+      return checked ? checked.value : "no";
     }
 
-    function toRadians(value) {
-      return (value * Math.PI) / 180;
-    }
+    function updateInviteMode() {
+      const directed = getInviteType() === "yes";
 
-    function getDistanceMeters(lat1, lng1, lat2, lng2) {
-      const earthRadius = 6371000;
-      const dLat = toRadians(lat2 - lat1);
-      const dLng = toRadians(lng2 - lng1);
-      const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2)
-        + Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2))
-        * Math.sin(dLng / 2) * Math.sin(dLng / 2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      return earthRadius * c;
-    }
+      radioCards.forEach((card) => {
+        const input = card.querySelector('input[name="inviteType"]');
+        card.classList.toggle("is-active", Boolean(input && input.checked));
+      });
 
-    function applyFallbackLocation() {
-      renderLocation(286, "演示定位");
-    }
-
-    function locateUser() {
-      if (!navigator.geolocation) {
-        applyFallbackLocation();
-        return;
+      companyField.hidden = !directed;
+      if (!directed) {
+        companyInput.value = "";
       }
 
-      locationMeta.textContent = "定位中...";
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const distance = getDistanceMeters(
-            position.coords.latitude,
-            position.coords.longitude,
-            targetLocation.lat,
-            targetLocation.lng
-          );
-          renderLocation(distance, "系统定位");
-        },
-        () => {
-          applyFallbackLocation();
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 0
-        }
+      setStatus(
+        directed ? "请填写定向邀请信息" : "请填写签到信息",
+        directed
+          ? "定向邀请需要补充单位信息，提交后即可完成签到。"
+          : "非定向邀请仅需填写称呼和手机号。",
+        ""
       );
     }
 
-    relocateButton.addEventListener("click", () => {
-      locateUser();
+    function getWechatPhoneInvoker() {
+      if (window.wx && typeof window.wx.invoke === "function") {
+        return window.wx;
+      }
+      if (window.WeixinJSBridge && typeof window.WeixinJSBridge.invoke === "function") {
+        return window.WeixinJSBridge;
+      }
+      return null;
+    }
+
+    function handlePhoneAuthorize() {
+      const invoker = getWechatPhoneInvoker();
+      if (!invoker) {
+        mobileInput.value = "13800138000";
+        setStatus("已模拟授权手机号", "当前原型已预留微信手机号接口按钮，正式接入后可自动回填真实手机号。", "success");
+        return;
+      }
+
+      setStatus("等待微信授权", "请在微信授权弹层内确认手机号；如当前环境未完成接口接入，会保留演示模式。", "");
+
+      try {
+        invoker.invoke("getPhoneNumber", {}, (response) => {
+          const phone = normalizeMobile(response && (response.phoneNumber || response.purePhoneNumber || ""));
+          if (phone.length === 11) {
+            mobileInput.value = phone;
+            setStatus("手机号授权成功", `已回填手机号 ${phone}。`, "success");
+            return;
+          }
+
+          if (!mobileInput.value) {
+            mobileInput.value = "13800138000";
+          }
+          setStatus("手机号接口待接入", "当前原型已预留微信手机号授权入口，正式环境可在这里接入解密与回填逻辑。", "");
+        });
+      } catch (error) {
+        mobileInput.value = mobileInput.value || "13800138000";
+        setStatus("手机号授权暂不可用", "当前环境未返回真实授权结果，已保留演示号码，后续可直接替换为正式接口。", "");
+      }
+    }
+
+    inviteTypeInputs.forEach((input) => {
+      input.addEventListener("change", updateInviteMode);
     });
+
+    mobileInput.addEventListener("input", () => {
+      mobileInput.value = normalizeMobile(mobileInput.value);
+    });
+
+    authorizeMobileButton.addEventListener("click", handlePhoneAuthorize);
 
     checkinForm.addEventListener("submit", (event) => {
       event.preventDefault();
 
-      const name = nameInput.value.trim();
-      const mobile = mobileInput.value.trim();
+      const salutation = salutationInput.value.trim();
+      const mobile = normalizeMobile(mobileInput.value);
+      const directed = getInviteType() === "yes";
+      const company = companyInput.value.trim();
 
-      if (!name) {
-        setStatus("请先填写姓名或称呼", "例如：张先生、李女士或张三。", "error");
-        nameInput.focus();
+      if (!salutation) {
+        setStatus("请先填写称呼", "例如：张先生、李女士。", "error");
+        salutationInput.focus();
         return;
       }
 
-      if (!/^1\\d{10}$/.test(mobile)) {
+      if (!/^1\d{10}$/.test(mobile)) {
         setStatus("手机号格式不正确", "请输入正确的 11 位手机号后再完成签到。", "error");
         mobileInput.focus();
         return;
       }
 
-      if (!state.canCheckIn) {
-        setStatus("暂不满足签到范围", "当前定位未进入签到点 500m 范围内，请重新定位或靠近签到点。", "error");
+      if (directed && !company) {
+        setStatus("请先填写单位", "定向邀请签到需要补充单位信息。", "error");
+        companyInput.focus();
         return;
       }
 
-      setStatus("签到成功", `${name} 已完成签到，系统已记录手机号 ${mobile}。`, "success");
+      const companyDesc = directed ? `，单位 ${company}` : "";
+      setStatus("签到成功", `${salutation} 已完成签到，系统已记录手机号 ${mobile}${companyDesc}。`, "success");
     });
 
-    locateUser();
+    updateInviteMode();
   </script>
 </body>
 </html>
