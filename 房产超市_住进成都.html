@@ -4137,9 +4137,9 @@
     <div class="activity-signup-modal" id="activitySignupModal" hidden>
       <button class="activity-signup-modal__backdrop" id="activitySignupModalBackdrop" type="button" aria-label="关闭报名成功弹窗"></button>
       <div class="activity-signup-modal__panel" role="dialog" aria-modal="true" aria-labelledby="activitySignupModalTitle">
-        <span class="activity-signup-modal__eyebrow">报名成功</span>
+        <span class="activity-signup-modal__eyebrow" id="activitySignupModalEyebrow">报名成功</span>
         <h3 class="activity-signup-modal__title" id="activitySignupModalTitle">当前活动信息</h3>
-        <p class="activity-signup-modal__desc">活动时间和地点已同步，点击下方按钮可继续查看本场活动。</p>
+        <p class="activity-signup-modal__desc" id="activitySignupModalDesc">活动时间和地点已同步，点击下方按钮可继续查看本场活动。</p>
         <div class="activity-signup-modal__detail-list">
           <div class="activity-signup-modal__detail-item">
             <span class="activity-signup-modal__detail-label">活动时间</span>
@@ -4508,7 +4508,9 @@
     const openRegistrationButton = document.getElementById("openRegistrationButton");
     const activitySignupModal = document.getElementById("activitySignupModal");
     const activitySignupModalBackdrop = document.getElementById("activitySignupModalBackdrop");
+    const activitySignupModalEyebrow = document.getElementById("activitySignupModalEyebrow");
     const activitySignupModalTitle = document.getElementById("activitySignupModalTitle");
+    const activitySignupModalDesc = document.getElementById("activitySignupModalDesc");
     const activitySignupModalTime = document.getElementById("activitySignupModalTime");
     const activitySignupModalVenue = document.getElementById("activitySignupModalVenue");
     const activitySignupModalClose = document.getElementById("activitySignupModalClose");
@@ -5473,20 +5475,29 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名，活动时间
         activityEntryBarDesc.textContent = registered ? ACTIVITY_SIGNUP_DONE_TEXT : ACTIVITY_SIGNUP_IDLE_TEXT;
       }
       if (openRegistrationButton) {
-        openRegistrationButton.textContent = registered ? "已报名" : "报名活动";
-        openRegistrationButton.disabled = registered;
-        openRegistrationButton.setAttribute("aria-disabled", registered ? "true" : "false");
+        openRegistrationButton.textContent = registered ? "我的报名" : "报名活动";
+        openRegistrationButton.disabled = false;
+        openRegistrationButton.setAttribute("aria-disabled", "false");
       }
     }
 
-    function fillActivitySignupModal(payload) {
+    function fillActivitySignupModal(payload, options = {}) {
       if (!payload || !payload.item) {
         return;
       }
 
       const { item } = payload;
+      const reviewMode = options.mode === "review";
+      if (activitySignupModalEyebrow) {
+        activitySignupModalEyebrow.textContent = reviewMode ? "我的报名" : "报名成功";
+      }
       if (activitySignupModalTitle) {
         activitySignupModalTitle.textContent = item.title || "当前活动";
+      }
+      if (activitySignupModalDesc) {
+        activitySignupModalDesc.textContent = reviewMode
+          ? "您已报名本场活动，可在这里查看对应的时间和地点信息。"
+          : "活动时间和地点已同步，点击下方按钮可继续查看本场活动。";
       }
       if (activitySignupModalTime) {
         activitySignupModalTime.textContent = formatActivityTimeDisplay(item.time);
@@ -5503,12 +5514,12 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名，活动时间
       activitySignupModal.hidden = true;
     }
 
-    function openActivitySignupModal(payload) {
+    function openActivitySignupModal(payload, options = {}) {
       if (!activitySignupModal) {
         return;
       }
 
-      fillActivitySignupModal(payload);
+      fillActivitySignupModal(payload, options);
       activitySignupModal.hidden = false;
       if (activitySignupModalAction) {
         window.requestAnimationFrame(() => {
@@ -5570,6 +5581,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名，活动时间
 
       if (findActivityRegistration(currentActivityPayload)) {
         updateActivityEntryBarState(currentActivityPayload);
+        openActivitySignupModal(currentActivityPayload, { mode: "review" });
         return;
       }
 
@@ -5579,7 +5591,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名，活动时间
 
       createActivityRegistrationRecord(currentActivityPayload);
       updateActivityEntryBarState(currentActivityPayload);
-      openActivitySignupModal(currentActivityPayload);
+      openActivitySignupModal(currentActivityPayload, { mode: "success" });
     }
 
     function fillRegistrationForm() {

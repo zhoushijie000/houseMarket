@@ -276,19 +276,18 @@
       <section class="form-card">
         <span class="eyebrow">活动签到</span>
         <h1 class="section-title">填写签到信息</h1>
-        <p class="section-desc">请选择邀请方式后填写基础信息，提交即可完成签到。</p>
 
         <form id="checkinForm">
           <div class="field">
             <label>是否定向邀请</label>
             <div class="radio-group" role="radiogroup" aria-label="是否定向邀请">
               <label class="radio-card is-active">
-                <input type="radio" name="inviteType" value="no" checked />
-                <span>非定向邀请</span>
+                <input type="radio" name="inviteType" value="yes" checked />
+                <span>定向邀请</span>
               </label>
               <label class="radio-card">
-                <input type="radio" name="inviteType" value="yes" />
-                <span>定向邀请</span>
+                <input type="radio" name="inviteType" value="no" />
+                <span>非定向邀请</span>
               </label>
             </div>
           </div>
@@ -311,10 +310,7 @@
             <input id="companyInput" type="text" placeholder="请输入单位名称" />
           </div>
 
-          <div class="status-box" id="checkinStatus">
-            <p class="status-box__title">请先填写签到信息</p>
-            <p class="status-box__desc">非定向邀请填写称呼和手机号，定向邀请需要额外填写单位。</p>
-          </div>
+          <div class="status-box" id="checkinStatus" hidden></div>
         </form>
       </section>
     </main>
@@ -336,6 +332,7 @@
     const authorizeMobileButton = document.getElementById("authorizeMobileButton");
 
     function setStatus(title, desc, stateName) {
+      checkinStatus.hidden = false;
       checkinStatus.dataset.state = stateName || "";
       checkinStatus.innerHTML = `
         <p class="status-box__title">${title}</p>
@@ -349,7 +346,7 @@
 
     function getInviteType() {
       const checked = inviteTypeInputs.find((input) => input.checked);
-      return checked ? checked.value : "no";
+      return checked ? checked.value : "yes";
     }
 
     function updateInviteMode() {
@@ -364,14 +361,9 @@
       if (!directed) {
         companyInput.value = "";
       }
-
-      setStatus(
-        directed ? "请填写定向邀请信息" : "请填写签到信息",
-        directed
-          ? "定向邀请需要补充单位信息，提交后即可完成签到。"
-          : "非定向邀请仅需填写称呼和手机号。",
-        ""
-      );
+      checkinStatus.hidden = true;
+      checkinStatus.innerHTML = "";
+      checkinStatus.removeAttribute("data-state");
     }
 
     function getWechatPhoneInvoker() {
@@ -388,7 +380,9 @@
       const invoker = getWechatPhoneInvoker();
       if (!invoker) {
         mobileInput.value = "13800138000";
-        setStatus("已模拟授权手机号", "当前原型已预留微信手机号接口按钮，正式接入后可自动回填真实手机号。", "success");
+        checkinStatus.hidden = true;
+        checkinStatus.innerHTML = "";
+        checkinStatus.removeAttribute("data-state");
         return;
       }
 
