@@ -255,6 +255,73 @@
       cursor: pointer;
     }
 
+    .primary-button:disabled {
+      opacity: 0.62;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    .success-modal {
+      position: absolute;
+      inset: 0;
+      z-index: 16;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .success-modal__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(17, 24, 39, 0.38);
+    }
+
+    .success-modal__panel {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      display: grid;
+      gap: 14px;
+      padding: 22px 18px 18px;
+      background: #ffffff;
+      box-shadow: 0 18px 36px rgba(17, 24, 39, 0.14);
+    }
+
+    .success-modal__eyebrow {
+      color: var(--success);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.4;
+      letter-spacing: 0.08em;
+    }
+
+    .success-modal__title {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .success-modal__desc {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .success-modal__action {
+      width: 100%;
+      min-height: 44px;
+      border: none;
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      box-shadow: 0 12px 24px rgba(253, 93, 0, 0.22);
+      cursor: pointer;
+    }
+
     @media (max-width: 360px) {
       .mobile-row {
         flex-direction: column;
@@ -318,6 +385,16 @@
     <div class="submit-bar">
       <button class="primary-button" id="submitButton" type="submit" form="checkinForm">完成签到</button>
     </div>
+
+    <div class="success-modal" id="successModal" hidden>
+      <div class="success-modal__backdrop" id="successModalBackdrop"></div>
+      <div class="success-modal__panel" role="dialog" aria-modal="true" aria-labelledby="successModalTitle">
+        <span class="success-modal__eyebrow">签到完成</span>
+        <h2 class="success-modal__title" id="successModalTitle">签到成功</h2>
+        <p class="success-modal__desc" id="successModalDesc">您的签到信息已提交成功。</p>
+        <button class="success-modal__action" id="successModalAction" type="button">在房产超市逛一逛</button>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -330,6 +407,11 @@
     const companyField = document.getElementById("companyField");
     const companyInput = document.getElementById("companyInput");
     const authorizeMobileButton = document.getElementById("authorizeMobileButton");
+    const submitButton = document.getElementById("submitButton");
+    const successModal = document.getElementById("successModal");
+    const successModalBackdrop = document.getElementById("successModalBackdrop");
+    const successModalDesc = document.getElementById("successModalDesc");
+    const successModalAction = document.getElementById("successModalAction");
 
     function setStatus(title, desc, stateName) {
       checkinStatus.hidden = false;
@@ -342,6 +424,27 @@
 
     function normalizeMobile(value) {
       return String(value || "").replace(/\D/g, "").slice(0, 11);
+    }
+
+    function lockFormAfterSuccess() {
+      inviteTypeInputs.forEach((input) => {
+        input.disabled = true;
+      });
+      salutationInput.disabled = true;
+      mobileInput.disabled = true;
+      companyInput.disabled = true;
+      authorizeMobileButton.disabled = true;
+      submitButton.disabled = true;
+      submitButton.textContent = "已签到";
+    }
+
+    function openSuccessModal(desc) {
+      successModalDesc.textContent = desc;
+      successModal.hidden = false;
+    }
+
+    function closeSuccessModal() {
+      successModal.hidden = true;
     }
 
     function getInviteType() {
@@ -445,8 +548,15 @@
       }
 
       const companyDesc = directed ? `，单位 ${company}` : "";
-      setStatus("签到成功", `${salutation} 已完成签到，系统已记录手机号 ${mobile}${companyDesc}。`, "success");
+      checkinStatus.hidden = true;
+      checkinStatus.innerHTML = "";
+      checkinStatus.removeAttribute("data-state");
+      lockFormAfterSuccess();
+      openSuccessModal(`${salutation} 已完成签到，系统已记录手机号 ${mobile}${companyDesc}。`);
     });
+
+    successModalBackdrop.addEventListener("click", closeSuccessModal);
+    successModalAction.addEventListener("click", closeSuccessModal);
 
     updateInviteMode();
   </script>
