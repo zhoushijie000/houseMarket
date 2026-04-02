@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>楼盘详情</title>
+  <style>
+    :root {
+      --page-width: 375px;
+      --page-bg: #f3f5f6;
+      --surface: #ffffff;
+      --text-primary: #303133;
+      --text-secondary: #606266;
+      --text-tertiary: #909399;
+      --brand-primary: #fd5d00;
+      --brand-secondary: #ff8f2e;
+      --brand-soft: rgba(253, 93, 0, 0.12);
+      --brand-line: rgba(253, 93, 0, 0.18);
+      --success-primary: #67cc35;
+      --success-secondary: #8add63;
+      --line-soft: #e4e7ed;
+      --shadow-card: 0 14px 32px rgba(17, 24, 39, 0.1);
+      --shadow-button: 0 14px 26px rgba(253, 93, 0, 0.2);
+      --shadow-success: 0 12px 24px rgba(103, 204, 53, 0.24);
+      --safe-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+      --radius-lg: 20px;
+      --radius-pill: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at top, rgba(255, 231, 213, 0.8) 0, rgba(255, 255, 255, 0) 30%),
+        linear-gradient(180deg, #fff8f2 0%, var(--page-bg) 24%, var(--page-bg) 100%);
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 0;
+    }
+
+    button,
+    a {
+      font: inherit;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .phone-shell {
+      position: relative;
+      width: min(100%, var(--page-width));
+      min-height: 100vh;
+      background: var(--page-bg);
+      box-shadow: 0 18px 42px rgba(17, 24, 39, 0.12);
+      overflow: hidden;
+    }
+
+    .design-stage {
+      padding-bottom: 108px;
+    }
+
+    .design-stage__image {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #ffffff;
+    }
+
+    .floating-bar {
+      position: fixed;
+      left: 50%;
+      bottom: 0;
+      z-index: 40;
+      width: min(100%, var(--page-width));
+      padding: 12px 16px var(--safe-bottom);
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, rgba(243, 245, 246, 0) 0%, rgba(255, 255, 255, 0.92) 24%, rgba(255, 255, 255, 0.98) 60%);
+      backdrop-filter: blur(14px);
+    }
+
+    .floating-bar__inner {
+      display: grid;
+      grid-template-columns: 64px minmax(0, 1fr) minmax(0, 1.08fr);
+      gap: 10px;
+      align-items: center;
+    }
+
+    .bottom-qr {
+      display: grid;
+      justify-items: center;
+      align-content: center;
+      gap: 6px;
+      min-height: 48px;
+      border: none;
+      background: transparent;
+      color: var(--brand-primary);
+      cursor: pointer;
+    }
+
+    .bottom-qr__icon {
+      position: relative;
+      width: 22px;
+      height: 22px;
+      background:
+        linear-gradient(90deg, transparent 0 30%, var(--brand-primary) 30% 38%, transparent 38% 62%, var(--brand-primary) 62% 70%, transparent 70% 100%),
+        linear-gradient(0deg, transparent 0 30%, var(--brand-primary) 30% 38%, transparent 38% 62%, var(--brand-primary) 62% 70%, transparent 70% 100%);
+    }
+
+    .bottom-qr__icon::before,
+    .bottom-qr__icon::after {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border: 2px solid var(--brand-primary);
+    }
+
+    .bottom-qr__icon::before {
+      left: -1px;
+      top: -1px;
+    }
+
+    .bottom-qr__icon::after {
+      right: -1px;
+      bottom: -1px;
+    }
+
+    .bottom-qr__text {
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    .bar-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 48px;
+      border: none;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .bar-button--advisor {
+      background: linear-gradient(90deg, var(--success-primary), var(--success-secondary));
+      color: #ffffff;
+      box-shadow: var(--shadow-success);
+    }
+
+    .bar-button--developer {
+      background: linear-gradient(90deg, var(--brand-primary), var(--brand-secondary));
+      color: #ffffff;
+      box-shadow: var(--shadow-button);
+    }
+
+    .sheet {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .sheet__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(17, 24, 39, 0.42);
+    }
+
+    .sheet__panel {
+      position: relative;
+      z-index: 1;
+      width: min(100%, var(--page-width));
+      display: grid;
+      gap: 16px;
+      padding: 20px 16px calc(20px + env(safe-area-inset-bottom, 0px));
+      border-radius: 24px 24px 0 0;
+      background: var(--surface);
+      box-shadow: var(--shadow-card);
+    }
+
+    .sheet__close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 50%;
+      background: #f4f6f8;
+      color: var(--text-secondary);
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .sheet__title {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .sheet__meta {
+      margin: -6px 0 0;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .qr-sheet__panel {
+      justify-items: center;
+      text-align: center;
+    }
+
+    .qr-code,
+    .advisor-card__qr {
+      width: 148px;
+      height: 148px;
+      border-radius: 18px;
+      background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='148' height='148' viewBox='0 0 148 148'%3E%3Crect width='148' height='148' rx='18' fill='white'/%3E%3Crect x='15' y='15' width='34' height='34' fill='none' stroke='%23111111' stroke-width='8'/%3E%3Crect x='99' y='15' width='34' height='34' fill='none' stroke='%23111111' stroke-width='8'/%3E%3Crect x='15' y='99' width='34' height='34' fill='none' stroke='%23111111' stroke-width='8'/%3E%3Crect x='63' y='19' width='8' height='8' fill='%23111111'/%3E%3Crect x='75' y='19' width='8' height='8' fill='%23111111'/%3E%3Crect x='59' y='35' width='8' height='8' fill='%23111111'/%3E%3Crect x='75' y='35' width='8' height='8' fill='%23111111'/%3E%3Crect x='59' y='47' width='8' height='8' fill='%23111111'/%3E%3Crect x='67' y='47' width='8' height='8' fill='%23111111'/%3E%3Crect x='83' y='47' width='8' height='8' fill='%23111111'/%3E%3Crect x='55' y='63' width='8' height='8' fill='%23111111'/%3E%3Crect x='71' y='63' width='8' height='8' fill='%23111111'/%3E%3Crect x='87' y='63' width='8' height='8' fill='%23111111'/%3E%3Crect x='103' y='63' width='8' height='8' fill='%23111111'/%3E%3Crect x='47' y='75' width='8' height='8' fill='%23111111'/%3E%3Crect x='63' y='75' width='8' height='8' fill='%23111111'/%3E%3Crect x='79' y='75' width='8' height='8' fill='%23111111'/%3E%3Crect x='95' y='75' width='8' height='8' fill='%23111111'/%3E%3Crect x='111' y='75' width='8' height='8' fill='%23111111'/%3E%3Crect x='59' y='91' width='8' height='8' fill='%23111111'/%3E%3Crect x='75' y='91' width='8' height='8' fill='%23111111'/%3E%3Crect x='91' y='91' width='8' height='8' fill='%23111111'/%3E%3Crect x='47' y='103' width='8' height='8' fill='%23111111'/%3E%3Crect x='63' y='103' width='8' height='8' fill='%23111111'/%3E%3Crect x='79' y='103' width='8' height='8' fill='%23111111'/%3E%3Crect x='95' y='103' width='8' height='8' fill='%23111111'/%3E%3Crect x='59' y='115' width='8' height='8' fill='%23111111'/%3E%3Crect x='75' y='115' width='8' height='8' fill='%23111111'/%3E%3Crect x='91' y='115' width='8' height='8' fill='%23111111'/%3E%3C/svg%3E")
+        center/cover no-repeat;
+      box-shadow: inset 0 0 0 10px #ffffff, 0 10px 22px rgba(17, 24, 39, 0.08);
+    }
+
+    .advisor-card {
+      display: grid;
+      gap: 16px;
+    }
+
+    .advisor-card__profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .advisor-card__avatar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--success-primary), var(--success-secondary));
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: 600;
+      box-shadow: var(--shadow-success);
+    }
+
+    .advisor-card__name {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .advisor-card__role {
+      margin: 4px 0 0;
+      color: var(--text-tertiary);
+      font-size: 12px;
+    }
+
+    .advisor-card__wechat {
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(180deg, rgba(242, 252, 237, 0.92), rgba(255, 255, 255, 0.98));
+    }
+
+    .advisor-card__wechat-label {
+      color: #2f6d17;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .advisor-card__wechat-box {
+      display: flex;
+      justify-content: center;
+    }
+
+    .advisor-card__wechat-id {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.88);
+    }
+
+    .advisor-card__wechat-key {
+      color: var(--text-tertiary);
+      font-size: 12px;
+    }
+
+    .advisor-card__wechat-value {
+      color: var(--text-primary);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .advisor-card__actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .advisor-card__action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      border: none;
+      border-radius: 16px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .advisor-card__action--copy {
+      background: #f4f6f8;
+      color: var(--text-primary);
+    }
+
+    .advisor-card__action--call {
+      background: linear-gradient(90deg, var(--success-primary), var(--success-secondary));
+      color: #ffffff;
+      box-shadow: var(--shadow-success);
+    }
+
+    .advisor-card__tip {
+      min-height: 18px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .advisor-card__tip[data-state="success"] {
+      color: #2f6d17;
+    }
+
+    .advisor-card__tip[data-state="error"] {
+      color: #ff4d4f;
+    }
+
+    .sheet-open {
+      overflow: hidden;
+    }
+
+    @media (max-width: 374px) {
+      .floating-bar__inner {
+        grid-template-columns: 56px minmax(0, 1fr) minmax(0, 1fr);
+      }
+
+      .bar-button {
+        font-size: 14px;
+      }
+
+      .advisor-card__actions {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="phone-shell">
+    <section class="design-stage">
+      <img class="design-stage__image" src="./assets/楼盘详情.svg" alt="楼盘详情设计稿" />
+    </section>
+  </main>
+
+  <div class="floating-bar">
+    <div class="floating-bar__inner">
+      <button class="bottom-qr" id="openQrButton" type="button">
+        <span class="bottom-qr__icon" aria-hidden="true"></span>
+        <span class="bottom-qr__text">二维码</span>
+      </button>
+      <button class="bar-button bar-button--advisor" id="openAdvisorButton" type="button">联系置业顾问</button>
+      <a class="bar-button bar-button--developer" href="tel:028-62587777">联系开发企业</a>
+    </div>
+  </div>
+
+  <div class="sheet qr-sheet" id="qrSheet" hidden>
+    <div class="sheet__backdrop" data-close-sheet="qr"></div>
+    <div class="sheet__panel qr-sheet__panel" role="dialog" aria-modal="true" aria-labelledby="qrSheetTitle">
+      <button class="sheet__close" type="button" data-close-sheet="qr" aria-label="关闭">×</button>
+      <h2 class="sheet__title" id="qrSheetTitle">楼盘二维码</h2>
+      <p class="sheet__meta">微信扫码查看楼盘详情，也可转发给意向客户快速浏览。</p>
+      <div class="qr-code" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <div class="sheet advisor-sheet" id="advisorSheet" hidden>
+    <div class="sheet__backdrop" data-close-sheet="advisor"></div>
+    <div class="sheet__panel" role="dialog" aria-modal="true" aria-labelledby="advisorName">
+      <button class="sheet__close" type="button" data-close-sheet="advisor" aria-label="关闭">×</button>
+      <h2 class="sheet__title">联系置业顾问</h2>
+
+      <div class="advisor-card">
+        <div class="advisor-card__profile">
+          <div class="advisor-card__avatar" id="advisorAvatar">林</div>
+          <div>
+            <p class="advisor-card__name" id="advisorName">林悦</p>
+            <p class="advisor-card__role" id="advisorRole">金牌置业顾问</p>
+          </div>
+        </div>
+
+        <div class="advisor-card__wechat">
+          <div class="advisor-card__wechat-label">微信二维码</div>
+          <div class="advisor-card__wechat-box">
+            <div class="advisor-card__qr" aria-hidden="true"></div>
+          </div>
+          <div class="advisor-card__wechat-id">
+            <span class="advisor-card__wechat-key">微信号</span>
+            <strong class="advisor-card__wechat-value" id="advisorWechat">jinjiang_linyue</strong>
+          </div>
+        </div>
+
+        <div class="advisor-card__actions">
+          <button class="advisor-card__action advisor-card__action--copy" id="copyWechatButton" type="button">复制微信号</button>
+          <a class="advisor-card__action advisor-card__action--call" id="callAdvisorButton" href="tel:13709063518">电话咨询</a>
+        </div>
+
+        <div class="advisor-card__tip" id="advisorTip"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const qrSheet = document.getElementById("qrSheet");
+    const advisorSheet = document.getElementById("advisorSheet");
+    const openQrButton = document.getElementById("openQrButton");
+    const openAdvisorButton = document.getElementById("openAdvisorButton");
+    const copyWechatButton = document.getElementById("copyWechatButton");
+    const advisorWechat = document.getElementById("advisorWechat");
+    const advisorTip = document.getElementById("advisorTip");
+
+    function setBodySheetState(open) {
+      document.body.classList.toggle("sheet-open", open);
+    }
+
+    function closeAllSheets() {
+      qrSheet.hidden = true;
+      advisorSheet.hidden = true;
+      setBodySheetState(false);
+    }
+
+    function openSheet(target) {
+      closeAllSheets();
+      if (target === "qr") {
+        qrSheet.hidden = false;
+      }
+      if (target === "advisor") {
+        advisorSheet.hidden = false;
+      }
+      setBodySheetState(true);
+    }
+
+    function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        return navigator.clipboard.writeText(text);
+      }
+
+      return new Promise((resolve, reject) => {
+        const input = document.createElement("input");
+        input.value = text;
+        input.setAttribute("readonly", "readonly");
+        input.style.position = "absolute";
+        input.style.left = "-9999px";
+        document.body.appendChild(input);
+        input.select();
+        input.setSelectionRange(0, input.value.length);
+
+        try {
+          if (document.execCommand("copy")) {
+            resolve();
+          } else {
+            reject(new Error("copy failed"));
+          }
+        } catch (error) {
+          reject(error);
+        } finally {
+          document.body.removeChild(input);
+        }
+      });
+    }
+
+    function setAdvisorTip(text, state) {
+      advisorTip.textContent = text || "";
+      advisorTip.dataset.state = state || "";
+    }
+
+    openQrButton.addEventListener("click", () => {
+      openSheet("qr");
+    });
+
+    openAdvisorButton.addEventListener("click", () => {
+      setAdvisorTip("可扫码添加微信、复制微信号或直接电话咨询。", "");
+      openSheet("advisor");
+    });
+
+    document.querySelectorAll("[data-close-sheet]").forEach((button) => {
+      button.addEventListener("click", () => {
+        closeAllSheets();
+      });
+    });
+
+    copyWechatButton.addEventListener("click", () => {
+      copyText(advisorWechat.textContent.trim()).then(() => {
+        setAdvisorTip("已复制微信号，可直接粘贴添加。", "success");
+      }).catch(() => {
+        setAdvisorTip("复制失败，请手动记录微信号。", "error");
+      });
+    });
+  </script>
+</body>
+</html>

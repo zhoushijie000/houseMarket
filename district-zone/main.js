@@ -234,6 +234,83 @@
     ]
   };
 
+  const ESTATE_DETAIL_HERO_PRESETS = [
+    { image: "../assets/楼盘实景-楼栋外立面.png", alt: "楼栋外立面实景" },
+    { image: "../assets/楼盘实景-社区楼景.png", alt: "社区楼景实景" },
+    { image: "../assets/楼盘实景-园林入口.png", alt: "园林入口实景" },
+    { image: "../assets/楼盘实景-客厅样板间.png", alt: "样板间客厅实景" },
+    { image: "../assets/楼盘实景-会所书吧.png", alt: "会所书吧实景" }
+  ];
+
+  const DISTRICT_CONTACT_PRESETS = {
+    gaoxin: {
+      developerName: "成都高新置业发展有限公司",
+      developerPhone: "028-8512-6600",
+      advisor: {
+        name: "唐静怡",
+        avatarText: "唐",
+        role: "高级置业顾问",
+        wechatId: "gaoxin_tangjy",
+        phone: "13550081236"
+      }
+    },
+    tianfu: {
+      developerName: "成都天府新区城市发展集团",
+      developerPhone: "028-6877-3200",
+      advisor: {
+        name: "周清妍",
+        avatarText: "周",
+        role: "置业服务顾问",
+        wechatId: "tianfu_zhouqy",
+        phone: "13608051228"
+      }
+    },
+    wuhou: {
+      developerName: "成都武侯城市更新建设有限公司",
+      developerPhone: "028-8558-1988",
+      advisor: {
+        name: "冯嘉怡",
+        avatarText: "冯",
+        role: "资深置业顾问",
+        wechatId: "wuhou_fengjy",
+        phone: "13980561147"
+      }
+    },
+    qingyang: {
+      developerName: "成都青羊城市建设投资集团",
+      developerPhone: "028-8621-3077",
+      advisor: {
+        name: "顾安宁",
+        avatarText: "顾",
+        role: "主城置业顾问",
+        wechatId: "qingyang_guan",
+        phone: "13881742265"
+      }
+    },
+    jinjiang: {
+      developerName: "成都锦江建设开发有限责任公司",
+      developerPhone: "028-8447-9100",
+      advisor: {
+        name: "林悦",
+        avatarText: "林",
+        role: "金牌置业顾问",
+        wechatId: "jinjiang_linyue",
+        phone: "13709063518"
+      }
+    },
+    chenghua: {
+      developerName: "成都成华城市建设投资有限公司",
+      developerPhone: "028-8411-5500",
+      advisor: {
+        name: "宋嘉禾",
+        avatarText: "宋",
+        role: "改善置业顾问",
+        wechatId: "chenghua_songjh",
+        phone: "13666192742"
+      }
+    }
+  };
+
   function commonsFilePath(fileName) {
     return "https://commons.wikimedia.org/wiki/Special:FilePath/" + encodeURIComponent(fileName);
   }
@@ -280,6 +357,103 @@
 
       if (triggerEl.tagName !== "A" && fallbackHref) {
         window.location.href = fallbackHref;
+      }
+    });
+  }
+
+  function normalizeDialPhone(phone) {
+    return String(phone || "").replace(/[^\d]/g, "");
+  }
+
+  function buildEstateDetailHref(districtId, projectIndex, routeState) {
+    const params = new URLSearchParams();
+    if (districtId) {
+      params.set("district", districtId);
+    }
+    params.set("project", String(projectIndex));
+
+    if (routeState) {
+      ["source", "group", "item", "districtName"].forEach(function (key) {
+        if (routeState[key] !== null && routeState[key] !== undefined && routeState[key] !== "") {
+          params.set(key, routeState[key]);
+        }
+      });
+    }
+
+    return "./estate-detail.html?" + params.toString();
+  }
+
+  function renderEstateCard(district, project, projectIndex, routeState) {
+    return '' +
+      '<a class="estate-card estate-card--link" href="' + buildEstateDetailHref(district.id, projectIndex, routeState) + '">' +
+        '<div class="estate-card__media" style="--thumb-start:' + district.palette.start + ";--thumb-end:" + district.palette.end + '">' +
+          '<div class="estate-card__media-badge">' + project.badge + "</div>" +
+          '<div class="estate-card__media-name">' + project.thumb + "</div>" +
+        "</div>" +
+        '<div class="estate-card__body">' +
+          '<h3 class="estate-card__title">' + project.name + "</h3>" +
+          '<p class="estate-card__meta">' + project.area + "</p>" +
+          '<p class="estate-card__desc">' + project.desc + "</p>" +
+          '<div class="tag-row">' + renderTags(project.tags, true) + "</div>" +
+          '<div class="estate-card__footer">' +
+            '<div class="price">' + project.price + '<small>元/㎡</small></div>' +
+            '<div class="status-badge">' + project.stock + "</div>" +
+          "</div>" +
+        "</div>" +
+        '<div class="estate-card__arrow" aria-hidden="true">›</div>' +
+      "</a>";
+  }
+
+  function getEstateDetailModel(district, project, projectIndex) {
+    const heroPreset = ESTATE_DETAIL_HERO_PRESETS[projectIndex % ESTATE_DETAIL_HERO_PRESETS.length];
+    const contactPreset = DISTRICT_CONTACT_PRESETS[district.id] || DISTRICT_CONTACT_PRESETS.gaoxin;
+    const salesOffice = project.badge + "售楼部";
+
+    return {
+      hero: heroPreset,
+      salesOffice: salesOffice,
+      contact: contactPreset,
+      infoItems: [
+        { label: "参考单价", value: project.price + "元/㎡" },
+        { label: "项目位置", value: project.area },
+        { label: "所在板块", value: project.badge },
+        { label: "产品标签", value: project.tags.join(" / ") },
+        { label: "在售情况", value: project.stock },
+        { label: "开发企业", value: contactPreset.developerName }
+      ],
+      highlightItems: [
+        { title: "项目亮点", body: project.desc },
+        { title: "板块价值", body: district.intro },
+        { title: "到访咨询", body: "可联系 " + contactPreset.advisor.name + " 到 " + salesOffice + " 一对一了解在售房源与优惠情况。" }
+      ]
+    };
+  }
+
+  function copyTextToClipboard(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text);
+    }
+
+    return new Promise(function (resolve, reject) {
+      const tempInput = document.createElement("input");
+      tempInput.value = text;
+      tempInput.setAttribute("readonly", "readonly");
+      tempInput.style.position = "absolute";
+      tempInput.style.left = "-9999px";
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      tempInput.setSelectionRange(0, tempInput.value.length);
+
+      try {
+        if (document.execCommand("copy")) {
+          resolve();
+        } else {
+          reject(new Error("copy failed"));
+        }
+      } catch (error) {
+        reject(error);
+      } finally {
+        document.body.removeChild(tempInput);
       }
     });
   }
@@ -568,6 +742,12 @@
     const projectFilterBarEl = document.getElementById("projectFilterBar");
     const videoCountEl = document.getElementById("videoCount");
     const projectCountEl = document.getElementById("projectCount");
+    const estateDetailRouteState = {
+      source: source || "",
+      group: groupIndex,
+      item: itemIndex,
+      districtName: districtName || ""
+    };
     let selectedProjectBoard = "";
     let backHref = "./index.html?district=" + district.id;
 
@@ -637,24 +817,8 @@
         "</article>";
     }).join("");
 
-    projectListEl.innerHTML = district.projects.map(function (project) {
-      return '' +
-        '<article class="estate-card">' +
-          '<div class="estate-card__media" style="--thumb-start:' + district.palette.start + ";--thumb-end:" + district.palette.end + '">' +
-            '<div class="estate-card__media-badge">' + project.badge + "</div>" +
-            '<div class="estate-card__media-name">' + project.thumb + "</div>" +
-          "</div>" +
-          '<div class="estate-card__body">' +
-            '<h3 class="estate-card__title">' + project.name + "</h3>" +
-            '<p class="estate-card__meta">' + project.area + "</p>" +
-            '<p class="estate-card__desc">' + project.desc + "</p>" +
-            '<div class="tag-row">' + renderTags(project.tags, true) + "</div>" +
-            '<div class="estate-card__footer">' +
-              '<div class="price">' + project.price + '<small>元/㎡</small></div>' +
-              '<div class="status-badge">' + project.stock + "</div>" +
-            "</div>" +
-          "</div>" +
-        "</article>";
+    projectListEl.innerHTML = district.projects.map(function (project, projectIndex) {
+      return renderEstateCard(district, project, projectIndex, estateDetailRouteState);
     }).join("");
 
     function getProjectBoards() {
@@ -667,12 +831,17 @@
     }
 
     function getFilteredProjects() {
-      if (!selectedProjectBoard) {
-        return district.projects;
-      }
+      return district.projects.map(function (project, projectIndex) {
+        return {
+          project: project,
+          projectIndex: projectIndex
+        };
+      }).filter(function (entry) {
+        if (!selectedProjectBoard) {
+          return true;
+        }
 
-      return district.projects.filter(function (project) {
-        return project.badge === selectedProjectBoard;
+        return entry.project.badge === selectedProjectBoard;
       });
     }
 
@@ -699,24 +868,8 @@
         return;
       }
 
-      projectListEl.innerHTML = filteredProjects.map(function (project) {
-        return '' +
-          '<article class="estate-card">' +
-            '<div class="estate-card__media" style="--thumb-start:' + district.palette.start + ";--thumb-end:" + district.palette.end + '">' +
-              '<div class="estate-card__media-badge">' + project.badge + "</div>" +
-              '<div class="estate-card__media-name">' + project.thumb + "</div>" +
-            "</div>" +
-            '<div class="estate-card__body">' +
-              '<h3 class="estate-card__title">' + project.name + "</h3>" +
-              '<p class="estate-card__meta">' + project.area + "</p>" +
-              '<p class="estate-card__desc">' + project.desc + "</p>" +
-              '<div class="tag-row">' + renderTags(project.tags, true) + "</div>" +
-              '<div class="estate-card__footer">' +
-                '<div class="price">' + project.price + '<small>元/㎡</small></div>' +
-                '<div class="status-badge">' + project.stock + "</div>" +
-              "</div>" +
-            "</div>" +
-          "</article>";
+      projectListEl.innerHTML = filteredProjects.map(function (entry) {
+        return renderEstateCard(district, entry.project, entry.projectIndex, estateDetailRouteState);
       }).join("");
     }
 
@@ -735,11 +888,187 @@
     renderProjects();
   }
 
+  function initEstateDetailPage() {
+    const pageEl = document.getElementById("estateDetailPage");
+    if (!pageEl) {
+      return;
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const district = DISTRICT_MAP[getDistrictFromQuery(LOCATED_DISTRICT_ID)];
+    const source = params.get("source");
+    const groupIndex = params.get("group");
+    const itemIndex = params.get("item");
+    const districtName = params.get("districtName");
+    const maxProjectIndex = Math.max(0, district.projects.length - 1);
+    const projectIndex = Math.min(maxProjectIndex, Math.max(0, Number(params.get("project")) || 0));
+    const project = district.projects[projectIndex];
+    const model = getEstateDetailModel(district, project, projectIndex);
+    const backLinkEl = document.getElementById("estateBackLink");
+    const estateHeroImageEl = document.getElementById("estateHeroImage");
+    const estateHeroMetaEl = document.getElementById("estateHeroMeta");
+    const estateTitleEl = document.getElementById("estateTitle");
+    const estateDistrictEl = document.getElementById("estateDistrict");
+    const estateSalesOfficeEl = document.getElementById("estateSalesOffice");
+    const estateTagRowEl = document.getElementById("estateTagRow");
+    const estatePriceTextEl = document.getElementById("estatePriceText");
+    const estateStockTextEl = document.getElementById("estateStockText");
+    const estateBasicListEl = document.getElementById("estateBasicList");
+    const estateHighlightListEl = document.getElementById("estateHighlightList");
+    const openProjectQrButtonEl = document.getElementById("openProjectQrButton");
+    const contactAdvisorButtonEl = document.getElementById("contactAdvisorButton");
+    const contactDeveloperButtonEl = document.getElementById("contactDeveloperButton");
+    const developerPhoneTextEl = document.getElementById("developerPhoneText");
+    const developerNameTextEl = document.getElementById("developerNameText");
+    const projectQrSheetEl = document.getElementById("projectQrSheet");
+    const projectQrSheetBackdropEl = document.getElementById("projectQrSheetBackdrop");
+    const projectQrSheetCloseEl = document.getElementById("projectQrSheetClose");
+    const projectQrTitleEl = document.getElementById("projectQrTitle");
+    const projectQrMetaEl = document.getElementById("projectQrMeta");
+    const advisorSheetEl = document.getElementById("advisorSheet");
+    const advisorSheetBackdropEl = document.getElementById("advisorSheetBackdrop");
+    const advisorSheetCloseEl = document.getElementById("advisorSheetClose");
+    const advisorAvatarEl = document.getElementById("advisorAvatar");
+    const advisorNameEl = document.getElementById("advisorName");
+    const advisorRoleEl = document.getElementById("advisorRole");
+    const advisorWechatIdEl = document.getElementById("advisorWechatId");
+    const copyWechatButtonEl = document.getElementById("copyWechatButton");
+    const callAdvisorButtonEl = document.getElementById("callAdvisorButton");
+    const advisorSheetTipEl = document.getElementById("advisorSheetTip");
+    let backHref = "./detail.html?district=" + district.id;
+
+    if (source === "activity" && groupIndex !== null && itemIndex !== null) {
+      const backParams = new URLSearchParams();
+      backParams.set("district", district.id);
+      backParams.set("source", source);
+      backParams.set("group", groupIndex);
+      backParams.set("item", itemIndex);
+      if (districtName) {
+        backParams.set("districtName", districtName);
+      }
+      backHref = "./detail.html?" + backParams.toString();
+    }
+
+    setPageAccent(pageEl, district);
+    bindHistoryBack(backLinkEl, backHref);
+    document.title = project.name;
+
+    estateHeroImageEl.src = model.hero.image;
+    estateHeroImageEl.alt = project.name + model.hero.alt;
+    estateHeroMetaEl.textContent = model.salesOffice;
+    estateTitleEl.textContent = project.name;
+    estateDistrictEl.textContent = district.name;
+    estateSalesOfficeEl.textContent = model.salesOffice;
+    estateTagRowEl.innerHTML = renderTags([project.badge].concat(project.tags).slice(0, 3), true);
+    estatePriceTextEl.textContent = project.price + "元/㎡";
+    estateStockTextEl.textContent = project.stock;
+    developerPhoneTextEl.textContent = model.contact.developerPhone + " · 售楼部热线";
+    developerNameTextEl.textContent = model.contact.developerName;
+
+    const basicInfoItems = [
+      { label: "项目位置", value: project.area },
+      { label: "所在板块", value: project.badge },
+      { label: "售楼部", value: model.salesOffice },
+      { label: "产品标签", value: project.tags.join(" / ") },
+      { label: "开发企业", value: model.contact.developerName }
+    ];
+
+    estateBasicListEl.innerHTML = basicInfoItems.map(function (item) {
+      return '' +
+        '<div class="estate-info-row">' +
+          '<div class="estate-info-row__label">' + item.label + "</div>" +
+          '<div class="estate-info-row__value">' + item.value + "</div>" +
+        "</div>";
+    }).join("");
+
+    estateHighlightListEl.innerHTML = model.highlightItems.map(function (item) {
+      return '' +
+        '<article class="estate-highlight-card">' +
+          '<h3 class="estate-highlight-card__title">' + item.title + "</h3>" +
+          '<p class="estate-highlight-card__desc">' + item.body + "</p>" +
+        "</article>";
+    }).join("");
+
+    contactDeveloperButtonEl.href = "tel:" + normalizeDialPhone(model.contact.developerPhone);
+    contactDeveloperButtonEl.setAttribute("aria-label", "联系开发企业");
+    advisorAvatarEl.textContent = model.contact.advisor.avatarText || model.contact.advisor.name.slice(0, 1);
+    advisorNameEl.textContent = model.contact.advisor.name;
+    advisorRoleEl.textContent = model.contact.advisor.role;
+    advisorWechatIdEl.textContent = model.contact.advisor.wechatId;
+    callAdvisorButtonEl.href = "tel:" + normalizeDialPhone(model.contact.advisor.phone);
+    projectQrTitleEl.textContent = project.name;
+    projectQrMetaEl.textContent = district.name + " · 微信扫码查看楼盘详情";
+
+    function setAdvisorSheetTip(text, state) {
+      advisorSheetTipEl.textContent = text || "";
+      advisorSheetTipEl.dataset.state = state || "";
+    }
+
+    function openProjectQrSheet() {
+      advisorSheetEl.hidden = true;
+      projectQrSheetEl.hidden = false;
+      document.body.classList.add("is-sheet-open");
+    }
+
+    function closeProjectQrSheet() {
+      projectQrSheetEl.hidden = true;
+      document.body.classList.remove("is-sheet-open");
+    }
+
+    function openAdvisorSheet() {
+      projectQrSheetEl.hidden = true;
+      advisorSheetEl.hidden = false;
+      document.body.classList.add("is-sheet-open");
+      setAdvisorSheetTip("可扫码添加微信、复制微信号或直接电话咨询。", "");
+    }
+
+    function closeAdvisorSheet() {
+      advisorSheetEl.hidden = true;
+      document.body.classList.remove("is-sheet-open");
+    }
+
+    openProjectQrButtonEl.addEventListener("click", function () {
+      openProjectQrSheet();
+    });
+
+    projectQrSheetBackdropEl.addEventListener("click", function () {
+      closeProjectQrSheet();
+    });
+
+    projectQrSheetCloseEl.addEventListener("click", function () {
+      closeProjectQrSheet();
+    });
+
+    contactAdvisorButtonEl.addEventListener("click", function () {
+      openAdvisorSheet();
+    });
+
+    advisorSheetBackdropEl.addEventListener("click", function () {
+      closeAdvisorSheet();
+    });
+
+    advisorSheetCloseEl.addEventListener("click", function () {
+      closeAdvisorSheet();
+    });
+
+    copyWechatButtonEl.addEventListener("click", function () {
+      copyTextToClipboard(model.contact.advisor.wechatId).then(function () {
+        setAdvisorSheetTip("已复制微信号：" + model.contact.advisor.wechatId, "success");
+      }).catch(function () {
+        setAdvisorSheetTip("复制失败，请手动记录微信号：" + model.contact.advisor.wechatId, "error");
+      });
+    });
+  }
+
   if (document.body.dataset.page === "collection") {
     initCollectionPageV2();
   }
 
   if (document.body.dataset.page === "detail") {
     initDetailPage();
+  }
+
+  if (document.body.dataset.page === "estate-detail") {
+    initEstateDetailPage();
   }
 }());

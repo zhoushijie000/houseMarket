@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>楼盘详情</title>
+  <link rel="stylesheet" href="./components.css" />
+</head>
+<body data-page="estate-detail">
+  <main class="mobile-page" id="estateDetailPage">
+    <header class="topbar topbar--estate">
+      <a class="topbar__back" id="estateBackLink" href="./detail.html" aria-label="返回">&lt;</a>
+      <div class="topbar__title">楼盘详情</div>
+      <div class="estate-top-actions" aria-hidden="true">
+        <button class="estate-top-actions__button" type="button">•••</button>
+        <button class="estate-top-actions__button" type="button">－</button>
+        <button class="estate-top-actions__button" type="button">◎</button>
+      </div>
+    </header>
+
+    <section class="estate-detail-hero">
+      <div class="estate-detail-hero__media">
+        <img class="estate-detail-hero__image" id="estateHeroImage" src="" alt="" />
+        <div class="estate-detail-hero__meta" id="estateHeroMeta">售楼部</div>
+      </div>
+
+      <div class="estate-media-tabs" aria-label="楼盘内容分类">
+        <button class="estate-media-tabs__item is-active" type="button">总平</button>
+        <button class="estate-media-tabs__item" type="button">效果</button>
+        <button class="estate-media-tabs__item" type="button">视频</button>
+      </div>
+    </section>
+
+    <section class="estate-intro-shell">
+      <article class="estate-intro-card">
+        <div class="estate-intro-card__head">
+          <div class="estate-intro-card__main">
+            <h1 class="estate-intro-card__title" id="estateTitle">楼盘名称</h1>
+            <div class="estate-intro-card__meta">
+              <span class="estate-intro-card__location" id="estateDistrict">锦江区</span>
+              <span class="estate-intro-card__sales" id="estateSalesOffice">售楼部</span>
+            </div>
+          </div>
+          <button class="estate-intro-card__fav" type="button" aria-label="关注楼盘">
+            <span class="estate-intro-card__fav-icon">♡</span>
+            <span class="estate-intro-card__fav-text">关注楼盘</span>
+          </button>
+        </div>
+
+        <div class="tag-row estate-intro-card__tags" id="estateTagRow"></div>
+      </article>
+    </section>
+
+    <section class="page-section estate-shortcut-section">
+      <div class="estate-shortcut-card">
+        <button class="estate-shortcut-item estate-shortcut-item--blue" type="button">
+          <span class="estate-shortcut-item__icon" aria-hidden="true"></span>
+          <span class="estate-shortcut-item__label">户型图</span>
+        </button>
+        <button class="estate-shortcut-item estate-shortcut-item--orange" type="button">
+          <span class="estate-shortcut-item__icon" aria-hidden="true"></span>
+          <span class="estate-shortcut-item__label">一房一价</span>
+        </button>
+        <button class="estate-shortcut-item estate-shortcut-item--green" type="button">
+          <span class="estate-shortcut-item__icon" aria-hidden="true"></span>
+          <span class="estate-shortcut-item__label">楼盘信息</span>
+        </button>
+        <button class="estate-shortcut-item estate-shortcut-item--cyan" type="button">
+          <span class="estate-shortcut-item__icon" aria-hidden="true"></span>
+          <span class="estate-shortcut-item__label">周边配套</span>
+        </button>
+        <button class="estate-shortcut-item estate-shortcut-item--sun" type="button">
+          <span class="estate-shortcut-item__icon" aria-hidden="true"></span>
+          <span class="estate-shortcut-item__label">楼盘相册</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="page-section detail-layout estate-detail-layout">
+      <div class="detail-section">
+        <div class="section-title section-title--estate">
+          <div class="section-title__text">楼盘基本信息</div>
+        </div>
+        <div class="card estate-basic-card">
+          <div class="estate-basic-card__price">
+            <span>参考单价</span>
+            <strong id="estatePriceText">0元/㎡</strong>
+          </div>
+          <div class="estate-basic-card__stock">
+            <span>在售情况</span>
+            <strong id="estateStockText">剩余 0 套</strong>
+          </div>
+          <div class="estate-info-list" id="estateBasicList"></div>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <div class="section-title section-title--estate">
+          <div class="section-title__text">置业亮点</div>
+        </div>
+        <div class="estate-highlight-grid" id="estateHighlightList"></div>
+      </div>
+
+      <div class="detail-section">
+        <div class="section-title section-title--estate">
+          <div class="section-title__text">开发企业</div>
+        </div>
+        <div class="card estate-contact-card">
+          <h3 class="estate-contact-card__name" id="developerNameText">开发企业名称</h3>
+          <div class="estate-contact-card__meta" id="developerPhoneText">028-0000-0000</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="spacer estate-detail-spacer"></div>
+  </main>
+
+  <div class="fixed-bar fixed-bar--estate">
+    <div class="fixed-bar__inner fixed-bar__inner--estate">
+      <button class="estate-bottom-qr" id="openProjectQrButton" type="button">
+        <span class="estate-bottom-qr__icon" aria-hidden="true"></span>
+        <span class="estate-bottom-qr__text">二维码</span>
+      </button>
+      <button class="btn btn--success" id="contactAdvisorButton" type="button">联系置业顾问</button>
+      <a class="btn btn--primary" id="contactDeveloperButton" href="tel:">联系开发企业</a>
+    </div>
+  </div>
+
+  <div class="project-qr-sheet" id="projectQrSheet" hidden>
+    <div class="project-qr-sheet__backdrop" id="projectQrSheetBackdrop"></div>
+    <div class="project-qr-sheet__panel" role="dialog" aria-modal="true" aria-labelledby="projectQrTitle">
+      <button class="project-qr-sheet__close" id="projectQrSheetClose" type="button" aria-label="关闭">×</button>
+      <h2 class="project-qr-sheet__title" id="projectQrTitle">楼盘二维码</h2>
+      <p class="project-qr-sheet__meta" id="projectQrMeta">微信扫码查看楼盘详情</p>
+      <div class="project-qr-sheet__code" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <div class="advisor-sheet" id="advisorSheet" hidden>
+    <div class="advisor-sheet__backdrop" id="advisorSheetBackdrop"></div>
+    <div class="advisor-sheet__panel" role="dialog" aria-modal="true" aria-labelledby="advisorName">
+      <button class="advisor-sheet__close" id="advisorSheetClose" type="button" aria-label="关闭">×</button>
+      <h2 class="advisor-sheet__title">联系置业顾问</h2>
+
+      <div class="advisor-sheet__profile">
+        <div class="advisor-sheet__avatar" id="advisorAvatar">顾</div>
+        <div>
+          <p class="advisor-sheet__name" id="advisorName">置业顾问</p>
+          <p class="advisor-sheet__role" id="advisorRole">金牌置业顾问</p>
+        </div>
+      </div>
+
+      <div class="advisor-sheet__qr-card">
+        <div class="advisor-sheet__qr-label">微信二维码</div>
+        <div class="advisor-sheet__qr-box">
+          <div class="advisor-sheet__qr-code" aria-hidden="true"></div>
+        </div>
+        <div class="advisor-sheet__wechat-line">
+          <span class="advisor-sheet__wechat-label">微信号</span>
+          <strong class="advisor-sheet__wechat-value" id="advisorWechatId">advisor_wechat</strong>
+        </div>
+      </div>
+
+      <div class="advisor-sheet__actions">
+        <button class="advisor-sheet__action advisor-sheet__action--copy" id="copyWechatButton" type="button">复制微信号</button>
+        <a class="advisor-sheet__action advisor-sheet__action--call" id="callAdvisorButton" href="tel:">电话咨询</a>
+      </div>
+
+      <div class="advisor-sheet__tip" id="advisorSheetTip"></div>
+    </div>
+  </div>
+
+  <script src="./main.js"></script>
+</body>
+</html>
