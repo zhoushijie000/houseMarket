@@ -2655,18 +2655,70 @@
 
     #messageDetailScreen .message-thread__card {
       display: grid;
-      gap: 8px;
+      gap: 0;
       margin-top: 2px;
       border-radius: 16px;
       background: #ffffff;
       box-shadow: 0 10px 22px rgba(17, 24, 39, 0.06);
-      padding: 14px;
       border: 1px solid rgba(228, 231, 237, 0.92);
+      overflow: hidden;
+    }
+
+    #messageDetailScreen .message-thread__card-cover {
+      position: relative;
+      min-height: 126px;
+      background: linear-gradient(135deg, #ff8f2e 0%, #fd5d00 100%);
+    }
+
+    #messageDetailScreen .message-thread__card-cover::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(17, 24, 39, 0.02) 0%, rgba(17, 24, 39, 0.28) 100%);
+      pointer-events: none;
+    }
+
+    #messageDetailScreen .message-thread__card-cover-image {
+      display: block;
+      width: 100%;
+      height: 126px;
+      object-fit: cover;
+    }
+
+    #messageDetailScreen .message-thread__card-cover-badge {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--brand-primary);
+      font-size: 11px;
+      font-weight: 700;
+      box-shadow: 0 10px 20px rgba(17, 24, 39, 0.12);
     }
 
     #messageDetailScreen .message-thread__card-body {
       display: grid;
       gap: 8px;
+      padding: 14px;
+    }
+
+    #messageDetailScreen .message-thread__card-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      padding: 0;
+      border: none;
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
     }
 
     #messageDetailScreen .message-thread__card-title {
@@ -2684,18 +2736,29 @@
       line-height: 1.6;
     }
 
-    #messageDetailScreen .message-thread__card-button {
-      width: fit-content;
-      min-height: 34px;
-      padding: 0 16px;
-      border: none;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
-      color: #ffffff;
+    #messageDetailScreen .message-thread__card-arrow {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(253, 93, 0, 0.1);
+      color: var(--brand-primary);
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    #messageDetailScreen .message-thread__card-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 2px;
+      color: var(--brand-primary);
       font-size: 13px;
       font-weight: 700;
-      box-shadow: 0 12px 22px rgba(253, 93, 0, 0.18);
-      cursor: pointer;
+      line-height: 1.4;
     }
 
     #homeScreen .hero-card {
@@ -4057,12 +4120,19 @@
                 <div class="message-thread__stack">
                   <div class="message-thread__sender" id="messageDetailSender">成都住建房产超市</div>
                   <div class="message-thread__bubble" id="messageDetailContent">走进上海的活动开始啦，立即查看。</div>
-                  <div class="message-thread__card">
-                    <div class="message-thread__card-body">
+                  <div class="message-thread__card" id="messageDetailCard">
+                    <div class="message-thread__card-cover">
+                      <img class="message-thread__card-cover-image" id="messageDetailCardCoverImage" src="./assets/activity-detail-hero-shanghai.svg" alt="上海活动详情封面" />
+                      <span class="message-thread__card-cover-badge" id="messageDetailCardCoverBadge">上海站活动</span>
+                    </div>
+                    <button class="message-thread__card-body message-thread__card-link" id="openShanghaiActivityFromMessageDetail" type="button">
+                      <div>
                       <h3 class="message-thread__card-title" id="messageDetailCardTitle">上海活动详情页</h3>
                       <p class="message-thread__card-meta" id="messageDetailCardMeta">上海春季成都好房展 · 上海静安瑞吉酒店 2F 展厅</p>
-                      <button class="message-thread__card-button" id="openShanghaiActivityFromMessageDetail" type="button">立即查看</button>
-                    </div>
+                        <span class="message-thread__card-action">立即查看</span>
+                      </div>
+                      <span class="message-thread__card-arrow" aria-hidden="true">›</span>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -4371,7 +4441,9 @@
         timeLabel: "刚刚",
         activityCity: "上海",
         activityTitle: "上海春季成都好房展",
-        activityMeta: "上海春季成都好房展 · 上海静安瑞吉酒店 2F 展厅"
+        activityMeta: "上海春季成都好房展 · 上海静安瑞吉酒店 2F 展厅",
+        activityBadge: "上海站活动",
+        activityCover: "./assets/activity-detail-hero-shanghai.svg"
       }
     ];
     const talentPolicyEntries = [
@@ -4579,6 +4651,9 @@
     const messageDetailSender = document.getElementById("messageDetailSender");
     const messageDetailTime = document.getElementById("messageDetailTime");
     const messageDetailContent = document.getElementById("messageDetailContent");
+    const messageDetailCard = document.getElementById("messageDetailCard");
+    const messageDetailCardCoverImage = document.getElementById("messageDetailCardCoverImage");
+    const messageDetailCardCoverBadge = document.getElementById("messageDetailCardCoverBadge");
     const messageDetailCardTitle = document.getElementById("messageDetailCardTitle");
     const messageDetailCardMeta = document.getElementById("messageDetailCardMeta");
     const openShanghaiActivityFromMessageDetail = document.getElementById("openShanghaiActivityFromMessageDetail");
@@ -5813,14 +5888,21 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       if (messageDetailContent) {
         messageDetailContent.textContent = messageItem.content;
       }
+      if (messageDetailCard) {
+        messageDetailCard.hidden = !messageItem.activityTitle;
+      }
+      if (messageDetailCardCoverImage) {
+        messageDetailCardCoverImage.src = messageItem.activityCover || "./assets/activity-detail-hero-shanghai.svg";
+        messageDetailCardCoverImage.alt = `${messageItem.activityCity || ""}活动详情封面`;
+      }
+      if (messageDetailCardCoverBadge) {
+        messageDetailCardCoverBadge.textContent = messageItem.activityBadge || `${messageItem.activityCity || ""}站活动`;
+      }
       if (messageDetailCardTitle) {
-        messageDetailCardTitle.textContent = `${messageItem.activityCity}活动详情页`;
+        messageDetailCardTitle.textContent = messageItem.activityTitle || `${messageItem.activityCity}活动详情页`;
       }
       if (messageDetailCardMeta) {
-        messageDetailCardMeta.textContent = messageItem.activityMeta;
-      }
-      if (openShanghaiActivityFromMessageDetail) {
-        openShanghaiActivityFromMessageDetail.textContent = "立即查看";
+        messageDetailCardMeta.textContent = messageItem.activityMeta || "";
       }
     }
 

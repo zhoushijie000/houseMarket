@@ -1415,6 +1415,13 @@ body.is-sheet-open {
   justify-content: center;
 }
 
+.advisor-sheet__qr-trigger {
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
 .advisor-sheet__qr-code {
   width: 148px;
   height: 148px;

@@ -146,14 +146,15 @@
         <div class="advisor-sheet__avatar" id="advisorAvatar">顾</div>
         <div>
           <p class="advisor-sheet__name" id="advisorName">置业顾问</p>
-          <p class="advisor-sheet__role" id="advisorRole">金牌置业顾问</p>
         </div>
       </div>
 
       <div class="advisor-sheet__qr-card">
         <div class="advisor-sheet__qr-label">微信二维码</div>
         <div class="advisor-sheet__qr-box">
-          <div class="advisor-sheet__qr-code" aria-hidden="true"></div>
+          <button class="advisor-sheet__qr-trigger" id="saveAdvisorQrButton" type="button" aria-label="保存微信二维码到本地">
+            <div class="advisor-sheet__qr-code" id="advisorQrGraphic" aria-hidden="true"></div>
+          </button>
         </div>
         <div class="advisor-sheet__wechat-line">
           <span class="advisor-sheet__wechat-label">微信号</span>

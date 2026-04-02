@@ -930,7 +930,8 @@
     const advisorSheetCloseEl = document.getElementById("advisorSheetClose");
     const advisorAvatarEl = document.getElementById("advisorAvatar");
     const advisorNameEl = document.getElementById("advisorName");
-    const advisorRoleEl = document.getElementById("advisorRole");
+    const saveAdvisorQrButtonEl = document.getElementById("saveAdvisorQrButton");
+    const advisorQrGraphicEl = document.getElementById("advisorQrGraphic");
     const advisorWechatIdEl = document.getElementById("advisorWechatId");
     const copyWechatButtonEl = document.getElementById("copyWechatButton");
     const callAdvisorButtonEl = document.getElementById("callAdvisorButton");
@@ -993,7 +994,6 @@
     contactDeveloperButtonEl.setAttribute("aria-label", "联系开发企业");
     advisorAvatarEl.textContent = model.contact.advisor.avatarText || model.contact.advisor.name.slice(0, 1);
     advisorNameEl.textContent = model.contact.advisor.name;
-    advisorRoleEl.textContent = model.contact.advisor.role;
     advisorWechatIdEl.textContent = model.contact.advisor.wechatId;
     callAdvisorButtonEl.href = "tel:" + normalizeDialPhone(model.contact.advisor.phone);
     projectQrTitleEl.textContent = project.name;
@@ -1019,7 +1019,7 @@
       projectQrSheetEl.hidden = true;
       advisorSheetEl.hidden = false;
       document.body.classList.add("is-sheet-open");
-      setAdvisorSheetTip("可扫码添加微信、复制微信号或直接电话咨询。", "");
+      setAdvisorSheetTip("可点击保存二维码、复制微信号或直接电话咨询。", "");
     }
 
     function closeAdvisorSheet() {
@@ -1058,6 +1058,35 @@
         setAdvisorSheetTip("复制失败，请手动记录微信号：" + model.contact.advisor.wechatId, "error");
       });
     });
+
+    if (saveAdvisorQrButtonEl && advisorQrGraphicEl) {
+      saveAdvisorQrButtonEl.addEventListener("click", function () {
+        try {
+          const qrDataUrl = extractBackgroundImageUrl(window.getComputedStyle(advisorQrGraphicEl).backgroundImage);
+          downloadDataUrl(qrDataUrl, model.contact.advisor.name + "-微信二维码.svg");
+          setAdvisorSheetTip("二维码已开始保存，请在本地文件中查看。", "success");
+        } catch (error) {
+          setAdvisorSheetTip("保存失败，请稍后重试。", "error");
+        }
+      });
+    }
+  }
+
+  function extractBackgroundImageUrl(value) {
+    const match = String(value || "").match(/url\((['"]?)(.*?)\1\)/);
+    return match ? match[2] : "";
+  }
+
+  function downloadDataUrl(dataUrl, fileName) {
+    if (!dataUrl) {
+      throw new Error("missing data url");
+    }
+    const link = document.createElement("a");
+    link.href = dataUrl;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
   if (document.body.dataset.page === "collection") {

@@ -269,12 +269,6 @@
       font-weight: 600;
     }
 
-    .advisor-card__role {
-      margin: 4px 0 0;
-      color: var(--text-tertiary);
-      font-size: 12px;
-    }
-
     .advisor-card__wechat {
       display: grid;
       gap: 12px;
@@ -292,6 +286,13 @@
     .advisor-card__wechat-box {
       display: flex;
       justify-content: center;
+    }
+
+    .advisor-card__qr-trigger {
+      padding: 0;
+      border: none;
+      background: transparent;
+      cursor: pointer;
     }
 
     .advisor-card__wechat-id {
@@ -418,14 +419,15 @@
           <div class="advisor-card__avatar" id="advisorAvatar">林</div>
           <div>
             <p class="advisor-card__name" id="advisorName">林悦</p>
-            <p class="advisor-card__role" id="advisorRole">金牌置业顾问</p>
           </div>
         </div>
 
         <div class="advisor-card__wechat">
           <div class="advisor-card__wechat-label">微信二维码</div>
           <div class="advisor-card__wechat-box">
-            <div class="advisor-card__qr" aria-hidden="true"></div>
+            <button class="advisor-card__qr-trigger" id="saveAdvisorQrButton" type="button" aria-label="保存微信二维码到本地">
+              <div class="advisor-card__qr" id="advisorQrGraphic" aria-hidden="true"></div>
+            </button>
           </div>
           <div class="advisor-card__wechat-id">
             <span class="advisor-card__wechat-key">微信号</span>
@@ -448,6 +450,8 @@
     const advisorSheet = document.getElementById("advisorSheet");
     const openQrButton = document.getElementById("openQrButton");
     const openAdvisorButton = document.getElementById("openAdvisorButton");
+    const saveAdvisorQrButton = document.getElementById("saveAdvisorQrButton");
+    const advisorQrGraphic = document.getElementById("advisorQrGraphic");
     const copyWechatButton = document.getElementById("copyWechatButton");
     const advisorWechat = document.getElementById("advisorWechat");
     const advisorTip = document.getElementById("advisorTip");
@@ -507,12 +511,29 @@
       advisorTip.dataset.state = state || "";
     }
 
+    function extractBackgroundImageUrl(value) {
+      const match = String(value || "").match(/url\((['"]?)(.*?)\1\)/);
+      return match ? match[2] : "";
+    }
+
+    function downloadDataUrl(dataUrl, fileName) {
+      if (!dataUrl) {
+        throw new Error("missing data url");
+      }
+      const link = document.createElement("a");
+      link.href = dataUrl;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
     openQrButton.addEventListener("click", () => {
       openSheet("qr");
     });
 
     openAdvisorButton.addEventListener("click", () => {
-      setAdvisorTip("可扫码添加微信、复制微信号或直接电话咨询。", "");
+      setAdvisorTip("可点击保存二维码、复制微信号或直接电话咨询。", "");
       openSheet("advisor");
     });
 
@@ -529,6 +550,18 @@
         setAdvisorTip("复制失败，请手动记录微信号。", "error");
       });
     });
+
+    if (saveAdvisorQrButton && advisorQrGraphic) {
+      saveAdvisorQrButton.addEventListener("click", () => {
+        try {
+          const qrDataUrl = extractBackgroundImageUrl(window.getComputedStyle(advisorQrGraphic).backgroundImage);
+          downloadDataUrl(qrDataUrl, "置业顾问微信二维码.svg");
+          setAdvisorTip("二维码已开始保存，请在本地文件中查看。", "success");
+        } catch (error) {
+          setAdvisorTip("保存失败，请稍后重试。", "error");
+        }
+      });
+    }
   </script>
 </body>
 </html>
