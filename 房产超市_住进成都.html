@@ -4114,7 +4114,7 @@
     <div class="activity-entry-bar">
       <div class="activity-entry-bar__inner">
         <div class="activity-entry-bar__content">
-          <p class="activity-entry-bar__desc" id="activityEntryBarDesc">报名参加本次活动后，可接收活动提醒与相关房源消息。</p>
+          <p class="activity-entry-bar__desc" id="activityEntryBarDesc"></p>
         </div>
         <button class="primary-button" id="openRegistrationButton" type="button">报名活动</button>
       </div>
@@ -4125,7 +4125,7 @@
       <div class="activity-signup-modal__panel" role="dialog" aria-modal="true" aria-labelledby="activitySignupModalTitle">
         <span class="activity-signup-modal__eyebrow" id="activitySignupModalEyebrow">报名成功</span>
         <h3 class="activity-signup-modal__title" id="activitySignupModalTitle">当前活动信息</h3>
-        <p class="activity-signup-modal__desc" id="activitySignupModalDesc">活动时间和地点已同步，点击下方按钮可继续查看本场活动。</p>
+        <p class="activity-signup-modal__desc" id="activitySignupModalDesc" hidden></p>
         <div class="activity-signup-modal__detail-list">
           <div class="activity-signup-modal__detail-item">
             <span class="activity-signup-modal__detail-label">活动时间</span>
@@ -4137,8 +4137,8 @@
           </div>
         </div>
         <div class="activity-signup-modal__actions">
-          <button class="activity-signup-modal__ghost" id="activitySignupModalClose" type="button">我知道了</button>
-          <button class="activity-signup-modal__primary" id="activitySignupModalAction" type="button">查看活动</button>
+          <button class="activity-signup-modal__ghost" id="activitySignupModalClose" type="button">取消报名</button>
+          <button class="activity-signup-modal__primary" id="activitySignupModalAction" type="button">确认</button>
         </div>
       </div>
     </div>
@@ -4534,8 +4534,8 @@ let currentScreenName = "home";
 let previousScreenName = "home";
 const ACTIVITY_SIGNUP_FORM_ID = "form-city-activity-signup";
 const ACTIVITY_SIGNUP_CONFIRM_TEXT = "报名参加本次活动，即表示您同意我们获取并使用您的相关用户信息。";
-const ACTIVITY_SIGNUP_IDLE_TEXT = "报名参加本次活动后，可接收活动提醒与相关房源消息。";
-const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名，活动时间和地点已同步给您。";
+const ACTIVITY_SIGNUP_IDLE_TEXT = "";
+const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
     let currentReport = null;
     let activeChatFlow = null;
     let suspendedTalentAssessment = null;
@@ -5459,6 +5459,9 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名，活动时间
       const registered = Boolean(findActivityRegistration(payload));
       if (activityEntryBarDesc) {
         activityEntryBarDesc.textContent = registered ? ACTIVITY_SIGNUP_DONE_TEXT : ACTIVITY_SIGNUP_IDLE_TEXT;
+        if (activityEntryBarDesc.parentElement) {
+          activityEntryBarDesc.parentElement.hidden = !activityEntryBarDesc.textContent.trim();
+        }
       }
       if (openRegistrationButton) {
         openRegistrationButton.textContent = registered ? "我的报名" : "报名活动";
@@ -5481,9 +5484,8 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名，活动时间
         activitySignupModalTitle.textContent = item.title || "当前活动";
       }
       if (activitySignupModalDesc) {
-        activitySignupModalDesc.textContent = reviewMode
-          ? "您已报名本场活动，可在这里查看对应的时间和地点信息。"
-          : "活动时间和地点已同步，点击下方按钮可继续查看本场活动。";
+        activitySignupModalDesc.textContent = "";
+        activitySignupModalDesc.hidden = true;
       }
       if (activitySignupModalTime) {
         activitySignupModalTime.textContent = formatActivityTimeDisplay(item.time);
@@ -5558,6 +5560,37 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名，活动时间
       });
 
       return true;
+    }
+
+    function cancelActivityRegistration(payload) {
+      if (!payload) {
+        return false;
+      }
+
+      const workbenchApi = getRegistrationWorkbench();
+      if (!workbenchApi) {
+        return false;
+      }
+
+      const registrationKey = buildActivityRegistrationKey(payload);
+      if (!registrationKey) {
+        return false;
+      }
+
+      let removed = false;
+
+      workbenchApi.updateState((state) => {
+        const nextRecords = state.records.filter((record) => {
+          const matched = Boolean(record && record.data && record.data.activityKey === registrationKey);
+          if (matched) {
+            removed = true;
+          }
+          return !matched;
+        });
+        state.records = nextRecords;
+      });
+
+      return removed;
     }
 
     function registerCurrentActivity() {
@@ -6098,18 +6131,16 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名，活动时间
     }
     if (activitySignupModalClose) {
       activitySignupModalClose.addEventListener("click", () => {
+        if (currentActivityPayload) {
+          cancelActivityRegistration(currentActivityPayload);
+          updateActivityEntryBarState(currentActivityPayload);
+        }
         closeActivitySignupModal();
       });
     }
     if (activitySignupModalAction) {
       activitySignupModalAction.addEventListener("click", () => {
         closeActivitySignupModal();
-        if (activityDetailHero) {
-          activityDetailHero.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-          });
-        }
       });
     }
     document.getElementById("backHomeButton").addEventListener("click", () => {
