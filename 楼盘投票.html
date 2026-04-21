@@ -103,8 +103,7 @@
 
     .rule-card,
     .estate-list,
-    .survey-card,
-    .result-card {
+    .survey-card {
       border-radius: 24px;
       background: var(--surface);
       box-shadow: var(--shadow-card);
@@ -730,9 +729,6 @@
     }
 
     .survey-card__actions {
-      display: grid;
-      grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
-      gap: 10px;
       position: sticky;
       bottom: -16px;
       padding-top: 2px;
@@ -740,8 +736,11 @@
       background: #ffffff;
     }
 
-    .survey-card__ghost,
     .survey-card__primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
       min-height: 44px;
       border: none;
       border-radius: 14px;
@@ -750,54 +749,10 @@
       cursor: pointer;
     }
 
-    .survey-card__ghost {
-      background: #f4f5f7;
-      color: var(--text-secondary);
-    }
-
     .survey-card__primary {
       background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
       color: #ffffff;
       box-shadow: 0 12px 22px rgba(253, 93, 0, 0.18);
-    }
-
-    .result-card {
-      display: none;
-      gap: 10px;
-      padding: 16px;
-    }
-
-    .result-card.is-visible {
-      display: grid;
-    }
-
-    .result-card__title {
-      margin: 0;
-      color: #111827;
-      font-size: 16px;
-      font-weight: 800;
-    }
-
-    .result-card__list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .result-card__item {
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: rgba(103, 204, 53, 0.14);
-      color: #32871f;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .result-card__detail {
-      margin: 0;
-      color: var(--text-secondary);
-      font-size: 12px;
-      line-height: 1.7;
     }
 
     .submit-bar {
@@ -894,12 +849,6 @@
         </section>
 
         <section class="estate-list" id="estateList" aria-label="楼盘列表"></section>
-
-        <section class="result-card" id="resultCard">
-          <h2 class="result-card__title">已提交楼盘</h2>
-          <div class="result-card__list" id="resultList"></div>
-          <p class="result-card__detail" id="resultDetail"></p>
-        </section>
       </div>
     </section>
 
@@ -974,7 +923,6 @@
 
         <p class="survey-card__error" id="surveyError"></p>
         <div class="survey-card__actions">
-          <button class="survey-card__ghost" id="surveyCancelButton" type="button">暂不填写</button>
           <button class="survey-card__primary" id="surveySubmitButton" type="button">确认提交</button>
         </div>
       </div>
@@ -1035,14 +983,10 @@
     const entryNoticeButton = document.getElementById("entryNoticeButton");
     const surveyCard = document.getElementById("surveyCard");
     const surveyCloseButton = document.getElementById("surveyCloseButton");
-    const surveyCancelButton = document.getElementById("surveyCancelButton");
     const surveySubmitButton = document.getElementById("surveySubmitButton");
     const surveyError = document.getElementById("surveyError");
     const surnameInput = document.getElementById("surnameInput");
     const phoneInput = document.getElementById("phoneInput");
-    const resultCard = document.getElementById("resultCard");
-    const resultList = document.getElementById("resultList");
-    const resultDetail = document.getElementById("resultDetail");
 
     let selectedEstateIds = new Set();
     let voteRecord = loadVoteRecord();
@@ -1246,45 +1190,21 @@
         .join("");
     }
 
-    function renderResult() {
-      const submitted = hasSubmittedVote();
-      resultCard.classList.toggle("is-visible", submitted);
-
-      if (!submitted) {
-        resultList.innerHTML = "";
-        return;
-      }
-
-      resultList.innerHTML = getVotedEstateIds()
-        .map((estateId) => getEstateById(estateId))
-        .filter(Boolean)
-        .map((estate) => `<span class="result-card__item">${escapeHtml(estate.title)}</span>`)
-        .join("");
-
-      if (resultDetail) {
-        const survey = voteRecord && voteRecord.survey ? voteRecord.survey : null;
-        resultDetail.textContent = survey
-          ? `团购报名：${survey.groupBuyIntent}；总价：${survey.budgetRange}；面积：${survey.areaRange}；联系人：${survey.surname}，${survey.gender}，${survey.phone}`
-          : "已记录您的楼盘投票意向。";
-      }
-    }
-
     function renderVoteState() {
       const submitted = hasSubmittedVote();
       const selectedCount = selectedEstateIds.size;
 
       renderEstateListSvgStyle();
-      renderResult();
       if (surveyCard) {
         surveyCard.hidden = submitted || !surveyVisible;
       }
 
       if (submitted) {
         sectionCounter.textContent = `已投 ${getVotedEstateIds().length}/3`;
-        submitMeta.textContent = "您已完成本次投票，每位用户仅可提交一次";
-        submitVoteButton.textContent = "已完成投票";
-        submitVoteButton.disabled = true;
-        setStatus("投票已提交，感谢您的反馈。我们将根据您的意向开展精准供需对接。", "success");
+        submitMeta.textContent = "提交成功，感谢您的反馈";
+        submitVoteButton.textContent = "去房产超市逛一逛";
+        submitVoteButton.disabled = false;
+        setStatus("提交成功", "success");
         return;
       }
 
@@ -1405,7 +1325,7 @@
 
     function submitVote() {
       if (hasSubmittedVote()) {
-        renderVoteState();
+        window.location.href = "./房产超市_住进成都.html";
         return;
       }
 
@@ -1435,7 +1355,6 @@
     entryNoticeButton.addEventListener("click", closeEntryNotice);
     surveySubmitButton.addEventListener("click", submitSurveyVote);
     surveyCloseButton.addEventListener("click", closeSurveyStep);
-    surveyCancelButton.addEventListener("click", closeSurveyStep);
     surveyCard.addEventListener("click", (event) => {
       if (event.target === surveyCard) {
         closeSurveyStep();
