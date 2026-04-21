@@ -98,11 +98,12 @@
     .page-content {
       display: grid;
       gap: 14px;
-      padding: 16px 16px calc(112px + env(safe-area-inset-bottom, 0px));
+      padding: 16px 16px calc(128px + env(safe-area-inset-bottom, 0px));
     }
 
     .rule-card,
     .estate-list,
+    .survey-card,
     .result-card {
       border-radius: 24px;
       background: var(--surface);
@@ -490,6 +491,202 @@
       box-shadow: none;
     }
 
+    .survey-card {
+      position: absolute;
+      inset: 0;
+      z-index: 36;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 18px 0 calc(18px + env(safe-area-inset-bottom, 0px));
+      background: rgba(17, 24, 39, 0.42);
+      box-shadow: none;
+    }
+
+    .survey-card[hidden] {
+      display: none;
+    }
+
+    .survey-card__panel {
+      width: calc(100% - 28px);
+      max-height: min(82vh, 690px);
+      display: grid;
+      gap: 16px;
+      overflow-y: auto;
+      padding: 18px 16px 16px;
+      border-radius: 24px 24px 0 0;
+      background: #ffffff;
+      box-shadow: 0 18px 38px rgba(17, 24, 39, 0.18);
+      animation: modal-enter 180ms ease;
+    }
+
+    .survey-card__panel > * {
+      min-width: 0;
+    }
+
+    .survey-card__head {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      justify-content: space-between;
+    }
+
+    .survey-card__title {
+      margin: 0;
+      color: #111827;
+      font-size: 16px;
+      line-height: 1.45;
+      font-weight: 800;
+    }
+
+    .survey-card__close {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 50%;
+      background: #f4f5f7;
+      color: var(--text-secondary);
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .survey-card__desc {
+      margin: -6px 0 0;
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .survey-group {
+      display: grid;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .survey-group__label {
+      color: var(--text-primary);
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .survey-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .survey-option {
+      position: relative;
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: #f4f5f7;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .survey-option input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .survey-option:has(input:checked) {
+      background: rgba(253, 93, 0, 0.12);
+      color: var(--brand-deep);
+      box-shadow: inset 0 0 0 1px rgba(253, 93, 0, 0.22);
+    }
+
+    .contact-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .contact-field {
+      display: grid;
+      gap: 7px;
+    }
+
+    .contact-field label {
+      color: var(--text-primary);
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .contact-field input {
+      width: 100%;
+      min-height: 44px;
+      border: 1px solid rgba(228, 231, 237, 0.96);
+      border-radius: 14px;
+      padding: 0 12px;
+      background: #fff;
+      color: var(--text-primary);
+      font: inherit;
+      outline: none;
+    }
+
+    .contact-field input:focus {
+      border-color: rgba(253, 93, 0, 0.42);
+      box-shadow: 0 0 0 4px rgba(253, 93, 0, 0.08);
+    }
+
+    .survey-card__error {
+      min-height: 18px;
+      margin: -2px 0 0;
+      color: #d9480f;
+      font-size: 12px;
+      line-height: 1.5;
+      font-weight: 700;
+    }
+
+    .survey-card__actions {
+      display: grid;
+      grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+      gap: 10px;
+      position: sticky;
+      bottom: -16px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      background: #ffffff;
+    }
+
+    .survey-card__ghost,
+    .survey-card__primary {
+      min-height: 44px;
+      border: none;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .survey-card__ghost {
+      background: #f4f5f7;
+      color: var(--text-secondary);
+    }
+
+    .survey-card__primary {
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+      color: #ffffff;
+      box-shadow: 0 12px 22px rgba(253, 93, 0, 0.18);
+    }
+
     .result-card {
       display: none;
       gap: 10px;
@@ -520,6 +717,13 @@
       color: #32871f;
       font-size: 12px;
       font-weight: 700;
+    }
+
+    .result-card__detail {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.7;
     }
 
     .submit-bar {
@@ -562,6 +766,18 @@
       color: #ffffff;
       box-shadow: none;
       cursor: default;
+    }
+
+    @keyframes modal-enter {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @media (max-width: 480px) {
@@ -608,7 +824,75 @@
         <section class="result-card" id="resultCard">
           <h2 class="result-card__title">已提交楼盘</h2>
           <div class="result-card__list" id="resultList"></div>
+          <p class="result-card__detail" id="resultDetail"></p>
         </section>
+      </div>
+    </section>
+
+    <section class="survey-card" id="surveyCard" hidden aria-label="意向统计弹窗">
+      <div class="survey-card__panel" role="dialog" aria-modal="true" aria-labelledby="surveyTitle">
+        <div class="survey-card__head">
+          <div>
+            <h2 class="survey-card__title" id="surveyTitle">意向统计</h2>
+            <p class="survey-card__desc">请留下您的联系方式，仅用于邀请您到活动现场参加团购活动。</p>
+          </div>
+          <button class="survey-card__close" id="surveyCloseButton" type="button" aria-label="关闭意向统计弹窗">×</button>
+        </div>
+
+        <div class="survey-group">
+          <div class="survey-group__label">1、您会到活动现场参加团购报名吗？</div>
+          <div class="survey-options" data-survey-group="groupBuyIntent">
+            <label class="survey-option"><input type="radio" name="groupBuyIntent" value="会" />会</label>
+            <label class="survey-option"><input type="radio" name="groupBuyIntent" value="无法确定" />无法确定</label>
+            <label class="survey-option"><input type="radio" name="groupBuyIntent" value="不会" />不会</label>
+          </div>
+        </div>
+
+        <div class="survey-group">
+          <div class="survey-group__label">2、您意向的总价区间是？</div>
+          <div class="survey-options" data-survey-group="budgetRange">
+            <label class="survey-option"><input type="radio" name="budgetRange" value="100万以内" />100万以内</label>
+            <label class="survey-option"><input type="radio" name="budgetRange" value="100-200万元" />100-200万元</label>
+            <label class="survey-option"><input type="radio" name="budgetRange" value="200-300万元" />200-300万元</label>
+            <label class="survey-option"><input type="radio" name="budgetRange" value="300-400万元" />300-400万元</label>
+            <label class="survey-option"><input type="radio" name="budgetRange" value="400万元以上" />400万元以上</label>
+          </div>
+        </div>
+
+        <div class="survey-group">
+          <div class="survey-group__label">3、您意向的面积区间是？</div>
+          <div class="survey-options" data-survey-group="areaRange">
+            <label class="survey-option"><input type="radio" name="areaRange" value="90㎡以下" />90㎡以下</label>
+            <label class="survey-option"><input type="radio" name="areaRange" value="90-110㎡" />90-110㎡</label>
+            <label class="survey-option"><input type="radio" name="areaRange" value="110-130㎡" />110-130㎡</label>
+            <label class="survey-option"><input type="radio" name="areaRange" value="130-150㎡" />130-150㎡</label>
+            <label class="survey-option"><input type="radio" name="areaRange" value="150㎡以上" />150㎡以上</label>
+          </div>
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-field">
+            <label for="surnameInput">贵姓</label>
+            <input id="surnameInput" type="text" maxlength="12" placeholder="请输入您的姓氏" />
+          </div>
+          <div class="survey-group">
+            <div class="survey-group__label">性别</div>
+            <div class="survey-options" data-survey-group="gender">
+              <label class="survey-option"><input type="radio" name="gender" value="男" />男</label>
+              <label class="survey-option"><input type="radio" name="gender" value="女" />女</label>
+            </div>
+          </div>
+          <div class="contact-field">
+            <label for="phoneInput">联系电话</label>
+            <input id="phoneInput" type="tel" inputmode="numeric" maxlength="11" placeholder="请输入 11 位手机号" />
+          </div>
+        </div>
+
+        <p class="survey-card__error" id="surveyError"></p>
+        <div class="survey-card__actions">
+          <button class="survey-card__ghost" id="surveyCancelButton" type="button">暂不填写</button>
+          <button class="survey-card__primary" id="surveySubmitButton" type="button">确认提交</button>
+        </div>
       </div>
     </section>
 
@@ -663,11 +947,20 @@
     const sectionCounter = document.getElementById("sectionCounter");
     const submitMeta = document.getElementById("submitMeta");
     const submitVoteButton = document.getElementById("submitVoteButton");
+    const surveyCard = document.getElementById("surveyCard");
+    const surveyCloseButton = document.getElementById("surveyCloseButton");
+    const surveyCancelButton = document.getElementById("surveyCancelButton");
+    const surveySubmitButton = document.getElementById("surveySubmitButton");
+    const surveyError = document.getElementById("surveyError");
+    const surnameInput = document.getElementById("surnameInput");
+    const phoneInput = document.getElementById("phoneInput");
     const resultCard = document.getElementById("resultCard");
     const resultList = document.getElementById("resultList");
+    const resultDetail = document.getElementById("resultDetail");
 
     let selectedEstateIds = new Set();
     let voteRecord = loadVoteRecord();
+    let surveyVisible = false;
 
     function escapeHtml(value) {
       return String(value)
@@ -708,12 +1001,23 @@
       return estates.find((estate) => estate.id === estateId) || null;
     }
 
+    function getCheckedValue(name) {
+      const checked = document.querySelector(`input[name="${name}"]:checked`);
+      return checked ? checked.value : "";
+    }
+
     function setStatus(message, state = "") {
       voteStatus.textContent = message;
       if (state) {
         voteStatus.dataset.state = state;
       } else {
         voteStatus.removeAttribute("data-state");
+      }
+    }
+
+    function setSurveyError(message = "") {
+      if (surveyError) {
+        surveyError.textContent = message;
       }
     }
 
@@ -858,6 +1162,13 @@
         .filter(Boolean)
         .map((estate) => `<span class="result-card__item">${escapeHtml(estate.title)}</span>`)
         .join("");
+
+      if (resultDetail) {
+        const survey = voteRecord && voteRecord.survey ? voteRecord.survey : null;
+        resultDetail.textContent = survey
+          ? `团购报名：${survey.groupBuyIntent}；总价：${survey.budgetRange}；面积：${survey.areaRange}；联系人：${survey.surname}，${survey.gender}，${survey.phone}`
+          : "已记录您的楼盘投票意向。";
+      }
     }
 
     function renderVoteState() {
@@ -866,6 +1177,9 @@
 
       renderEstateListSvgStyle();
       renderResult();
+      if (surveyCard) {
+        surveyCard.hidden = submitted || !surveyVisible;
+      }
 
       if (submitted) {
         sectionCounter.textContent = `已投 ${getVotedEstateIds().length}/3`;
@@ -880,7 +1194,9 @@
       submitMeta.textContent = selectedCount
         ? `已选择 ${selectedCount} 个楼盘，最多可选 ${MAX_SELECTION} 个`
         : `请选择 1-${MAX_SELECTION} 个感兴趣的楼盘`;
-      submitVoteButton.textContent = selectedCount ? `提交投票（${selectedCount}）` : "提交投票";
+      submitVoteButton.textContent = selectedCount
+        ? `提交投票（${selectedCount}）`
+        : "提交投票";
       submitVoteButton.disabled = selectedCount === 0;
 
       if (!voteStatus.textContent || voteStatus.dataset.state === "success") {
@@ -890,6 +1206,10 @@
 
     function toggleEstateSelection(estateId) {
       if (hasSubmittedVote()) {
+        return;
+      }
+      if (surveyVisible) {
+        setStatus("已进入意向统计，请先完成提交；如需调整楼盘，请刷新页面重新选择。", "warning");
         return;
       }
 
@@ -910,6 +1230,81 @@
       renderVoteState();
     }
 
+    function collectSurveyData() {
+      const surname = surnameInput ? surnameInput.value.trim() : "";
+      const phone = phoneInput ? phoneInput.value.trim() : "";
+      return {
+        groupBuyIntent: getCheckedValue("groupBuyIntent"),
+        budgetRange: getCheckedValue("budgetRange"),
+        areaRange: getCheckedValue("areaRange"),
+        surname,
+        gender: getCheckedValue("gender"),
+        phone
+      };
+    }
+
+    function validateSurveyData(survey) {
+      if (!survey.groupBuyIntent) {
+        return "请选择是否会到活动现场参加团购报名。";
+      }
+      if (!survey.budgetRange) {
+        return "请选择意向总价区间。";
+      }
+      if (!survey.areaRange) {
+        return "请选择意向面积区间。";
+      }
+      if (!survey.surname) {
+        return "请填写贵姓。";
+      }
+      if (!survey.gender) {
+        return "请选择性别。";
+      }
+      if (!/^1\d{10}$/.test(survey.phone)) {
+        return "请填写正确的 11 位联系电话。";
+      }
+      return "";
+    }
+
+    function showSurveyStep() {
+      surveyVisible = true;
+      setStatus("楼盘投票已选择，请继续完成意向统计和联系方式。");
+      setSurveyError("");
+      renderVoteState();
+      window.requestAnimationFrame(() => {
+        const firstInput = surveyCard ? surveyCard.querySelector('input[name="groupBuyIntent"]') : null;
+        if (firstInput) {
+          firstInput.focus({ preventScroll: true });
+        }
+      });
+    }
+
+    function closeSurveyStep() {
+      surveyVisible = false;
+      setSurveyError("");
+      setStatus("已返回楼盘列表，您可以调整投票楼盘后再次提交。");
+      renderVoteState();
+    }
+
+    function submitSurveyVote() {
+      const survey = collectSurveyData();
+      const error = validateSurveyData(survey);
+      if (error) {
+        setSurveyError(error);
+        return;
+      }
+
+      const estateIds = Array.from(selectedEstateIds).slice(0, MAX_SELECTION);
+      voteRecord = {
+        estateIds,
+        survey,
+        submittedAt: new Date().toISOString()
+      };
+      saveVoteRecord(voteRecord);
+      selectedEstateIds = new Set();
+      surveyVisible = false;
+      renderVoteState();
+    }
+
     function submitVote() {
       if (hasSubmittedVote()) {
         renderVoteState();
@@ -921,14 +1316,12 @@
         return;
       }
 
-      const estateIds = Array.from(selectedEstateIds).slice(0, MAX_SELECTION);
-      voteRecord = {
-        estateIds,
-        submittedAt: new Date().toISOString()
-      };
-      saveVoteRecord(voteRecord);
-      selectedEstateIds = new Set();
-      renderVoteState();
+      if (!surveyVisible) {
+        showSurveyStep();
+        return;
+      }
+
+      submitSurveyVote();
     }
 
     estateList.addEventListener("click", (event) => {
@@ -941,6 +1334,14 @@
     });
 
     submitVoteButton.addEventListener("click", submitVote);
+    surveySubmitButton.addEventListener("click", submitSurveyVote);
+    surveyCloseButton.addEventListener("click", closeSurveyStep);
+    surveyCancelButton.addEventListener("click", closeSurveyStep);
+    surveyCard.addEventListener("click", (event) => {
+      if (event.target === surveyCard) {
+        closeSurveyStep();
+      }
+    });
 
     renderVoteState();
   </script>
