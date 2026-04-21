@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>楼盘投票 - 城市价值推介</title>
+  <style>
+    :root {
+      --brand-primary: #fd5d00;
+      --brand-secondary: #ff8f2e;
+      --brand-deep: #c74100;
+      --success: #67cc35;
+      --warning: #ff2828;
+      --text-primary: #303133;
+      --text-secondary: #606266;
+      --text-tertiary: #909399;
+      --line-soft: #e4e7ed;
+      --page-bg: #f3f5f6;
+      --surface: #ffffff;
+      --surface-warm: #fff2e5;
+      --radius-sm: 10px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --shadow-card: 0 14px 32px rgba(48, 49, 51, 0.08);
+      --font-display: "Alibaba PuHuiTi 3.0", "PingFang SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
+      --font-body: "PingFang SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at 18% 0%, rgba(255, 190, 142, 0.72), transparent 34%),
+        radial-gradient(circle at 90% 14%, rgba(255, 143, 46, 0.28), transparent 30%),
+        linear-gradient(180deg, #fff9f4 0%, #f4f6f8 100%);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 24px 12px;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .phone-shell {
+      position: relative;
+      width: min(100%, 375px);
+      min-height: 812px;
+      overflow: hidden;
+      background: linear-gradient(180deg, #fff7f0 0%, #f5f6f8 48%, #f3f5f6 100%);
+      box-shadow: 0 18px 44px rgba(48, 49, 51, 0.14);
+    }
+
+    .screen {
+      height: 812px;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+
+    .screen::-webkit-scrollbar {
+      display: none;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: calc(10px + env(safe-area-inset-top, 0px)) 16px 10px;
+      background: linear-gradient(180deg, rgba(255, 250, 245, 0.94), rgba(255, 250, 245, 0.78));
+      border-bottom: 1px solid rgba(228, 231, 237, 0.72);
+      backdrop-filter: blur(16px);
+    }
+
+    .topbar__title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .page-content {
+      display: grid;
+      gap: 14px;
+      padding: 16px 16px calc(112px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .rule-card,
+    .estate-list,
+    .result-card {
+      border-radius: 24px;
+      background: var(--surface);
+      box-shadow: var(--shadow-card);
+    }
+
+    .rule-card {
+      display: grid;
+      gap: 10px;
+      padding: 16px;
+    }
+
+    .rule-card__title,
+    .section-title {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.45;
+      font-weight: 800;
+      color: #111827;
+    }
+
+    .rule-card__tips,
+    .vote-status {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .rule-card__tips {
+      display: grid;
+      gap: 6px;
+      color: var(--text-secondary);
+    }
+
+    .rule-card__tip {
+      position: relative;
+      padding-left: 14px;
+    }
+
+    .rule-card__tip::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--brand-primary);
+    }
+
+    .vote-status {
+      min-height: 22px;
+      color: var(--brand-deep);
+      font-weight: 700;
+    }
+
+    .vote-status[data-state="success"] {
+      color: #2f8a20;
+    }
+
+    .vote-status[data-state="warning"] {
+      color: #d9480f;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .section-counter {
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.5;
+      white-space: nowrap;
+    }
+
+    .estate-list {
+      display: grid;
+      gap: 0;
+      width: 343px;
+      max-width: 100%;
+      overflow: hidden;
+      padding: 0;
+      border-radius: 0;
+      background: #ffffff;
+    }
+
+    .estate-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 108px 175px 40px;
+      gap: 10px;
+      width: 343px;
+      max-width: 100%;
+      min-height: 133px;
+      padding: 0;
+      border: none;
+      border-radius: 0;
+      border-bottom: 1px solid #f3f5f6;
+      background: #ffffff;
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .estate-card + .estate-card {
+      border-top: none;
+    }
+
+    .estate-card:focus-visible {
+      outline: 3px solid rgba(253, 93, 0, 0.22);
+      outline-offset: 4px;
+    }
+
+    .estate-card.is-selected {
+      background: linear-gradient(90deg, rgba(255, 248, 242, 0.92), #ffffff 48%);
+    }
+
+    .estate-card.is-locked {
+      cursor: default;
+    }
+
+    .estate-card:disabled {
+      color: inherit;
+      opacity: 1;
+    }
+
+    .estate-card__media {
+      position: relative;
+      width: 108px;
+      height: 90px;
+      overflow: hidden;
+      border-radius: 4px;
+      background: #f4f5f7;
+    }
+
+    .estate-card__media img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .estate-card__check {
+      position: absolute;
+      right: 7px;
+      top: 7px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.76);
+      border-radius: 50%;
+      background: rgba(17, 24, 39, 0.28);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 900;
+      backdrop-filter: blur(8px);
+    }
+
+    .estate-card.is-selected .estate-card__check,
+    .estate-card.is-voted .estate-card__check {
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+    }
+
+    .estate-card__views {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      height: 28px;
+      padding: 0 6px;
+      background: linear-gradient(180deg, rgba(17, 24, 39, 0), rgba(17, 24, 39, 0.48));
+      color: #ffffff;
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    .estate-card__eye {
+      width: 12px;
+      height: 12px;
+      border: 1.5px solid currentColor;
+      border-radius: 999px 999px 720px 720px;
+      transform: rotate(45deg);
+    }
+
+    .estate-card__main {
+      position: relative;
+      min-width: 0;
+      height: 132px;
+      padding-top: 0;
+    }
+
+    .estate-card__body {
+      min-width: 0;
+      display: grid;
+      gap: 0;
+      align-content: start;
+      height: 132px;
+    }
+
+    .estate-card__head {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      height: 20px;
+    }
+
+    .estate-card__title {
+      flex: 1 1 auto;
+      margin: 0;
+      color: #303133;
+      font-size: 16px;
+      line-height: 20px;
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .estate-card__badge {
+      display: none;
+    }
+
+    .estate-card.is-voted .estate-card__badge {
+      background: rgba(103, 204, 53, 0.16);
+      color: #32871f;
+    }
+
+    .estate-card__price {
+      margin: 0;
+      padding-top: 4px;
+      color: #ff2828;
+      font-size: 14px;
+      line-height: 18px;
+      font-weight: 600;
+    }
+
+    .estate-card__price small,
+    .estate-card__price span {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .estate-card__meta {
+      margin: 0;
+      padding-top: 4px;
+      color: #303133;
+      font-size: 11px;
+      line-height: 16px;
+      white-space: nowrap;
+    }
+
+    .estate-card__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+      height: 16px;
+      margin-top: 2px;
+      overflow: hidden;
+    }
+
+    .estate-card__tag {
+      height: 16px;
+      padding: 0 4px;
+      border-radius: 1px;
+      background: #f0f4f5;
+      color: #6a727a;
+      font-size: 10px;
+      line-height: 16px;
+      white-space: nowrap;
+    }
+
+    .estate-card__tag--green {
+      background: rgba(103, 204, 53, 0.1);
+      color: #67cc35;
+    }
+
+    .estate-card__promos {
+      display: grid;
+      gap: 2px;
+      margin-top: 2px;
+    }
+
+    .estate-card__promo {
+      display: flex;
+      align-items: center;
+      width: fit-content;
+      max-width: 114px;
+      height: 16px;
+      overflow: hidden;
+      border-radius: 1px;
+      background: linear-gradient(90deg, #ffe1c2, #fff5e6);
+      color: #84603f;
+      font-size: 10px;
+      line-height: 16px;
+      white-space: nowrap;
+    }
+
+    .estate-card__promo--subsidy {
+      background: linear-gradient(90deg, #ffd7df, #fff1f4);
+      color: #883744;
+    }
+
+    .estate-card__promo-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 16px;
+      width: 16px;
+      height: 16px;
+      margin-right: 4px;
+      background: linear-gradient(135deg, #ffac2f, #ff6c00);
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .estate-card__promo--subsidy .estate-card__promo-icon {
+      background: linear-gradient(135deg, #ff6f8a, #ff304f);
+    }
+
+    .estate-card__side {
+      position: relative;
+      width: 40px;
+      height: 132px;
+    }
+
+    .estate-card__stock-card {
+      position: absolute;
+      top: 38px;
+      right: 0;
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 42px;
+      border-radius: 5px;
+      border: 0.5px solid rgba(255, 143, 46, 0.38);
+      background: rgba(255, 143, 46, 0.1);
+      color: #ff8f2e;
+      text-align: center;
+      font-size: 10px;
+      line-height: 1.15;
+      font-weight: 500;
+    }
+
+    .estate-card__stock-card strong {
+      display: block;
+      font-size: 12px;
+      line-height: 1.15;
+      font-weight: 600;
+    }
+
+    .estate-card__vote-button {
+      position: absolute;
+      top: 88px;
+      right: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 28px;
+      border-radius: 5px;
+      background: #ff8f2e;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 700;
+      box-shadow: 0 6px 12px rgba(255, 143, 46, 0.2);
+    }
+
+    .estate-card.is-selected .estate-card__vote-button {
+      background: #67cc35;
+      box-shadow: 0 6px 12px rgba(103, 204, 53, 0.18);
+    }
+
+    .estate-card.is-voted .estate-card__vote-button {
+      background: #c0c4cc;
+      box-shadow: none;
+    }
+
+    .result-card {
+      display: none;
+      gap: 10px;
+      padding: 16px;
+    }
+
+    .result-card.is-visible {
+      display: grid;
+    }
+
+    .result-card__title {
+      margin: 0;
+      color: #111827;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .result-card__list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .result-card__item {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(103, 204, 53, 0.14);
+      color: #32871f;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .submit-bar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 12;
+      padding: 12px 16px calc(18px + env(safe-area-inset-bottom, 0px));
+      background: linear-gradient(180deg, rgba(243, 245, 246, 0), rgba(255, 255, 255, 0.98) 30%, #ffffff 100%);
+      box-shadow: 0 -10px 24px rgba(17, 24, 39, 0.08);
+    }
+
+    .submit-bar__meta {
+      margin: 0 0 10px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .primary-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 48px;
+      border: none;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 800;
+      box-shadow: 0 16px 28px rgba(253, 93, 0, 0.2);
+      cursor: pointer;
+    }
+
+    .primary-button:disabled {
+      background: #d8dce2;
+      color: #ffffff;
+      box-shadow: none;
+      cursor: default;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 0;
+      }
+
+      .phone-shell {
+        width: 100%;
+        min-height: 100vh;
+      }
+
+      .screen {
+        height: 100vh;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="phone-shell">
+    <section class="screen" aria-label="楼盘投票">
+      <header class="topbar">
+        <span class="topbar__title">楼盘投票</span>
+      </header>
+
+      <div class="page-content">
+        <section class="rule-card">
+          <h2 class="rule-card__title">投票说明</h2>
+          <div class="rule-card__tips">
+            <span class="rule-card__tip">每位用户仅可提交 1 次投票。</span>
+            <span class="rule-card__tip">本次投票最多可选择 3 个楼盘。</span>
+            <span class="rule-card__tip">提交后将锁定结果，不能重复投票。</span>
+          </div>
+          <p class="vote-status" id="voteStatus"></p>
+        </section>
+
+        <section class="section-head">
+          <h2 class="section-title">可投票楼盘</h2>
+          <span class="section-counter" id="sectionCounter">已选 0/3</span>
+        </section>
+
+        <section class="estate-list" id="estateList" aria-label="楼盘列表"></section>
+
+        <section class="result-card" id="resultCard">
+          <h2 class="result-card__title">已提交楼盘</h2>
+          <div class="result-card__list" id="resultList"></div>
+        </section>
+      </div>
+    </section>
+
+    <div class="submit-bar">
+      <p class="submit-bar__meta" id="submitMeta">请选择 1-3 个感兴趣的楼盘</p>
+      <button class="primary-button" id="submitVoteButton" type="button" disabled>提交投票</button>
+    </div>
+  </main>
+
+  <script>
+    const MAX_SELECTION = 3;
+    const VOTE_STORAGE_KEY = "houseMarketStandaloneEstateVote";
+
+    const estates = [
+      {
+        id: "tianfu-jincheng-guanlan",
+        title: "天府锦城观澜",
+        meta: "天府新区 · 建面 105-143㎡",
+        price: "168",
+        desc: "适合改善与异地视频带看",
+        tags: ["容积率 2.5", "精装修"],
+        stock: "剩余 36 套",
+        photo: "./assets/楼盘实景-会所书吧.png",
+        photoAlt: "天府锦城观澜会所书吧实景"
+      },
+      {
+        id: "jinjiang-wenmaifu",
+        title: "锦江文脉府",
+        meta: "锦江区 · 建面 89-128㎡",
+        price: "231",
+        desc: "适合返乡安家与家庭型置业",
+        tags: ["容积率 2.0", "精装修"],
+        stock: "剩余 29 套",
+        photo: "./assets/楼盘实景-楼栋外立面.png",
+        photoAlt: "锦江文脉府楼栋外立面实景"
+      },
+      {
+        id: "dongkezhan-yunting",
+        title: "东客站云庭",
+        meta: "成华区 · 建面 76-99㎡",
+        price: "126",
+        desc: "适合预算敏感客群先上车",
+        tags: ["容积率 3.1", "清水房"],
+        stock: "剩余 22 套",
+        photo: "./assets/楼盘实景-社区楼景.png",
+        photoAlt: "东客站云庭社区楼景实景"
+      }
+    ];
+
+    const estateList = document.getElementById("estateList");
+    const voteStatus = document.getElementById("voteStatus");
+    const sectionCounter = document.getElementById("sectionCounter");
+    const submitMeta = document.getElementById("submitMeta");
+    const submitVoteButton = document.getElementById("submitVoteButton");
+    const resultCard = document.getElementById("resultCard");
+    const resultList = document.getElementById("resultList");
+
+    let selectedEstateIds = new Set();
+    let voteRecord = loadVoteRecord();
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function loadVoteRecord() {
+      try {
+        const raw = window.localStorage.getItem(VOTE_STORAGE_KEY);
+        const parsed = raw ? JSON.parse(raw) : null;
+        return parsed && Array.isArray(parsed.estateIds) ? parsed : null;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function saveVoteRecord(record) {
+      try {
+        window.localStorage.setItem(VOTE_STORAGE_KEY, JSON.stringify(record));
+      } catch (error) {
+        return;
+      }
+    }
+
+    function hasSubmittedVote() {
+      return Boolean(voteRecord && voteRecord.estateIds && voteRecord.estateIds.length);
+    }
+
+    function getVotedEstateIds() {
+      return hasSubmittedVote() ? voteRecord.estateIds : [];
+    }
+
+    function getEstateById(estateId) {
+      return estates.find((estate) => estate.id === estateId) || null;
+    }
+
+    function setStatus(message, state = "") {
+      voteStatus.textContent = message;
+      if (state) {
+        voteStatus.dataset.state = state;
+      } else {
+        voteStatus.removeAttribute("data-state");
+      }
+    }
+
+    function renderEstateList() {
+      const submitted = hasSubmittedVote();
+      const votedEstateIds = new Set(getVotedEstateIds());
+
+      estateList.innerHTML = estates
+        .map((estate) => {
+          const selected = selectedEstateIds.has(estate.id);
+          const voted = votedEstateIds.has(estate.id);
+          const badgeText = voted ? "已投" : (submitted ? "未投" : (selected ? "已选" : "可选"));
+          const classNames = ["estate-card"];
+
+          if (selected) {
+            classNames.push("is-selected");
+          }
+          if (voted) {
+            classNames.push("is-voted");
+          }
+          if (submitted) {
+            classNames.push("is-locked");
+          }
+
+          return `
+            <button
+              class="${classNames.join(" ")}"
+              type="button"
+              data-estate-id="${estate.id}"
+              aria-pressed="${selected || voted ? "true" : "false"}"
+              ${submitted ? "disabled" : ""}
+            >
+              <div class="estate-card__media">
+                <img src="${estate.photo}" alt="${escapeHtml(estate.photoAlt)}" loading="lazy" decoding="async" />
+                <span class="estate-card__check">${selected || voted ? "✓" : ""}</span>
+              </div>
+              <div class="estate-card__body">
+                <div class="estate-card__head">
+                  <h3 class="estate-card__title">${escapeHtml(estate.title)}</h3>
+                  <span class="estate-card__badge">${badgeText}</span>
+                </div>
+                <p class="estate-card__meta">${escapeHtml(estate.meta)}</p>
+                <p class="estate-card__desc">${escapeHtml(estate.desc)}</p>
+                <div class="estate-card__tags">
+                  ${estate.tags.map((tag) => `<span class="estate-card__tag">${escapeHtml(tag)}</span>`).join("")}
+                </div>
+                <div class="estate-card__footer">
+                  <div class="estate-card__price"><small>总价</small>${escapeHtml(estate.price)}<span>万起</span></div>
+                  <span class="estate-card__stock">${escapeHtml(estate.stock)}</span>
+                </div>
+              </div>
+            </button>
+          `;
+        })
+        .join("");
+    }
+
+    function getStockCount(stockText, fallback = 30) {
+      const match = String(stockText || "").match(/\d+/);
+      return match ? match[0] : String(fallback);
+    }
+
+    function getMetaText(estate) {
+      return estate.meta || "";
+    }
+
+    function getPriceText(estate) {
+      return estate.unitPrice || estate.price || "";
+    }
+
+    function renderEstateListSvgStyle() {
+      const submitted = hasSubmittedVote();
+      const votedEstateIds = new Set(getVotedEstateIds());
+
+      estateList.innerHTML = estates
+        .map((estate, index) => {
+          const selected = selectedEstateIds.has(estate.id);
+          const voted = votedEstateIds.has(estate.id);
+          const classNames = ["estate-card"];
+          const stockCount = getStockCount(estate.stock, 30 - index * 4);
+          const voteText = voted ? "已投" : (selected ? "已选" : "投票");
+
+          if (selected) {
+            classNames.push("is-selected");
+          }
+          if (voted) {
+            classNames.push("is-voted");
+          }
+          if (submitted) {
+            classNames.push("is-locked");
+          }
+
+          return `
+            <button
+              class="${classNames.join(" ")}"
+              type="button"
+              data-estate-id="${estate.id}"
+              aria-pressed="${selected || voted ? "true" : "false"}"
+              ${submitted ? "disabled" : ""}
+            >
+              <div class="estate-card__media">
+                <img src="${estate.photo}" alt="${escapeHtml(estate.photoAlt)}" loading="lazy" decoding="async" />
+                <span class="estate-card__check">${selected || voted ? "✓" : ""}</span>
+                <span class="estate-card__views"><i class="estate-card__eye"></i>${escapeHtml(estate.views || 3456)}</span>
+              </div>
+              <div class="estate-card__body">
+                <div class="estate-card__head">
+                  <h3 class="estate-card__title">${escapeHtml(estate.title)}</h3>
+                  <span class="estate-card__badge">${voted ? "已投" : (selected ? "已选" : "可选")}</span>
+                </div>
+                <div class="estate-card__price">${escapeHtml(getPriceText(estate))}<span>${estate.unitPrice ? "元/㎡" : "万起"}</span></div>
+                <p class="estate-card__meta">${escapeHtml(getMetaText(estate))}</p>
+                <div class="estate-card__tags">
+                  ${estate.tags.map((tag, tagIndex) => `<span class="estate-card__tag ${tagIndex === 0 ? "estate-card__tag--green" : ""}">${escapeHtml(tag)}</span>`).join("")}
+                </div>
+                <div class="estate-card__promos">
+                  <span class="estate-card__promo"><i class="estate-card__promo-icon">惠</i>${escapeHtml(estate.promo || "企业优惠减 8.8 万")}</span>
+                  <span class="estate-card__promo estate-card__promo--subsidy"><i class="estate-card__promo-icon">补</i>${escapeHtml(estate.subsidy || "可享新房补贴")}</span>
+                </div>
+              </div>
+              <div class="estate-card__side">
+                <span class="estate-card__stock-card"><span><strong>${escapeHtml(stockCount)}套</strong>剩余</span></span>
+                <span class="estate-card__vote-button">${voteText}</span>
+              </div>
+            </button>
+          `;
+        })
+        .join("");
+    }
+
+    function renderResult() {
+      const submitted = hasSubmittedVote();
+      resultCard.classList.toggle("is-visible", submitted);
+
+      if (!submitted) {
+        resultList.innerHTML = "";
+        return;
+      }
+
+      resultList.innerHTML = getVotedEstateIds()
+        .map((estateId) => getEstateById(estateId))
+        .filter(Boolean)
+        .map((estate) => `<span class="result-card__item">${escapeHtml(estate.title)}</span>`)
+        .join("");
+    }
+
+    function renderVoteState() {
+      const submitted = hasSubmittedVote();
+      const selectedCount = selectedEstateIds.size;
+
+      renderEstateListSvgStyle();
+      renderResult();
+
+      if (submitted) {
+        sectionCounter.textContent = `已投 ${getVotedEstateIds().length}/3`;
+        submitMeta.textContent = "您已完成本次投票，每位用户仅可提交一次";
+        submitVoteButton.textContent = "已完成投票";
+        submitVoteButton.disabled = true;
+        setStatus("投票已提交，感谢您的反馈。我们将根据您的意向开展精准供需对接。", "success");
+        return;
+      }
+
+      sectionCounter.textContent = `已选 ${selectedCount}/${MAX_SELECTION}`;
+      submitMeta.textContent = selectedCount
+        ? `已选择 ${selectedCount} 个楼盘，最多可选 ${MAX_SELECTION} 个`
+        : `请选择 1-${MAX_SELECTION} 个感兴趣的楼盘`;
+      submitVoteButton.textContent = selectedCount ? `提交投票（${selectedCount}）` : "提交投票";
+      submitVoteButton.disabled = selectedCount === 0;
+
+      if (!voteStatus.textContent || voteStatus.dataset.state === "success") {
+        setStatus("请选择您感兴趣的楼盘，最多 3 个，仅可提交 1 次。");
+      }
+    }
+
+    function toggleEstateSelection(estateId) {
+      if (hasSubmittedVote()) {
+        return;
+      }
+
+      if (selectedEstateIds.has(estateId)) {
+        selectedEstateIds.delete(estateId);
+        setStatus("已取消该楼盘选择。");
+        renderVoteState();
+        return;
+      }
+
+      if (selectedEstateIds.size >= MAX_SELECTION) {
+        setStatus("本次投票最多选择 3 个楼盘，请先取消一个已选楼盘。", "warning");
+        return;
+      }
+
+      selectedEstateIds.add(estateId);
+      setStatus(`已选择 ${selectedEstateIds.size} 个楼盘，可继续选择或提交投票。`);
+      renderVoteState();
+    }
+
+    function submitVote() {
+      if (hasSubmittedVote()) {
+        renderVoteState();
+        return;
+      }
+
+      if (!selectedEstateIds.size) {
+        setStatus("请先选择至少 1 个楼盘。", "warning");
+        return;
+      }
+
+      const estateIds = Array.from(selectedEstateIds).slice(0, MAX_SELECTION);
+      voteRecord = {
+        estateIds,
+        submittedAt: new Date().toISOString()
+      };
+      saveVoteRecord(voteRecord);
+      selectedEstateIds = new Set();
+      renderVoteState();
+    }
+
+    estateList.addEventListener("click", (event) => {
+      const card = event.target.closest("[data-estate-id]");
+      if (!card) {
+        return;
+      }
+
+      toggleEstateSelection(card.dataset.estateId);
+    });
+
+    submitVoteButton.addEventListener("click", submitVote);
+
+    renderVoteState();
+  </script>
+</body>
+</html>
