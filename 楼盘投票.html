@@ -895,8 +895,7 @@
             <label class="survey-option"><input type="radio" name="budgetRange" value="100-200万元" />100-200万元</label>
             <label class="survey-option"><input type="radio" name="budgetRange" value="200-300万元" />200-300万元</label>
             <label class="survey-option"><input type="radio" name="budgetRange" value="300-400万元" />300-400万元</label>
-            <label class="survey-option"><input type="radio" name="budgetRange" value="400-500万元" />400-500万元</label>
-            <label class="survey-option"><input type="radio" name="budgetRange" value="500万元及以上" />500万元及以上</label>
+            <label class="survey-option"><input type="radio" name="budgetRange" value="400万元以上" />400万元以上</label>
           </div>
         </div>
 
@@ -1110,6 +1109,7 @@
             >
               <div class="estate-card__media">
                 <img src="${estate.photo}" alt="${escapeHtml(estate.photoAlt)}" loading="lazy" decoding="async" />
+                <span class="estate-card__check">${selected || voted ? "✓" : ""}</span>
               </div>
               <div class="estate-card__body">
                 <div class="estate-card__head">
@@ -1174,6 +1174,7 @@
             >
               <div class="estate-card__media">
                 <img src="${estate.photo}" alt="${escapeHtml(estate.photoAlt)}" loading="lazy" decoding="async" />
+                <span class="estate-card__check">${selected || voted ? "✓" : ""}</span>
                 <span class="estate-card__views"><i class="estate-card__eye"></i>${escapeHtml(estate.views || 3456)}</span>
               </div>
               <div class="estate-card__body">
