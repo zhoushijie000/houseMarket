@@ -207,7 +207,7 @@
       background: #ffffff;
       color: inherit;
       text-align: left;
-      cursor: pointer;
+      cursor: default;
     }
 
     .estate-card + .estate-card {
@@ -246,30 +246,6 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-    }
-
-    .estate-card__check {
-      position: absolute;
-      right: 7px;
-      top: 7px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 20px;
-      height: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.76);
-      border-radius: 50%;
-      background: rgba(17, 24, 39, 0.28);
-      color: #ffffff;
-      font-size: 12px;
-      font-weight: 900;
-      backdrop-filter: blur(8px);
-    }
-
-    .estate-card.is-selected .estate-card__check,
-    .estate-card.is-voted .estate-card__check {
-      border-color: transparent;
-      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
     }
 
     .estate-card__views {
@@ -472,12 +448,21 @@
       justify-content: center;
       width: 40px;
       height: 28px;
+      padding: 0;
+      border: none;
       border-radius: 5px;
       background: #ff8f2e;
       color: #ffffff;
+      font: inherit;
       font-size: 11px;
       font-weight: 700;
       box-shadow: 0 6px 12px rgba(255, 143, 46, 0.2);
+      cursor: pointer;
+    }
+
+    .estate-card__vote-button:focus-visible {
+      outline: 3px solid rgba(253, 93, 0, 0.24);
+      outline-offset: 2px;
     }
 
     .estate-card.is-selected .estate-card__vote-button {
@@ -488,6 +473,10 @@
     .estate-card.is-voted .estate-card__vote-button {
       background: #c0c4cc;
       box-shadow: none;
+    }
+
+    .estate-card__vote-button:disabled {
+      cursor: default;
     }
 
     .entry-notice {
@@ -702,7 +691,8 @@
       line-height: 1.5;
     }
 
-    .contact-field input {
+    .contact-field input,
+    .contact-field textarea {
       width: 100%;
       min-height: 44px;
       border: 1px solid rgba(228, 231, 237, 0.96);
@@ -714,7 +704,15 @@
       outline: none;
     }
 
-    .contact-field input:focus {
+    .contact-field textarea {
+      min-height: 76px;
+      padding-top: 11px;
+      line-height: 1.6;
+      resize: none;
+    }
+
+    .contact-field input:focus,
+    .contact-field textarea:focus {
       border-color: rgba(253, 93, 0, 0.42);
       box-shadow: 0 0 0 4px rgba(253, 93, 0, 0.08);
     }
@@ -729,6 +727,9 @@
     }
 
     .survey-card__actions {
+      display: grid;
+      grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+      gap: 10px;
       position: sticky;
       bottom: -16px;
       padding-top: 2px;
@@ -736,6 +737,7 @@
       background: #ffffff;
     }
 
+    .survey-card__ghost,
     .survey-card__primary {
       display: inline-flex;
       align-items: center;
@@ -747,6 +749,11 @@
       font-size: 14px;
       font-weight: 800;
       cursor: pointer;
+    }
+
+    .survey-card__ghost {
+      background: #f4f5f7;
+      color: var(--text-secondary);
     }
 
     .survey-card__primary {
@@ -888,7 +895,8 @@
             <label class="survey-option"><input type="radio" name="budgetRange" value="100-200万元" />100-200万元</label>
             <label class="survey-option"><input type="radio" name="budgetRange" value="200-300万元" />200-300万元</label>
             <label class="survey-option"><input type="radio" name="budgetRange" value="300-400万元" />300-400万元</label>
-            <label class="survey-option"><input type="radio" name="budgetRange" value="400万元以上" />400万元以上</label>
+            <label class="survey-option"><input type="radio" name="budgetRange" value="400-500万元" />400-500万元</label>
+            <label class="survey-option"><input type="radio" name="budgetRange" value="500万元及以上" />500万元及以上</label>
           </div>
         </div>
 
@@ -921,8 +929,14 @@
           </div>
         </div>
 
+        <div class="contact-field">
+          <label for="customProjectInput">如果上面没有您中意的项目，请在此填写。</label>
+          <textarea id="customProjectInput" maxlength="80" placeholder="请输入项目名称（选填）"></textarea>
+        </div>
+
         <p class="survey-card__error" id="surveyError"></p>
         <div class="survey-card__actions">
+          <button class="survey-card__ghost" id="surveyCancelButton" type="button">暂不填写</button>
           <button class="survey-card__primary" id="surveySubmitButton" type="button">确认提交</button>
         </div>
       </div>
@@ -983,8 +997,10 @@
     const entryNoticeButton = document.getElementById("entryNoticeButton");
     const surveyCard = document.getElementById("surveyCard");
     const surveyCloseButton = document.getElementById("surveyCloseButton");
+    const surveyCancelButton = document.getElementById("surveyCancelButton");
     const surveySubmitButton = document.getElementById("surveySubmitButton");
     const surveyError = document.getElementById("surveyError");
+    const customProjectInput = document.getElementById("customProjectInput");
     const surnameInput = document.getElementById("surnameInput");
     const phoneInput = document.getElementById("phoneInput");
 
@@ -1094,7 +1110,6 @@
             >
               <div class="estate-card__media">
                 <img src="${estate.photo}" alt="${escapeHtml(estate.photoAlt)}" loading="lazy" decoding="async" />
-                <span class="estate-card__check">${selected || voted ? "✓" : ""}</span>
               </div>
               <div class="estate-card__body">
                 <div class="estate-card__head">
@@ -1153,16 +1168,12 @@
           }
 
           return `
-            <button
+            <article
               class="${classNames.join(" ")}"
-              type="button"
               data-estate-id="${estate.id}"
-              aria-pressed="${selected || voted ? "true" : "false"}"
-              ${submitted ? "disabled" : ""}
             >
               <div class="estate-card__media">
                 <img src="${estate.photo}" alt="${escapeHtml(estate.photoAlt)}" loading="lazy" decoding="async" />
-                <span class="estate-card__check">${selected || voted ? "✓" : ""}</span>
                 <span class="estate-card__views"><i class="estate-card__eye"></i>${escapeHtml(estate.views || 3456)}</span>
               </div>
               <div class="estate-card__body">
@@ -1182,9 +1193,15 @@
               </div>
               <div class="estate-card__side">
                 <span class="estate-card__stock-card"><span><strong>${escapeHtml(stockCount)}套</strong>剩余</span></span>
-                <span class="estate-card__vote-button">${voteText}</span>
+                <button
+                  class="estate-card__vote-button"
+                  type="button"
+                  data-estate-vote-id="${estate.id}"
+                  aria-pressed="${selected || voted ? "true" : "false"}"
+                  ${submitted ? "disabled" : ""}
+                >${voteText}</button>
               </div>
-            </button>
+            </article>
           `;
         })
         .join("");
@@ -1249,12 +1266,14 @@
     }
 
     function collectSurveyData() {
+      const customProject = customProjectInput ? customProjectInput.value.trim() : "";
       const surname = surnameInput ? surnameInput.value.trim() : "";
       const phone = phoneInput ? phoneInput.value.trim() : "";
       return {
         groupBuyIntent: getCheckedValue("groupBuyIntent"),
         budgetRange: getCheckedValue("budgetRange"),
         areaRange: getCheckedValue("areaRange"),
+        customProject,
         surname,
         gender: getCheckedValue("gender"),
         phone
@@ -1343,18 +1362,19 @@
     }
 
     estateList.addEventListener("click", (event) => {
-      const card = event.target.closest("[data-estate-id]");
-      if (!card) {
+      const voteButton = event.target.closest("[data-estate-vote-id]");
+      if (!voteButton) {
         return;
       }
 
-      toggleEstateSelection(card.dataset.estateId);
+      toggleEstateSelection(voteButton.dataset.estateVoteId);
     });
 
     submitVoteButton.addEventListener("click", submitVote);
     entryNoticeButton.addEventListener("click", closeEntryNotice);
     surveySubmitButton.addEventListener("click", submitSurveyVote);
     surveyCloseButton.addEventListener("click", closeSurveyStep);
+    surveyCancelButton.addEventListener("click", closeSurveyStep);
     surveyCard.addEventListener("click", (event) => {
       if (event.target === surveyCard) {
         closeSurveyStep();
