@@ -98,7 +98,7 @@
     .page-content {
       display: grid;
       gap: 14px;
-      padding: 16px 16px calc(128px + env(safe-area-inset-bottom, 0px));
+      padding: 16px 16px calc(246px + env(safe-area-inset-bottom, 0px));
     }
 
     .rule-card,
@@ -769,8 +769,157 @@
       bottom: 0;
       z-index: 12;
       padding: 12px 16px calc(18px + env(safe-area-inset-bottom, 0px));
-      background: linear-gradient(180deg, rgba(243, 245, 246, 0), rgba(255, 255, 255, 0.98) 30%, #ffffff 100%);
+      background: #ffffff;
       box-shadow: 0 -10px 24px rgba(17, 24, 39, 0.08);
+    }
+
+    .selected-ranks {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding: 12px;
+      border-radius: 20px;
+      background: #ffffff;
+      box-shadow: inset 0 0 0 1px rgba(228, 231, 237, 0.92);
+    }
+
+    .selected-ranks[hidden] {
+      display: none;
+    }
+
+    .selected-ranks__title {
+      margin: 0;
+      color: var(--text-primary);
+      font-size: 13px;
+      line-height: 1.5;
+      font-weight: 800;
+    }
+
+    .selected-ranks__list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .selected-rank {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 8px 10px;
+      border-radius: 16px;
+      background: #fff7f0;
+      box-shadow: inset 0 0 0 1px rgba(253, 93, 0, 0.08);
+    }
+
+    .selected-rank--dragging {
+      box-shadow: 0 16px 32px rgba(17, 24, 39, 0.18);
+      opacity: 0.96;
+    }
+
+    .selected-rank--placeholder {
+      background: #fff3e8;
+      border: 1px dashed rgba(253, 93, 0, 0.28);
+      box-shadow: none;
+    }
+
+    .selected-rank__badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 52px;
+      min-height: 28px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .selected-rank__name {
+      min-width: 0;
+      color: var(--text-primary);
+      font-size: 13px;
+      line-height: 1.4;
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .selected-rank__actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .selected-rank__action,
+    .selected-rank__handle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 38px;
+      min-height: 28px;
+      padding: 0 8px;
+      border: none;
+      border-radius: 999px;
+      background: #ffffff;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 700;
+      box-shadow: inset 0 0 0 1px rgba(228, 231, 237, 0.96);
+      white-space: nowrap;
+    }
+
+    .selected-rank__handle {
+      position: relative;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      touch-action: none;
+    }
+
+    .selected-rank__handle-icon {
+      position: relative;
+      display: block;
+      width: 10px;
+      height: 16px;
+      color: currentColor;
+    }
+
+    .selected-rank__handle-icon::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow:
+        0 6px 0 currentColor,
+        0 12px 0 currentColor,
+        6px 0 0 currentColor,
+        6px 6px 0 currentColor,
+        6px 12px 0 currentColor;
+    }
+
+    .selected-rank__handle:active {
+      cursor: grabbing;
+    }
+
+    .selected-rank__action--remove {
+      border: none;
+      color: #d9480f;
+      box-shadow: inset 0 0 0 1px rgba(217, 72, 15, 0.14);
+    }
+
+    .selected-rank__action:disabled {
+      color: #c0c4cc;
+      cursor: default;
+      box-shadow: inset 0 0 0 1px rgba(228, 231, 237, 0.72);
     }
 
     .submit-bar__meta {
@@ -845,6 +994,7 @@
           <div class="rule-card__tips">
             <span class="rule-card__tip">每位用户仅可提交 1 次投票。</span>
             <span class="rule-card__tip">本次投票最多可选择 3 个楼盘。</span>
+            <span class="rule-card__tip">楼盘将按点击投票的先后记录顺位，如需调整可取消后重新选择。</span>
             <span class="rule-card__tip">提交后将锁定结果，不能重复投票。</span>
           </div>
           <p class="vote-status" id="voteStatus"></p>
@@ -942,6 +1092,10 @@
     </section>
 
     <div class="submit-bar">
+      <section class="selected-ranks" id="selectedRanks" hidden aria-label="投票顺位列表">
+        <p class="selected-ranks__title">投票顺位</p>
+        <div class="selected-ranks__list" id="selectedRankList"></div>
+      </section>
       <p class="submit-bar__meta" id="submitMeta">请选择 1-3 个感兴趣的楼盘</p>
       <button class="primary-button" id="submitVoteButton" type="button" disabled>提交投票</button>
     </div>
@@ -990,6 +1144,8 @@
     const estateList = document.getElementById("estateList");
     const voteStatus = document.getElementById("voteStatus");
     const sectionCounter = document.getElementById("sectionCounter");
+    const selectedRanks = document.getElementById("selectedRanks");
+    const selectedRankList = document.getElementById("selectedRankList");
     const submitMeta = document.getElementById("submitMeta");
     const submitVoteButton = document.getElementById("submitVoteButton");
     const entryNotice = document.getElementById("entryNotice");
@@ -1006,6 +1162,7 @@
     let selectedEstateIds = new Set();
     let voteRecord = loadVoteRecord();
     let surveyVisible = false;
+    let rankDragState = null;
 
     function escapeHtml(value) {
       return String(value)
@@ -1109,7 +1266,6 @@
             >
               <div class="estate-card__media">
                 <img src="${estate.photo}" alt="${escapeHtml(estate.photoAlt)}" loading="lazy" decoding="async" />
-                <span class="estate-card__check">${selected || voted ? "✓" : ""}</span>
               </div>
               <div class="estate-card__body">
                 <div class="estate-card__head">
@@ -1145,9 +1301,70 @@
       return estate.unitPrice || estate.price || "";
     }
 
+    function getRankNumber(orderedEstateIds, estateId) {
+      const rankIndex = orderedEstateIds.indexOf(estateId);
+      return rankIndex === -1 ? 0 : rankIndex + 1;
+    }
+
+    function getSelectedEstateIdList() {
+      return Array.from(selectedEstateIds);
+    }
+
+    function setSelectedEstateIdsByOrder(estateIds) {
+      selectedEstateIds = new Set(estateIds);
+    }
+
+    function renderSelectedRanks() {
+      if (!selectedRanks || !selectedRankList) {
+        return;
+      }
+
+      const submitted = hasSubmittedVote();
+      const selectedEstateIdList = getSelectedEstateIdList();
+      selectedRanks.hidden = submitted || selectedEstateIdList.length === 0;
+
+      if (submitted || !selectedEstateIdList.length) {
+        selectedRankList.innerHTML = "";
+        return;
+      }
+
+      selectedRankList.innerHTML = selectedEstateIdList
+        .map((estateId, index) => {
+          const estate = getEstateById(estateId);
+          if (!estate) {
+            return "";
+          }
+
+          return `
+            <div class="selected-rank" data-rank-item-id="${estate.id}">
+              <span class="selected-rank__badge">${index + 1}顺位</span>
+              <span class="selected-rank__name">${escapeHtml(estate.title)}</span>
+              <span class="selected-rank__actions">
+                <button
+                  class="selected-rank__handle"
+                  type="button"
+                  data-rank-handle="true"
+                  data-rank-id="${estate.id}"
+                  aria-label="拖动调整 ${escapeHtml(estate.title)} 的投票顺位"
+                ><span class="selected-rank__handle-icon" aria-hidden="true"></span></button>
+                <button
+                  class="selected-rank__action selected-rank__action--remove"
+                  type="button"
+                  data-rank-action="remove"
+                  data-rank-id="${estate.id}"
+                >删除</button>
+              </span>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
     function renderEstateListSvgStyle() {
       const submitted = hasSubmittedVote();
-      const votedEstateIds = new Set(getVotedEstateIds());
+      const selectedEstateIdList = getSelectedEstateIdList();
+      const votedEstateIdList = getVotedEstateIds();
+      const votedEstateIds = new Set(votedEstateIdList);
 
       estateList.innerHTML = estates
         .map((estate, index) => {
@@ -1155,7 +1372,13 @@
           const voted = votedEstateIds.has(estate.id);
           const classNames = ["estate-card"];
           const stockCount = getStockCount(estate.stock, 30 - index * 4);
-          const voteText = voted ? "已投" : (selected ? "已选" : "投票");
+          const selectedRank = getRankNumber(selectedEstateIdList, estate.id);
+          const votedRank = getRankNumber(votedEstateIdList, estate.id);
+          const voteText = votedRank
+            ? `${votedRank}顺位`
+            : selectedRank
+              ? `${selectedRank}顺位`
+              : "投票";
 
           if (selected) {
             classNames.push("is-selected");
@@ -1174,7 +1397,6 @@
             >
               <div class="estate-card__media">
                 <img src="${estate.photo}" alt="${escapeHtml(estate.photoAlt)}" loading="lazy" decoding="async" />
-                <span class="estate-card__check">${selected || voted ? "✓" : ""}</span>
                 <span class="estate-card__views"><i class="estate-card__eye"></i>${escapeHtml(estate.views || 3456)}</span>
               </div>
               <div class="estate-card__body">
@@ -1199,6 +1421,11 @@
                   type="button"
                   data-estate-vote-id="${estate.id}"
                   aria-pressed="${selected || voted ? "true" : "false"}"
+                  aria-label="${votedRank
+                    ? `${escapeHtml(estate.title)}，已记录为第${votedRank}顺位`
+                    : selectedRank
+                      ? `${escapeHtml(estate.title)}，当前为第${selectedRank}顺位，再次点击可取消`
+                      : `${escapeHtml(estate.title)}，点击设为意向顺位`}"
                   ${submitted ? "disabled" : ""}
                 >${voteText}</button>
               </div>
@@ -1213,6 +1440,7 @@
       const selectedCount = selectedEstateIds.size;
 
       renderEstateListSvgStyle();
+      renderSelectedRanks();
       if (surveyCard) {
         surveyCard.hidden = submitted || !surveyVisible;
       }
@@ -1222,13 +1450,13 @@
         submitMeta.textContent = "提交成功，感谢您的反馈";
         submitVoteButton.textContent = "去房产超市逛一逛";
         submitVoteButton.disabled = false;
-        setStatus("提交成功", "success");
+        setStatus("提交成功，已记录您的楼盘顺位意向。", "success");
         return;
       }
 
       sectionCounter.textContent = `已选 ${selectedCount}/${MAX_SELECTION}`;
       submitMeta.textContent = selectedCount
-        ? `已选择 ${selectedCount} 个楼盘，最多可选 ${MAX_SELECTION} 个`
+        ? `已选择 ${selectedCount} 个楼盘，可通过上方顺位标签调整顺序或删除`
         : `请选择 1-${MAX_SELECTION} 个感兴趣的楼盘`;
       submitVoteButton.textContent = selectedCount
         ? `提交投票（${selectedCount}）`
@@ -1251,7 +1479,7 @@
 
       if (selectedEstateIds.has(estateId)) {
         selectedEstateIds.delete(estateId);
-        setStatus("已取消该楼盘选择。");
+        setStatus("已取消该楼盘选择，其余已选楼盘顺位已自动顺延。");
         renderVoteState();
         return;
       }
@@ -1262,8 +1490,149 @@
       }
 
       selectedEstateIds.add(estateId);
-      setStatus(`已选择 ${selectedEstateIds.size} 个楼盘，可继续选择或提交投票。`);
+      setStatus(`已设为第 ${selectedEstateIds.size} 顺位，可继续选择下一个意向楼盘。`);
       renderVoteState();
+    }
+
+    function beginRankDrag(pointerEvent, handle) {
+      if (hasSubmittedVote() || surveyVisible || !selectedRankList) {
+        return;
+      }
+
+      const rankItem = handle.closest("[data-rank-item-id]");
+      if (!rankItem) {
+        return;
+      }
+
+      const itemId = rankItem.dataset.rankItemId;
+      const originalOrder = getSelectedEstateIdList();
+      if (!itemId || originalOrder.length < 2) {
+        return;
+      }
+
+      pointerEvent.preventDefault();
+
+      const rect = rankItem.getBoundingClientRect();
+      const placeholder = document.createElement("div");
+      placeholder.className = "selected-rank selected-rank--placeholder";
+      placeholder.style.height = `${rect.height}px`;
+
+      selectedRankList.insertBefore(placeholder, rankItem);
+      document.body.appendChild(rankItem);
+
+      rankItem.classList.add("selected-rank--dragging");
+      rankItem.style.position = "fixed";
+      rankItem.style.left = `${rect.left}px`;
+      rankItem.style.top = `${rect.top}px`;
+      rankItem.style.width = `${rect.width}px`;
+      rankItem.style.zIndex = "1200";
+      rankItem.style.pointerEvents = "none";
+
+      rankDragState = {
+        pointerId: pointerEvent.pointerId,
+        draggedItem: rankItem,
+        placeholder,
+        originalOrder,
+        itemId,
+        offsetX: pointerEvent.clientX - rect.left,
+        offsetY: pointerEvent.clientY - rect.top,
+        changed: false
+      };
+
+      window.addEventListener("pointermove", onRankDragMove);
+      window.addEventListener("pointerup", onRankDragEnd);
+      window.addEventListener("pointercancel", onRankDragCancel);
+    }
+
+    function removeSelectedEstate(estateId) {
+      if (hasSubmittedVote() || surveyVisible || !selectedEstateIds.has(estateId)) {
+        return;
+      }
+
+      selectedEstateIds.delete(estateId);
+      setStatus("已从投票顺位中删除该楼盘，其余顺位已自动顺延。");
+      renderVoteState();
+    }
+
+    function finishRankDrag(options = {}) {
+      const { cancelled = false } = options;
+      if (!rankDragState) {
+        return;
+      }
+
+      const state = rankDragState;
+      window.removeEventListener("pointermove", onRankDragMove);
+      window.removeEventListener("pointerup", onRankDragEnd);
+      window.removeEventListener("pointercancel", onRankDragCancel);
+
+      if (state.placeholder.parentNode) {
+        state.placeholder.parentNode.insertBefore(state.draggedItem, state.placeholder);
+      }
+
+      const orderedEstateIds = cancelled
+        ? state.originalOrder
+        : Array.from(selectedRankList.querySelectorAll("[data-rank-item-id]"))
+            .map((item) => item.dataset.rankItemId)
+            .filter(Boolean);
+
+      state.placeholder.remove();
+
+      state.draggedItem.classList.remove("selected-rank--dragging");
+      state.draggedItem.style.position = "";
+      state.draggedItem.style.left = "";
+      state.draggedItem.style.top = "";
+      state.draggedItem.style.width = "";
+      state.draggedItem.style.zIndex = "";
+      state.draggedItem.style.pointerEvents = "";
+
+      rankDragState = null;
+      setSelectedEstateIdsByOrder(orderedEstateIds);
+      renderVoteState();
+
+      if (!cancelled && state.changed) {
+        setStatus("已通过拖拽调整投票顺位。");
+      }
+    }
+
+    function onRankDragMove(pointerEvent) {
+      if (!rankDragState || pointerEvent.pointerId !== rankDragState.pointerId) {
+        return;
+      }
+
+      pointerEvent.preventDefault();
+      const { draggedItem, placeholder, offsetX, offsetY } = rankDragState;
+
+      draggedItem.style.left = `${pointerEvent.clientX - offsetX}px`;
+      draggedItem.style.top = `${pointerEvent.clientY - offsetY}px`;
+
+      const hoveredItem = document.elementFromPoint(pointerEvent.clientX, pointerEvent.clientY)?.closest("[data-rank-item-id]");
+      if (!hoveredItem || hoveredItem === draggedItem) {
+        return;
+      }
+
+      const hoveredRect = hoveredItem.getBoundingClientRect();
+      const placeAfter = pointerEvent.clientY > hoveredRect.top + hoveredRect.height / 2;
+      const referenceNode = placeAfter ? hoveredItem.nextSibling : hoveredItem;
+      if (referenceNode !== placeholder) {
+        selectedRankList.insertBefore(placeholder, referenceNode);
+        rankDragState.changed = true;
+      }
+    }
+
+    function onRankDragEnd(pointerEvent) {
+      if (!rankDragState || pointerEvent.pointerId !== rankDragState.pointerId) {
+        return;
+      }
+
+      finishRankDrag();
+    }
+
+    function onRankDragCancel(pointerEvent) {
+      if (!rankDragState || pointerEvent.pointerId !== rankDragState.pointerId) {
+        return;
+      }
+
+      finishRankDrag({ cancelled: true });
     }
 
     function collectSurveyData() {
@@ -1369,6 +1738,30 @@
       }
 
       toggleEstateSelection(voteButton.dataset.estateVoteId);
+    });
+
+    selectedRankList.addEventListener("pointerdown", (event) => {
+      const handle = event.target.closest("[data-rank-handle]");
+      if (!handle) {
+        return;
+      }
+
+      beginRankDrag(event, handle);
+    });
+
+    selectedRankList.addEventListener("click", (event) => {
+      const actionButton = event.target.closest("[data-rank-action]");
+      if (!actionButton) {
+        return;
+      }
+
+      const estateId = actionButton.dataset.rankId;
+      const action = actionButton.dataset.rankAction;
+
+      if (action === "remove") {
+        removeSelectedEstate(estateId);
+        return;
+      }
     });
 
     submitVoteButton.addEventListener("click", submitVote);
