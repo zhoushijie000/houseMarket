@@ -1,0 +1,2105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>安家成都首页</title>
+  <style>
+    :root {
+      --brand: #ff6b2a;
+      --brand-2: #ff9a2f;
+      --orange: #ff8f2e;
+      --text: #303133;
+      --muted: #909399;
+      --line: #edf0f4;
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: #f3f5f6;
+      color: var(--text);
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      background: none;
+      color: inherit;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .page {
+      position: relative;
+      width: min(100vw, 375px);
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: #fff;
+    }
+
+    .app-view {
+      display: none;
+      min-height: 100vh;
+    }
+
+    .app-view.is-active {
+      display: block;
+    }
+
+    .statusbar {
+      height: 34px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 0 21px 6px;
+      background: #fff;
+      color: #000;
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    .statusbar__right {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .signal {
+      display: grid;
+      grid-template-columns: repeat(4, 3px);
+      align-items: end;
+      gap: 2px;
+      height: 12px;
+    }
+
+    .signal i {
+      width: 3px;
+      border-radius: 2px;
+      background: #000;
+    }
+
+    .signal i:nth-child(1) { height: 4px; }
+    .signal i:nth-child(2) { height: 6px; }
+    .signal i:nth-child(3) { height: 9px; }
+    .signal i:nth-child(4) { height: 12px; }
+
+    .battery {
+      width: 21px;
+      height: 11px;
+      border: 1.4px solid #000;
+      border-radius: 3px;
+      position: relative;
+    }
+
+    .battery::before {
+      content: "";
+      position: absolute;
+      right: -3px;
+      top: 3px;
+      width: 2px;
+      height: 5px;
+      border-radius: 2px;
+      background: #000;
+    }
+
+    .battery::after {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      border-radius: 2px;
+      background: #000;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+    }
+
+    .topbar__title {
+      color: #000;
+      font-size: 17px;
+      font-weight: 500;
+    }
+
+    .nav-pill {
+      position: absolute;
+      top: 9px;
+      display: flex;
+      align-items: center;
+      min-height: 32px;
+      overflow: hidden;
+      border: 1px solid rgba(151, 151, 151, 0.2);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .nav-pill--left {
+      left: 6px;
+    }
+
+    .nav-pill--right {
+      right: 6px;
+    }
+
+    .nav-pill__button {
+      width: 43px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      color: #000;
+      position: relative;
+    }
+
+    .nav-pill__button + .nav-pill__button::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 7px;
+      width: 1px;
+      height: 18px;
+      background: rgba(0, 0, 0, 0.15);
+    }
+
+    .nav-pill svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .nav-more {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -2px;
+      transform: translateY(-2px);
+    }
+
+    .nav-minus {
+      font-size: 22px;
+      font-weight: 900;
+      transform: translateY(-2px);
+    }
+
+    .nav-target {
+      font-size: 23px;
+      font-weight: 700;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 160px;
+      padding: 12px 16px 0;
+      overflow: visible;
+      background:
+        linear-gradient(180deg, rgba(255, 217, 90, 0.9), rgba(255, 124, 46, 0.96)),
+        #ff8a2f;
+    }
+
+    .hero::before {
+      content: "安家成都";
+      position: absolute;
+      left: -27px;
+      bottom: -10px;
+      color: rgba(255, 255, 255, 0.14);
+      font-size: 72px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      white-space: nowrap;
+    }
+
+    .search-row {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 52px;
+      align-items: center;
+      gap: 10px;
+      padding-right: 0;
+    }
+
+    .search-box {
+      height: 48px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 54px;
+      align-items: center;
+      min-width: 0;
+      padding: 0 6px 0 14px;
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: 0 6px 14px rgba(166, 85, 34, 0.06);
+    }
+
+    .search-field {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+    }
+
+    .search-field svg {
+      width: 19px;
+      height: 19px;
+      flex: 0 0 auto;
+      stroke: #909399;
+    }
+
+    .search-field input {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      color: #303133;
+      background: transparent;
+      font-size: 16px;
+    }
+
+    .search-field input::placeholder {
+      color: #909399;
+    }
+
+    .scan-button {
+      width: 52px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: #fff;
+      color: var(--orange);
+      box-shadow: 0 6px 14px rgba(166, 85, 34, 0.06);
+    }
+
+    .scan-button svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .map-button {
+      height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      border-left: 1px solid rgba(255, 143, 46, 0.18);
+      color: var(--orange);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .map-button svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    .promo {
+      position: relative;
+      z-index: 2;
+      height: 128px;
+      margin-top: 12px;
+      overflow: hidden;
+      border-radius: 8px;
+      background: url("./assets/anjia-home-banner.png") center / cover no-repeat;
+    }
+
+    .section-main {
+      position: relative;
+      z-index: 1;
+      padding: 12px 16px calc(72px + var(--safe-bottom));
+      background: #fff;
+    }
+
+    .activity-card {
+      position: relative;
+      margin-top: 0;
+      padding: 52px 0 18px;
+      border-radius: 8px;
+      background: #fff8f2;
+      border: 1px solid #ffe5d3;
+      overflow: hidden;
+    }
+
+    .activity-card::after {
+      content: "住";
+      position: absolute;
+      right: -6px;
+      top: 0;
+      color: rgba(255, 143, 46, 0.1);
+      font-size: 83px;
+      font-weight: 900;
+      transform: rotate(31deg);
+    }
+
+    .ribbon {
+      position: absolute;
+      left: 50%;
+      top: -7px;
+      width: 190px;
+      height: 34px;
+      border-radius: 0 0 19px 19px;
+      background: linear-gradient(180deg, #ff8d31, #ff6728);
+      color: #fff;
+      font-size: 17px;
+      line-height: 34px;
+      font-weight: 900;
+      text-align: center;
+      transform: translateX(-50%);
+    }
+
+    .activity-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 4px;
+    }
+
+    .activity-item {
+      display: grid;
+      justify-items: center;
+      gap: 8px;
+      min-width: 0;
+      text-align: center;
+      text-decoration: none;
+      color: #000;
+    }
+
+    .activity-icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      color: #fff;
+      filter: drop-shadow(0 8px 10px rgba(60, 126, 225, 0.18));
+    }
+
+    .activity-icon svg {
+      width: 38px;
+      height: 38px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .activity-item:nth-child(1) .activity-icon { background: linear-gradient(180deg, #78c7ff, #418cf5); }
+    .activity-item:nth-child(2) .activity-icon { background: linear-gradient(180deg, #ffba55, #ff5c48); }
+    .activity-item:nth-child(3) .activity-icon { background: linear-gradient(180deg, #94ec7b, #36bd64); }
+
+    .activity-title {
+      font-size: 15px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .activity-meta {
+      color: #909399;
+      font-size: 12px;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .activity-meta strong {
+      color: #ff6728;
+      font-weight: 500;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      row-gap: 18px;
+      margin-top: 22px;
+    }
+
+    .quick-item {
+      display: grid;
+      justify-items: center;
+      gap: 8px;
+      color: #000;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .quick-icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      color: #fff;
+      font-size: 21px;
+      font-weight: 900;
+      box-shadow: 0 10px 18px rgba(78, 135, 201, 0.13);
+    }
+
+    .quick-icon svg {
+      width: 30px;
+      height: 30px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .quick-item:nth-child(1) .quick-icon { background: linear-gradient(180deg, #77b9ff, #2d94ef); }
+    .quick-item:nth-child(2) .quick-icon { background: linear-gradient(180deg, #9bea45, #58ca28); }
+    .quick-item:nth-child(3) .quick-icon { background: linear-gradient(180deg, #ffd383, #ff8d30); }
+    .quick-item:nth-child(4) .quick-icon { background: linear-gradient(180deg, #ffa69b, #fa4946); }
+    .quick-item:nth-child(5) .quick-icon { background: linear-gradient(180deg, #7ed3ff, #3d91f6); }
+    .quick-item:nth-child(6) .quick-icon { background: linear-gradient(180deg, #9df18a, #44ca77); }
+    .quick-item:nth-child(7) .quick-icon { background: linear-gradient(180deg, #ffc777, #ff9140); }
+    .quick-item:nth-child(8) .quick-icon { background: linear-gradient(180deg, #7dd2ff, #2a8cf3); }
+
+    .ticker {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      height: 48px;
+      margin: 16px -16px 0;
+      padding: 0 16px;
+      background: #fff;
+      border-top: 10px solid #f4f6f8;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .ticker strong {
+      color: #e65b2e;
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .ticker span {
+      color: #909399;
+    }
+
+    .ticker em {
+      color: #ff4c35;
+      font-style: normal;
+    }
+
+    .estate-section {
+      margin: 0 -16px;
+      padding: 16px 16px 22px;
+      border-top: 10px solid #f4f6f8;
+      background: #fff;
+    }
+
+    .estate-tabs {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      font-size: 18px;
+      line-height: 1;
+      font-weight: 500;
+    }
+
+    .estate-tabs .active {
+      color: #111827;
+      font-weight: 900;
+    }
+
+    .estate-tabs span:not(.active) {
+      color: #8e96a3;
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+      color: #303133;
+      font-size: 14px;
+    }
+
+    .filters button {
+      text-align: left;
+    }
+
+    .estate-card {
+      display: grid;
+      grid-template-columns: 112px minmax(0, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #f0f2f5;
+    }
+
+    .estate-cover {
+      height: 86px;
+      overflow: hidden;
+      border-radius: 5px;
+      background: linear-gradient(135deg, #3a9bf5, #9bd6ff);
+      position: relative;
+    }
+
+    .estate-cover::before {
+      content: "";
+      position: absolute;
+      left: 14px;
+      bottom: 12px;
+      width: 72px;
+      height: 46px;
+      background:
+        linear-gradient(#fff, #d8f2ff) 0 18px / 16px 28px no-repeat,
+        linear-gradient(#fff, #d8f2ff) 21px 8px / 20px 38px no-repeat,
+        linear-gradient(#fff, #d8f2ff) 48px 0 / 24px 46px no-repeat;
+      opacity: 0.9;
+    }
+
+    .estate-cover::after {
+      content: "实景现房";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      padding: 3px 8px;
+      border-radius: 0 7px 0 0;
+      background: rgba(0, 132, 255, 0.72);
+      color: #fff;
+      font-size: 11px;
+    }
+
+    .estate-info {
+      min-width: 0;
+      display: grid;
+      align-content: start;
+      gap: 7px;
+    }
+
+    .estate-title {
+      margin: 0;
+      color: #111827;
+      font-size: 17px;
+      line-height: 1.15;
+      font-weight: 900;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .estate-meta {
+      color: #606266;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .estate-price {
+      color: #f04438;
+      font-size: 16px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .estate-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .estate-tags span {
+      padding: 3px 6px;
+      border-radius: 3px;
+      background: #f4f6f8;
+      color: #8e96a3;
+      font-size: 11px;
+    }
+
+    .tabbar {
+      position: fixed;
+      left: 50%;
+      bottom: 0;
+      z-index: 30;
+      width: min(100vw, 375px);
+      height: calc(56px + var(--safe-bottom));
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      padding: 5px 4px var(--safe-bottom);
+      border-top: 1px solid #edf0f4;
+      background: rgba(255, 255, 255, 0.98);
+      transform: translateX(-50%);
+    }
+
+    .tabbar button {
+      display: grid;
+      justify-items: center;
+      align-content: center;
+      gap: 3px;
+      color: #707783;
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    .tabbar .active {
+      color: var(--brand);
+    }
+
+    .tabbar svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .tabbar.is-hidden {
+      display: none;
+    }
+
+    .mine-view {
+      padding-bottom: calc(74px + var(--safe-bottom));
+      background: #f3f5f6;
+    }
+
+    .mine-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+    }
+
+    .mine-topbar__title {
+      color: #000;
+      font-size: 17px;
+      font-weight: 500;
+    }
+
+    .mine-hero {
+      position: relative;
+      height: 188px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #ff662a 0%, #ff8642 100%);
+    }
+
+    .mine-hero::before,
+    .mine-hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 152px;
+      opacity: 0.18;
+      background:
+        linear-gradient(150deg, transparent 0 46%, rgba(255, 255, 255, 0.46) 47% 100%) 196px 38px / 62px 96px no-repeat,
+        linear-gradient(150deg, transparent 0 46%, rgba(255, 255, 255, 0.42) 47% 100%) 292px 70px / 64px 76px no-repeat,
+        linear-gradient(150deg, transparent 0 46%, rgba(255, 255, 255, 0.36) 47% 100%) 36px 66px / 56px 74px no-repeat,
+        linear-gradient(150deg, transparent 0 46%, rgba(255, 255, 255, 0.34) 47% 100%) 258px 100px / 46px 48px no-repeat;
+    }
+
+    .mine-hero::after {
+      top: auto;
+      bottom: -54px;
+      height: 106px;
+      border-radius: 50% 50% 0 0;
+      background: #f3f5f6;
+      opacity: 1;
+    }
+
+    .mine-profile {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 38px 24px 0;
+      color: #fff;
+    }
+
+    .mine-avatar {
+      width: 64px;
+      height: 64px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.24);
+    }
+
+    .mine-avatar svg {
+      width: 54px;
+      height: 54px;
+      fill: rgba(255, 246, 241, 0.96);
+    }
+
+    .mine-login {
+      flex: 1;
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 800;
+    }
+
+    .mine-arrow {
+      width: 28px;
+      height: 28px;
+      fill: none;
+      stroke: #fff;
+      stroke-width: 2.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .mine-card {
+      position: relative;
+      z-index: 2;
+      margin: -16px 16px 0;
+      overflow: hidden;
+      border-radius: 8px 8px 0 0;
+      background: linear-gradient(180deg, #fff9f5 0%, #fff 42%);
+      box-shadow: 0 8px 22px rgba(44, 52, 64, 0.04);
+    }
+
+    .mine-card__title {
+      margin: 0;
+      padding: 20px 16px 16px;
+      color: #111827;
+      font-size: 20px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .mine-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      min-height: 64px;
+      padding: 0 17px 0 18px;
+      text-align: left;
+      background: transparent;
+      border-top: 1px solid #f0f2f5;
+    }
+
+    .mine-row:first-of-type {
+      border-top: 0;
+    }
+
+    .mine-row__icon {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      color: #111;
+    }
+
+    .mine-row__icon svg {
+      width: 28px;
+      height: 28px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .mine-row__title {
+      flex: 1;
+      color: #303133;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .mine-row__meta {
+      color: #8e96a3;
+      font-size: 13px;
+    }
+
+    .mine-row__chevron {
+      width: 18px;
+      height: 18px;
+      color: #b2b8c2;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .coupon-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      height: 18px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: #ffefe6;
+      color: var(--brand);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .service-card {
+      margin: 24px 16px 0;
+      background: #fff;
+      box-shadow: none;
+    }
+
+    .service-card .mine-row {
+      min-height: 58px;
+      border-top: 0;
+    }
+
+    .sub-view {
+      min-height: 100vh;
+      background: #f3f5f6;
+    }
+
+    .sub-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      color: #000;
+      border-bottom: 1px solid rgba(237, 240, 244, 0.72);
+    }
+
+    .sub-topbar__back {
+      position: absolute;
+      left: 8px;
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+    }
+
+    .sub-topbar__back svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .sub-topbar__title {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .coupon-list {
+      display: grid;
+      gap: 12px;
+      padding: 14px 16px 28px;
+    }
+
+    .coupon-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #606266;
+      font-size: 13px;
+    }
+
+    .coupon-summary strong {
+      color: var(--brand);
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .coupon-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      padding: 4px;
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 0 8px 22px rgba(44, 52, 64, 0.04);
+    }
+
+    .coupon-tab {
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      border-radius: 999px;
+      color: #606266;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .coupon-tab small {
+      color: #a2a9b3;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .coupon-tab.is-active {
+      background: linear-gradient(135deg, #ff7b2e, #ff5d2c);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(255, 93, 44, 0.18);
+    }
+
+    .coupon-tab.is-active small {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .coupon-panel {
+      display: none;
+      gap: 12px;
+    }
+
+    .coupon-panel.is-active {
+      display: grid;
+    }
+
+    .coupon-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 78px;
+      gap: 10px;
+      padding: 16px 14px 15px 16px;
+      overflow: hidden;
+      border-radius: 12px;
+      background: #fff;
+      text-align: left;
+      box-shadow: 0 8px 22px rgba(44, 52, 64, 0.05);
+    }
+
+    .coupon-card::before,
+    .coupon-card::after {
+      content: "";
+      position: absolute;
+      right: 70px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #f3f5f6;
+    }
+
+    .coupon-card::before {
+      top: -9px;
+    }
+
+    .coupon-card::after {
+      bottom: -9px;
+    }
+
+    .coupon-card__content {
+      min-width: 0;
+    }
+
+    .coupon-tag {
+      display: inline-flex;
+      align-items: center;
+      height: 22px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: #fff0e8;
+      color: var(--brand);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .coupon-title {
+      margin: 10px 0 6px;
+      color: #111827;
+      font-size: 19px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .coupon-desc,
+    .coupon-valid {
+      color: #737b88;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .coupon-valid {
+      margin-top: 6px;
+      color: #909399;
+    }
+
+    .coupon-card__side {
+      display: grid;
+      place-items: center;
+      border-left: 1px dashed #e2e6ed;
+      color: var(--brand);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .coupon-card.is-muted {
+      background: #fbfcfd;
+    }
+
+    .coupon-card.is-muted .coupon-tag {
+      background: #eef0f4;
+      color: #8e96a3;
+    }
+
+    .coupon-card.is-muted .coupon-title {
+      color: #707783;
+    }
+
+    .coupon-card.is-muted .coupon-card__side {
+      color: #909399;
+    }
+
+    .coupon-card.is-expired {
+      opacity: 0.76;
+    }
+
+    .coupon-detail {
+      display: grid;
+      gap: 12px;
+      padding: 14px 16px 30px;
+    }
+
+    .coupon-detail-card {
+      overflow: hidden;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 8px 22px rgba(44, 52, 64, 0.05);
+    }
+
+    .coupon-detail-card__head {
+      padding: 18px 18px 17px;
+      background: linear-gradient(135deg, #ff7b2e, #ff5d2c);
+      color: #fff;
+    }
+
+    .coupon-detail-card__head span {
+      display: inline-flex;
+      align-items: center;
+      height: 22px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.18);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .coupon-detail-card__head h1 {
+      margin: 12px 0 8px;
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .coupon-detail-card__head p {
+      margin: 0;
+      font-size: 13px;
+      opacity: 0.86;
+    }
+
+    .coupon-qr-wrap {
+      display: grid;
+      justify-items: center;
+      gap: 10px;
+      padding: 22px 16px 20px;
+    }
+
+    .coupon-qr {
+      width: 176px;
+      height: 176px;
+      padding: 10px;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid #f0f2f5;
+      box-shadow: 0 10px 20px rgba(20, 26, 36, 0.06);
+    }
+
+    .coupon-qr svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .coupon-rules {
+      padding: 18px 18px 20px;
+      border-top: 10px solid #f6f7f9;
+      background: #fff;
+    }
+
+    .coupon-rules h2 {
+      margin: 0 0 12px;
+      color: #111827;
+      font-size: 17px;
+      line-height: 1;
+    }
+
+    .coupon-rules ol {
+      display: grid;
+      gap: 9px;
+      margin: 0;
+      padding-left: 18px;
+      color: #606266;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .coupon-estate-page {
+      display: grid;
+      gap: 12px;
+    }
+
+    .coupon-estate-heading {
+      margin: 2px 0 0;
+      color: #111827;
+      font-size: 17px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .coupon-estate-list {
+      display: block;
+    }
+
+    .coupon-estate-list .estate-card:first-child {
+      margin-top: 0;
+    }
+
+    .qr-scanner {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      display: none;
+      justify-content: center;
+      padding: 0;
+      background: #050608;
+    }
+
+    .qr-scanner.is-open {
+      display: flex;
+    }
+
+    .qr-scanner__panel {
+      position: relative;
+      width: min(100vw, 375px);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-radius: 0;
+      background: #080b10;
+      color: #fff;
+      box-shadow: none;
+    }
+
+    .qr-scanner__head {
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: calc(8px + env(safe-area-inset-top, 0px)) 16px 8px;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .qr-scanner__close {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .qr-scanner__viewport {
+      position: relative;
+      flex: 1;
+      min-height: 430px;
+      background: #050608;
+    }
+
+    .qr-scanner__video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .qr-scanner__frame {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 238px;
+      height: 238px;
+      border: 2px solid rgba(255, 255, 255, 0.72);
+      border-radius: 16px;
+      transform: translate(-50%, -50%);
+    }
+
+    .qr-scanner__line {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      top: 24px;
+      height: 2px;
+      border-radius: 999px;
+      background: #43d67a;
+      box-shadow: 0 0 14px rgba(67, 214, 122, 0.85);
+      animation: scanLine 1.8s ease-in-out infinite alternate;
+    }
+
+    @keyframes scanLine {
+      to {
+        transform: translateY(186px);
+      }
+    }
+
+    .qr-scanner__body {
+      display: grid;
+      gap: 10px;
+      padding: 14px 16px calc(22px + env(safe-area-inset-bottom, 0px));
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .qr-scanner__result {
+      min-height: 20px;
+      color: #fff;
+      word-break: break-all;
+    }
+
+    .qr-scanner__file {
+      color: #ffb26f;
+      font-weight: 700;
+    }
+
+    .qr-scanner__file input {
+      display: none;
+    }
+
+    .qr-scanner__actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .qr-scanner__mock {
+      height: 34px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .scan-complete,
+    .scan-success {
+      display: none;
+      flex: 1;
+      padding: 18px 16px calc(24px + env(safe-area-inset-bottom, 0px));
+      overflow-y: auto;
+    }
+
+    .qr-scanner[data-step="picker"] .qr-scanner__viewport,
+    .qr-scanner[data-step="picker"] .qr-scanner__body,
+    .qr-scanner[data-step="success"] .qr-scanner__viewport,
+    .qr-scanner[data-step="success"] .qr-scanner__body {
+      display: none;
+    }
+
+    .qr-scanner[data-step="picker"] .scan-complete {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      align-content: start;
+      gap: 14px;
+    }
+
+    .qr-scanner[data-step="success"] .scan-success {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      align-content: center;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .scan-success__card h2 {
+      margin: 0;
+      font-size: 21px;
+      line-height: 1.25;
+    }
+
+    .scan-success__card p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .scan-estate-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .scan-estate-option {
+      display: grid;
+      grid-template-columns: 46px minmax(0, 1fr) 22px;
+      align-items: center;
+      gap: 12px;
+      min-height: 72px;
+      padding: 12px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      text-align: left;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .scan-estate-option__mark {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(255, 143, 46, 0.16);
+      color: #ffb26f;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .scan-estate-option__body {
+      display: grid;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    .scan-estate-option__title {
+      font-size: 15px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .scan-estate-option svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: #75e59b;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .scan-success__card {
+      width: 100%;
+      max-width: 343px;
+      display: grid;
+      justify-items: center;
+      gap: 12px;
+      padding: 26px 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .scan-success__icon {
+      width: 66px;
+      height: 66px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #67cc35;
+      color: #fff;
+      font-size: 36px;
+      font-weight: 900;
+    }
+
+    .scan-success__estate {
+      color: #ffb26f;
+      font-size: 14px;
+      font-weight: 900;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="app-view is-active" id="homeView" data-view="home">
+    <div class="statusbar" aria-hidden="true">
+      <span>9:41</span>
+      <span class="statusbar__right">
+        <span class="signal"><i></i><i></i><i></i><i></i></span>
+        <span>5G</span>
+        <span class="battery"></span>
+      </span>
+    </div>
+
+    <header class="topbar">
+      <div class="nav-pill nav-pill--left">
+        <button class="nav-pill__button" type="button" aria-label="返回">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></svg>
+        </button>
+        <button class="nav-pill__button" type="button" aria-label="首页">
+          <svg viewBox="0 0 24 24"><path d="m4 11 8-7 8 7v8a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1Z" /></svg>
+        </button>
+      </div>
+      <div class="topbar__title">成都房产超市</div>
+      <div class="nav-pill nav-pill--right">
+        <button class="nav-pill__button" type="button" aria-label="更多"><span class="nav-more">•••</span></button>
+        <button class="nav-pill__button" type="button" aria-label="最小化"><span class="nav-minus">-</span></button>
+        <button class="nav-pill__button" type="button" aria-label="圆点入口"><span class="nav-target">◎</span></button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="search-row" role="search">
+        <div class="search-box">
+          <label class="search-field">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke-width="2" />
+              <path d="m15.5 15.5 5 5" fill="none" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <input type="search" placeholder="请输入搜索关键字" aria-label="请输入搜索关键字" />
+          </label>
+          <button class="map-button" type="button" aria-label="地图">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 22s7-6.1 7-13A7 7 0 0 0 5 9c0 6.9 7 13 7 13Z" />
+              <circle cx="12" cy="9" r="2.5" fill="#fff" />
+            </svg>
+            <span>地图</span>
+          </button>
+        </div>
+        <button class="scan-button" id="scanEntry" type="button" aria-label="扫一扫">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 8V5h3M16 5h3v3M19 16v3h-3M8 19H5v-3" />
+            <path d="M7 12h10" />
+          </svg>
+        </button>
+      </div>
+
+      <section class="promo" aria-label="安家成都金秋购房好房节"></section>
+    </section>
+
+    <section class="section-main">
+      <section class="activity-card" aria-label="安家成都优惠活动">
+        <div class="ribbon">安家成都优惠活动</div>
+        <div class="activity-grid">
+          <a class="activity-item" href="javascript:void(0)">
+            <span class="activity-icon">
+              <svg viewBox="0 0 32 32"><path d="M9 9h14a3 3 0 0 1 3 3v12H6V12a3 3 0 0 1 3-3Z" /><path d="M12 8h4l2-4h5l2 4" /><path d="m11 18 4 4 8-10" /></svg>
+            </span>
+            <strong class="activity-title">线下活动</strong>
+            <span class="activity-meta"><strong>1</strong>场活动进行中</span>
+          </a>
+          <a class="activity-item" href="javascript:void(0)">
+            <span class="activity-icon">
+              <svg viewBox="0 0 32 32"><path d="M9 5h8v22H9Z" /><path d="M18 8h8v19h-8Z" /><path d="M12 10h3M12 16h3M12 22h3M21 13h3M21 19h3" /></svg>
+            </span>
+            <strong class="activity-title">购房政策</strong>
+            <span class="activity-meta"><strong>6</strong>个区县正在实行</span>
+          </a>
+          <a class="activity-item" href="javascript:void(0)">
+            <span class="activity-icon">
+              <svg viewBox="0 0 32 32"><path d="M7 26V12l8-5 8 5v14" /><path d="M12 26v-8h8v8" /><path d="M6 26h22" /></svg>
+            </span>
+            <strong class="activity-title">优惠楼盘</strong>
+            <span class="activity-meta">最高可享<strong>20万</strong></span>
+          </a>
+        </div>
+      </section>
+
+      <nav class="quick-grid" aria-label="首页功能入口">
+        <a class="quick-item" href="javascript:void(0)"><span class="quick-icon">36</span><span>在售楼盘</span></a>
+        <a class="quick-item" href="javascript:void(0)"><span class="quick-icon">23</span><span>最新取证</span></a>
+        <a class="quick-item" href="javascript:void(0)"><span class="quick-icon">98</span><span>热门楼盘</span></a>
+        <a class="quick-item" href="javascript:void(0)"><span class="quick-icon"><svg viewBox="0 0 32 32"><path d="M16 29s9-7.6 9-16a9 9 0 1 0-18 0c0 8.4 9 16 9 16Z" /><circle cx="16" cy="13" r="3" /></svg></span><span>区县专区</span></a>
+        <a class="quick-item" href="javascript:void(0)"><span class="quick-icon"><svg viewBox="0 0 32 32"><path d="M6 24V10l6 3 6-6 8 4v13Z" /><path d="M10 22v-6M16 22v-8M22 22v-5" /></svg></span><span>房产行情</span></a>
+        <a class="quick-item" href="javascript:void(0)"><span class="quick-icon"><svg viewBox="0 0 32 32"><path d="M10 7h12l3 7-9 12-9-12Z" /><circle cx="16" cy="16" r="4" /></svg></span><span>楼盘榜单</span></a>
+        <a class="quick-item" href="javascript:void(0)"><span class="quick-icon"><svg viewBox="0 0 32 32"><path d="M9 7h14v18H9Z" /><path d="M12 12h3M18 12h3M12 17h3M18 17h3M12 22h9" /></svg></span><span>房贷计算</span></a>
+        <a class="quick-item" href="./地图搜索.html"><span class="quick-icon"><svg viewBox="0 0 32 32"><path d="m6 26 7-3 7 3 6-3V6l-6 3-7-3-7 3Z" /><path d="M13 6v17M20 9v17" /><path d="M20 19s4-3.4 4-7a4 4 0 1 0-8 0c0 3.6 4 7 4 7Z" /></svg></span><span>地图找房</span></a>
+      </nav>
+
+      <div class="ticker">
+        <strong>新房行情</strong>
+        <span>2024年10月</span>
+        <em>345套</em>
+        <em>24980元/㎡</em>
+      </div>
+
+      <section class="estate-section" aria-label="安家成都楼盘列表">
+        <div class="estate-tabs">
+          <span class="active">安家成都</span>
+          <span>在售楼盘</span>
+          <span>热门楼盘</span>
+        </div>
+        <div class="filters">
+          <button type="button">区域⌄</button>
+          <button type="button">价格⌄</button>
+          <button type="button">户型⌄</button>
+          <button type="button">面积⌄</button>
+        </div>
+        <article class="estate-card">
+          <div class="estate-cover"></div>
+          <div class="estate-info">
+            <h2 class="estate-title">招商·时代花园</h2>
+            <div class="estate-meta">金牛区 / 89-128㎡</div>
+            <div class="estate-price">约 24980 元/㎡</div>
+            <div class="estate-tags">
+              <span>精装修</span>
+              <span>品牌房企</span>
+            </div>
+          </div>
+        </article>
+        <article class="estate-card">
+          <div class="estate-cover"></div>
+          <div class="estate-info">
+            <h2 class="estate-title">上林熙锦府1期</h2>
+            <div class="estate-meta">金牛区 / 136.55-179.17㎡</div>
+            <div class="estate-price">29602-33699 元/㎡</div>
+            <div class="estate-tags">
+              <span>改善住宅</span>
+              <span>精装修</span>
+            </div>
+          </div>
+        </article>
+      </section>
+    </section>
+    </section>
+
+    <section class="app-view mine-view" id="mineView" data-view="mine">
+      <div class="statusbar" aria-hidden="true">
+        <span>9:41</span>
+        <span class="statusbar__right">
+          <span class="signal"><i></i><i></i><i></i><i></i></span>
+          <span>5G</span>
+          <span class="battery"></span>
+        </span>
+      </div>
+
+      <header class="mine-topbar">
+        <div class="mine-topbar__title">我的</div>
+        <div class="nav-pill nav-pill--right">
+          <button class="nav-pill__button" type="button" aria-label="更多"><span class="nav-more">•••</span></button>
+          <button class="nav-pill__button" type="button" aria-label="最小化"><span class="nav-minus">-</span></button>
+          <button class="nav-pill__button" type="button" aria-label="圆点入口"><span class="nav-target">◎</span></button>
+        </div>
+      </header>
+
+      <section class="mine-hero" aria-label="个人信息">
+        <div class="mine-profile">
+          <span class="mine-avatar" aria-hidden="true">
+            <svg viewBox="0 0 64 64">
+              <circle cx="32" cy="22" r="13" />
+              <path d="M13 58c2.8-13.6 11.1-21 19-21s16.2 7.4 19 21Z" />
+            </svg>
+          </span>
+          <strong class="mine-login">请登录</strong>
+          <svg class="mine-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+        </div>
+      </section>
+
+      <section class="mine-card" aria-label="常用功能">
+        <h1 class="mine-card__title">常用功能</h1>
+        <button class="mine-row" type="button">
+          <span class="mine-row__icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32"><path d="M16 27S5 20 5 11.8A6.2 6.2 0 0 1 16 8a6.2 6.2 0 0 1 11 3.8c0 2.2-.8 4.3-2.1 6.2" /><path d="M24 21v6M21 24h6" stroke="#ff5d2c" /></svg>
+          </span>
+          <span class="mine-row__title">我的关注</span>
+          <svg class="mine-row__chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+        </button>
+        <button class="mine-row" id="couponEntry" type="button">
+          <span class="mine-row__icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32"><path d="M5 10a3 3 0 0 0 3-3h16a3 3 0 0 0 3 3v12a3 3 0 0 0-3 3H8a3 3 0 0 0-3-3Z" /><path d="M13 11h7M13 16h10M13 21h6" /><path d="M9 13v.1M9 19v.1" stroke="#ff5d2c" /></svg>
+          </span>
+          <span class="mine-row__title">我的优惠券</span>
+          <span class="coupon-badge">1张</span>
+          <svg class="mine-row__chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+        </button>
+        <button class="mine-row" type="button">
+          <span class="mine-row__icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32"><path d="M17 26c-6 0-10-3.7-10-8.6 0-3.1 1.8-5.7 4.5-7.1" /><path d="M17 26c4.9 0 8-2.9 8-6.8 0-2.7-1.4-4.8-3.7-5.9" /><path d="M12 9c0-2.2 1.6-4 3.8-4 2.3 0 4 1.7 4 4.1 0 2-1.2 3.5-3.5 4.4" /><circle cx="8" cy="8" r="2" stroke="#ff5d2c" /><circle cx="22" cy="9" r="1.6" stroke="#ff5d2c" /></svg>
+          </span>
+          <span class="mine-row__title">看房足迹</span>
+          <svg class="mine-row__chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+        </button>
+      </section>
+
+      <section class="service-card" aria-label="平台咨询">
+        <div class="mine-row">
+          <span class="mine-row__icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32"><path d="M7 19v-3a9 9 0 0 1 18 0v3" /><path d="M7 19v3a3 3 0 0 0 3 3h1v-8h-1a3 3 0 0 0-3 3ZM25 19v3a3 3 0 0 1-3 3h-1v-8h1a3 3 0 0 1 3 3Z" /><path d="M14 27h4" stroke="#ff5d2c" /></svg>
+          </span>
+          <span class="mine-row__title">平台咨询</span>
+          <span class="mine-row__meta">邮箱: cdzjfccs@163.com</span>
+        </div>
+      </section>
+    </section>
+
+    <section class="app-view sub-view" id="couponListView" data-view="couponList">
+      <div class="statusbar" aria-hidden="true">
+        <span>9:41</span>
+        <span class="statusbar__right">
+          <span class="signal"><i></i><i></i><i></i><i></i></span>
+          <span>5G</span>
+          <span class="battery"></span>
+        </span>
+      </div>
+      <header class="sub-topbar">
+        <button class="sub-topbar__back" id="couponListBack" type="button" aria-label="返回我的">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></svg>
+        </button>
+        <div class="sub-topbar__title">我的优惠券</div>
+      </header>
+      <section class="coupon-list" aria-label="优惠券列表">
+        <div class="coupon-summary">
+          <span>全部优惠券</span>
+          <span><strong>3</strong> 张</span>
+        </div>
+        <div class="coupon-tabs" role="tablist" aria-label="优惠券状态">
+          <button class="coupon-tab is-active" type="button" role="tab" aria-selected="true" data-coupon-tab="unused">待使用 <small>1</small></button>
+          <button class="coupon-tab" type="button" role="tab" aria-selected="false" data-coupon-tab="used">已使用 <small>1</small></button>
+          <button class="coupon-tab" type="button" role="tab" aria-selected="false" data-coupon-tab="expired">已过期 <small>1</small></button>
+        </div>
+        <div class="coupon-panel is-active" data-coupon-panel="unused">
+          <button class="coupon-card" id="ganzicouponCard" type="button" aria-label="查看甘孜团购券详情">
+            <span class="coupon-card__content">
+              <span class="coupon-tag">团购优惠</span>
+              <h1 class="coupon-title">甘孜团购券</h1>
+              <span class="coupon-desc">参与安家成都甘孜专场团购活动时出示核销</span>
+              <span class="coupon-valid">有效期 2026年1月1日-2026年12月31日</span>
+            </span>
+            <span class="coupon-card__side">查看详情</span>
+          </button>
+        </div>
+        <div class="coupon-panel" data-coupon-panel="used">
+          <button class="coupon-card is-muted" type="button" aria-label="已使用人才安居到访礼">
+            <span class="coupon-card__content">
+              <span class="coupon-tag">到访礼</span>
+              <h1 class="coupon-title">人才安居到访礼</h1>
+              <span class="coupon-desc">已在招商·时代花园售楼部完成核销</span>
+              <span class="coupon-valid">核销时间 2026年5月18日 14:32</span>
+            </span>
+            <span class="coupon-card__side">已使用</span>
+          </button>
+        </div>
+        <div class="coupon-panel" data-coupon-panel="expired">
+          <button class="coupon-card is-muted is-expired" type="button" aria-label="已过期金牛置业补贴券">
+            <span class="coupon-card__content">
+              <span class="coupon-tag">置业补贴</span>
+              <h1 class="coupon-title">金牛置业补贴券</h1>
+              <span class="coupon-desc">活动档期已结束，可关注新的安家成都专场</span>
+              <span class="coupon-valid">有效期 2025年9月1日-2025年12月31日</span>
+            </span>
+            <span class="coupon-card__side">已过期</span>
+          </button>
+        </div>
+      </section>
+    </section>
+
+    <section class="app-view sub-view" id="couponDetailView" data-view="couponDetail">
+      <div class="statusbar" aria-hidden="true">
+        <span>9:41</span>
+        <span class="statusbar__right">
+          <span class="signal"><i></i><i></i><i></i><i></i></span>
+          <span>5G</span>
+          <span class="battery"></span>
+        </span>
+      </div>
+      <header class="sub-topbar">
+        <button class="sub-topbar__back" id="couponDetailBack" type="button" aria-label="返回优惠券列表">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></svg>
+        </button>
+        <div class="sub-topbar__title">优惠券详情</div>
+      </header>
+      <section class="coupon-detail" aria-label="甘孜团购券详情">
+        <article class="coupon-detail-card">
+          <div class="coupon-detail-card__head">
+            <span>可使用</span>
+            <h1>甘孜团购券</h1>
+            <p>有效期 2026年1月1日-2026年12月31日</p>
+          </div>
+          <div class="coupon-qr-wrap">
+            <div class="coupon-qr" aria-label="甘孜团购券核销二维码">
+              <svg viewBox="0 0 120 120" role="img" aria-label="优惠券二维码">
+                <rect width="120" height="120" fill="#fff" />
+                <g fill="#111827">
+                  <rect x="8" y="8" width="30" height="30" rx="2" />
+                  <rect x="14" y="14" width="18" height="18" fill="#fff" />
+                  <rect x="19" y="19" width="8" height="8" />
+                  <rect x="82" y="8" width="30" height="30" rx="2" />
+                  <rect x="88" y="14" width="18" height="18" fill="#fff" />
+                  <rect x="93" y="19" width="8" height="8" />
+                  <rect x="8" y="82" width="30" height="30" rx="2" />
+                  <rect x="14" y="88" width="18" height="18" fill="#fff" />
+                  <rect x="19" y="93" width="8" height="8" />
+                  <rect x="48" y="10" width="8" height="8" /><rect x="62" y="10" width="8" height="8" /><rect x="48" y="24" width="8" height="8" /><rect x="68" y="24" width="8" height="8" />
+                  <rect x="46" y="46" width="8" height="8" /><rect x="58" y="46" width="8" height="8" /><rect x="76" y="46" width="8" height="8" /><rect x="96" y="46" width="8" height="8" />
+                  <rect x="44" y="58" width="20" height="8" /><rect x="70" y="58" width="8" height="8" /><rect x="86" y="58" width="18" height="8" />
+                  <rect x="48" y="72" width="8" height="8" /><rect x="64" y="72" width="24" height="8" /><rect x="98" y="72" width="8" height="8" />
+                  <rect x="44" y="86" width="12" height="8" /><rect x="64" y="86" width="8" height="8" /><rect x="82" y="86" width="8" height="8" /><rect x="100" y="86" width="8" height="8" />
+                  <rect x="48" y="100" width="8" height="8" /><rect x="62" y="100" width="20" height="8" /><rect x="92" y="100" width="8" height="8" /><rect x="106" y="100" width="6" height="8" />
+                </g>
+              </svg>
+            </div>
+          </div>
+          <div class="coupon-rules">
+            <h2>使用规则</h2>
+            <ol>
+              <li>本券适用于安家成都甘孜团购活动指定合作楼盘。</li>
+              <li>到访活动现场或售楼部时，请出示本页二维码，由工作人员核销。</li>
+              <li>每个账号限领并使用一张，不可转让、不可折现。</li>
+              <li>有效期为2026年1月1日至2026年12月31日，逾期自动失效。</li>
+              <li>最终优惠以活动现场审核及开发企业公示政策为准。</li>
+            </ol>
+          </div>
+        </article>
+        <section class="coupon-estate-page" aria-label="甘孜团购券适用楼盘">
+          <h2 class="coupon-estate-heading">适用楼盘</h2>
+          <div class="coupon-estate-list">
+            <article class="estate-card">
+              <div class="estate-cover"></div>
+              <div class="estate-info">
+                <h3 class="estate-title">招商·时代花园</h3>
+                <div class="estate-meta">金牛区 / 89-128㎡</div>
+                <div class="estate-price">约 24980 元/㎡</div>
+              </div>
+            </article>
+            <article class="estate-card">
+              <div class="estate-cover"></div>
+              <div class="estate-info">
+                <h3 class="estate-title">上林熙锦府1期</h3>
+                <div class="estate-meta">金牛区 / 136.55-179.17㎡</div>
+                <div class="estate-price">29602-33699 元/㎡</div>
+              </div>
+            </article>
+            <article class="estate-card">
+              <div class="estate-cover"></div>
+              <div class="estate-info">
+                <h3 class="estate-title">天府公园未来城</h3>
+                <div class="estate-meta">天府新区 / 98-143㎡</div>
+                <div class="estate-price">约 26800 元/㎡</div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </section>
+    </section>
+  </main>
+
+  <nav class="tabbar" aria-label="底部导航">
+    <button class="active" id="tabHome" type="button"><svg viewBox="0 0 24 24"><path d="m4 11 8-7 8 7v8a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1Z" /></svg><span>首页</span></button>
+    <button type="button"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l4-2" /></svg><span>房产资讯</span></button>
+    <button type="button"><svg viewBox="0 0 24 24"><path d="M5 20V9l7-5 7 5v11" /><path d="M9 20v-7h6v7" /></svg><span>品牌馆</span></button>
+    <button type="button"><svg viewBox="0 0 24 24"><path d="M4 5h16v12H8l-4 4Z" /><path d="M8 9h8M8 13h5" /></svg><span>消息</span></button>
+    <button id="tabMine" type="button"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></svg><span>我的</span></button>
+  </nav>
+
+  <section class="qr-scanner" id="qrScanner" aria-label="扫一扫" aria-hidden="true" data-step="scanning">
+    <div class="qr-scanner__panel" role="dialog" aria-modal="true" aria-labelledby="qrScannerTitle">
+      <div class="qr-scanner__head">
+        <span id="qrScannerTitle">扫一扫</span>
+        <button class="qr-scanner__close" id="qrScannerClose" type="button" aria-label="关闭扫一扫">×</button>
+      </div>
+      <div class="qr-scanner__viewport">
+        <video class="qr-scanner__video" id="qrScannerVideo" muted playsinline></video>
+        <div class="qr-scanner__frame" aria-hidden="true">
+          <span class="qr-scanner__line"></span>
+        </div>
+      </div>
+      <div class="qr-scanner__body">
+        <div class="qr-scanner__result" id="qrScannerResult">请将二维码放入框内</div>
+        <div class="qr-scanner__actions">
+          <label class="qr-scanner__file">
+            选择二维码图片
+            <input id="qrScannerFile" type="file" accept="image/*" />
+          </label>
+          <button class="qr-scanner__mock" id="qrScannerMock" type="button">模拟扫码完成</button>
+        </div>
+      </div>
+      <div class="scan-complete" aria-label="扫码完成后选择核验楼盘">
+        <div class="scan-estate-list">
+          <button class="scan-estate-option" type="button" data-scan-estate="招商·时代花园">
+            <span class="scan-estate-option__mark">01</span>
+            <span class="scan-estate-option__body">
+              <span class="scan-estate-option__title">招商·时代花园</span>
+            </span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+          </button>
+          <button class="scan-estate-option" type="button" data-scan-estate="上林熙锦府1期">
+            <span class="scan-estate-option__mark">02</span>
+            <span class="scan-estate-option__body">
+              <span class="scan-estate-option__title">上林熙锦府1期</span>
+            </span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+          </button>
+          <button class="scan-estate-option" type="button" data-scan-estate="天府公园未来城">
+            <span class="scan-estate-option__mark">03</span>
+            <span class="scan-estate-option__body">
+              <span class="scan-estate-option__title">天府公园未来城</span>
+            </span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+          </button>
+        </div>
+      </div>
+      <div class="scan-success" aria-live="polite">
+        <div class="scan-success__card">
+          <span class="scan-success__icon" aria-hidden="true">✓</span>
+          <h2>核验身份成功</h2>
+          <p>用户身份已通过，当前楼盘核验记录已生成。</p>
+          <span class="scan-success__estate" id="scanSuccessEstate">招商·时代花园</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const scanEntry = document.getElementById("scanEntry");
+    const qrScanner = document.getElementById("qrScanner");
+    const qrScannerClose = document.getElementById("qrScannerClose");
+    const qrScannerVideo = document.getElementById("qrScannerVideo");
+    const qrScannerResult = document.getElementById("qrScannerResult");
+    const qrScannerFile = document.getElementById("qrScannerFile");
+    const qrScannerMock = document.getElementById("qrScannerMock");
+    const scanSuccessEstate = document.getElementById("scanSuccessEstate");
+    const scanEstateOptions = document.querySelectorAll("[data-scan-estate]");
+    let qrScannerStream = null;
+    let qrScannerDetector = null;
+    let qrScannerFrame = 0;
+
+    const appViews = document.querySelectorAll(".app-view");
+    const tabbar = document.querySelector(".tabbar");
+    const tabHome = document.getElementById("tabHome");
+    const tabMine = document.getElementById("tabMine");
+    const couponEntry = document.getElementById("couponEntry");
+    const ganzicouponCard = document.getElementById("ganzicouponCard");
+    const couponListBack = document.getElementById("couponListBack");
+    const couponDetailBack = document.getElementById("couponDetailBack");
+    const couponTabs = document.querySelectorAll("[data-coupon-tab]");
+    const couponPanels = document.querySelectorAll("[data-coupon-panel]");
+    const validViews = new Set(["home", "mine", "couponList", "couponDetail"]);
+
+    function setActiveTab(viewName) {
+      if (tabHome) {
+        tabHome.classList.toggle("active", viewName === "home");
+      }
+      if (tabMine) {
+        tabMine.classList.toggle("active", viewName === "mine");
+      }
+    }
+
+    function showView(viewName) {
+      appViews.forEach((view) => {
+        view.classList.toggle("is-active", view.dataset.view === viewName);
+      });
+      setActiveTab(viewName);
+      if (tabbar) {
+        tabbar.classList.toggle("is-hidden", viewName !== "home" && viewName !== "mine");
+      }
+      if (viewName !== "home") {
+        closeQrScanner();
+      }
+      window.scrollTo(0, 0);
+    }
+
+    function navigateTo(viewName) {
+      showView(viewName);
+      const nextHash = viewName === "home" ? "" : `#${viewName}`;
+      if (window.location.hash !== nextHash) {
+        history.pushState(null, "", nextHash || window.location.href.split("#")[0]);
+      }
+    }
+
+    function showHashView() {
+      const hashViewName = window.location.hash.replace("#", "") || "home";
+      const viewName = hashViewName === "couponEstate" ? "couponDetail" : hashViewName;
+      showView(validViews.has(viewName) ? viewName : "home");
+    }
+
+    tabHome.addEventListener("click", () => navigateTo("home"));
+    tabMine.addEventListener("click", () => navigateTo("mine"));
+    couponEntry.addEventListener("click", () => navigateTo("couponList"));
+    ganzicouponCard.addEventListener("click", () => navigateTo("couponDetail"));
+    couponListBack.addEventListener("click", () => navigateTo("mine"));
+    couponDetailBack.addEventListener("click", () => navigateTo("couponList"));
+    couponTabs.forEach((button) => {
+      button.addEventListener("click", () => {
+        const nextTab = button.dataset.couponTab;
+        couponTabs.forEach((tab) => {
+          const isActive = tab.dataset.couponTab === nextTab;
+          tab.classList.toggle("is-active", isActive);
+          tab.setAttribute("aria-selected", String(isActive));
+        });
+        couponPanels.forEach((panel) => {
+          panel.classList.toggle("is-active", panel.dataset.couponPanel === nextTab);
+        });
+      });
+    });
+    window.addEventListener("hashchange", showHashView);
+    showHashView();
+
+    function setQrScannerResult(text) {
+      qrScannerResult.textContent = text;
+    }
+
+    function setQrScannerStep(step) {
+      qrScanner.dataset.step = step;
+      const titleMap = {
+        scanning: "扫一扫",
+        picker: "选择核验楼盘",
+        success: "核验结果"
+      };
+      document.getElementById("qrScannerTitle").textContent = titleMap[step] || "扫一扫";
+    }
+
+    function showScanEstatePicker() {
+      stopQrScanner();
+      setQrScannerStep("picker");
+    }
+
+    function stopQrScanner() {
+      if (qrScannerFrame) {
+        cancelAnimationFrame(qrScannerFrame);
+        qrScannerFrame = 0;
+      }
+      if (qrScannerStream) {
+        qrScannerStream.getTracks().forEach((track) => track.stop());
+        qrScannerStream = null;
+      }
+      qrScannerVideo.srcObject = null;
+    }
+
+    async function detectQrFromSource(source) {
+      if (!("BarcodeDetector" in window)) {
+        setQrScannerResult("当前浏览器不支持二维码识别，可换到手机浏览器体验扫一扫。");
+        return null;
+      }
+      if (!qrScannerDetector) {
+        qrScannerDetector = new BarcodeDetector({ formats: ["qr_code"] });
+      }
+      const codes = await qrScannerDetector.detect(source);
+      return codes && codes.length ? codes[0].rawValue : null;
+    }
+
+    async function scanQrFrame() {
+      if (!qrScanner.classList.contains("is-open")) {
+        return;
+      }
+      if (qrScannerVideo.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+        try {
+          const value = await detectQrFromSource(qrScannerVideo);
+          if (value) {
+            showScanEstatePicker(value);
+            return;
+          }
+        } catch (error) {
+          setQrScannerResult("正在等待二维码进入识别框。");
+        }
+      }
+      qrScannerFrame = requestAnimationFrame(scanQrFrame);
+    }
+
+    async function openQrScanner() {
+      qrScanner.classList.add("is-open");
+      qrScanner.setAttribute("aria-hidden", "false");
+      setQrScannerStep("scanning");
+      setQrScannerResult("正在打开相机...");
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        setQrScannerResult("当前环境无法打开相机，请选择二维码图片识别。");
+        return;
+      }
+      try {
+        qrScannerStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { ideal: "environment" } },
+          audio: false
+        });
+        qrScannerVideo.srcObject = qrScannerStream;
+        await qrScannerVideo.play();
+        setQrScannerResult("请将二维码放入框内");
+        scanQrFrame();
+      } catch (error) {
+        setQrScannerResult("相机打开失败，请检查权限，或选择二维码图片识别。");
+      }
+    }
+
+    function closeQrScanner() {
+      stopQrScanner();
+      qrScanner.classList.remove("is-open");
+      qrScanner.setAttribute("aria-hidden", "true");
+      setQrScannerStep("scanning");
+    }
+
+    scanEntry.addEventListener("click", openQrScanner);
+    qrScannerClose.addEventListener("click", closeQrScanner);
+    qrScannerMock.addEventListener("click", () => {
+      qrScanner.classList.add("is-open");
+      qrScanner.setAttribute("aria-hidden", "false");
+      showScanEstatePicker("DEMO-CHECKIN-20260604");
+    });
+    scanEstateOptions.forEach((button) => {
+      button.addEventListener("click", () => {
+        const estateName = button.dataset.scanEstate;
+        scanSuccessEstate.textContent = estateName;
+        setQrScannerStep("success");
+      });
+    });
+    qrScanner.addEventListener("click", (event) => {
+      if (event.target === qrScanner) {
+        closeQrScanner();
+      }
+    });
+    qrScannerFile.addEventListener("change", async () => {
+      const file = qrScannerFile.files && qrScannerFile.files[0];
+      if (!file) {
+        return;
+      }
+      try {
+        const image = await createImageBitmap(file);
+        const value = await detectQrFromSource(image);
+        if (value) {
+          showScanEstatePicker(value);
+        } else {
+          setQrScannerResult("未识别到二维码，请换一张更清晰的图片。");
+        }
+      } catch (error) {
+        setQrScannerResult("图片识别失败，请换一张二维码图片。");
+      } finally {
+        qrScannerFile.value = "";
+      }
+    });
+  </script>
+</body>
+</html>
