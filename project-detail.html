@@ -1022,18 +1022,19 @@
 
     .sand-stage {
       position: relative;
-      min-height: 220px;
+      min-height: 260px;
       padding: 12px;
       color: #fff;
       background:
-        linear-gradient(180deg, rgba(18, 27, 40, 0.08), rgba(18, 27, 40, 0.64)),
-        url("assets/楼盘实景-楼栋外立面.png") center / cover no-repeat;
+        radial-gradient(circle at 78% 18%, rgba(255, 214, 112, 0.34), transparent 22%),
+        linear-gradient(180deg, #9fc5df 0%, #dbeaf2 42%, #b9c4bd 43%, #7c8c82 100%);
+      overflow: hidden;
     }
 
     .sun-model-badge,
     .sun-time,
     .sun-labels span,
-    .sun-light-text {
+    .sun-model-note {
       position: relative;
       z-index: 3;
     }
@@ -1079,29 +1080,107 @@
       box-shadow: 0 0 26px rgba(255, 178, 55, 0.58);
     }
 
+    .sun-model-scene {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 20px;
+      z-index: 2;
+      height: 172px;
+      perspective: 520px;
+    }
+
+    .sun-site {
+      position: absolute;
+      left: 24px;
+      right: 20px;
+      bottom: 10px;
+      height: 118px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 16px 18px 28px 18px;
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.18) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(255, 255, 255, 0.18) 1px, transparent 1px),
+        linear-gradient(135deg, rgba(232, 238, 230, 0.92), rgba(177, 194, 184, 0.9));
+      background-size: 28px 28px, 28px 28px, auto;
+      box-shadow: inset 0 0 22px rgba(255, 255, 255, 0.38), 0 24px 38px rgba(43, 63, 74, 0.3);
+      transform: rotateX(60deg) rotateZ(-13deg);
+      transform-origin: center bottom;
+    }
+
+    .sun-shadow {
+      position: absolute;
+      bottom: 38px;
+      width: 94px;
+      height: 28px;
+      background: rgba(48, 56, 68, 0.32);
+      filter: blur(5px);
+      transform: skewX(-32deg) rotate(-12deg);
+    }
+
+    .sun-shadow--one { left: 58px; }
+    .sun-shadow--two { left: 134px; width: 116px; opacity: 0.78; }
+    .sun-shadow--three { right: 28px; width: 86px; opacity: 0.66; }
+
+    .model-tower {
+      position: absolute;
+      bottom: 58px;
+      width: 34px;
+      height: var(--h);
+      border-radius: 3px 3px 1px 1px;
+      background:
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.72) 0 3px, transparent 3px 9px),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.46) 0 5px, transparent 5px 12px),
+        linear-gradient(100deg, #c4543f 0%, #e17159 52%, #9a352e 100%);
+      box-shadow: 9px -5px 0 #8a3430, 18px 14px 26px rgba(42, 47, 59, 0.34);
+      transform: skewY(-5deg);
+    }
+
+    .model-tower::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 50%;
+      top: -24px;
+      min-width: 44px;
+      padding: 3px 5px;
+      border-radius: 999px;
+      color: #267a3f;
+      background: rgba(255, 255, 255, 0.94);
+      font-size: 9px;
+      font-weight: 700;
+      text-align: center;
+      transform: translateX(-50%);
+      box-shadow: 0 5px 12px rgba(31, 48, 63, 0.12);
+    }
+
+    .model-tower--one { left: 58px; --h: 98px; }
+    .model-tower--two { left: 108px; --h: 124px; }
+    .model-tower--three { left: 164px; --h: 112px; }
+    .model-tower--four { right: 58px; --h: 92px; }
+
     .sun-ray {
       position: absolute;
-      right: 50px;
-      top: 80px;
+      right: 38px;
+      top: 72px;
       z-index: 1;
-      width: 190px;
-      height: 54px;
-      background: linear-gradient(90deg, rgba(255, 217, 106, 0), rgba(255, 210, 86, 0.34));
-      filter: blur(1px);
+      width: 220px;
+      height: 42px;
+      background: linear-gradient(90deg, rgba(255, 225, 131, 0), rgba(255, 227, 137, 0.46));
+      filter: blur(0.5px);
       transform-origin: right center;
       clip-path: polygon(0 20%, 100% 0, 100% 100%, 0 80%);
     }
 
     .sun-ray--two {
-      top: 105px;
-      width: 210px;
+      top: 102px;
+      width: 240px;
       opacity: 0.82;
       transform: rotate(9deg);
     }
 
     .sun-ray--three {
-      top: 132px;
-      width: 174px;
+      top: 134px;
+      width: 204px;
       opacity: 0.68;
       transform: rotate(18deg);
     }
@@ -1110,7 +1189,7 @@
       position: absolute;
       left: 14px;
       right: 14px;
-      bottom: 14px;
+      bottom: 50px;
       z-index: 3;
       display: flex;
       justify-content: space-between;
@@ -1127,49 +1206,19 @@
       backdrop-filter: blur(4px);
     }
 
-    .sun-light-shot {
-      position: relative;
-      min-height: 126px;
-      margin: 10px;
-      border-radius: 7px;
-      overflow: hidden;
-      background:
-        linear-gradient(90deg, rgba(255, 242, 202, 0.74), rgba(255, 255, 255, 0.08) 48%, rgba(23, 31, 44, 0.45)),
-        url("assets/楼盘实景-客厅样板间.png") center / cover no-repeat;
-    }
-
-    .sun-light-shot::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(112deg, rgba(255, 217, 106, 0.56) 0 18%, transparent 18% 24%, rgba(255, 230, 155, 0.34) 24% 38%, transparent 39%),
-        linear-gradient(0deg, rgba(20, 27, 38, 0.18), rgba(20, 27, 38, 0));
-      mix-blend-mode: screen;
-    }
-
-    .sun-light-text {
+    .sun-model-note {
       position: absolute;
       left: 12px;
       bottom: 12px;
-      display: grid;
-      gap: 4px;
-      padding: 8px 10px;
-      border-radius: 7px;
-      background: rgba(255, 255, 255, 0.9);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 9px;
+      border-radius: 6px;
       color: #2b3a4a;
-      box-shadow: 0 8px 18px rgba(27, 39, 56, 0.14);
-    }
-
-    .sun-light-text span {
-      color: var(--muted);
+      background: rgba(255, 255, 255, 0.9);
       font-size: 11px;
-    }
-
-    .sun-light-text strong {
-      color: var(--brand);
-      font-size: 15px;
-      font-weight: 600;
+      box-shadow: 0 8px 18px rgba(27, 39, 56, 0.14);
     }
 
     .sun-grid {
@@ -1571,7 +1620,7 @@
       <div class="album-tabs">
         <button class="album-tab is-active" data-src="./assets/楼盘实景-社区楼景.png" type="button">VR</button>
         <button class="album-tab" data-src="./assets/楼盘实景-楼栋外立面.png" type="button">总平图</button>
-        <button class="album-tab" data-src="./assets/楼盘实景-客厅样板间.png" type="button">户型图</button>
+        <button class="album-tab" data-src="./assets/floorplan-3room.png" type="button">户型图</button>
         <button class="album-tab" data-src="./assets/楼盘实景-园林入口.png" type="button">区位图</button>
         <button class="album-tab" data-src="./assets/楼盘实景-会所书吧.png" type="button">实景图</button>
       </div>
@@ -1707,18 +1756,23 @@
           <span class="sun-ray" aria-hidden="true"></span>
           <span class="sun-ray sun-ray--two" aria-hidden="true"></span>
           <span class="sun-ray sun-ray--three" aria-hidden="true"></span>
+          <div class="sun-model-scene" aria-hidden="true">
+            <span class="sun-site"></span>
+            <span class="sun-shadow sun-shadow--one"></span>
+            <span class="sun-shadow sun-shadow--two"></span>
+            <span class="sun-shadow sun-shadow--three"></span>
+            <span class="model-tower model-tower--one" data-label="1# 24F"></span>
+            <span class="model-tower model-tower--two" data-label="3# 25F"></span>
+            <span class="model-tower model-tower--three" data-label="5# 25F"></span>
+            <span class="model-tower model-tower--four" data-label="7# 23F"></span>
+          </div>
           <div class="sun-labels">
             <span>1# 24F</span>
             <span>3# 25F</span>
             <span>5# 25F</span>
             <span>7# 23F</span>
           </div>
-        </div>
-        <div class="sun-light-shot">
-          <div class="sun-light-text">
-            <span>样板间光线模拟</span>
-            <strong>南向客厅约4.9h采光</strong>
-          </div>
+          <div class="sun-model-note">光线投影按楼栋高度与楼间距示意</div>
         </div>
       </div>
       <div class="sun-grid">
