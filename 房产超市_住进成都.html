@@ -2035,6 +2035,51 @@
       text-decoration: none;
     }
 
+    .chat-project-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .chat-project-card {
+      display: grid;
+      gap: 6px;
+      padding: 10px;
+      border: 1px solid rgba(253, 93, 0, 0.16);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .chat-project-card strong {
+      color: #183746;
+      font-size: 14px;
+      line-height: 1.2;
+    }
+
+    .chat-project-card span {
+      color: #5f7480;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .chat-project-card a {
+      justify-self: start;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 28px;
+      margin-top: 2px;
+      padding: 0 12px;
+      border: none;
+      border-radius: 999px;
+      color: #ffffff !important;
+      background: #ff6728;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
     .chat-avatar {
       flex: 0 0 auto;
       width: 34px;
@@ -2716,6 +2761,150 @@
       font-weight: 500;
     }
 
+    .featured-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 27px;
+      min-height: 144px;
+      padding: 13px 12px 12px;
+      overflow: hidden;
+      border-radius: 24px;
+      background:
+        linear-gradient(115deg, rgba(255, 246, 236, 0.96) 0 49%, rgba(238, 249, 255, 0.96) 49% 100%),
+        radial-gradient(circle at 18% 50%, rgba(255, 130, 45, 0.2), transparent 31%),
+        radial-gradient(circle at 82% 44%, rgba(38, 144, 255, 0.18), transparent 33%),
+        #ffffff;
+      box-shadow: 0 14px 30px rgba(255, 117, 40, 0.1);
+    }
+
+    .featured-grid::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 14px;
+      width: 72px;
+      height: 118px;
+      border: 1px solid rgba(255, 146, 72, 0.28);
+      border-left: 0;
+      border-bottom: 0;
+      border-radius: 0 64px 0 0;
+      transform: translateX(-50%) skewX(-12deg);
+      opacity: 0.9;
+    }
+
+    .featured-card {
+      position: relative;
+      min-height: 118px;
+      display: grid;
+      justify-items: center;
+      align-content: center;
+      gap: 6px;
+      overflow: hidden;
+      padding: 12px 8px 10px;
+      border-radius: 30px;
+      color: #303133;
+      text-decoration: none;
+      isolation: isolate;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.72), 0 10px 24px rgba(31, 41, 55, 0.07);
+    }
+
+    .featured-card::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      left: 50%;
+      top: 13px;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      opacity: 0.2;
+      transform: translateX(-50%);
+    }
+
+    .featured-card::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      left: 50%;
+      top: 25px;
+      width: 48px;
+      height: 42px;
+      transform: translateX(-50%);
+    }
+
+    .featured-card--city {
+      border-radius: 30px 18px 34px 18px;
+      background:
+        radial-gradient(circle at 15% 85%, rgba(255, 115, 35, 0.16), transparent 28%),
+        rgba(255, 255, 255, 0.66);
+    }
+
+    .featured-card--city::before {
+      background:
+        linear-gradient(#fff, #ffe2c4) 3px 19px / 10px 23px no-repeat,
+        linear-gradient(#fff, #ffd2a1) 18px 9px / 11px 33px no-repeat,
+        linear-gradient(#fff, #ffbf7b) 35px 0 / 12px 42px no-repeat;
+    }
+
+    .featured-card--district {
+      border-radius: 18px 30px 18px 34px;
+      background:
+        radial-gradient(circle at 86% 18%, rgba(32, 143, 255, 0.14), transparent 29%),
+        rgba(255, 255, 255, 0.66);
+    }
+
+    .featured-card--district::before {
+      border: 2px solid rgba(47, 145, 255, 0.36);
+      border-radius: 18px 18px 18px 5px;
+      transform: translateX(-50%) rotate(-18deg);
+    }
+
+    .featured-card--city::after {
+      background: #ff8f2e;
+    }
+
+    .featured-card--district::after {
+      background: #2f91ff;
+    }
+
+    .featured-card__title {
+      position: relative;
+      z-index: 1;
+      display: block;
+      margin-top: 48px;
+      font-size: 20px;
+      line-height: 1;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .featured-card--city .featured-card__title {
+      color: #fd5d00;
+    }
+
+    .featured-card--district .featured-card__title {
+      color: #1f7fe5;
+    }
+
+    .featured-card__meta {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      width: fit-content;
+      min-height: 25px;
+      padding: 0 11px;
+      border-radius: 999px;
+      background: #ffffff;
+      color: #606266;
+      font-size: 12px;
+      font-weight: 900;
+      box-shadow: 0 6px 14px rgba(31, 41, 55, 0.08);
+    }
+
     .quick-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -2727,11 +2916,18 @@
       display: grid;
       justify-items: center;
       gap: 9px;
+      min-width: 0;
       color: #000;
       text-decoration: none;
-      font-size: 15px;
+      font-size: 14px;
       line-height: 1;
       white-space: nowrap;
+    }
+
+    .quick-entry > span:last-child {
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .quick-entry__icon {
@@ -2765,6 +2961,289 @@
     .quick-entry:nth-child(7) .quick-entry__icon { background: linear-gradient(180deg, #ffc777, #ff9140); }
     .quick-entry:nth-child(8) .quick-entry__icon { background: linear-gradient(180deg, #7dd2ff, #2a8cf3); }
     .quick-entry:nth-child(9) .quick-entry__icon { background: linear-gradient(180deg, #ffc978, #ff9134); }
+
+    .home-column {
+      margin-top: 12px;
+    }
+
+    .home-column__grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      grid-template-rows: 76px 76px;
+      gap: 10px;
+    }
+
+    .home-column-card {
+      position: relative;
+      display: grid;
+      align-content: space-between;
+      min-width: 0;
+      overflow: hidden;
+      padding: 12px;
+      border-radius: 10px;
+      color: #303133;
+      text-decoration: none;
+    }
+
+    .home-column-card::after {
+      content: "";
+      position: absolute;
+      right: -20px;
+      bottom: -24px;
+      width: 86px;
+      height: 86px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .home-column-card--live {
+      grid-row: 1 / span 2;
+      color: #fff;
+      background: linear-gradient(140deg, #2f91ff 0%, #20c59a 100%);
+      box-shadow: 0 10px 22px rgba(47, 145, 255, 0.16);
+    }
+
+    .home-column-card--land {
+      background: linear-gradient(135deg, #fff0d9 0%, #ffd08a 100%);
+    }
+
+    .home-column-card--market {
+      background: linear-gradient(135deg, #eef5ff 0%, #cde1ff 100%);
+    }
+
+    .home-column-card__eyebrow,
+    .home-column-card__meta,
+    .home-column-card__title {
+      position: relative;
+      z-index: 1;
+    }
+
+    .home-column-card__eyebrow {
+      width: fit-content;
+      min-height: 20px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.2);
+      font-size: 11px;
+      line-height: 1;
+      font-weight: 800;
+    }
+
+    .home-column-card__title {
+      display: block;
+      margin-top: 8px;
+      overflow: hidden;
+      font-size: 18px;
+      line-height: 1.12;
+      font-weight: 900;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .home-column-card:not(.home-column-card--live) .home-column-card__title {
+      margin-top: 0;
+      font-size: 15px;
+    }
+
+    .home-column-card__meta {
+      display: block;
+      overflow: hidden;
+      margin-top: 8px;
+      color: inherit;
+      font-size: 12px;
+      line-height: 1;
+      opacity: 0.78;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .sign-stats {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 10px 24px rgba(17, 24, 39, 0.08);
+    }
+
+    .sign-stats__head,
+    .presale-preview__head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .sign-stats__head h2,
+    .presale-preview__head h2 {
+      margin: 0;
+      color: #111827;
+      font-size: 17px;
+      line-height: 1.2;
+      font-weight: 900;
+    }
+
+    .sign-stats__head span,
+    .presale-preview__head span {
+      color: #909399;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .sign-stats__grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .sign-stat-card {
+      min-height: 84px;
+      padding: 12px;
+      border-radius: 12px;
+      background: #f7f8fa;
+    }
+
+    .sign-stat-card strong {
+      display: block;
+      color: #111827;
+      font-size: 22px;
+      line-height: 1.1;
+      font-weight: 900;
+    }
+
+    .sign-stat-card small {
+      display: block;
+      margin-top: 6px;
+      color: #606266;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .sign-stat-card em {
+      display: inline-flex;
+      margin-top: 9px;
+      color: #ff6728;
+      font-size: 11px;
+      line-height: 1;
+      font-style: normal;
+      font-weight: 800;
+    }
+
+    .sign-demand {
+      display: grid;
+      gap: 9px;
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #fff7f0, #eef7ff);
+    }
+
+    .sign-demand__row {
+      display: grid;
+      grid-template-columns: 56px minmax(0, 1fr) 42px;
+      align-items: center;
+      gap: 8px;
+      color: #606266;
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    .sign-demand__bar {
+      height: 8px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.86);
+    }
+
+    .sign-demand__bar i {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #ff7b2b, #2f91ff);
+    }
+
+    .presale-preview {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 10px 24px rgba(17, 24, 39, 0.08);
+    }
+
+    .presale-preview__list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .presale-card {
+      display: grid;
+      grid-template-columns: 74px minmax(0, 1fr);
+      gap: 10px;
+      padding: 10px;
+      border-radius: 12px;
+      background: #f7f8fa;
+      color: #303133;
+      text-decoration: none;
+    }
+
+    .presale-card__date {
+      display: grid;
+      place-items: center;
+      min-height: 76px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #ff7b2b, #ffb449);
+      color: #ffffff;
+      text-align: center;
+    }
+
+    .presale-card__date strong {
+      display: block;
+      font-size: 20px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .presale-card__date span {
+      display: block;
+      margin-top: 6px;
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .presale-card__body {
+      min-width: 0;
+      display: grid;
+      align-content: center;
+      gap: 7px;
+    }
+
+    .presale-card__title {
+      overflow: hidden;
+      color: #111827;
+      font-size: 15px;
+      line-height: 1.25;
+      font-weight: 900;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .presale-card__meta,
+    .presale-card__note {
+      overflow: hidden;
+      color: #606266;
+      font-size: 12px;
+      line-height: 1.35;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .presale-card__note {
+      color: #ff6728;
+      font-weight: 800;
+    }
 
     .bank-banner {
       height: 86px;
@@ -2854,6 +3333,50 @@
       stroke-width: 2;
       stroke-linecap: round;
       stroke-linejoin: round;
+    }
+
+    .bottom-tabbar__item--ai {
+      position: relative;
+      z-index: 1;
+      align-content: start;
+      gap: 2px;
+      color: #fff;
+      transform: translateY(-15px);
+    }
+
+    .bottom-tabbar__item--ai::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -6px;
+      z-index: -1;
+      width: 58px;
+      height: 58px;
+      border: 3px solid #fff;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #ff7b2b 0%, #ffb449 42%, #2f91ff 100%);
+      box-shadow: 0 10px 24px rgba(255, 103, 40, 0.28);
+      transform: translateX(-50%);
+    }
+
+    .bottom-tabbar__item--ai .bottom-tabbar__icon {
+      width: 28px;
+      height: 28px;
+      margin-top: 4px;
+    }
+
+    .bottom-tabbar__item--ai .bottom-tabbar__icon svg {
+      width: 28px;
+      height: 28px;
+      color: #fff;
+      stroke-width: 2.2;
+    }
+
+    .bottom-tabbar__item--ai span:last-child {
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+      transform: translateY(7px);
     }
 
     .qr-scanner {
@@ -3011,6 +3534,15 @@
       box-shadow: 0 10px 20px rgba(253, 93, 0, 0.18);
     }
 
+    #messageScreen .message-list-item__avatar img,
+    #messageDetailScreen .message-thread__avatar img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: inherit;
+      object-fit: cover;
+    }
+
     #messageScreen .message-list-item__main {
       flex: 1;
       min-width: 0;
@@ -3089,7 +3621,8 @@
       z-index: 8;
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
-      padding: 8px 8px calc(8px + env(safe-area-inset-bottom, 0px));
+      min-height: calc(56px + env(safe-area-inset-bottom, 0px));
+      padding: 5px 4px env(safe-area-inset-bottom, 0px);
       background: rgba(255, 255, 255, 0.98);
       border-top: 1px solid rgba(228, 231, 237, 0.96);
       box-shadow: 0 -10px 24px rgba(17, 24, 39, 0.06);
@@ -3100,9 +3633,10 @@
       position: relative;
       display: grid;
       justify-items: center;
-      gap: 4px;
+      align-content: center;
+      gap: 3px;
       min-height: 56px;
-      padding: 4px 0;
+      padding: 0;
       border: none;
       background: transparent;
       color: #a0a7b4;
@@ -3138,6 +3672,47 @@
       line-height: 1.2;
     }
 
+    #messageScreen .message-tabbar__item--ai {
+      z-index: 1;
+      align-content: start;
+      color: #ffffff;
+      transform: translateY(-15px);
+    }
+
+    #messageScreen .message-tabbar__item--ai::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -6px;
+      z-index: -1;
+      width: 58px;
+      height: 58px;
+      border: 3px solid #ffffff;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #ff7b2b 0%, #ffb449 42%, #2f91ff 100%);
+      box-shadow: 0 10px 24px rgba(255, 103, 40, 0.28);
+      transform: translateX(-50%);
+    }
+
+    #messageScreen .message-tabbar__item--ai .message-tabbar__icon {
+      width: 28px;
+      height: 28px;
+      margin-top: 4px;
+      color: #ffffff;
+    }
+
+    #messageScreen .message-tabbar__item--ai .message-tabbar__icon svg {
+      width: 28px;
+      height: 28px;
+      stroke-width: 2.2;
+    }
+
+    #messageScreen .message-tabbar__item--ai .message-tabbar__label {
+      color: #ffffff;
+      font-weight: 900;
+      transform: translateY(7px);
+    }
+
     #messageScreen .message-tabbar__dot {
       position: absolute;
       top: 0;
@@ -3155,19 +3730,21 @@
     }
 
     #messageDetailScreen .page-content {
-      padding: 12px 0 calc(22px + env(safe-area-inset-bottom, 0px));
+      padding: 12px 0 0;
     }
 
     #messageDetailScreen .message-thread {
       display: grid;
       gap: 18px;
-      min-height: 100%;
+      min-height: calc(100vh - 88px);
+      align-content: space-between;
     }
 
     #messageDetailScreen .message-thread__body {
       display: grid;
       gap: 18px;
       padding: 0 16px;
+      padding-bottom: 12px;
     }
 
     #messageDetailScreen .message-thread__time {
@@ -3223,6 +3800,10 @@
       overflow: hidden;
     }
 
+    #messageDetailScreen .message-thread__card[hidden] {
+      display: none !important;
+    }
+
     #messageDetailScreen .message-thread__card-cover {
       position: relative;
       min-height: 126px;
@@ -3270,6 +3851,232 @@
       font-size: 13px;
       font-weight: 700;
       line-height: 1.4;
+    }
+
+    #messageDetailScreen .message-thread__conversation {
+      display: grid;
+      gap: 10px;
+      margin-left: 0;
+    }
+
+    #messageDetailScreen .message-thread__conversation:empty {
+      display: none;
+    }
+
+    #messageDetailScreen .message-thread__reply {
+      display: grid;
+      justify-items: start;
+      gap: 4px;
+    }
+
+    #messageDetailScreen .message-thread__reply.is-user {
+      justify-items: end;
+      margin-right: 0;
+    }
+
+    #messageDetailScreen .message-thread__reply span {
+      max-width: 86%;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: #ffffff;
+      color: #303133;
+      font-size: 14px;
+      line-height: 1.6;
+      box-shadow: 0 8px 18px rgba(17, 24, 39, 0.05);
+    }
+
+    #messageDetailScreen .message-thread__reply.is-user span {
+      background: #ff7b2b;
+      color: #ffffff;
+    }
+
+    .message-online {
+      position: sticky;
+      bottom: 0;
+      z-index: 5;
+      display: grid;
+      gap: 12px;
+      width: 100%;
+      margin: 0;
+      padding: 12px 12px calc(12px + env(safe-area-inset-bottom, 0px));
+      border-radius: 18px 18px 0 0;
+      background: #ffffff;
+      box-shadow: 0 -10px 26px rgba(17, 24, 39, 0.08);
+    }
+
+    .message-online__quick {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .message-online__quick button {
+      min-height: 34px;
+      border: 1px solid rgba(253, 93, 0, 0.16);
+      border-radius: 999px;
+      background: #fff7f0;
+      color: #c74100;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .message-online__form {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 54px;
+      gap: 6px;
+    }
+
+    .message-online__form input {
+      width: 100%;
+      min-height: 38px;
+      border: 1px solid #e4e7ed;
+      border-radius: 999px;
+      padding: 0 12px;
+      outline: none;
+      color: #303133;
+      background: #f7f8fa;
+      font-size: 13px;
+    }
+
+    .message-online__form button {
+      min-height: 38px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #fd5d00, #ff8f2e);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    #liveScreen {
+      background: #f3f5f6;
+    }
+
+    #liveScreen .page-content {
+      padding: 12px 16px calc(24px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .live-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 0;
+      padding: 4px;
+      border-radius: 999px;
+      background: #ffffff;
+      box-shadow: 0 10px 22px rgba(17, 24, 39, 0.06);
+    }
+
+    .live-tab {
+      min-height: 34px;
+      border: none;
+      border-radius: 999px;
+      background: transparent;
+      color: #606266;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .live-tab.is-active {
+      background: linear-gradient(90deg, #fd5d00, #ff8f2e);
+      color: #ffffff;
+      box-shadow: 0 8px 18px rgba(253, 93, 0, 0.18);
+    }
+
+    .live-action {
+      min-height: 64px;
+      padding: 10px;
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 8px 18px rgba(17, 24, 39, 0.06);
+    }
+
+    .live-action strong {
+      display: block;
+      color: #111827;
+      font-size: 16px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .live-action span {
+      display: block;
+      margin-top: 8px;
+      color: #606266;
+      font-size: 11px;
+      line-height: 1.3;
+    }
+
+    .live-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .live-card {
+      display: grid;
+      grid-template-columns: 92px minmax(0, 1fr);
+      gap: 10px;
+      padding: 10px;
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 8px 18px rgba(17, 24, 39, 0.06);
+    }
+
+    .live-card__cover {
+      position: relative;
+      min-height: 86px;
+      overflow: hidden;
+      border-radius: 10px;
+      background: var(--live-cover, #ffd8c0);
+    }
+
+    .live-card__cover::after {
+      content: "LIVE";
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      min-height: 18px;
+      padding: 0 7px;
+      border-radius: 999px;
+      background: #ff2828;
+      color: #ffffff;
+      font-size: 10px;
+      line-height: 18px;
+      font-weight: 900;
+    }
+
+    .live-card__body {
+      display: grid;
+      align-content: center;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .live-card__body h2 {
+      margin: 0;
+      overflow: hidden;
+      color: #111827;
+      font-size: 15px;
+      line-height: 1.3;
+      font-weight: 900;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .live-card__body p {
+      margin: 0;
+      color: #606266;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .live-card__meta {
+      color: #ff6728;
+      font-size: 12px;
+      font-weight: 800;
     }
 
     #homeScreen .hero-card {
@@ -4450,10 +5257,12 @@
     @media (max-width: 480px) {
       body {
         padding: 0;
+        justify-content: center;
       }
 
       .phone-shell {
-        width: 100%;
+        width: 100vw;
+        max-width: none;
         min-height: 100vh;
         border-radius: 0;
       }
@@ -4521,43 +5330,26 @@
               <span class="promo-banner__sub">成都城市价值推介暨市场拓展活动<br>（乌鲁木齐站）<br>CHENGDU X URUMQI<br>2026</span>
             </section>
 
-            <section class="activity-card" aria-label="安家成都优惠活动">
-              <div class="activity-card__ribbon">安家成都优惠活动</div>
-              <div class="activity-card__grid">
-                <a class="activity-entry" href="javascript:void(0)" aria-label="线下活动">
-                  <span class="activity-entry__icon">
-                    <svg viewBox="0 0 48 48" aria-hidden="true">
-                      <rect x="10" y="14" width="28" height="23" rx="6" fill="#4da0ff" />
-                      <path d="M16 12h5l2-4h7l2 4h3a5 5 0 0 1 5 5v15a6 6 0 0 1-6 6H14a6 6 0 0 1-6-6V17a5 5 0 0 1 5-5h3Z" fill="#73bdff" />
-                      <path d="M18 26 23 31 32 20" fill="none" stroke="#ffe08a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-                      <path d="M16 17h7" stroke="#fff" stroke-width="3" stroke-linecap="round" />
-                    </svg>
-                  </span>
-                  <strong class="activity-entry__title">线下活动</strong>
-                  <span class="activity-entry__meta">-场活动进行中</span>
-                </a>
-                <a class="activity-entry" href="javascript:void(0)" aria-label="购房政策">
-                  <span class="activity-entry__icon">
-                    <svg viewBox="0 0 48 48" aria-hidden="true">
-                      <rect x="14" y="9" width="13" height="30" rx="3" fill="#ffb04a" />
-                      <rect x="26" y="13" width="13" height="27" rx="3" fill="#ff5c4a" transform="rotate(-8 32.5 26.5)" />
-                      <path d="M18 15h5M18 22h5M18 29h5M30 19h5M30 26h5M31 33h5" stroke="#fff" stroke-width="2" stroke-linecap="round" />
-                    </svg>
-                  </span>
-                  <strong class="activity-entry__title">购房政策</strong>
-                  <span class="activity-entry__meta"><strong>15</strong>个区县正在实行</span>
-                </a>
-              </div>
+            <section class="featured-grid" aria-label="首页重点板块">
+              <a class="featured-card featured-card--city" href="javascript:void(0)">
+                <span>
+                  <strong class="featured-card__title">住进成都</strong>
+                </span>
+                <span class="featured-card__meta">进入专题</span>
+              </a>
+              <a class="featured-card featured-card--district" href="./district-zone/index.html">
+                <span>
+                  <strong class="featured-card__title">区县专区</strong>
+                </span>
+                <span class="featured-card__meta">查看专区</span>
+              </a>
             </section>
 
             <nav class="quick-grid" aria-label="首页功能入口">
               <a class="quick-entry" href="javascript:void(0)"><span class="quick-entry__icon">443</span><span>在售楼盘</span></a>
               <a class="quick-entry" href="javascript:void(0)"><span class="quick-entry__icon">117</span><span>最新取证</span></a>
               <a class="quick-entry" href="javascript:void(0)"><span class="quick-entry__icon">139</span><span>热门楼盘</span></a>
-              <a class="quick-entry" href="javascript:void(0)">
-                <span class="quick-entry__icon"><svg viewBox="0 0 32 32"><path d="M16 29s9-7.6 9-16a9 9 0 1 0-18 0c0 8.4 9 16 9 16Z" /><circle cx="16" cy="13" r="3" /><path d="m9 25 5-3 5 3 5-3" /></svg></span>
-                <span>区县专区</span>
-              </a>
+              <a class="quick-entry" href="#presalePreview"><span class="quick-entry__icon">2</span><span>即将开售</span></a>
               <a class="quick-entry" href="javascript:void(0)">
                 <span class="quick-entry__icon"><svg viewBox="0 0 32 32"><path d="M6 24V10l6 3 6-6 8 4v13Z" /><path d="M10 22v-6M16 22v-8M22 22v-5" /></svg></span>
                 <span>房产行情</span>
@@ -4574,11 +5366,106 @@
                 <span class="quick-entry__icon"><svg viewBox="0 0 32 32"><path d="m6 26 7-3 7 3 6-3V6l-6 3-7-3-7 3Z" /><path d="M13 6v17M20 9v17" /><path d="M20 19s4-3.4 4-7a4 4 0 1 0-8 0c0 3.6 4 7 4 7Z" /></svg></span>
                 <span>地图找房</span>
               </a>
-              <a class="quick-entry" href="javascript:void(0)">
-                <span class="quick-entry__icon"><svg viewBox="0 0 32 32"><path d="m6 17 10-8 10 8" /><path d="M10 17v8h12v-8" /><path d="M12 23c3-5 7-5 9 0" /></svg></span>
-                <span>走进成都</span>
+              <a class="quick-entry" id="quickStatsButton" href="#homeSignStats">
+                <span class="quick-entry__icon"><svg viewBox="0 0 32 32"><path d="M7 25V9" /><path d="M7 25h20" /><path d="M12 21v-6M17 21V11M22 21v-9" /></svg></span>
+                <span>网签统计</span>
               </a>
             </nav>
+
+            <section class="home-column" aria-label="安居内容专栏">
+              <div class="home-column__grid">
+                <a class="home-column-card home-column-card--live" id="homeLiveButton" href="javascript:void(0)">
+                  <span>
+                    <span class="home-column-card__eyebrow">LIVE</span>
+                    <strong class="home-column-card__title">大V直播</strong>
+                  </span>
+                  <span class="home-column-card__meta">3场直播预约中</span>
+                </a>
+                <a class="home-column-card home-column-card--land" href="javascript:void(0)">
+                  <span>
+                    <strong class="home-column-card__title">土拍分析</strong>
+                    <span class="home-column-card__meta">读懂板块热度</span>
+                  </span>
+                </a>
+                <a class="home-column-card home-column-card--market" href="javascript:void(0)">
+                  <span>
+                    <strong class="home-column-card__title">市场行情文章</strong>
+                    <span class="home-column-card__meta">成交价格解读</span>
+                  </span>
+                </a>
+              </div>
+            </section>
+
+            <section class="sign-stats" id="homeSignStats" aria-label="网签统计">
+              <div class="sign-stats__head">
+                <h2>网签统计</h2>
+                <span>按购房需求统计</span>
+              </div>
+              <div class="sign-stats__grid">
+                <article class="sign-stat-card">
+                  <strong>1,286</strong>
+                  <small>本月住宅网签套数</small>
+                  <em>较上月 +8.6%</em>
+                </article>
+                <article class="sign-stat-card">
+                  <strong>14.8万㎡</strong>
+                  <small>本月网签面积</small>
+                  <em>改善户型占比提升</em>
+                </article>
+                <article class="sign-stat-card">
+                  <strong>23,860</strong>
+                  <small>成交均价 元/㎡</small>
+                  <em>中心城区平稳</em>
+                </article>
+                <article class="sign-stat-card">
+                  <strong>锦江</strong>
+                  <small>关注热度最高区县</small>
+                  <em>带看转化 31%</em>
+                </article>
+              </div>
+              <div class="sign-demand" aria-label="需求分布">
+                <div class="sign-demand__row">
+                  <span>刚需</span>
+                  <span class="sign-demand__bar"><i style="width: 46%"></i></span>
+                  <strong>46%</strong>
+                </div>
+                <div class="sign-demand__row">
+                  <span>改善</span>
+                  <span class="sign-demand__bar"><i style="width: 38%"></i></span>
+                  <strong>38%</strong>
+                </div>
+                <div class="sign-demand__row">
+                  <span>高端</span>
+                  <span class="sign-demand__bar"><i style="width: 16%"></i></span>
+                  <strong>16%</strong>
+                </div>
+              </div>
+            </section>
+
+            <section class="presale-preview" id="presalePreview" aria-label="即将开售预告">
+              <div class="presale-preview__head">
+                <h2>即将开售</h2>
+                <span>预告专区</span>
+              </div>
+              <div class="presale-preview__list">
+                <a class="presale-card" href="./svg-estate-detail.html">
+                  <span class="presale-card__date"><span>7月</span><strong>18</strong></span>
+                  <span class="presale-card__body">
+                    <strong class="presale-card__title">招商·时代花园二批次</strong>
+                    <span class="presale-card__meta">金牛区 / 建面 89-128㎡ / 约 186 套</span>
+                    <span class="presale-card__note">取证后开放在线选房</span>
+                  </span>
+                </a>
+                <a class="presale-card" href="./svg-estate-detail.html">
+                  <span class="presale-card__date"><span>7月</span><strong>25</strong></span>
+                  <span class="presale-card__body">
+                    <strong class="presale-card__title">天府公园未来城</strong>
+                    <span class="presale-card__meta">天府新区 / 建面 98-143㎡ / 约 214 套</span>
+                    <span class="presale-card__note">支持订阅开售提醒</span>
+                  </span>
+                </a>
+              </div>
+            </section>
 
             <section class="bank-banner" aria-label="中国工商银行买房卖房找工行">
               <div class="bank-banner__brand">ICBC <strong>中国工商银行</strong></div>
@@ -4598,11 +5485,11 @@
             <span class="bottom-tabbar__icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l4-2" /></svg></span>
             <span>房产资讯</span>
           </button>
-          <button class="bottom-tabbar__item" type="button" aria-label="品牌馆">
-            <span class="bottom-tabbar__icon"><svg viewBox="0 0 24 24"><path d="M5 20V9l7-5 7 5v11" /><path d="M9 20v-7h6v7" /><path d="M8 9h8" /></svg></span>
-            <span>品牌馆</span>
+          <button class="bottom-tabbar__item bottom-tabbar__item--ai" id="homeAiButton" type="button" aria-label="安安AI分析">
+            <span class="bottom-tabbar__icon"><svg viewBox="0 0 24 24"><path d="M8 8.5h8a4 4 0 0 1 4 4v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3a4 4 0 0 1 4-4Z" /><path d="M12 8.5V5.5" /><path d="M9 5.5h6" /><path d="M9 14h.01M15 14h.01" /><path d="M10 17h4" /></svg></span>
+            <span>安安AI</span>
           </button>
-          <button class="bottom-tabbar__item" type="button" aria-label="消息">
+          <button class="bottom-tabbar__item" id="homeMessageButton" type="button" aria-label="消息">
             <span class="bottom-tabbar__icon"><svg viewBox="0 0 24 24"><path d="M4 5h16v12H8l-4 4Z" /><path d="M8 9h8M8 13h5" /></svg></span>
             <span>消息</span>
           </button>
@@ -4611,6 +5498,100 @@
             <span>我的</span>
           </button>
         </nav>
+      </section>
+
+      <section class="screen" id="liveScreen" aria-label="看房云直播">
+        <header class="topbar topbar--ios">
+          <div class="topbar__meta">
+            <div class="topbar-pill">
+              <button class="topbar-pill__button" id="backLiveButton" type="button" aria-label="返回首页">
+                <span class="topbar-pill__icon topbar-pill__icon--back">‹</span>
+              </button>
+              <button class="topbar-pill__button" id="liveHomeShortcutButton" type="button" aria-label="返回首页">
+                <span class="topbar-pill__icon topbar-pill__icon--home">⌂</span>
+              </button>
+            </div>
+            <span class="topbar__title">看房云直播</span>
+            <div class="topbar-pill topbar-pill--trailing">
+              <button class="topbar-pill__button" type="button" aria-label="更多操作">
+                <span class="topbar-pill__icon topbar-pill__icon--more">•••</span>
+              </button>
+              <button class="topbar-pill__button" type="button" aria-label="圆点入口">
+                <span class="topbar-pill__icon topbar-pill__icon--target">◎</span>
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <nav class="live-tabs" aria-label="直播分类">
+            <button class="live-tab is-active" type="button" data-live-tab="expert">大V直播</button>
+            <button class="live-tab" type="button" data-live-tab="district">区县直播</button>
+            <button class="live-tab" type="button" data-live-tab="developer">开发商直播</button>
+          </nav>
+          <section class="live-list" data-live-panel="expert" aria-label="大V直播场次">
+            <article class="live-card">
+              <span class="live-card__cover" style="--live-cover:url('./assets/楼盘实景-客厅样板间.png') center / cover no-repeat"></span>
+              <span class="live-card__body">
+                <h2>招商·时代花园样板间直播</h2>
+                <p>大V带看 89㎡ 三房，重点讲解动线、采光和收纳。</p>
+                <span class="live-card__meta">今天 19:30 开播</span>
+              </span>
+            </article>
+            <article class="live-card">
+              <span class="live-card__cover" style="--live-cover:url('./assets/楼盘实景-园林入口.png') center / cover no-repeat"></span>
+              <span class="live-card__body">
+                <h2>金牛改善盘社区实景巡游</h2>
+                <p>云逛园林、会所和归家动线，直播间可提交看房问题。</p>
+                <span class="live-card__meta">明天 10:00 预约中</span>
+              </span>
+            </article>
+            <article class="live-card">
+              <span class="live-card__cover" style="--live-cover:url('./assets/楼盘实景-楼栋外立面.png') center / cover no-repeat"></span>
+              <span class="live-card__body">
+                <h2>天府新区开售前专场答疑</h2>
+                <p>围绕价格、取证节奏、在线选房流程做集中解答。</p>
+                <span class="live-card__meta">7月17日 20:00</span>
+              </span>
+            </article>
+          </section>
+          <section class="live-list" data-live-panel="district" aria-label="区县直播场次" hidden>
+            <article class="live-card">
+              <span class="live-card__cover" style="--live-cover:url('./assets/锦江.png') center / cover no-repeat"></span>
+              <span class="live-card__body">
+                <h2>锦江区新盘云逛街</h2>
+                <p>围绕东大街、三圣乡板块，直播展示楼盘分布和生活配套。</p>
+                <span class="live-card__meta">今天 20:00 开播</span>
+              </span>
+            </article>
+            <article class="live-card">
+              <span class="live-card__cover" style="--live-cover:url('./assets/成华.jpg') center / cover no-repeat"></span>
+              <span class="live-card__body">
+                <h2>成华区改善房源连线</h2>
+                <p>从地铁通勤、商业成熟度和总价段三个角度做集中讲解。</p>
+                <span class="live-card__meta">明天 15:00 预约中</span>
+              </span>
+            </article>
+          </section>
+          <section class="live-list" data-live-panel="developer" aria-label="开发商直播场次" hidden>
+            <article class="live-card">
+              <span class="live-card__cover" style="--live-cover:url('./assets/楼盘实景-会所书吧.png') center / cover no-repeat"></span>
+              <span class="live-card__body">
+                <h2>招商置业顾问专场答疑</h2>
+                <p>开发商团队讲解取证节奏、监管账户、付款节点和签约流程。</p>
+                <span class="live-card__meta">7月18日 19:30</span>
+              </span>
+            </article>
+            <article class="live-card">
+              <span class="live-card__cover" style="--live-cover:url('./assets/楼盘实景-楼栋外立面.png') center / cover no-repeat"></span>
+              <span class="live-card__body">
+                <h2>首开·龙湖紫宸线上说明会</h2>
+                <p>项目负责人介绍楼栋排布、户型选择和到访预约安排。</p>
+                <span class="live-card__meta">7月20日 10:00</span>
+              </span>
+            </article>
+          </section>
+        </div>
       </section>
 
       <section class="screen" id="messageScreen" aria-label="消息通知">
@@ -4663,6 +5644,19 @@
             </span>
             <span class="message-tabbar__label">房产资讯</span>
           </button>
+          <button class="message-tabbar__item message-tabbar__item--ai" id="messageTabBrand" type="button" aria-label="安安AI助手">
+            <span class="message-tabbar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M8 8.5h8a4 4 0 0 1 4 4v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3a4 4 0 0 1 4-4Z"></path>
+                <path d="M12 8.5V5.5"></path>
+                <path d="M9 5.5h6"></path>
+                <path d="M9 14h.01"></path>
+                <path d="M15 14h.01"></path>
+                <path d="M10 17h4"></path>
+              </svg>
+            </span>
+            <span class="message-tabbar__label">安安AI</span>
+          </button>
           <button class="message-tabbar__item is-active" id="messageTabMessages" type="button" aria-label="消息">
             <span class="message-tabbar__icon" aria-hidden="true">
               <svg viewBox="0 0 24 24">
@@ -4671,22 +5665,6 @@
               <span class="message-tabbar__dot"></span>
             </span>
             <span class="message-tabbar__label">消息</span>
-          </button>
-          <button class="message-tabbar__item" id="messageTabBrand" type="button" aria-label="品牌馆">
-            <span class="message-tabbar__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path d="M5 20V7.5h14V20"></path>
-                <path d="M3.5 20h17"></path>
-                <path d="M8 7.5V5h8v2.5"></path>
-                <path d="M9 11h.01"></path>
-                <path d="M12 11h.01"></path>
-                <path d="M15 11h.01"></path>
-                <path d="M9 14.5h.01"></path>
-                <path d="M12 14.5h.01"></path>
-                <path d="M15 14.5h.01"></path>
-              </svg>
-            </span>
-            <span class="message-tabbar__label">品牌馆</span>
           </button>
           <button class="message-tabbar__item" id="messageTabMine" type="button" aria-label="我的">
             <span class="message-tabbar__icon" aria-hidden="true">
@@ -4740,10 +5718,21 @@
                       <span class="message-thread__card-action">立即查看</span>
                     </button>
                   </div>
+                  <div class="message-thread__conversation" id="messageDetailConversation"></div>
                 </div>
               </div>
             </div>
 
+            <div class="message-online" id="messageOnlinePanel" hidden>
+              <div class="message-online__quick" id="messageOnlineQuick">
+                <button type="button" data-message-reply="获取置业顾问微信号">获取置业顾问微信号</button>
+                <button type="button" data-message-reply="咨询对应房源">咨询对应房源</button>
+              </div>
+              <form class="message-online__form" id="messageReplyForm">
+                <input id="messageReplyInput" type="text" placeholder="输入想咨询的问题" aria-label="输入想咨询的问题" />
+                <button type="submit">发送</button>
+              </form>
+            </div>
           </section>
         </div>
       </section>
@@ -4944,8 +5933,7 @@
       <div class="chat-panel">
         <div class="chat-panel__head">
           <div>
-            <h3>政策机器人</h3>
-            <p>演示版问答入口，示例回答仅用于原型展示，实际政策以官方发布为准。</p>
+            <h3>安安ai</h3>
           </div>
           <button class="chat-close" id="closeChatButton" type="button" aria-label="关闭机器人">×</button>
         </div>
@@ -5051,14 +6039,29 @@
       }
     ];
 
-    const defaultChatPlaceholder = "例如：外地人在成都购房需要什么条件？";
+    const defaultChatPlaceholder = "例如：我想要青羊区楼盘，400万预算";
 
     const quickQuestions = [
-      "外地人在成都购房需要什么条件？",
-      "成都公积金贷款额度怎么理解？",
-      "买新房大概涉及哪些税费？"
+      "区县政策",
+      "购房流程"
     ];
     const messageNotifications = [
+      {
+        id: "message-consult-001",
+        kind: "chat",
+        sender: "李晓雨置业顾问",
+        avatarText: "李",
+        avatarImage: "./assets/advisor-avatar.png",
+        unreadCount: 2,
+        latestMessage: "您好，我是招商·时代花园置业顾问，可以帮您预约看房。",
+        content: "您好，我是招商·时代花园置业顾问李晓雨。可以直接咨询看房预约、一房一价、购房资格或线上签约流程。",
+        timeLabel: "2分钟前",
+        dialog: [
+          { role: "bot", text: "您关注的 123㎡ 三房目前还有中高楼层可选，今天 19:30 也有样板间云直播。" },
+          { role: "user", text: "我想周末看房，可以先发我一房一价吗？" },
+          { role: "bot", text: "可以的，我先把一房一价和周末可预约时段发您，确认后可直接安排专车看房。" }
+        ]
+      },
       {
         id: "message-shanghai-001",
         sender: "成都住建房产超市",
@@ -5254,6 +6257,7 @@
     const phoneShell = document.querySelector(".phone-shell");
     const screens = {
       home: document.getElementById("homeScreen"),
+      live: document.getElementById("liveScreen"),
       message: document.getElementById("messageScreen"),
       messageDetail: document.getElementById("messageDetailScreen"),
       activity: document.getElementById("activityDetailScreen"),
@@ -5262,6 +6266,13 @@
     };
 
     const cityFilters = document.getElementById("cityFilters");
+    const homeLiveButton = document.getElementById("homeLiveButton");
+    const homeAiButton = document.getElementById("homeAiButton");
+    const homeMessageButton = document.getElementById("homeMessageButton");
+    const quickStatsButton = document.getElementById("quickStatsButton");
+    const homeSignStats = document.getElementById("homeSignStats");
+    const backLiveButton = document.getElementById("backLiveButton");
+    const liveHomeShortcutButton = document.getElementById("liveHomeShortcutButton");
     const backMessageButton = document.getElementById("backMessageButton");
     const messageHomeShortcutButton = document.getElementById("messageHomeShortcutButton");
     const messageList = document.getElementById("messageList");
@@ -5280,6 +6291,11 @@
     const messageDetailCard = document.getElementById("messageDetailCard");
     const messageDetailCardCoverImage = document.getElementById("messageDetailCardCoverImage");
     const openShanghaiActivityFromMessageDetail = document.getElementById("openShanghaiActivityFromMessageDetail");
+    const messageDetailConversation = document.getElementById("messageDetailConversation");
+    const messageOnlinePanel = document.getElementById("messageOnlinePanel");
+    const messageOnlineQuick = document.getElementById("messageOnlineQuick");
+    const messageReplyForm = document.getElementById("messageReplyForm");
+    const messageReplyInput = document.getElementById("messageReplyInput");
     const activityDetailHero = document.getElementById("activityDetailHero");
     const activityStatus = document.getElementById("activityStatus");
     const activityEntryBarDesc = document.getElementById("activityEntryBarDesc");
@@ -6471,7 +7487,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       messageList.innerHTML = messageNotifications
         .map((item) => `
           <button class="message-list-item" type="button" data-open-message="${item.id}">
-            <div class="message-list-item__avatar">${item.avatarText || item.sender.slice(0, 1)}</div>
+            <div class="message-list-item__avatar">${item.avatarImage ? `<img src="${item.avatarImage}" alt="${item.sender}头像">` : (item.avatarText || item.sender.slice(0, 1))}</div>
             <div class="message-list-item__main">
               <div class="message-list-item__head">
                 <strong class="message-list-item__sender">${item.sender}</strong>
@@ -6500,7 +7516,11 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         messageDetailTopbarTitle.textContent = messageItem.sender;
       }
       if (messageDetailAvatar) {
-        messageDetailAvatar.textContent = messageItem.avatarText || messageItem.sender.slice(0, 1);
+        if (messageItem.avatarImage) {
+          messageDetailAvatar.innerHTML = `<img src="${messageItem.avatarImage}" alt="${messageItem.sender}头像">`;
+        } else {
+          messageDetailAvatar.textContent = messageItem.avatarText || messageItem.sender.slice(0, 1);
+        }
       }
       if (messageDetailSender) {
         messageDetailSender.textContent = messageItem.sender;
@@ -6518,6 +7538,17 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         messageDetailCardCoverImage.src = messageItem.activityCover || "./assets/activity-detail-hero-shanghai.svg";
         messageDetailCardCoverImage.alt = `${messageItem.activityCity || ""}活动详情封面`;
       }
+      if (messageDetailConversation) {
+        messageDetailConversation.innerHTML = (messageItem.dialog || [])
+          .map((entry) => renderMessageReply(entry.role, entry.text))
+          .join("");
+      }
+      if (messageOnlinePanel) {
+        messageOnlinePanel.hidden = messageItem.kind !== "chat";
+      }
+      if (messageReplyInput) {
+        messageReplyInput.value = "";
+      }
     }
 
     function openMessageListScreen() {
@@ -6534,7 +7565,54 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       if (!currentMessageNotification) {
         return;
       }
+      if (!currentMessageNotification.activityCity || !currentMessageNotification.activityTitle) {
+        return;
+      }
       openActivityByCityAndTitle(currentMessageNotification.activityCity, currentMessageNotification.activityTitle);
+    }
+
+    function renderMessageReply(role, text) {
+      const className = role === "user" ? "message-thread__reply is-user" : "message-thread__reply";
+      return `<div class="${className}"><span>${formatPlainTextHtml(text)}</span></div>`;
+    }
+
+    function getOnlineReply(text) {
+      if (text.includes("微信")) {
+        return "可以添加置业顾问李晓雨微信：AJCD-LXY2026。添加时备注“安家成都-招商时代花园”，我会同步发送项目资料。";
+      }
+      if (text.includes("对应房源") || text.includes("房源")) {
+        return "已为你定位招商·时代花园 123㎡ 三房房源，可咨询中高楼层、剩余套数、总价区间和在线选房流程。";
+      }
+      if (text.includes("一房一价") || text.includes("选房") || text.includes("价格")) {
+        return "已为你匹配招商·时代花园一房一价入口，可在楼盘详情底部点击“在线选房”查看可售房源并进入签约确认。";
+      }
+      if (text.includes("资格") || text.includes("政策")) {
+        return "购房资格会结合户籍、社保、家庭住房套数判断。你可以补充所在城市、社保情况和意向区域，我再帮你做初筛。";
+      }
+      if (text.includes("顾问") || text.includes("联系")) {
+        return "已通知置业顾问接入，会优先通过在线消息回复，也可在楼盘详情页点击“联系置业顾问”。";
+      }
+      if (text.includes("看房") || text.includes("直播")) {
+        return "可以预约线上看房。首页“大V直播”里有直播场次，也可以在这里留下意向时间。";
+      }
+      return "收到，我会把问题同步给在线顾问。你也可以继续补充预算、区县和户型偏好。";
+    }
+
+    function appendOnlineMessage(role, text) {
+      if (!messageDetailConversation || !text) {
+        return;
+      }
+      messageDetailConversation.insertAdjacentHTML("beforeend", renderMessageReply(role, text));
+      messageDetailConversation.scrollIntoView({ block: "end", behavior: "smooth" });
+    }
+
+    function sendOnlineMessage(text) {
+      const question = String(text || "").trim();
+      if (!question) {
+        return;
+      }
+      appendOnlineMessage("user", question);
+      appendOnlineMessage("bot", getOnlineReply(question));
     }
 
     function addChatMessage(role, content) {
@@ -6772,14 +7850,43 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       chatInput.placeholder = defaultChatPlaceholder;
     }
 
+    function getAiProjectListReply() {
+      const cards = estateTemplates.map((estate) => `
+        <div class="chat-project-card">
+          <strong>${estate.title}</strong>
+          <span>${formatEstateMeta(estate.meta)} · 总价 ${estate.price}万起</span>
+          <span>${estate.keyword}</span>
+          <a href="./project-detail.html">查看楼盘</a>
+        </div>
+      `).join("");
+
+      return `
+        <strong>安安ai为你筛选了现有楼盘列表</strong><br>
+        你提到青羊区和 400 万预算，当前原型先从页面已有楼盘库里给你展示可选项目，点击可进入楼盘详情：
+        <div class="chat-project-list">${cards}</div>
+      `;
+    }
+
     function getBotReply(question) {
       const text = question.trim();
       if (!text) {
         return "可以直接问我成都购房资格、公积金、税费或异地看房流程。";
       }
 
+      if (text.includes("青羊区") && (text.includes("400万") || text.includes("400 万") || text.includes("400w") || text.includes("400W") || text.includes("四百万"))) {
+        return getAiProjectListReply();
+      }
+
       if (activeChatFlow && activeChatFlow.type === "talent-check") {
         return "为了判断你是否符合成都人才，请先按下方资料选项完成初筛。";
+      }
+
+      if (text.includes("区县政策")) {
+        return "区县政策：你可以告诉我目标区县，例如“青羊区”“锦江区”“成华区”，我会按购房资格、人才政策、补贴口径和当前供应情况给你做静态示例解读。";
+      }
+
+      if (text.includes("购房流程")) {
+        return "购房流程：先确认购房资格和预算，再筛选楼盘、预约看房；认购前查看预售证、一房一价和不利因素；选定房源后进入签约、定金监管、贷款办理和网签备案。";
       }
 
       if (text.includes("人才政策")) {
@@ -6806,6 +7913,22 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         return "原型示例回答：专题页会将契税、维修基金、按揭服务费等常见费用拆开展示，让外地客户能先估算总预算，具体仍以签约时政策为准。";
       }
 
+      if (text.includes("网签") || text.includes("热度")) {
+        return "安安AI分析：当前首页网签统计里刚需占 46%、改善占 38%、高端占 16%。如果你关注确定性，优先看取证节奏清晰、剩余房源充足的项目；如果关注升值和舒适度，可对比改善盘的总价、面积段和区县成交热度。";
+      }
+
+      if (text.includes("即将开售") || text.includes("开售")) {
+        return "安安AI分析：即将开售专区里，招商·时代花园二批次更适合关注主城通勤和总价控制的客户；天府公园未来城更适合关注新区成长空间和改善面积段的客户。";
+      }
+
+      if (text.includes("分析") || text.includes("推荐")) {
+        return "安安AI分析：我会先看你的预算、区县偏好、面积段和入住时间，再结合网签热度、取证记录、剩余套数与开售节奏给出 2-3 个优先楼盘。";
+      }
+
+      if (text.includes("在线选房") || text.includes("签约")) {
+        return "在线选房流程：先进入楼盘详情，点击底部“在线选房”，查看一房一价列表；选定房源后进入全屏签约确认，阅读认购协议并确认支付定金后锁定房源。";
+      }
+
       if (text.includes("装修")) {
         return "原型示例回答：装修专区可按区域、预算和交付时间筛选公司，并支持顾问代为安排量房、远程监工和验收节点提醒。";
       }
@@ -6830,6 +7953,20 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       resetChatQuickQuestions();
     }
 
+    function openHomeAiAnalysis() {
+      activeChatFlow = null;
+      suspendedTalentAssessment = null;
+      chatMessages.innerHTML = "";
+      openChatDrawer("", {
+        placeholder: "例如：我想要青羊区楼盘，400万预算"
+      });
+      addChatMessage("bot", "<strong>安安ai</strong><br>我可以按区县政策、购房流程、预算和楼盘偏好帮你做静态分析。");
+      renderQuickQuestions([
+        { type: "question", label: "区县政策", value: "区县政策" },
+        { type: "question", label: "购房流程", value: "购房流程" }
+      ], true);
+    }
+
     function applyInitialRoute() {
       const params = new URLSearchParams(window.location.search);
       const screen = params.get("screen");
@@ -6838,9 +7975,30 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       const itemIndex = Number(params.get("item"));
       const districtName = params.get("districtName");
       const chatMode = params.get("chat");
+      const chatQuestion = params.get("question");
+
+      if (!screen && !chatMode) {
+        window.location.replace("./安家成都-首页-扫码.html");
+        return;
+      }
+
+      if (chatMode === "home-ai") {
+        openHomeAiAnalysis();
+        if (chatQuestion) {
+          addChatMessage("user", chatQuestion);
+          addChatMessage("bot", getBotReply(chatQuestion));
+          chatInput.value = "";
+        }
+        return;
+      }
 
       if (screen === "message") {
         openMessageListScreen();
+        return;
+      }
+
+      if (screen === "live") {
+        showScreen("live");
         return;
       }
 
@@ -6881,24 +8039,70 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
     }
 
     document.getElementById("backPreviousButton").addEventListener("click", () => goBackOrFallback());
+    function goMainHome() {
+      window.location.href = "./安家成都-首页-扫码.html";
+    }
+    if (homeLiveButton) {
+      homeLiveButton.addEventListener("click", () => {
+        showScreen("live");
+      });
+    }
+    if (backLiveButton) {
+      backLiveButton.addEventListener("click", () => {
+        goMainHome();
+      });
+    }
+    if (liveHomeShortcutButton) {
+      liveHomeShortcutButton.addEventListener("click", () => {
+        goMainHome();
+      });
+    }
+    document.querySelectorAll("[data-live-tab]").forEach((tabButton) => {
+      tabButton.addEventListener("click", () => {
+        const target = tabButton.getAttribute("data-live-tab");
+        document.querySelectorAll("[data-live-tab]").forEach((button) => {
+          button.classList.toggle("is-active", button === tabButton);
+        });
+        document.querySelectorAll("[data-live-panel]").forEach((panel) => {
+          panel.hidden = panel.getAttribute("data-live-panel") !== target;
+        });
+      });
+    });
+    if (homeAiButton) {
+      homeAiButton.addEventListener("click", openHomeAiAnalysis);
+    }
+    if (homeMessageButton) {
+      homeMessageButton.addEventListener("click", openMessageListScreen);
+    }
+    if (quickStatsButton && homeSignStats) {
+      quickStatsButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        homeSignStats.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
     if (backMessageButton) {
       backMessageButton.addEventListener("click", () => {
-        goBackOrFallback(() => showScreen("home"));
+        goBackOrFallback(goMainHome);
       });
     }
     if (messageHomeShortcutButton) {
       messageHomeShortcutButton.addEventListener("click", () => {
-        showScreen("home");
+        goMainHome();
       });
     }
     if (messageTabHome) {
       messageTabHome.addEventListener("click", () => {
-        showScreen("home");
+        goMainHome();
       });
     }
     if (messageTabMessages) {
       messageTabMessages.addEventListener("click", () => {
         openMessageListScreen();
+      });
+    }
+    if (messageTabBrand) {
+      messageTabBrand.addEventListener("click", () => {
+        openHomeAiAnalysis();
       });
     }
     if (messageList) {
@@ -6917,12 +8121,31 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
     }
     if (messageDetailHomeShortcutButton) {
       messageDetailHomeShortcutButton.addEventListener("click", () => {
-        showScreen("home");
+        goMainHome();
       });
     }
     if (openShanghaiActivityFromMessageDetail) {
       openShanghaiActivityFromMessageDetail.addEventListener("click", () => {
         openCurrentMessageTarget();
+      });
+    }
+    if (messageOnlineQuick) {
+      messageOnlineQuick.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-message-reply]");
+        if (!button) {
+          return;
+        }
+        sendOnlineMessage(button.dataset.messageReply || button.textContent.trim());
+      });
+    }
+    if (messageReplyForm) {
+      messageReplyForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const value = messageReplyInput ? messageReplyInput.value : "";
+        sendOnlineMessage(value);
+        if (messageReplyInput) {
+          messageReplyInput.value = "";
+        }
       });
     }
     if (activitySignupModalBackdrop) {
@@ -6945,11 +8168,11 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       });
     }
     document.getElementById("backHomeButton").addEventListener("click", () => {
-      showPreviousScreen("home");
+      goMainHome();
     });
     if (detailHomeShortcutButton) {
       detailHomeShortcutButton.addEventListener("click", () => {
-        showScreen("home");
+        goMainHome();
       });
     }
     if (backRegistrationButton) {
@@ -6959,7 +8182,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
     }
     if (registrationHomeShortcutButton) {
       registrationHomeShortcutButton.addEventListener("click", () => {
-        showScreen("home");
+        goMainHome();
       });
     }
     if (openRegistrationButton) {
@@ -7286,7 +8509,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
     renderDecorDirectory();
     renderActivityDetail(0, 0);
     renderQuickQuestions();
-    addChatMessage("bot", "你好，我是政策机器人。你可以先问我购房资格、公积金、税费，也可以在人才专场里让我帮你做成都人才初筛。");
+    addChatMessage("bot", "你好，我是安安ai。你可以先问区县政策、购房流程，也可以告诉我预算和目标区县，我会给出静态楼盘推荐。");
     applyInitialRoute();
   </script>
 </body>

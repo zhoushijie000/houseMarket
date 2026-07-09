@@ -1,0 +1,2024 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>招商时代花园一期 - 楼盘详情</title>
+  <style>
+    :root {
+      --brand: #fd5d00;
+      --brand-2: #ff8f2e;
+      --danger: #ff2828;
+      --success: #67cc35;
+      --blue: #317eff;
+      --text: #303133;
+      --text-2: #606266;
+      --muted: #909399;
+      --line: #e4e7ed;
+      --bg: #f3f5f6;
+      --surface: #ffffff;
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+    }
+
+    button,
+    a {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      background: none;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    [hidden] { display: none !important; }
+
+    .page {
+      width: 100vw;
+      max-width: 375px;
+      min-height: 100vh;
+      padding-bottom: calc(78px + var(--safe-bottom));
+      overflow-x: hidden;
+      background: var(--bg);
+    }
+
+    .statusbar {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      height: 30px;
+      padding: 0 21px 5px;
+      color: #000;
+      background: #fff;
+      font-size: 13px;
+      line-height: 1;
+    }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .signal {
+      display: grid;
+      grid-template-columns: repeat(4, 3px);
+      align-items: end;
+      gap: 2px;
+      height: 12px;
+    }
+
+    .signal i {
+      width: 3px;
+      border-radius: 2px;
+      background: #000;
+    }
+
+    .signal i:nth-of-type(1) { height: 4px; }
+    .signal i:nth-of-type(2) { height: 6px; }
+    .signal i:nth-of-type(3) { height: 9px; }
+    .signal i:nth-of-type(4) { height: 12px; }
+
+    .battery {
+      position: relative;
+      width: 21px;
+      height: 11px;
+      border: 1.4px solid #000;
+      border-radius: 3px;
+    }
+
+    .battery::before {
+      content: "";
+      position: absolute;
+      right: -3px;
+      top: 3px;
+      width: 2px;
+      height: 5px;
+      border-radius: 2px;
+      background: #000;
+    }
+
+    .battery::after {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      border-radius: 2px;
+      background: #000;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: grid;
+      grid-template-columns: 92px 1fr 92px;
+      align-items: center;
+      height: 58px;
+      padding: 0 6px;
+      background: #fff;
+    }
+
+    .topbar h1 {
+      margin: 0;
+      text-align: center;
+      color: #000;
+      font-size: 17px;
+      font-weight: 500;
+    }
+
+    .nav-capsule {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 32px;
+      overflow: hidden;
+      border: 1px solid rgba(151, 151, 151, 0.2);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      color: #000;
+    }
+
+    .nav-capsule--right {
+      justify-self: end;
+    }
+
+    .nav-capsule span,
+    .nav-capsule a {
+      display: grid;
+      place-items: center;
+      width: 43px;
+      height: 32px;
+    }
+
+    .nav-capsule svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .nav-capsule span + span,
+    .nav-capsule a + a {
+      border-left: 1px solid rgba(0, 0, 0, 0.15);
+    }
+
+    .hero {
+      position: relative;
+      height: 251px;
+      overflow: hidden;
+      background: #d8d8d8;
+    }
+
+    .hero img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .vr-bubble {
+      position: absolute;
+      left: 50%;
+      top: 45%;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-width: 128px;
+      height: 42px;
+      padding: 0 14px;
+      border: 1px solid rgba(255, 255, 255, 0.48);
+      border-radius: 999px;
+      color: #fff;
+      background: linear-gradient(135deg, rgba(253, 93, 0, 0.96), rgba(255, 132, 49, 0.9));
+      font-size: 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.24);
+      transform: translate(-50%, -50%);
+    }
+
+    .vr-bubble::before {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.24);
+      color: #fff;
+      font-size: 11px;
+      line-height: 22px;
+      text-align: center;
+      content: "▶";
+    }
+
+    .album-tabs {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 16px;
+      z-index: 3;
+      display: flex;
+      justify-content: flex-start;
+      gap: 10px;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.42);
+      border-radius: 6px;
+      padding: 0 8px 0 0;
+    }
+
+    .album-tab {
+      height: 30px;
+      padding: 0 8px;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .album-tab.is-active {
+      background: var(--brand);
+    }
+
+    .summary {
+      position: relative;
+      z-index: 4;
+      margin-top: -1px;
+      padding: 17px 16px 16px;
+      border-radius: 18px 18px 0 0;
+      background: #fff;
+    }
+
+    .summary-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .summary h2 {
+      margin: 0;
+      color: var(--text);
+      font-size: 20px;
+      line-height: 1.25;
+      font-weight: 500;
+    }
+
+    .follow {
+      display: grid;
+      justify-items: center;
+      gap: 2px;
+      color: var(--text);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .follow svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: #303133;
+      stroke-width: 1.8;
+    }
+
+    .location-row,
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 7px;
+      margin-top: 9px;
+    }
+
+    .location-row {
+      color: var(--text-2);
+      font-size: 13px;
+    }
+
+    .pin-icon {
+      width: 16px;
+      height: 16px;
+      color: var(--brand-2);
+    }
+
+    .pill {
+      min-height: 20px;
+      padding: 0 9px;
+      border: 1px solid rgba(253, 93, 0, 0.25);
+      border-radius: 999px;
+      color: var(--brand);
+      background: #fff;
+      font-size: 11px;
+      line-height: 20px;
+    }
+
+    .tag {
+      min-height: 18px;
+      padding: 0 6px;
+      border-radius: 2px;
+      color: var(--muted);
+      background: #f2f3f5;
+      font-size: 10px;
+      line-height: 18px;
+    }
+
+    .tag--green {
+      color: #fff;
+      background: var(--success);
+    }
+
+    .price {
+      margin-top: 14px;
+      color: var(--danger);
+      font-size: 22px;
+      line-height: 1;
+      font-weight: 500;
+    }
+
+    .price small {
+      margin-left: 7px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 400;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0;
+      margin-top: 10px;
+      padding: 18px 10px;
+      background: #fff;
+    }
+
+    .quick-entry {
+      display: grid;
+      justify-items: center;
+      gap: 8px;
+      color: #303133;
+      font-size: 12px;
+    }
+
+    .quick-icon {
+      width: 31px;
+      height: 31px;
+      display: block;
+    }
+
+    .section {
+      position: relative;
+      margin-top: 8px;
+      padding: 17px 16px 18px;
+      background: #fff;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1;
+      font-weight: 500;
+    }
+
+    .section-title::before {
+      content: "";
+      width: 4px;
+      height: 18px;
+      border-radius: 999px;
+      background: var(--brand);
+    }
+
+    .more {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .info-list {
+      display: grid;
+      gap: 17px;
+    }
+
+    .info-row {
+      display: grid;
+      grid-template-columns: 104px 1fr;
+      align-items: start;
+      min-height: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.3;
+    }
+
+    .info-row strong {
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    .info-row .red {
+      color: var(--danger);
+    }
+
+    .address-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 18px;
+      min-height: 34px;
+      padding: 0 12px;
+      border-radius: 4px;
+      color: var(--brand);
+      background: #fff2e9;
+      font-size: 12px;
+    }
+
+    .expand-link {
+      display: block;
+      margin-top: 17px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .sales-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0;
+      overflow: hidden;
+      border: 1px solid #ffe4d6;
+      border-radius: 5px;
+      background: #fff8f4;
+    }
+
+    .sales-grid div {
+      display: grid;
+      justify-items: center;
+      gap: 5px;
+      min-height: 54px;
+      padding: 10px 4px;
+      border-right: 1px solid #ffe4d6;
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .sales-grid div:last-child {
+      border-right: 0;
+    }
+
+    .sales-grid strong {
+      color: var(--brand);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .donut-row {
+      display: grid;
+      grid-template-columns: 104px 1fr;
+      align-items: center;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .donut {
+      display: grid;
+      place-items: center;
+      width: 92px;
+      height: 92px;
+      border-radius: 50%;
+      background: conic-gradient(#67cc35 0 56.7%, #317eff 56.7% 100%);
+    }
+
+    .donut span {
+      display: grid;
+      place-items: center;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      color: #303133;
+      background: #fff;
+      font-size: 11px;
+      line-height: 1.2;
+      text-align: center;
+    }
+
+    .legend {
+      display: grid;
+      gap: 14px;
+      color: var(--text-2);
+      font-size: 12px;
+    }
+
+    .legend i {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      margin-right: 8px;
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    .legend .sold i {
+      background: var(--success);
+    }
+
+    .permit-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .permit-card {
+      display: grid;
+      gap: 10px;
+      padding: 13px 12px;
+      border: 1px solid #ffe2d2;
+      border-radius: 8px;
+      background: #fffaf6;
+    }
+
+    .permit-card__top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .permit-card__top strong {
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .permit-card__status {
+      flex: 0 0 auto;
+      min-height: 22px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: var(--brand);
+      color: #fff;
+      font-size: 11px;
+      line-height: 22px;
+      font-weight: 600;
+    }
+
+    .permit-card__grid {
+      display: grid;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .permit-card__grid span {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr);
+      gap: 8px;
+    }
+
+    .permit-card__grid b {
+      color: var(--text);
+      font-weight: 500;
+      word-break: break-all;
+    }
+
+    .layout-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      margin: -2px -16px 14px;
+      padding: 0 16px;
+      scrollbar-width: none;
+    }
+
+    .layout-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .layout-tab {
+      flex: 0 0 auto;
+      min-width: 62px;
+      height: 26px;
+      border-radius: 3px;
+      color: #606266;
+      background: #f2f3f5;
+      font-size: 12px;
+    }
+
+    .layout-tab.is-active {
+      color: var(--brand);
+      background: #fff2e9;
+    }
+
+    .layout-scroll {
+      display: flex;
+      gap: 13px;
+      margin: 0 -16px;
+      padding: 0 16px 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .layout-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .layout-card {
+      flex: 0 0 168px;
+    }
+
+    .layout-img {
+      height: 126px;
+      border-radius: 3px;
+      overflow: hidden;
+      border: 1px solid #dfe6ee;
+      background: #fff;
+    }
+
+    .layout-img img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .layout-card strong {
+      display: block;
+      margin-top: 8px;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .layout-card span {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .eval-list,
+    .review-list {
+      display: grid;
+      gap: 9px;
+      margin-top: 14px;
+    }
+
+    .eval-card,
+    .review-row,
+    .sun-card {
+      padding: 12px;
+      border-radius: 5px;
+      background: #f8f9fb;
+    }
+
+    .eval-head,
+    .review-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .eval-head b,
+    .review-row b {
+      color: var(--danger);
+      font-size: 16px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .score-box {
+      display: grid;
+      justify-items: end;
+      gap: 3px;
+      flex: 0 0 auto;
+    }
+
+    .score-box em {
+      padding: 2px 6px;
+      border-radius: 3px;
+      color: var(--brand);
+      background: #fff2e9;
+      font-size: 10px;
+      font-style: normal;
+      line-height: 1.4;
+      white-space: nowrap;
+    }
+
+    .eval-card p,
+    .review-row p,
+    .sun-card p,
+    .support-card p,
+    .intro-text,
+    .notice-text {
+      margin: 6px 0 0;
+      color: var(--text-2);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .review-score-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .review-score-card {
+      min-height: 74px;
+      padding: 10px 8px;
+      border-radius: 5px;
+      text-align: center;
+      background: #f8f9fb;
+    }
+
+    .review-score-card strong {
+      display: block;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    .review-score-card b {
+      display: block;
+      margin-top: 7px;
+      color: var(--danger);
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 500;
+    }
+
+    .review-score-card em {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 2px 5px;
+      border-radius: 3px;
+      color: var(--brand);
+      background: #fff2e9;
+      font-size: 10px;
+      font-style: normal;
+      line-height: 1.3;
+      white-space: nowrap;
+    }
+
+    .review-report-list {
+      display: grid;
+      gap: 9px;
+      margin-top: 12px;
+    }
+
+    .review-report-card {
+      display: grid;
+      gap: 6px;
+      padding: 12px;
+      border-radius: 5px;
+      color: inherit;
+      background: #f8f9fb;
+    }
+
+    .review-report-card strong {
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .review-report-card p {
+      margin: 0;
+      color: var(--text-2);
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .review-report-card span {
+      color: var(--brand);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .room-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .room-preview {
+      position: relative;
+      min-height: 104px;
+      padding: 12px;
+      border: 1px solid #ffe2d2;
+      border-radius: 5px;
+      background: #fff8f4;
+    }
+
+    .room-preview em {
+      position: absolute;
+      right: 0;
+      top: 0;
+      min-width: 42px;
+      height: 22px;
+      border-radius: 0 5px 0 5px;
+      color: #fff;
+      background: var(--blue);
+      font-size: 10px;
+      font-style: normal;
+      text-align: center;
+      line-height: 22px;
+    }
+
+    .room-preview:nth-child(2) em {
+      background: var(--brand);
+    }
+
+    .room-preview strong {
+      display: block;
+      color: var(--danger);
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .room-preview b {
+      display: block;
+      margin-top: 12px;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .room-preview span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+      padding: 12px 12px 12px 17px;
+      border-radius: 5px;
+      background: #f8f9fb;
+    }
+
+    .timeline-item {
+      position: relative;
+      color: var(--text-2);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -10px;
+      top: 5px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--brand);
+    }
+
+    .timeline-item + .timeline-item::after {
+      content: "";
+      position: absolute;
+      left: -8px;
+      top: -16px;
+      width: 1px;
+      height: 18px;
+      background: #ffd1bd;
+    }
+
+    .support-map {
+      height: 152px;
+      overflow: hidden;
+      border-radius: 4px;
+      background:
+        radial-gradient(circle at 52% 50%, var(--brand) 0 7px, transparent 8px),
+        linear-gradient(22deg, transparent 0 42%, #9ce2c8 42% 47%, transparent 47%),
+        linear-gradient(140deg, transparent 0 36%, #9ce2c8 36% 41%, transparent 41%),
+        linear-gradient(90deg, #dff6f1, #f7fbff);
+    }
+
+    .support-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 10px;
+      border-bottom: 1px solid #f0f2f5;
+    }
+
+    .support-tab {
+      height: 40px;
+      color: var(--text-2);
+      font-size: 12px;
+      border-bottom: 2px solid transparent;
+    }
+
+    .support-tab.is-active {
+      color: var(--brand);
+      border-bottom-color: var(--brand);
+    }
+
+    .support-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .support-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 12px;
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    .support-title {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .support-title strong {
+      font-weight: 500;
+    }
+
+    .support-type {
+      padding: 2px 6px;
+      border-radius: 3px;
+      color: var(--brand);
+      background: #fff2e9;
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .support-card span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .sand-card {
+      overflow: hidden;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 10px 22px rgba(73, 85, 110, 0.12);
+    }
+
+    .sand-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 0 12px;
+    }
+
+    .sand-head h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .sand-badge {
+      margin-left: 6px;
+      padding: 2px 6px;
+      border-radius: 6px;
+      color: #fff;
+      background: #ff705f;
+      font-size: 11px;
+    }
+
+    .sand-stage {
+      position: relative;
+      min-height: 220px;
+      padding: 12px;
+      color: #fff;
+      background:
+        linear-gradient(180deg, rgba(18, 27, 40, 0.08), rgba(18, 27, 40, 0.64)),
+        url("assets/楼盘实景-楼栋外立面.png") center / cover no-repeat;
+    }
+
+    .sun-model-badge,
+    .sun-time,
+    .sun-labels span,
+    .sun-light-text {
+      position: relative;
+      z-index: 3;
+    }
+
+    .sun-model-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.88);
+      color: #2b3a4a;
+      font-size: 11px;
+      font-weight: 500;
+      box-shadow: 0 5px 14px rgba(17, 24, 39, 0.16);
+    }
+
+    .sun-orbit {
+      position: absolute;
+      left: 24px;
+      right: 28px;
+      top: 42px;
+      height: 108px;
+      z-index: 2;
+      border-top: 2px dashed rgba(255, 216, 120, 0.9);
+      border-radius: 50% 50% 0 0;
+      transform: rotate(-7deg);
+    }
+
+    .sun-time {
+      position: absolute;
+      right: 18px;
+      top: 28px;
+      display: grid;
+      place-items: center;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      color: #8f3a00;
+      background: radial-gradient(circle, #fff6bf 0 38%, #ffb33d 39% 70%, rgba(255, 163, 30, 0.22) 71%);
+      font-size: 12px;
+      font-weight: 700;
+      box-shadow: 0 0 26px rgba(255, 178, 55, 0.58);
+    }
+
+    .sun-ray {
+      position: absolute;
+      right: 50px;
+      top: 80px;
+      z-index: 1;
+      width: 190px;
+      height: 54px;
+      background: linear-gradient(90deg, rgba(255, 217, 106, 0), rgba(255, 210, 86, 0.34));
+      filter: blur(1px);
+      transform-origin: right center;
+      clip-path: polygon(0 20%, 100% 0, 100% 100%, 0 80%);
+    }
+
+    .sun-ray--two {
+      top: 105px;
+      width: 210px;
+      opacity: 0.82;
+      transform: rotate(9deg);
+    }
+
+    .sun-ray--three {
+      top: 132px;
+      width: 174px;
+      opacity: 0.68;
+      transform: rotate(18deg);
+    }
+
+    .sun-labels {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+      z-index: 3;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .sun-labels span {
+      padding: 4px 6px;
+      border-radius: 5px;
+      background: rgba(16, 31, 52, 0.72);
+      color: #fff;
+      font-size: 10px;
+      white-space: nowrap;
+      backdrop-filter: blur(4px);
+    }
+
+    .sun-light-shot {
+      position: relative;
+      min-height: 126px;
+      margin: 10px;
+      border-radius: 7px;
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, rgba(255, 242, 202, 0.74), rgba(255, 255, 255, 0.08) 48%, rgba(23, 31, 44, 0.45)),
+        url("assets/楼盘实景-客厅样板间.png") center / cover no-repeat;
+    }
+
+    .sun-light-shot::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(112deg, rgba(255, 217, 106, 0.56) 0 18%, transparent 18% 24%, rgba(255, 230, 155, 0.34) 24% 38%, transparent 39%),
+        linear-gradient(0deg, rgba(20, 27, 38, 0.18), rgba(20, 27, 38, 0));
+      mix-blend-mode: screen;
+    }
+
+    .sun-light-text {
+      position: absolute;
+      left: 12px;
+      bottom: 12px;
+      display: grid;
+      gap: 4px;
+      padding: 8px 10px;
+      border-radius: 7px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #2b3a4a;
+      box-shadow: 0 8px 18px rgba(27, 39, 56, 0.14);
+    }
+
+    .sun-light-text span {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .sun-light-text strong {
+      color: var(--brand);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .sun-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .sand-card + .sun-grid {
+      margin-top: 12px;
+    }
+
+    .sun-card:first-child {
+      grid-column: 1 / -1;
+      background: #fff8f4;
+    }
+
+    .sun-card span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .sun-card strong {
+      display: block;
+      margin-top: 4px;
+      color: var(--brand);
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 500;
+    }
+
+    .bottom-bar {
+      position: fixed;
+      left: 50%;
+      bottom: 0;
+      z-index: 40;
+      width: 100vw;
+      max-width: 375px;
+      padding: 12px 16px calc(18px + var(--safe-bottom));
+      background: #fff;
+      transform: translateX(-50%);
+    }
+
+    .bottom-bar__inner {
+      display: grid;
+      grid-template-columns: 82px 1fr 1fr;
+      gap: 8px;
+    }
+
+    .bottom-btn {
+      display: grid;
+      place-items: center;
+      min-height: 48px;
+      border-radius: 5px;
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .bottom-btn--light {
+      color: var(--brand);
+      background: #fff2e9;
+    }
+
+    .bottom-btn--primary {
+      color: #fff;
+      background: var(--brand);
+    }
+
+    .bottom-btn--advisor {
+      color: #fff;
+      background: var(--success);
+    }
+
+    .qr-sheet {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      display: grid;
+      place-items: end center;
+      background: rgba(12, 20, 32, 0.42);
+    }
+
+    .qr-panel {
+      position: relative;
+      width: 100vw;
+      max-width: 375px;
+      padding: 24px 20px calc(24px + var(--safe-bottom));
+      border-radius: 18px 18px 0 0;
+      text-align: center;
+      background: #fff;
+      box-shadow: 0 -12px 32px rgba(14, 25, 42, 0.16);
+    }
+
+    .qr-panel h2 {
+      margin: 0;
+      color: var(--text);
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .qr-panel p {
+      margin: 8px 0 16px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .qr-close {
+      position: absolute;
+      right: 14px;
+      top: 12px;
+    }
+
+    .project-qr {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      grid-template-rows: repeat(9, 1fr);
+      gap: 3px;
+      width: 156px;
+      height: 156px;
+      margin: 0 auto;
+      padding: 11px;
+      border: 8px solid #fff;
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(17, 24, 39, 0.12), inset 0 0 0 1px #e5e9ef;
+    }
+
+    .project-qr i {
+      border-radius: 2px;
+      background: #111827;
+    }
+
+    .project-qr i:nth-of-type(1),
+    .project-qr i:nth-of-type(2),
+    .project-qr i:nth-of-type(3),
+    .project-qr i:nth-of-type(7),
+    .project-qr i:nth-of-type(8),
+    .project-qr i:nth-of-type(9),
+    .project-qr i:nth-of-type(10),
+    .project-qr i:nth-of-type(12),
+    .project-qr i:nth-of-type(14),
+    .project-qr i:nth-of-type(16),
+    .project-qr i:nth-of-type(18),
+    .project-qr i:nth-of-type(19),
+    .project-qr i:nth-of-type(20),
+    .project-qr i:nth-of-type(21),
+    .project-qr i:nth-of-type(25),
+    .project-qr i:nth-of-type(29),
+    .project-qr i:nth-of-type(31),
+    .project-qr i:nth-of-type(33),
+    .project-qr i:nth-of-type(35),
+    .project-qr i:nth-of-type(38),
+    .project-qr i:nth-of-type(40),
+    .project-qr i:nth-of-type(42),
+    .project-qr i:nth-of-type(44),
+    .project-qr i:nth-of-type(47),
+    .project-qr i:nth-of-type(49),
+    .project-qr i:nth-of-type(51),
+    .project-qr i:nth-of-type(55),
+    .project-qr i:nth-of-type(58),
+    .project-qr i:nth-of-type(60),
+    .project-qr i:nth-of-type(62),
+    .project-qr i:nth-of-type(64),
+    .project-qr i:nth-of-type(66),
+    .project-qr i:nth-of-type(67),
+    .project-qr i:nth-of-type(69),
+    .project-qr i:nth-of-type(71),
+    .project-qr i:nth-of-type(73),
+    .project-qr i:nth-of-type(75),
+    .project-qr i:nth-of-type(77),
+    .project-qr i:nth-of-type(79),
+    .project-qr i:nth-of-type(81) {
+      background: #fff;
+    }
+
+    .project-qr::before,
+    .project-qr::after,
+    .qr-eye {
+      position: absolute;
+      width: 36px;
+      height: 36px;
+      border: 7px solid #111827;
+      border-radius: 4px;
+      background: #fff;
+      box-shadow: inset 0 0 0 6px #fff, inset 0 0 0 13px #111827;
+      content: "";
+    }
+
+    .project-qr::before {
+      left: 13px;
+      top: 13px;
+    }
+
+    .project-qr::after {
+      right: 13px;
+      top: 13px;
+    }
+
+    .qr-eye {
+      left: 13px;
+      bottom: 13px;
+    }
+
+    .qr-action {
+      width: 156px;
+      min-height: 42px;
+      margin-top: 18px;
+      border-radius: 5px;
+      font-weight: 500;
+    }
+
+    .room-sheet {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      width: 100vw;
+      max-width: 375px;
+      margin: 0 auto;
+      background: #fff;
+    }
+
+    .room-sheet__top {
+      display: grid;
+      grid-template-columns: 42px 1fr 42px;
+      align-items: center;
+      min-height: 58px;
+      padding: 0 12px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .room-sheet__top h2 {
+      margin: 0;
+      text-align: center;
+      font-size: 17px;
+      font-weight: 500;
+    }
+
+    .close-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #f4f6f8;
+      font-size: 20px;
+    }
+
+    .purchase-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 12px 16px;
+      padding: 4px;
+      border-radius: 16px;
+      background: #f4f6f8;
+    }
+
+    .purchase-step {
+      display: grid;
+      place-items: center;
+      height: 34px;
+      border-radius: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .purchase-step.is-active {
+      color: var(--brand);
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(17, 24, 39, 0.06);
+    }
+
+    .room-content {
+      overflow-y: auto;
+      padding: 0 16px 12px;
+    }
+
+    .sheet-room-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .sheet-room-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      text-align: left;
+      background: #fff;
+    }
+
+    .sheet-room-card.is-selected {
+      border-color: var(--brand);
+      background: #fff8f2;
+    }
+
+    .sheet-room-card strong {
+      display: block;
+      font-size: 15px;
+    }
+
+    .sheet-room-card span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .sheet-room-card b {
+      color: var(--danger);
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .contract-panel {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border: 1px solid #ffe2d2;
+      border-radius: 14px;
+      background: #fff8f2;
+    }
+
+    .contract-panel p {
+      margin: 0;
+      color: var(--text-2);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .agree-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      color: var(--text-2);
+      font-size: 13px;
+    }
+
+    .sheet-actions {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 10px;
+      padding: 10px 16px calc(12px + var(--safe-bottom));
+      border-top: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .sheet-actions button {
+      min-height: 46px;
+      border-radius: 5px;
+      font-weight: 500;
+    }
+
+    .secondary-btn {
+      color: var(--brand);
+      background: #fff2e9;
+    }
+
+    .primary-btn {
+      color: #fff;
+      background: var(--brand);
+    }
+
+    .primary-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="statusbar">
+      <span>9:41</span>
+      <span class="status-icons"><span class="signal"><i></i><i></i><i></i><i></i></span><span>5G</span><span class="battery"></span></span>
+    </div>
+
+    <header class="topbar">
+      <span class="nav-capsule">
+        <a href="./安家成都-首页-扫码.html" aria-label="返回"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"></path></svg></a>
+        <a href="./安家成都-首页-扫码.html" aria-label="首页"><svg viewBox="0 0 24 24"><path d="m4 11 8-7 8 7v8a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1Z"></path></svg></a>
+      </span>
+      <h1>项目详情</h1>
+      <span class="nav-capsule nav-capsule--right">
+        <span>•••</span>
+        <span>◎</span>
+      </span>
+    </header>
+
+    <section class="hero" aria-label="楼盘相册">
+      <img id="heroImage" src="./assets/楼盘实景-社区楼景.png" alt="招商时代花园一期楼盘实景">
+      <button class="vr-bubble" type="button">VR实景看房</button>
+      <div class="album-tabs">
+        <button class="album-tab is-active" data-src="./assets/楼盘实景-社区楼景.png" type="button">VR</button>
+        <button class="album-tab" data-src="./assets/楼盘实景-楼栋外立面.png" type="button">总平图</button>
+        <button class="album-tab" data-src="./assets/楼盘实景-客厅样板间.png" type="button">户型图</button>
+        <button class="album-tab" data-src="./assets/楼盘实景-园林入口.png" type="button">区位图</button>
+        <button class="album-tab" data-src="./assets/楼盘实景-会所书吧.png" type="button">实景图</button>
+      </div>
+    </section>
+
+    <section class="summary">
+      <div class="summary-head">
+        <h2>招商时代花园一期</h2>
+        <button class="follow" type="button" aria-label="关注楼盘">
+          <svg viewBox="0 0 24 24"><path d="M20.5 8.8c0 5-8.5 10-8.5 10s-8.5-5-8.5-10A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 8.5 2.8Z"></path></svg>
+          <span>关注楼盘</span>
+        </button>
+      </div>
+      <div class="location-row">
+        <svg class="pin-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 22s7-6.2 7-13A7 7 0 0 0 5 9c0 6.8 7 13 7 13Zm0-10.2A2.8 2.8 0 1 1 12 6.2a2.8 2.8 0 0 1 0 5.6Z"></path></svg>
+        <span>成华区</span>
+        <span class="pill">楼盘 ›</span>
+        <span class="pill">售楼部 ›</span>
+      </div>
+      <div class="tag-row">
+        <span class="tag tag--green">在售</span>
+        <span class="tag">容积率2.3</span>
+        <span class="tag">小高层</span>
+        <span class="tag">精装修</span>
+      </div>
+      <div class="price">31000~32000元/㎡<small>参考均价</small></div>
+    </section>
+
+    <nav class="quick-grid" aria-label="楼盘快捷入口">
+      <a class="quick-entry" href="#layout">
+        <svg class="quick-icon" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="iconLayout" x1="4" y1="4" x2="28" y2="28"><stop stop-color="#64C5F8"/><stop offset="1" stop-color="#317EFF"/></linearGradient></defs><rect x="5" y="5" width="22" height="22" rx="6" fill="url(#iconLayout)"/><path d="M9 10h6v6H9zM17 10h6v12h-6zM9 18h6v4H9z" fill="#fff"/></svg>
+        <span>户型图</span>
+      </a>
+      <button class="quick-entry" id="openRoomButton" type="button">
+        <svg class="quick-icon" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="iconPrice" x1="5" y1="4" x2="27" y2="28"><stop stop-color="#FFD49E"/><stop offset="1" stop-color="#FF7017"/></linearGradient></defs><rect x="6" y="4" width="20" height="24" rx="6" fill="url(#iconPrice)"/><path d="M16 9v14M11 12h10M12 18h8" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+        <span>在线选房</span>
+      </button>
+      <a class="quick-entry" href="#basic">
+        <svg class="quick-icon" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="iconInfo" x1="5" y1="4" x2="27" y2="28"><stop stop-color="#88EF8C"/><stop offset="1" stop-color="#28C86B"/></linearGradient></defs><rect x="6" y="5" width="20" height="22" rx="5" fill="url(#iconInfo)"/><path d="M11 11h10M11 16h10M11 21h6" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+        <span>楼盘信息</span>
+      </a>
+      <a class="quick-entry" href="#support">
+        <svg class="quick-icon" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="iconMap" x1="5" y1="4" x2="27" y2="28"><stop stop-color="#64C5F8"/><stop offset="1" stop-color="#317EFF"/></linearGradient></defs><rect x="6" y="5" width="20" height="22" rx="7" fill="url(#iconMap)"/><path d="M16 23s6-5.2 6-10A6 6 0 0 0 10 13c0 4.8 6 10 6 10Z" fill="#fff"/><circle cx="16" cy="13" r="2.2" fill="#317EFF"/></svg>
+        <span>周边配套</span>
+      </a>
+      <a class="quick-entry" href="#album">
+        <svg class="quick-icon" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="iconAlbum" x1="5" y1="4" x2="27" y2="28"><stop stop-color="#FFD49E"/><stop offset="1" stop-color="#FF7017"/></linearGradient></defs><rect x="5" y="5" width="22" height="22" rx="6" fill="url(#iconAlbum)"/><path d="M10 21l5-5 4 3 3-4 2 6H10Z" fill="#fff"/><circle cx="12" cy="12" r="2" fill="#fff"/></svg>
+        <span>楼盘相册</span>
+      </a>
+    </nav>
+
+    <section class="section">
+      <div class="section-head"><h2 class="section-title">即将开盘信息</h2></div>
+      <div class="info-list">
+        <div class="info-row"><span>预计开盘时间</span><strong>2025年10月</strong></div>
+        <div class="info-row"><span>开盘栋数</span><strong>2</strong></div>
+        <div class="info-row"><span>开盘楼栋</span><strong>2栋、3栋</strong></div>
+        <div class="info-row"><span>装修</span><strong>清水</strong></div>
+        <div class="info-row"><span>预计交房时间</span><strong>2027年07月</strong></div>
+      </div>
+    </section>
+
+    <section class="section" id="basic">
+      <div class="section-head"><h2 class="section-title">楼盘基本信息</h2></div>
+      <div class="info-list">
+        <div class="info-row"><span>参考单价</span><strong class="red">31000~32000元/㎡</strong></div>
+        <div class="info-row"><span>开盘栋数</span><strong>2栋</strong></div>
+        <div class="info-row"><span>开盘楼栋</span><strong>2栋、3栋</strong></div>
+        <div class="info-row"><span>总户数</span><strong>100</strong></div>
+        <div class="info-row"><span>车位数</span><strong>123</strong></div>
+        <div class="info-row"><span>装修</span><strong>精装</strong></div>
+        <div class="info-row"><span>梯户比</span><strong>2T2、2T3</strong></div>
+      </div>
+      <a class="address-card" href="#support"><span>望江区 | 万春镇天香路一段</span><span>›</span></a>
+      <a class="expand-link" href="#review">展开全部信息 〉</a>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h2 class="section-title">销售情况</h2><a class="more" href="javascript:void(0)">更多 〉</a></div>
+      <div class="sales-grid">
+        <div><strong>643套</strong><span>总套数</span></div>
+        <div><strong>365套</strong><span>已售套数</span></div>
+        <div><strong>278套</strong><span>在售套数</span></div>
+        <div><strong>73.12%</strong><span>已售比例</span></div>
+      </div>
+      <p class="notice-text">预计清盘时间（仅参考）：2025年12月</p>
+      <div class="donut-row">
+        <div class="donut"><span><b>643</b><br>总套数</span></div>
+        <div class="legend">
+          <div><i></i>在售　278（套）</div>
+          <div class="sold"><i></i>已售　365（套）</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="permit">
+      <div class="section-head"><h2 class="section-title">取证记录</h2><a class="more" href="javascript:void(0)">更多 〉</a></div>
+      <div class="permit-list">
+        <article class="permit-card">
+          <div class="permit-card__top">
+            <strong>招商·时代花园一期 2栋、3栋</strong>
+            <span class="permit-card__status">已取证</span>
+          </div>
+          <div class="permit-card__grid">
+            <span>预售证号<b>蓉预售字第51010020260918号</b></span>
+            <span>发证日期<b>2026年07月08日</b></span>
+            <span>监管银行<b>中国建设银行成都青羊支行</b></span>
+            <span>监管账户<b>5105 0168 0000 8899 1234</b></span>
+          </div>
+        </article>
+        <article class="permit-card">
+          <div class="permit-card__top">
+            <strong>招商·时代花园一期 5栋</strong>
+            <span class="permit-card__status">已取证</span>
+          </div>
+          <div class="permit-card__grid">
+            <span>预售证号<b>蓉预售字第51010020260626号</b></span>
+            <span>发证日期<b>2026年06月26日</b></span>
+            <span>监管银行<b>招商银行成都分行营业部</b></span>
+            <span>监管账户<b>0289 3011 0000 6688 5260</b></span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="sunshine">
+      <div class="sand-head"><h2 class="section-title">3D日照</h2><span class="more">查看更多 〉</span></div>
+      <div class="sand-card">
+        <div class="sand-stage">
+          <span class="sun-model-badge">真实楼栋建模 · 冬至15:00</span>
+          <span class="sun-orbit" aria-hidden="true"></span>
+          <span class="sun-time">15:00</span>
+          <span class="sun-ray" aria-hidden="true"></span>
+          <span class="sun-ray sun-ray--two" aria-hidden="true"></span>
+          <span class="sun-ray sun-ray--three" aria-hidden="true"></span>
+          <div class="sun-labels">
+            <span>1# 24F</span>
+            <span>3# 25F</span>
+            <span>5# 25F</span>
+            <span>7# 23F</span>
+          </div>
+        </div>
+        <div class="sun-light-shot">
+          <div class="sun-light-text">
+            <span>样板间光线模拟</span>
+            <strong>南向客厅约4.9h采光</strong>
+          </div>
+        </div>
+      </div>
+      <div class="sun-grid">
+        <article class="sun-card"><span>冬至有效日照</span><strong>3.8h</strong><p>南向楼栋间距较舒展，中高楼层日照稳定。</p></article>
+        <article class="sun-card"><span>春秋午后</span><strong>4.9h</strong><p>客厅与主卧采光覆盖更完整。</p></article>
+        <article class="sun-card"><span>夏季遮阳</span><strong>5.6h</strong><p>西晒户型需结合楼层判断。</p></article>
+      </div>
+    </section>
+
+    <section class="section" id="layout">
+      <div class="section-head"><h2 class="section-title">在售户型</h2><a class="more" href="javascript:void(0)">更多 〉</a></div>
+      <div class="layout-tabs">
+        <button class="layout-tab is-active" type="button">全部(15)</button>
+        <button class="layout-tab" type="button">1室(5)</button>
+        <button class="layout-tab" type="button">2室(1)</button>
+        <button class="layout-tab" type="button">3室(1)</button>
+        <button class="layout-tab" type="button">4室(1)</button>
+      </div>
+      <div class="layout-scroll">
+        <article class="layout-card">
+          <div class="layout-img">
+            <img src="assets/floorplan-3room.png" alt="3室2厅2卫户型图">
+          </div>
+          <strong>3室2厅2卫</strong><span>建面:123㎡</span>
+        </article>
+        <article class="layout-card">
+          <div class="layout-img">
+            <img src="assets/floorplan-4room.png" alt="4室2厅2卫户型图">
+          </div>
+          <strong>4室2厅2卫</strong><span>建面:130㎡</span>
+        </article>
+      </div>
+      <div class="eval-list">
+        <article class="eval-card"><div class="eval-head"><strong>户型评测</strong><span class="score-box"><b>92分</b><em>专业点评</em></span></div><p>四房尺度更完整，主卧套房和横厅采光表现更稳，适合改善家庭优先关注。</p></article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h2 class="section-title">一房一价图</h2><button class="more" id="inlineRoomButton" type="button">更多 〉</button></div>
+      <div class="room-list">
+        <article class="room-preview"><em>已售1折</em><strong>269.24万</strong><span>107.24㎡</span><b>3室1厅1卫</b><span>9栋1单元10楼1002</span></article>
+        <article class="room-preview"><em>意向价</em><strong>269.24万</strong><span>107.24㎡</span><b>3室1厅1卫</b><span>9栋1单元10楼1002</span></article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h2 class="section-title">楼盘动态</h2></div>
+      <div class="timeline">
+        <div class="timeline-item"><span>2024-10-24</span><br><strong>楼盘开盘</strong></div>
+        <div class="timeline-item"><span>2024-10-24</span><br><strong>取得商品房预售许可证45678356789</strong></div>
+      </div>
+    </section>
+
+    <section class="section" id="support">
+      <div class="section-head"><h2 class="section-title">配套设施信息</h2></div>
+      <div class="support-map" aria-label="配套地图"></div>
+      <div class="support-tabs">
+        <button class="support-tab is-active" data-support="traffic" type="button">交通</button>
+        <button class="support-tab" data-support="park" type="button">公园</button>
+        <button class="support-tab" data-support="commerce" type="button">商业</button>
+        <button class="support-tab" data-support="medical" type="button">医疗</button>
+      </div>
+      <div class="support-list" id="supportList"></div>
+      <a class="expand-link" href="javascript:void(0)">展开更多 〉</a>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h2 class="section-title">项目介绍</h2></div>
+      <p class="intro-text">隆腾·公园壹号，是成都隆腾投资集团有限公司首次进驻的壹号作品，项目位于蒲江公园坝内，县政府旁，紧邻蒲江文庙、近晓廉江河，自然人文资源一览无余。</p>
+      <p class="notice-text">温馨提示：本平台展示楼盘项目供应仅供参考，如需进一步了解，请与开发商联系。</p>
+    </section>
+
+    <section class="section" id="review">
+      <div class="section-head"><h2 class="section-title">楼盘测评</h2></div>
+      <div class="review-score-grid">
+        <article class="review-score-card"><strong>区位交通</strong><b>90分</b><em>专业点评</em></article>
+        <article class="review-score-card"><strong>产品力</strong><b>88分</b><em>专业点评</em></article>
+        <article class="review-score-card"><strong>价格竞争力</strong><b>85分</b><em>专业点评</em></article>
+      </div>
+      <div class="review-report-list">
+        <a class="review-report-card" href="javascript:void(0)">
+          <strong>招商时代花园一期专业测评报告</strong>
+          <p>从区位交通、产品尺度、片区供应和预算适配度拆解项目综合竞争力。</p>
+          <span>查看完整报告 〉</span>
+        </a>
+        <a class="review-report-card" href="javascript:void(0)">
+          <strong>青羊改善客群选房关注点</strong>
+          <p>结合总价段、面积段、日照表现和周边配套，梳理适合优先关注的户型与楼栋。</p>
+          <span>查看测评文章 〉</span>
+        </a>
+      </div>
+    </section>
+
+    <footer class="bottom-bar">
+      <div class="bottom-bar__inner">
+        <button class="bottom-btn bottom-btn--light" id="openQrButtonBottom" type="button">项目二维码</button>
+        <a class="bottom-btn bottom-btn--advisor" href="tel:13709063518">联系置业顾问</a>
+        <a class="bottom-btn bottom-btn--primary" href="tel:4000000000">联系开发商</a>
+      </div>
+    </footer>
+  </main>
+
+  <section class="qr-sheet" id="qrSheet" hidden aria-label="项目二维码">
+    <div class="qr-panel">
+      <button class="close-btn qr-close" id="closeQrButton" type="button" aria-label="关闭">×</button>
+      <h2>项目二维码</h2>
+      <p>扫码查看招商时代花园一期详情与最新动态</p>
+      <div class="project-qr" id="projectQr" aria-hidden="true"><span class="qr-eye"></span></div>
+      <button class="primary-btn qr-action" type="button">保存二维码</button>
+    </div>
+  </section>
+
+  <section class="room-sheet" id="roomSheet" hidden aria-label="在线选房一房一价">
+    <div class="room-sheet__top">
+      <button class="close-btn" id="closeRoomButton" type="button" aria-label="关闭">×</button>
+      <h2>在线选房</h2>
+      <span></span>
+    </div>
+    <div class="purchase-steps">
+      <span class="purchase-step is-active" data-step="select">一房一价</span>
+      <span class="purchase-step" data-step="sign">签约确认</span>
+      <span class="purchase-step" data-step="done">完成锁房</span>
+    </div>
+    <div class="room-content">
+      <div class="sheet-room-list" id="roomList">
+        <button class="sheet-room-card" type="button" data-room="2栋1单元1201" data-area="120㎡" data-price="382万"><span><strong>2栋1单元1201</strong><span>3室2厅2卫 · 120㎡ · 南向</span></span><b>382万</b></button>
+        <button class="sheet-room-card" type="button" data-room="2栋1单元1502" data-area="130㎡" data-price="418万"><span><strong>2栋1单元1502</strong><span>4室2厅2卫 · 130㎡ · 南向</span></span><b>418万</b></button>
+        <button class="sheet-room-card" type="button" data-room="3栋2单元1801" data-area="143㎡" data-price="462万"><span><strong>3栋2单元1801</strong><span>4室2厅3卫 · 143㎡ · 中庭景观</span></span><b>462万</b></button>
+      </div>
+      <div class="contract-panel" id="contractPanel" hidden>
+        <strong id="contractTitle">签约确认</strong>
+        <p id="contractDesc">请先选择意向房源。</p>
+        <label class="agree-row"><input id="agreeInput" type="checkbox"> 我已阅读并同意认购协议、定金监管与房源锁定说明</label>
+      </div>
+      <div class="contract-panel" id="successPanel" hidden>
+        <strong>锁房成功</strong>
+        <p id="successDesc">认购协议已生成，房源已锁定。</p>
+      </div>
+    </div>
+    <div class="sheet-actions">
+      <button class="secondary-btn" id="resetRoomButton" type="button">重新选择</button>
+      <button class="primary-btn" id="roomPrimaryButton" type="button" disabled>请选择房源</button>
+    </div>
+  </section>
+
+  <script>
+    const heroImage = document.getElementById("heroImage");
+    document.querySelectorAll(".album-tab").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".album-tab").forEach((item) => item.classList.remove("is-active"));
+        button.classList.add("is-active");
+        heroImage.src = button.dataset.src;
+      });
+    });
+
+    const supportData = {
+      traffic: [
+        { name: "地铁天香路站", category: "地铁站", distance: "约780m" },
+        { name: "时代花园公交站", category: "公交站", distance: "约260m" },
+        { name: "社区快线站", category: "公交快线", distance: "约520m" }
+      ],
+      park: [
+        { name: "城市公园", distance: "约700m" },
+        { name: "滨水绿道", distance: "约1.1km" },
+        { name: "社区景观轴", distance: "约260m" }
+      ],
+      commerce: [
+        { name: "生活超市", distance: "约420m" },
+        { name: "集中商业", distance: "约1.4km" },
+        { name: "社区底商", distance: "约180m" }
+      ],
+      medical: [
+        { name: "社区卫生服务中心", distance: "约780m" },
+        { name: "综合医院", distance: "约2.8km" },
+        { name: "连锁药房", distance: "约260m" }
+      ]
+    };
+    const supportList = document.getElementById("supportList");
+    function renderSupport(type) {
+      supportList.innerHTML = supportData[type].map((item) => `
+        <article class="support-card">
+          <div class="support-title"><strong>${item.name}</strong>${item.category ? `<em class="support-type">${item.category}</em>` : ""}</div>
+          <span>${item.distance}</span>
+        </article>
+      `).join("");
+    }
+    renderSupport("traffic");
+    document.querySelectorAll(".support-tab").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".support-tab").forEach((item) => item.classList.remove("is-active"));
+        button.classList.add("is-active");
+        renderSupport(button.dataset.support);
+      });
+    });
+
+    const qrSheet = document.getElementById("qrSheet");
+    const projectQr = document.getElementById("projectQr");
+    for (let i = 0; i < 81; i += 1) {
+      projectQr.appendChild(document.createElement("i"));
+    }
+
+    const roomSheet = document.getElementById("roomSheet");
+    const roomButtons = [...document.querySelectorAll(".sheet-room-card")];
+    const roomPrimaryButton = document.getElementById("roomPrimaryButton");
+    const resetRoomButton = document.getElementById("resetRoomButton");
+    const contractPanel = document.getElementById("contractPanel");
+    const successPanel = document.getElementById("successPanel");
+    const contractDesc = document.getElementById("contractDesc");
+    const successDesc = document.getElementById("successDesc");
+    const agreeInput = document.getElementById("agreeInput");
+    let selectedRoom = null;
+    let stage = "select";
+
+    function openRoomSheet() {
+      roomSheet.hidden = false;
+      document.body.style.overflow = "hidden";
+      setStage("select");
+    }
+
+    function closeRoomSheet() {
+      roomSheet.hidden = true;
+      document.body.style.overflow = "";
+    }
+
+    function openQrSheet() {
+      qrSheet.hidden = false;
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeQrSheet() {
+      qrSheet.hidden = true;
+      document.body.style.overflow = "";
+    }
+
+    function setStage(nextStage) {
+      stage = nextStage;
+      document.querySelectorAll(".purchase-step").forEach((item) => item.classList.toggle("is-active", item.dataset.step === stage));
+      roomButtons.forEach((button) => { button.hidden = stage !== "select"; });
+      contractPanel.hidden = stage !== "sign";
+      successPanel.hidden = stage !== "done";
+      resetRoomButton.hidden = stage === "done";
+      if (stage === "select") {
+        agreeInput.checked = false;
+        roomPrimaryButton.disabled = !selectedRoom;
+        roomPrimaryButton.textContent = selectedRoom ? "进入签约确认" : "请选择房源";
+      }
+      if (stage === "sign") {
+        roomPrimaryButton.disabled = !agreeInput.checked;
+        roomPrimaryButton.textContent = "确认签署并支付定金";
+      }
+      if (stage === "done") {
+        roomPrimaryButton.disabled = false;
+        roomPrimaryButton.textContent = "继续查看楼盘";
+        successDesc.textContent = `${selectedRoom.room} 已完成认购协议签署，房源已为你锁定。`;
+      }
+    }
+
+    roomButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        selectedRoom = button.dataset;
+        roomButtons.forEach((item) => item.classList.toggle("is-selected", item === button));
+        contractDesc.textContent = `${selectedRoom.room} · ${selectedRoom.area} · 总价${selectedRoom.price}。请确认认购协议与定金监管信息。`;
+        setStage("select");
+      });
+    });
+
+    agreeInput.addEventListener("change", () => {
+      if (stage === "sign") {
+        roomPrimaryButton.disabled = !agreeInput.checked;
+      }
+    });
+
+    roomPrimaryButton.addEventListener("click", () => {
+      if (!selectedRoom) return;
+      if (stage === "select") {
+        setStage("sign");
+        return;
+      }
+      if (stage === "sign" && agreeInput.checked) {
+        setStage("done");
+        return;
+      }
+      if (stage === "done") closeRoomSheet();
+    });
+
+    resetRoomButton.addEventListener("click", () => {
+      selectedRoom = null;
+      roomButtons.forEach((item) => item.classList.remove("is-selected"));
+      setStage("select");
+    });
+
+    document.getElementById("openRoomButton").addEventListener("click", openRoomSheet);
+    document.getElementById("openQrButtonBottom").addEventListener("click", openQrSheet);
+    document.getElementById("inlineRoomButton").addEventListener("click", openRoomSheet);
+    document.getElementById("closeRoomButton").addEventListener("click", closeRoomSheet);
+    document.getElementById("closeQrButton").addEventListener("click", closeQrSheet);
+    qrSheet.addEventListener("click", (event) => {
+      if (event.target === qrSheet) closeQrSheet();
+    });
+  </script>
+</body>
+</html>
+
