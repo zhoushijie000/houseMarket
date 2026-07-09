@@ -6348,6 +6348,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
     let currentReport = null;
     let activeChatFlow = null;
     let suspendedTalentAssessment = null;
+    let returnHomeOnChatClose = false;
     const cityDisplayOrder = ["上海", "西宁", "北京"];
     const cityVisualMetaMap = {
       上海: { accent: "#ff7a00" },
@@ -7949,11 +7950,17 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
     }
 
     function closeChatDrawer() {
+      if (returnHomeOnChatClose) {
+        returnHomeOnChatClose = false;
+        goMainHome();
+        return;
+      }
       chatDrawer.classList.remove("is-visible");
       resetChatQuickQuestions();
     }
 
-    function openHomeAiAnalysis() {
+    function openHomeAiAnalysis(options = {}) {
+      returnHomeOnChatClose = Boolean(options.returnHomeOnClose);
       activeChatFlow = null;
       suspendedTalentAssessment = null;
       chatMessages.innerHTML = "";
@@ -7983,7 +7990,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       }
 
       if (chatMode === "home-ai") {
-        openHomeAiAnalysis();
+        openHomeAiAnalysis({ returnHomeOnClose: true });
         if (chatQuestion) {
           addChatMessage("user", chatQuestion);
           addChatMessage("bot", getBotReply(chatQuestion));
