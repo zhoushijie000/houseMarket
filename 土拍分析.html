@@ -660,25 +660,6 @@
       overflow-wrap: anywhere;
     }
 
-    .land-actions {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      min-width: 0;
-      gap: 7px;
-      margin-top: 14px;
-    }
-
-    .land-actions button {
-      min-width: 0;
-      min-height: 44px;
-      border-radius: 10px;
-      color: var(--brand-deep);
-      background: linear-gradient(180deg, #fff7f0 0, #ffeadb 100%);
-      padding: 0 6px;
-      font-size: 12px;
-      font-weight: 800;
-    }
-
     @media (max-width: 360px) {
       .hero {
         padding-right: 12px;
@@ -982,11 +963,6 @@
             <span>${row.status === "成交" ? "成交时间" : "出让时间"}：${row.date}</span>
             <span>面积：${row.area}</span>
             <span>容积率：${row.volumeRate}</span>
-          </div>
-          <div class="land-actions">
-            <button type="button">周边房价</button>
-            <button type="button">周边配套</button>
-            <button type="button">周边土拍</button>
           </div>
         </article>
       `).join("");
