@@ -77,6 +77,121 @@
       background: #ffffff;
     }
 
+    .estate-info-upgrade {
+      display: grid;
+      gap: 12px;
+      padding: 12px 16px 26px;
+    }
+
+    .info-card {
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 10px 24px rgba(17, 24, 39, 0.08);
+    }
+
+    .info-card__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .info-card__head h2 {
+      margin: 0;
+      color: var(--text-primary);
+      font-size: 16px;
+      line-height: 1.2;
+      font-weight: 800;
+    }
+
+    .info-card__head span {
+      color: var(--brand-primary);
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .info-grid__item {
+      min-height: 66px;
+      padding: 10px;
+      border-radius: 14px;
+      background: #f7f8fa;
+    }
+
+    .info-grid__item span {
+      display: block;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    .info-grid__item strong {
+      display: block;
+      margin-top: 8px;
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.25;
+      font-weight: 800;
+    }
+
+    .feature-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .feature-row {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 14px;
+      background: #f7f8fa;
+    }
+
+    .feature-row__icon {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: rgba(253, 93, 0, 0.12);
+      color: var(--brand-primary);
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .feature-row strong {
+      display: block;
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.2;
+    }
+
+    .feature-row span:not(.feature-row__icon) {
+      display: block;
+      margin-top: 5px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .feature-row__cta {
+      color: var(--brand-primary);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
     .floating-bar {
       position: fixed;
       left: 50%;
@@ -361,6 +476,286 @@
       color: #ff4d4f;
     }
 
+    .price-sheet {
+      align-items: stretch;
+    }
+
+    .price-sheet__panel {
+      width: min(100%, var(--page-width));
+      min-height: 100vh;
+      max-height: none;
+      overflow-y: auto;
+      border-radius: 0;
+      padding: 0 16px calc(18px + env(safe-area-inset-bottom, 0px));
+      align-content: start;
+      gap: 14px;
+    }
+
+    .price-sheet__top {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      display: grid;
+      gap: 6px;
+      margin: 0 -16px;
+      padding: calc(16px + env(safe-area-inset-top, 0px)) 56px 14px 16px;
+      background: rgba(255, 255, 255, 0.96);
+      border-bottom: 1px solid var(--line-soft);
+      backdrop-filter: blur(14px);
+    }
+
+    .price-sheet__eyebrow {
+      color: var(--brand-primary);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .price-sheet__top .sheet__title {
+      margin: 0;
+    }
+
+    .price-sheet__top .sheet__meta {
+      margin: 0;
+    }
+
+    .price-sheet .sheet__close {
+      top: calc(14px + env(safe-area-inset-top, 0px));
+      right: 16px;
+      z-index: 3;
+    }
+
+    .purchase-steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      padding: 4px;
+      border-radius: 16px;
+      background: #f4f6f8;
+    }
+
+    .purchase-step {
+      min-height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .purchase-step.is-active {
+      background: #ffffff;
+      color: var(--brand-primary);
+      box-shadow: 0 4px 12px rgba(17, 24, 39, 0.06);
+    }
+
+    .room-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .room-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--line-soft);
+      border-radius: 16px;
+      background: #ffffff;
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .room-card.is-selected {
+      border-color: var(--brand-primary);
+      background: linear-gradient(180deg, #fff8f2, #ffffff);
+      box-shadow: 0 8px 18px rgba(253, 93, 0, 0.1);
+    }
+
+    .room-card__name {
+      display: block;
+      color: var(--text-primary);
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .room-card__meta,
+    .room-card__status {
+      display: block;
+      margin-top: 6px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    .room-card__price {
+      color: var(--brand-primary);
+      font-size: 15px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .room-card__status {
+      color: #2f6d17;
+      text-align: right;
+    }
+
+    .purchase-summary {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #fff8f2, #ffffff);
+      border: 1px solid var(--brand-line);
+    }
+
+    .purchase-summary__row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .purchase-summary__row strong {
+      color: var(--text-primary);
+      font-size: 14px;
+    }
+
+    .agreement-check {
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      align-items: start;
+      gap: 8px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .agreement-check input {
+      width: 18px;
+      height: 18px;
+      margin: 1px 0 0;
+      accent-color: var(--brand-primary);
+    }
+
+    .contract-panel {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid var(--brand-line);
+      background: linear-gradient(180deg, #fff8f2, #ffffff);
+    }
+
+    .contract-panel h3 {
+      margin: 0;
+      color: var(--text-primary);
+      font-size: 15px;
+      line-height: 1.2;
+      font-weight: 800;
+    }
+
+    .contract-panel p {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .contract-panel__list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .contract-panel__list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .contract-panel__list strong {
+      color: var(--text-primary);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .purchase-actions {
+      display: grid;
+      gap: 10px;
+    }
+
+    .purchase-primary,
+    .purchase-secondary {
+      min-height: 46px;
+      border: none;
+      border-radius: var(--radius-pill);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .purchase-primary {
+      background: linear-gradient(90deg, var(--brand-primary), var(--brand-secondary));
+      color: #ffffff;
+      box-shadow: var(--shadow-button);
+    }
+
+    .purchase-primary:disabled {
+      background: #d8dde6;
+      color: #ffffff;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .purchase-secondary {
+      background: #f4f6f8;
+      color: var(--text-primary);
+    }
+
+    .purchase-success {
+      display: grid;
+      justify-items: center;
+      gap: 12px;
+      padding: 12px 4px 4px;
+      text-align: center;
+    }
+
+    .purchase-success__icon {
+      width: 62px;
+      height: 62px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--success-primary), var(--success-secondary));
+      color: #ffffff;
+      font-size: 32px;
+      font-weight: 800;
+    }
+
+    .purchase-success__title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .purchase-success__desc {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
     .sheet-open {
       overflow: hidden;
     }
@@ -384,6 +779,60 @@
   <main class="phone-shell">
     <section class="design-stage">
       <img class="design-stage__image" src="./assets/楼盘详情.svg" alt="楼盘详情设计稿" />
+      <section class="estate-info-upgrade" aria-label="楼盘信息完善">
+        <article class="info-card">
+          <div class="info-card__head">
+            <h2>楼盘信息完善</h2>
+            <span>已同步 6 类资料</span>
+          </div>
+          <div class="info-grid">
+            <div class="info-grid__item">
+              <span>最新取证</span>
+              <strong>蓉预售字第 51010620260718 号</strong>
+            </div>
+            <div class="info-grid__item">
+              <span>开售批次</span>
+              <strong>2 批次 / 186 套住宅</strong>
+            </div>
+            <div class="info-grid__item">
+              <span>交付标准</span>
+              <strong>精装交付 / 品牌部品</strong>
+            </div>
+            <div class="info-grid__item">
+              <span>购房服务</span>
+              <strong>支持在线选房与签约确认</strong>
+            </div>
+          </div>
+        </article>
+        <article class="info-card">
+          <div class="info-card__head">
+            <h2>辅助决策</h2>
+            <span>详情页集中查看</span>
+          </div>
+          <div class="feature-list">
+            <div class="feature-row">
+              <span class="feature-row__icon">户</span>
+              <span><strong>户型分析</strong><span>89-128㎡ 三房/四房，补充动线、采光和收纳亮点。</span></span>
+              <span class="feature-row__cta">查看</span>
+            </div>
+            <div class="feature-row">
+              <span class="feature-row__icon">VR</span>
+              <span><strong>VR 看房</strong><span>样板间、社区园林、楼栋外立面支持云端浏览。</span></span>
+              <span class="feature-row__cta">进入</span>
+            </div>
+            <div class="feature-row">
+              <span class="feature-row__icon">日</span>
+              <span><strong>日照分析</strong><span>按楼栋、楼层补充冬至日日照时长参考。</span></span>
+              <span class="feature-row__cta">对比</span>
+            </div>
+            <div class="feature-row">
+              <span class="feature-row__icon">测</span>
+              <span><strong>楼盘测评对比</strong><span>价格、区位、配套、开售节奏统一沉淀。</span></span>
+              <span class="feature-row__cta">分析</span>
+            </div>
+          </div>
+        </article>
+      </section>
     </section>
   </main>
 
@@ -394,7 +843,7 @@
         <span class="bottom-qr__text">二维码</span>
       </button>
       <button class="bar-button bar-button--advisor" id="openAdvisorButton" type="button">联系置业顾问</button>
-      <a class="bar-button bar-button--developer" href="tel:028-62587777">联系开发企业</a>
+      <button class="bar-button bar-button--developer" id="openPriceButton" type="button">在线选房</button>
     </div>
   </div>
 
@@ -445,16 +894,129 @@
     </div>
   </div>
 
+  <div class="sheet price-sheet" id="priceSheet" hidden>
+    <div class="sheet__backdrop" data-close-sheet="price"></div>
+    <div class="sheet__panel price-sheet__panel" role="dialog" aria-modal="true" aria-labelledby="priceSheetTitle">
+      <div class="price-sheet__top">
+        <button class="sheet__close" type="button" data-close-sheet="price" aria-label="关闭">×</button>
+        <span class="price-sheet__eyebrow">在线选房</span>
+        <h2 class="sheet__title" id="priceSheetTitle">一房一价</h2>
+        <p class="sheet__meta">先查看可售房源与总价，选定后进入全屏签约确认，系统将为你锁定该房源。</p>
+      </div>
+
+      <div class="purchase-steps" aria-label="线上认购进度">
+        <span class="purchase-step is-active" data-purchase-step="select">一房一价</span>
+        <span class="purchase-step" data-purchase-step="pay">签约确认</span>
+        <span class="purchase-step" data-purchase-step="lock">锁定房源</span>
+      </div>
+
+      <div class="room-list" id="roomList">
+        <button class="room-card" type="button" data-room-id="2-1-1602" data-room-name="2栋1单元1602" data-room-price="312万元" data-room-area="118㎡">
+          <span>
+            <strong class="room-card__name">2栋1单元1602</strong>
+            <span class="room-card__meta">三室两厅两卫 / 118㎡ / 南向</span>
+          </span>
+          <span>
+            <strong class="room-card__price">312万元</strong>
+            <span class="room-card__status">可认购</span>
+          </span>
+        </button>
+        <button class="room-card" type="button" data-room-id="2-1-1801" data-room-name="2栋1单元1801" data-room-price="336万元" data-room-area="128㎡">
+          <span>
+            <strong class="room-card__name">2栋1单元1801</strong>
+            <span class="room-card__meta">四室两厅两卫 / 128㎡ / 东南向</span>
+          </span>
+          <span>
+            <strong class="room-card__price">336万元</strong>
+            <span class="room-card__status">可认购</span>
+          </span>
+        </button>
+        <button class="room-card" type="button" data-room-id="3-2-1203" data-room-name="3栋2单元1203" data-room-price="286万元" data-room-area="108㎡">
+          <span>
+            <strong class="room-card__name">3栋2单元1203</strong>
+            <span class="room-card__meta">三室两厅一卫 / 108㎡ / 西南向</span>
+          </span>
+          <span>
+            <strong class="room-card__price">286万元</strong>
+            <span class="room-card__status">可认购</span>
+          </span>
+        </button>
+      </div>
+
+      <div class="purchase-summary" id="purchaseSummary" hidden>
+        <div class="purchase-summary__row">
+          <span>已选房源</span>
+          <strong id="selectedRoomName">-</strong>
+        </div>
+        <div class="purchase-summary__row">
+          <span>建筑面积</span>
+          <strong id="selectedRoomArea">-</strong>
+        </div>
+        <div class="purchase-summary__row">
+          <span>房源总价</span>
+          <strong id="selectedRoomPrice">-</strong>
+        </div>
+        <div class="purchase-summary__row">
+          <span>本次定金</span>
+          <strong>20,000元</strong>
+        </div>
+      </div>
+
+      <section class="contract-panel" id="contractPanel" hidden>
+        <h3>签约确认</h3>
+        <p>请核对房源、总价和定金信息。确认后将进入认购协议签署与定金支付，房源进入锁定状态。</p>
+        <ul class="contract-panel__list">
+          <li><span>签约主体</span><strong>小程序认证用户</strong></li>
+          <li><span>资金监管</span><strong>直连监管账户</strong></li>
+          <li><span>锁定时效</span><strong>30 分钟内完成</strong></li>
+        </ul>
+      </section>
+
+      <label class="agreement-check" id="agreementCheck" hidden>
+        <input id="agreementInput" type="checkbox" />
+        <span>我已阅读并同意《商品房认购协议》，确认线上支付定金后锁定该房源，后续按开发企业通知完成正式签约。</span>
+      </label>
+
+      <div class="purchase-success" id="purchaseSuccess" hidden>
+        <div class="purchase-success__icon">✓</div>
+        <h3 class="purchase-success__title">房源已锁定</h3>
+        <p class="purchase-success__desc" id="purchaseSuccessDesc">系统已生成认购协议，并为你锁定房源。</p>
+      </div>
+
+      <div class="purchase-actions">
+        <button class="purchase-primary" id="purchasePrimaryButton" type="button" disabled>请选择房源</button>
+        <button class="purchase-secondary" id="purchaseResetButton" type="button" hidden>继续查看房源</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const qrSheet = document.getElementById("qrSheet");
     const advisorSheet = document.getElementById("advisorSheet");
+    const priceSheet = document.getElementById("priceSheet");
     const openQrButton = document.getElementById("openQrButton");
     const openAdvisorButton = document.getElementById("openAdvisorButton");
+    const openPriceButton = document.getElementById("openPriceButton");
     const saveAdvisorQrButton = document.getElementById("saveAdvisorQrButton");
     const advisorQrGraphic = document.getElementById("advisorQrGraphic");
     const copyWechatButton = document.getElementById("copyWechatButton");
     const advisorWechat = document.getElementById("advisorWechat");
     const advisorTip = document.getElementById("advisorTip");
+    const purchaseSteps = Array.from(document.querySelectorAll("[data-purchase-step]"));
+    const roomButtons = Array.from(document.querySelectorAll("[data-room-id]"));
+    const purchaseSummary = document.getElementById("purchaseSummary");
+    const selectedRoomName = document.getElementById("selectedRoomName");
+    const selectedRoomArea = document.getElementById("selectedRoomArea");
+    const selectedRoomPrice = document.getElementById("selectedRoomPrice");
+    const contractPanel = document.getElementById("contractPanel");
+    const agreementCheck = document.getElementById("agreementCheck");
+    const agreementInput = document.getElementById("agreementInput");
+    const purchasePrimaryButton = document.getElementById("purchasePrimaryButton");
+    const purchaseResetButton = document.getElementById("purchaseResetButton");
+    const purchaseSuccess = document.getElementById("purchaseSuccess");
+    const purchaseSuccessDesc = document.getElementById("purchaseSuccessDesc");
+    let selectedRoom = null;
+    let purchaseStage = "select";
 
     function setBodySheetState(open) {
       document.body.classList.toggle("sheet-open", open);
@@ -463,6 +1025,7 @@
     function closeAllSheets() {
       qrSheet.hidden = true;
       advisorSheet.hidden = true;
+      priceSheet.hidden = true;
       setBodySheetState(false);
     }
 
@@ -474,7 +1037,67 @@
       if (target === "advisor") {
         advisorSheet.hidden = false;
       }
+      if (target === "price") {
+        priceSheet.hidden = false;
+      }
       setBodySheetState(true);
+    }
+
+    function setPurchaseStage(stage) {
+      purchaseStage = stage;
+      purchaseSteps.forEach((item) => {
+        item.classList.toggle("is-active", item.dataset.purchaseStep === stage);
+      });
+
+      const hasRoom = Boolean(selectedRoom);
+      purchaseSummary.hidden = !hasRoom || stage === "lock";
+      if (contractPanel) {
+        contractPanel.hidden = stage !== "pay";
+      }
+      agreementCheck.hidden = stage !== "pay";
+      purchaseSuccess.hidden = stage !== "lock";
+      roomButtons.forEach((button) => {
+        button.hidden = stage !== "select";
+      });
+
+      if (stage === "select") {
+        agreementInput.checked = false;
+        purchaseResetButton.hidden = true;
+        purchasePrimaryButton.hidden = false;
+        purchasePrimaryButton.disabled = !hasRoom;
+        purchasePrimaryButton.textContent = hasRoom ? "进入签约确认" : "请选择房源";
+      }
+
+      if (stage === "pay") {
+        purchaseResetButton.hidden = false;
+        purchaseResetButton.textContent = "重新选择房源";
+        purchasePrimaryButton.hidden = false;
+        purchasePrimaryButton.disabled = !agreementInput.checked;
+        purchasePrimaryButton.textContent = "确认签署并支付定金";
+      }
+
+      if (stage === "lock") {
+        purchasePrimaryButton.hidden = true;
+        purchaseResetButton.hidden = false;
+        purchaseResetButton.textContent = "继续查看房源";
+        purchaseSuccessDesc.textContent = `${selectedRoom.name} 已完成认购协议签署和定金支付，房源已为你锁定。`;
+      }
+    }
+
+    function selectRoom(button) {
+      selectedRoom = {
+        id: button.dataset.roomId,
+        name: button.dataset.roomName,
+        price: button.dataset.roomPrice,
+        area: button.dataset.roomArea
+      };
+      roomButtons.forEach((item) => {
+        item.classList.toggle("is-selected", item === button);
+      });
+      selectedRoomName.textContent = selectedRoom.name;
+      selectedRoomArea.textContent = selectedRoom.area;
+      selectedRoomPrice.textContent = selectedRoom.price;
+      setPurchaseStage("select");
     }
 
     function copyText(text) {
@@ -537,6 +1160,11 @@
       openSheet("advisor");
     });
 
+    openPriceButton.addEventListener("click", () => {
+      openSheet("price");
+      setPurchaseStage(selectedRoom ? "select" : "select");
+    });
+
     document.querySelectorAll("[data-close-sheet]").forEach((button) => {
       button.addEventListener("click", () => {
         closeAllSheets();
@@ -562,6 +1190,41 @@
         }
       });
     }
+
+    roomButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        selectRoom(button);
+      });
+    });
+
+    agreementInput.addEventListener("change", () => {
+      if (purchaseStage === "pay") {
+        purchasePrimaryButton.disabled = !agreementInput.checked;
+      }
+    });
+
+    purchasePrimaryButton.addEventListener("click", () => {
+      if (!selectedRoom) {
+        return;
+      }
+      if (purchaseStage === "select") {
+        setPurchaseStage("pay");
+        return;
+      }
+      if (purchaseStage === "pay" && agreementInput.checked) {
+        setPurchaseStage("lock");
+      }
+    });
+
+    purchaseResetButton.addEventListener("click", () => {
+      selectedRoom = null;
+      roomButtons.forEach((button) => {
+        button.hidden = false;
+        button.classList.remove("is-selected");
+      });
+      purchaseSummary.hidden = true;
+      setPurchaseStage("select");
+    });
   </script>
 </body>
 </html>
