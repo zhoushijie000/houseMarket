@@ -1699,7 +1699,7 @@
     </section>
 
     <section class="section">
-      <div class="section-head"><h2 class="section-title">销售情况</h2><a class="more" href="javascript:void(0)">更多 〉</a></div>
+      <div class="section-head"><h2 class="section-title">销售情况</h2><a class="more" href="./网签成交.html?project=%E6%8B%9B%E5%95%86%E6%97%B6%E4%BB%A3%E8%8A%B1%E5%9B%AD%E4%B8%80%E6%9C%9F">更多 〉</a></div>
       <div class="sales-grid">
         <div><strong>643套</strong><span>总套数</span></div>
         <div><strong>365套</strong><span>已售套数</span></div>
@@ -2066,7 +2066,9 @@
 
     document.getElementById("openRoomButton").addEventListener("click", openRoomSheet);
     document.getElementById("openQrButtonBottom").addEventListener("click", openQrSheet);
-    document.getElementById("inlineRoomButton").addEventListener("click", openRoomSheet);
+    document.getElementById("inlineRoomButton").addEventListener("click", () => {
+      window.location.href = "./网签成交.html?project=%E6%8B%9B%E5%95%86%E6%97%B6%E4%BB%A3%E8%8A%B1%E5%9B%AD%E4%B8%80%E6%9C%9F";
+    });
     document.getElementById("closeRoomButton").addEventListener("click", closeRoomSheet);
     document.getElementById("closeQrButton").addEventListener("click", closeQrSheet);
     qrSheet.addEventListener("click", (event) => {
