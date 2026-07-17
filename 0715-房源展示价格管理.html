@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>房源管理 - 对外展示价格</title>
+  <style>
+    :root {
+      --primary: #4775e7;
+      --primary-hover: #3766d9;
+      --primary-light: #edf3ff;
+      --success: #35b98b;
+      --text: #303642;
+      --text-regular: #5f6673;
+      --muted: #9098a6;
+      --placeholder: #bdc4cf;
+      --border: #dfe4ec;
+      --border-light: #e9edf3;
+      --header-bg: #f2f3f5;
+      --page-bg: #f4f5f7;
+      --row-alt: #f8fafc;
+      --white: #fff;
+      --danger: #f05d62;
+      --warning: #f59f3a;
+      --shadow: 0 12px 38px rgba(30, 48, 76, .16);
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      overflow: hidden;
+      color: var(--text);
+      background: var(--page-bg);
+      font-family: var(--font);
+      font-size: 14px;
+    }
+
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+
+    /* 顶部导航 */
+    .topbar {
+      height: 68px;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      background: var(--white);
+      border-bottom: 1px solid #f0f1f3;
+    }
+    .brand { display: flex; align-items: center; min-width: 590px; }
+    .brand-logo {
+      width: 46px; height: 46px; margin-right: 18px;
+      background: var(--primary); display: grid; place-items: center;
+    }
+    .brand-logo svg { width: 31px; height: 31px; }
+    .brand-title { font-size: 22px; font-weight: 700; color: #1e2228; letter-spacing: .5px; }
+    .org-name { margin-left: 24px; color: #6f7680; font-size: 15px; }
+    .org-name svg { width: 14px; margin-left: 16px; vertical-align: -2px; color: var(--primary); }
+    .main-nav { flex: 1; display: flex; justify-content: flex-end; gap: 32px; }
+    .nav-item { display: flex; align-items: center; gap: 8px; color: #343840; font-size: 16px; white-space: nowrap; }
+    .nav-item.active { color: var(--primary); font-weight: 600; }
+    .nav-item svg { width: 14px; height: 14px; }
+    .profile { width: 68px; margin-left: 42px; text-align: center; position: relative; }
+    .avatar { width: 40px; height: 40px; margin: 0 auto; border-radius: 50%; background: #e6e9ed; display: grid; place-items: center; }
+    .avatar svg { width: 25px; height: 25px; color: white; }
+    .profile-name { position: absolute; left: 4px; right: 4px; bottom: -15px; color: white; background: #96999e; border-radius: 4px; line-height: 24px; }
+
+    .tabsbar {
+      height: 58px; display: flex; align-items: center; gap: 8px;
+      padding: 0 15px; background: #f1f2f4;
+    }
+    .tab {
+      height: 42px; min-width: 125px; padding: 0 20px; border-radius: 5px;
+      border: 1px solid var(--border); background: var(--white); color: #4f5662;
+      display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600;
+    }
+    .tab.active { border-color: #7598f0; color: var(--primary); }
+    .tab .close { margin-left: 13px; color: #7695ea; font-size: 19px; font-weight: 400; }
+    .more-actions { margin-left: auto; color: #68707b; display: flex; align-items: center; gap: 10px; padding-right: 10px; font-size: 15px; }
+
+    /* 主体 */
+    .workspace { height: calc(100vh - 126px); display: grid; grid-template-columns: 316px minmax(0, 1fr); gap: 0; }
+    .sidebar { margin: 0 0 15px 15px; background: var(--white); overflow: hidden; display: flex; flex-direction: column; }
+    .sidebar-title { padding: 18px 15px 15px; font-size: 16px; font-weight: 700; }
+    .tree-search { margin: 8px 16px 12px; height: 40px; border: 1px solid var(--border); border-radius: 5px; display: flex; align-items: center; padding: 0 12px; color: var(--placeholder); }
+    .tree-search svg { width: 18px; margin-right: 8px; }
+    .tree-search input { width: 100%; border: 0; outline: 0; color: var(--text); }
+    .tree-search input::placeholder { color: var(--placeholder); }
+    .tree { flex: 1; overflow: auto; padding: 0 16px; }
+    .tree-item { height: 34px; display: flex; align-items: center; color: #59616d; white-space: nowrap; border-radius: 3px; }
+    .tree-item.selected { background: #f0f5ff; color: var(--primary); }
+    .tree-item.child { padding-left: 42px; color: #4d5560; }
+    .chevron { width: 16px; color: #b1b8c2; font-size: 11px; text-align: center; }
+    .folder-icon, .file-icon { width: 17px; height: 17px; margin: 0 6px; color: #74808f; }
+    .tree-item.selected .folder-icon { color: var(--primary); }
+    .side-pagination { height: 68px; display: flex; align-items: center; justify-content: center; gap: 22px; border-top: 1px solid #f3f4f6; }
+    .side-pagination span.active { color: var(--primary); }
+
+    .main { min-width: 0; margin-bottom: 15px; display: flex; flex-direction: column; overflow: hidden; }
+    .filters { background: var(--white); padding: 25px 25px 22px; margin-bottom: 14px; }
+    .filter-row { display: flex; align-items: center; min-height: 42px; gap: 28px; flex-wrap: wrap; }
+    .filter-row + .filter-row { margin-top: 14px; }
+    .filter-label { color: #656c78; font-weight: 600; white-space: nowrap; }
+    .check { display: inline-flex; align-items: center; gap: 10px; color: #5e6570; font-weight: 600; }
+    .check input { appearance: none; width: 18px; height: 18px; border: 1px solid var(--border); border-radius: 5px; margin: 0; }
+    .check input:checked { background: var(--primary); border-color: var(--primary); box-shadow: inset 0 0 0 4px var(--white); }
+    .field { height: 40px; border: 1px solid var(--border); border-radius: 5px; padding: 0 12px; outline: none; background: var(--white); color: var(--text); }
+    .field:focus { border-color: #7d9ded; box-shadow: 0 0 0 2px rgba(71,117,231,.08); }
+    .filter-input { width: 190px; }
+    .filter-select { width: 192px; color: var(--placeholder); appearance: none; padding-right: 34px; }
+    .select-wrap { position: relative; }
+    .select-wrap svg { position: absolute; right: 12px; top: 13px; width: 14px; color: #a6aeba; pointer-events: none; }
+    .btn { height: 40px; padding: 0 20px; border: 1px solid var(--border); border-radius: 5px; background: var(--white); color: #59616c; font-weight: 600; }
+    .btn:hover { border-color: #9cb3e8; color: var(--primary); }
+    .btn-primary { color: white; background: var(--primary); border-color: var(--primary); }
+    .btn-primary:hover { color: white; background: var(--primary-hover); border-color: var(--primary-hover); }
+    .btn:disabled, .btn:disabled:hover { cursor: not-allowed; color: #a5acb7; background: #eef0f3; border-color: #e2e5e9; }
+    .btn-plain-primary { color: var(--primary); border-color: #89a6ee; background: white; }
+    .btn svg { width: 16px; height: 16px; vertical-align: -3px; margin-right: 6px; }
+
+    /* 表格 */
+    .table-card { flex: 1; min-height: 0; background: var(--white); padding: 18px 24px 14px; display: flex; flex-direction: column; }
+    .table-tools { min-height: 46px; display: flex; align-items: flex-start; gap: 10px; }
+    .table-summary { color: #828a96; line-height: 40px; }
+    .table-summary strong { color: var(--text); font-weight: 600; }
+    .tool-actions { margin-left: auto; display: flex; gap: 10px; }
+    .table-scroll { flex: 1; min-height: 0; overflow: auto; border: 1px solid var(--border-light); }
+    table { border-collapse: collapse; min-width: 1780px; width: 100%; table-layout: fixed; }
+    th, td { border-right: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); text-align: center; padding: 9px 8px; color: #59616c; }
+    th { height: 48px; background: var(--header-bg); color: #616873; font-weight: 600; position: sticky; top: 0; z-index: 2; }
+    td { height: 68px; background: white; }
+    tbody tr:nth-child(even) td { background: var(--row-alt); }
+    tbody tr:hover td { background: #f2f6ff; }
+    .col-project { width: 184px; }
+    .col-sm { width: 68px; }
+    .col-no { width: 104px; }
+    .col-area { width: 100px; }
+    .col-type { width: 110px; }
+    .col-price { width: 112px; }
+    .col-display-total { width: 150px; }
+    .col-display-unit { width: 122px; }
+    .col-status { width: 108px; }
+    .col-actions { width: 120px; }
+    .price-input-wrap { width: 128px; height: 36px; margin: 0 auto; display: flex; align-items: center; border: 1px solid #d5dce7; background: white; border-radius: 4px; transition: .2s; }
+    .price-input-wrap:focus-within { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(71,117,231,.09); }
+    .price-input { min-width: 0; width: 100%; border: 0; outline: 0; padding: 0 5px 0 9px; color: #404753; background: transparent; text-align: right; }
+    .price-input::placeholder { color: #b9c0ca; }
+    .input-unit { color: #8f97a2; padding-right: 8px; white-space: nowrap; }
+    .computed-price { color: #404753; font-variant-numeric: tabular-nums; }
+    .computed-price.empty { color: #b8bec7; }
+    .status-tag { display: inline-block; border-radius: 5px; padding: 5px 10px; color: #30a97e; background: #ebf8f3; border: 1px solid #d5f0e6; white-space: nowrap; }
+    .status-tag.locked { color: #25aa8a; background: #edf9f6; }
+    .action-link { color: var(--primary); text-decoration: none; margin: 0 6px; }
+    .pagination { min-height: 54px; display: flex; align-items: flex-end; justify-content: flex-end; gap: 8px; color: #707884; }
+    .page-btn { width: 32px; height: 32px; border: 1px solid var(--border); background: white; border-radius: 4px; color: #606874; }
+    .page-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
+
+    /* 弹窗 */
+    .overlay { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; background: rgba(30, 38, 52, .42); }
+    .overlay.open { display: flex; }
+    .modal { width: 600px; max-height: calc(100vh - 80px); overflow: hidden; border-radius: 8px; background: white; box-shadow: var(--shadow); animation: modalIn .18s ease-out; }
+    .modal-sm { width: 520px; }
+    @keyframes modalIn { from { opacity: 0; transform: translateY(-10px) scale(.99); } to { opacity: 1; transform: none; } }
+    .modal-header { height: 60px; padding: 0 22px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; }
+    .modal-title { font-size: 18px; font-weight: 600; }
+    .modal-close { border: 0; background: transparent; color: #9199a5; width: 32px; height: 32px; font-size: 24px; line-height: 26px; }
+    .modal-body { padding: 24px; overflow: auto; max-height: calc(100vh - 220px); }
+    .modal-footer { height: 68px; border-top: 1px solid var(--border-light); display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 0 22px; }
+    .tip-strip { display: flex; gap: 10px; align-items: flex-start; color: #667085; background: #f5f8ff; border: 1px solid #e5edff; border-radius: 5px; padding: 12px 14px; line-height: 1.65; }
+    .tip-strip svg { width: 17px; height: 17px; flex: none; color: var(--primary); margin-top: 2px; }
+    .template-row { margin-top: 20px; display: flex; align-items: center; justify-content: space-between; }
+    .template-title { font-weight: 600; color: #4d5561; }
+    .template-desc { color: #9198a4; font-size: 13px; margin-top: 5px; }
+    .download-link { border: 0; background: transparent; color: var(--primary); padding: 7px; }
+    .download-link svg { width: 17px; height: 17px; vertical-align: -4px; margin-right: 5px; }
+    .upload-box { margin-top: 18px; height: 168px; border: 1px dashed #b8c6e3; border-radius: 6px; background: #fafcff; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: .2s; }
+    .upload-box.dragover { border-color: var(--primary); background: #f2f6ff; }
+    .upload-icon { width: 42px; height: 42px; color: #8ca7e6; }
+    .upload-text { margin-top: 10px; color: #505866; }
+    .upload-text button { border: 0; background: transparent; padding: 0; color: var(--primary); }
+    .upload-hint { margin-top: 6px; color: #a0a7b1; font-size: 12px; }
+    .file-card { margin-top: 16px; min-height: 54px; padding: 9px 12px; border: 1px solid var(--border-light); border-radius: 5px; display: none; align-items: center; }
+    .file-card.show { display: flex; }
+    .file-type { width: 34px; height: 34px; border-radius: 4px; display: grid; place-items: center; background: #e9f7f1; color: #2eae80; font-size: 11px; font-weight: 700; }
+    .file-info { margin-left: 10px; flex: 1; }
+    .file-name { color: #4c5460; }
+    .file-result { color: #33ad82; font-size: 12px; margin-top: 3px; }
+    .file-remove { border: 0; background: transparent; color: #9aa2ad; font-size: 18px; }
+    .form-row { display: flex; align-items: center; margin-bottom: 20px; }
+    .form-label { width: 136px; text-align: right; padding-right: 14px; color: #59616e; }
+    .required { color: var(--danger); margin-right: 4px; }
+    .ratio-control { height: 40px; width: 240px; display: flex; align-items: center; border: 1px solid var(--border); border-radius: 5px; overflow: hidden; }
+    .ratio-control:focus-within { border-color: var(--primary); }
+    .ratio-control input { flex: 1; min-width: 0; border: 0; outline: 0; height: 100%; padding: 0 12px; }
+    .ratio-control span { width: 42px; text-align: center; color: #707886; border-left: 1px solid var(--border-light); }
+    .example-box { margin-left: 122px; background: #f7f8fa; border-radius: 5px; padding: 13px 16px; color: #7a828e; line-height: 1.75; }
+    .example-box strong { color: var(--text); font-weight: 600; }
+    .scope-text { color: #4f5763; }
+    .scope-text small { color: #969eaa; margin-left: 8px; }
+
+    /* 反馈 */
+    .toast { position: fixed; z-index: 40; left: 50%; top: 82px; transform: translate(-50%, -15px); min-width: 250px; padding: 13px 18px; background: #fff; border-radius: 5px; box-shadow: 0 7px 24px rgba(35,47,68,.2); opacity: 0; pointer-events: none; transition: .2s; text-align: center; color: #4f5763; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .toast.success { border-left: 4px solid var(--success); }
+    .toast.error { border-left: 4px solid var(--danger); }
+
+    @media (max-width: 1280px) {
+      .brand { min-width: 480px; }
+      .main-nav { gap: 18px; }
+      .workspace { grid-template-columns: 270px minmax(0, 1fr); }
+      .sidebar { margin-left: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-logo" aria-label="平台标识">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="#fff" d="M3 3h8v26H3zm11 0h15v8h-8v5h8v13H14V3zm7 18v5h5v-5h-5z"/></svg>
+      </div>
+      <div class="brand-title">成都住建线上房产超市管理平台</div>
+      <div class="org-name">成都市住房和城乡建设局
+        <svg viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2"/></svg>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <div class="nav-item active">项目 <svg viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2"/></svg></div>
+      <div class="nav-item">申请 <svg viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2"/></svg></div>
+      <div class="nav-item">运营 <svg viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2"/></svg></div>
+      <div class="nav-item">统计 <svg viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2"/></svg></div>
+      <div class="nav-item">政务 <svg viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2"/></svg></div>
+      <div class="nav-item">管理 <svg viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2"/></svg></div>
+      <div class="nav-item">系统 <svg viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2"/></svg></div>
+    </nav>
+    <div class="profile">
+      <div class="avatar"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0z"/></svg></div>
+      <div class="profile-name">周世杰</div>
+    </div>
+  </header>
+
+  <div class="tabsbar">
+    <div class="tab">选择企业</div>
+    <div class="tab">项目管理</div>
+    <div class="tab active">房源管理 <span class="close">×</span></div>
+    <div class="more-actions">更多操作 <svg width="14" viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2"/></svg></div>
+  </div>
+
+  <div class="workspace">
+    <aside class="sidebar">
+      <div class="sidebar-title">项目列表</div>
+      <label class="tree-search">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="m16 16 5 5" stroke="currentColor" stroke-width="2"/></svg>
+        <input id="treeSearch" placeholder="请输入关键词">
+      </label>
+      <div class="tree" id="projectTree"></div>
+      <div class="side-pagination"><span>‹</span><span class="active">1</span><span>2</span><span>3</span><span>4</span><span>•••</span><span>411</span><span>›</span></div>
+    </aside>
+
+    <main class="main">
+      <section class="filters">
+        <div class="filter-row">
+          <span class="filter-label">房源状态</span>
+          <label class="check"><input type="checkbox" checked>全选</label>
+          <label class="check"><input type="checkbox">待售</label>
+          <label class="check"><input type="checkbox">已认购</label>
+          <label class="check"><input type="checkbox">已签约</label>
+        </div>
+        <div class="filter-row">
+          <span class="filter-label">房屋唯一号</span>
+          <input class="field filter-input" id="uniqueSearch">
+          <span class="filter-label" style="margin-left:38px">楼栋/单元/层/房号</span>
+          <span class="select-wrap"><select class="field filter-select"><option>请选择</option><option>3栋/1单元/25层/2503</option><option>3栋/1单元/25层/2502</option></select><svg viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2"/></svg></span>
+          <button class="btn btn-primary" id="searchBtn">查 询</button>
+          <button class="btn" id="resetBtn">重 置</button>
+        </div>
+      </section>
+
+      <section class="table-card">
+        <div class="table-tools">
+          <div class="table-summary">共 <strong id="recordCount">10</strong> 套房源，已设置展示价格 <strong id="pricedCount">2</strong> 套</div>
+          <div class="tool-actions">
+            <button class="btn btn-plain-primary" id="importBtn"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 16v4h16v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>导入对外展示价格</button>
+            <button class="btn btn-primary" id="batchBtn"><svg viewBox="0 0 24 24" fill="none"><path d="M5 4h14v16H5zM8 8h8M8 12h3M8 16h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>批量设置展示价格</button>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th class="col-project">所属项目/分期</th><th class="col-sm">楼栋</th><th class="col-sm">单元号</th><th class="col-sm">楼层</th><th class="col-sm">房号</th>
+                <th class="col-no">房屋唯一号</th><th class="col-area">建筑面积/㎡</th><th class="col-type">户型</th>
+                <th class="col-price">挂牌单价/元</th><th class="col-price">挂牌总价/元</th>
+                <th class="col-display-total">展示总价/万元</th><th class="col-display-unit">展示单价/元</th>
+                <th class="col-status">公示状态</th><th class="col-status">房源状态</th><th class="col-actions">操作</th>
+              </tr>
+            </thead>
+            <tbody id="houseRows"></tbody>
+          </table>
+        </div>
+        <div class="pagination"><span>共 10 条</span><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">›</button><span>10 条/页</span></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 导入弹窗 -->
+  <div class="overlay" id="importModal" role="dialog" aria-modal="true" aria-labelledby="importTitle">
+    <div class="modal">
+      <div class="modal-header"><div class="modal-title" id="importTitle">导入对外展示价格</div><button class="modal-close" data-close="importModal">×</button></div>
+      <div class="modal-body">
+        <div class="tip-strip">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 11v6m0-10v1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <div>请先下载模板，按模板填写房屋唯一号和对外展示总价。导入后系统将依据建筑面积自动计算展示单价。</div>
+        </div>
+        <div class="template-row">
+          <div><div class="template-title">对外展示价格导入模板</div><div class="template-desc">模板字段：房屋唯一号、对外展示总价（万元）</div></div>
+          <button class="download-link" id="downloadTemplate"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v3h16v-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>下载模板</button>
+        </div>
+        <div class="upload-box" id="dropzone">
+          <svg class="upload-icon" viewBox="0 0 48 48" fill="none"><path d="M13 36H9a6 6 0 0 1-1-11.9A12 12 0 0 1 31 19a8.5 8.5 0 0 1 7.7 17H35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M24 39V22m0 0-6 6m6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="upload-text">将文件拖到此处，或 <button id="chooseFile">点击上传</button></div>
+          <div class="upload-hint">支持 .xls、.xlsx、.csv 文件，单次最多导入 1000 条</div>
+          <input type="file" id="fileInput" accept=".xls,.xlsx,.csv" hidden>
+        </div>
+        <div class="file-card" id="fileCard"><div class="file-type">XLS</div><div class="file-info"><div class="file-name" id="fileName"></div><div class="file-result" id="fileResult">文件校验通过</div></div><button class="file-remove" id="removeFile">×</button></div>
+      </div>
+      <div class="modal-footer"><button class="btn" data-close="importModal">取 消</button><button class="btn btn-primary" id="confirmImport" disabled>确认导入</button></div>
+    </div>
+  </div>
+
+  <!-- 批量设置弹窗 -->
+  <div class="overlay" id="batchModal" role="dialog" aria-modal="true" aria-labelledby="batchTitle">
+    <div class="modal modal-sm">
+      <div class="modal-header"><div class="modal-title" id="batchTitle">批量设置展示价格</div><button class="modal-close" data-close="batchModal">×</button></div>
+      <div class="modal-body">
+        <div class="form-row"><div class="form-label"><span class="required">*</span>设置范围</div><div class="scope-text">当前筛选结果 <small>共 10 套房源</small></div></div>
+        <div class="form-row"><label class="form-label" for="ratio"><span class="required">*</span>挂牌价比例</label><div class="ratio-control"><input id="ratio" type="number" min="1" max="200" step="0.1" value="95"><span>%</span></div></div>
+        <div class="example-box">计算规则：展示总价 = 挂牌总价 × 设置比例<br>示例：挂牌总价 <strong>460.82 万元</strong>，按 <strong id="ratioExample">95%</strong> 设置，展示总价为 <strong id="totalExample">437.78 万元</strong>。</div>
+        <div class="tip-strip" style="margin-top:20px"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 11v6m0-10v1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><div>确认后将覆盖当前筛选结果中已有的展示价格，请谨慎操作。</div></div>
+      </div>
+      <div class="modal-footer"><button class="btn" data-close="batchModal">取 消</button><button class="btn btn-primary" id="confirmBatch">确认设置</button></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const projects = [
+      '天投·鑫辰','天投天成璞院','光耀花园','越秀天悦云起','和喜域峰名邸','红麓宸院','云曜花园','中铁艺术城先锋园','新里里','中海桐梓林蘭宸','青云天悦花园','保利金沙天曜','中旅柏宸溪庐','龙湖滨江璟萃','卓萃名邸','澳南·锦官序','越秀天悦云萃三期','唐人街相府花园','交投电建·善成华曦府小区','清凤阅江源小区'
+    ];
+    const houses = [
+      {building:3, unit:1, floor:25, room:'2503', id:'10598266', area:138.29, type:'4室2厅3卫2阳台', listingUnit:33322.73, listingTotal:4608200, displayTotal:438.00, status:'可售'},
+      {building:3, unit:1, floor:25, room:'2502', id:'10598267', area:127.48, type:'3室2厅2卫2阳台', listingUnit:32789.78, listingTotal:4180041, displayTotal:null, status:'已锁定合同'},
+      {building:3, unit:1, floor:25, room:'2501', id:'10598268', area:138.29, type:'4室2厅3卫2阳台', listingUnit:32879.55, listingTotal:4546913, displayTotal:null, status:'可售'},
+      {building:3, unit:1, floor:24, room:'2403', id:'10598269', area:138.29, type:'4室2厅3卫2阳台', listingUnit:33768.19, listingTotal:4669803, displayTotal:null, status:'已签约'},
+      {building:3, unit:1, floor:24, room:'2402', id:'10598270', area:127.48, type:'3室2厅2卫2阳台', listingUnit:33234.10, listingTotal:4236683, displayTotal:402.49, status:'可售'},
+      {building:3, unit:1, floor:24, room:'2401', id:'10598271', area:138.29, type:'4室2厅3卫2阳台', listingUnit:33322.73, listingTotal:4608200, displayTotal:null, status:'已锁定合同'},
+      {building:3, unit:1, floor:23, room:'2303', id:'10598272', area:138.29, type:'4室2厅3卫2阳台', listingUnit:33880.69, listingTotal:4685361, displayTotal:null, status:'已签约'},
+      {building:3, unit:1, floor:23, room:'2302', id:'10598273', area:127.48, type:'3室2厅2卫2阳台', listingUnit:33347.74, listingTotal:4251170, displayTotal:null, status:'已锁定合同'},
+      {building:3, unit:1, floor:23, room:'2301', id:'10598274', area:138.29, type:'4室2厅3卫2阳台', listingUnit:33434.10, listingTotal:4623602, displayTotal:null, status:'可售'},
+      {building:3, unit:1, floor:22, room:'2203', id:'10598275', area:138.29, type:'4室2厅3卫2阳台', listingUnit:33990.92, listingTotal:4700604, displayTotal:null, status:'可售'}
+    ];
+
+    const icons = {
+      folder: '<svg class="folder-icon" viewBox="0 0 24 24" fill="none"><path d="M3 6.5h6l2 2h10v10H3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>',
+      file: '<svg class="file-icon" viewBox="0 0 24 24" fill="none"><path d="M6 3h8l4 4v14H6z" stroke="currentColor" stroke-width="1.7"/><path d="M14 3v5h5" stroke="currentColor" stroke-width="1.7"/></svg>'
+    };
+
+    function renderTree(filter = '') {
+      const root = document.getElementById('projectTree');
+      root.innerHTML = projects.filter(p => p.includes(filter.trim())).map(name => {
+        const selected = name === '中铁艺术城先锋园';
+        return `<div class="tree-item ${selected ? 'selected' : ''}"><span class="chevron">${selected ? '▼' : '▶'}</span>${icons.folder}<span>${name}</span></div>${selected ? `<div class="tree-item child">${icons.file}<span>${name}</span></div>` : ''}`;
+      }).join('');
+    }
+
+    function money(value) { return Number(value).toLocaleString('zh-CN', {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
+    function displayUnit(house) { return house.displayTotal == null ? null : house.displayTotal * 10000 / house.area; }
+
+    function renderRows(filter = '') {
+      const rows = houses.filter(h => h.id.includes(filter.trim()));
+      document.getElementById('recordCount').textContent = rows.length;
+      document.getElementById('pricedCount').textContent = houses.filter(h => h.displayTotal != null).length;
+      document.getElementById('houseRows').innerHTML = rows.map(h => {
+        const unitPrice = displayUnit(h);
+        return `<tr data-id="${h.id}">
+          <td>中铁艺术城先锋园</td><td>${h.building}</td><td>${h.unit}</td><td>${h.floor}</td><td>${h.room}</td><td>${h.id}</td>
+          <td>${h.area.toFixed(2)}</td><td>${h.type}</td><td>${money(h.listingUnit)}</td><td>${money(h.listingTotal)}</td>
+          <td><label class="price-input-wrap"><input class="price-input" type="number" min="0" step="0.01" value="${h.displayTotal == null ? '' : h.displayTotal.toFixed(2)}" placeholder="请输入"><span class="input-unit">万</span></label></td>
+          <td class="computed-price ${unitPrice == null ? 'empty' : ''}">${unitPrice == null ? '--' : money(unitPrice)}</td>
+          <td><span class="status-tag ${h.status !== '可售' ? 'locked' : ''}">${h.status}</span></td><td></td>
+          <td><a href="#" class="action-link">编辑</a><a href="#" class="action-link">删除</a></td></tr>`;
+      }).join('');
+      document.querySelectorAll('.price-input').forEach(input => {
+        input.addEventListener('input', event => {
+          const row = event.target.closest('tr');
+          const house = houses.find(h => h.id === row.dataset.id);
+          const value = event.target.value;
+          house.displayTotal = value === '' ? null : Math.max(0, Number(value));
+          const cell = row.querySelector('.computed-price');
+          const calculated = displayUnit(house);
+          cell.textContent = calculated == null ? '--' : money(calculated);
+          cell.classList.toggle('empty', calculated == null);
+          document.getElementById('pricedCount').textContent = houses.filter(h => h.displayTotal != null).length;
+        });
+        input.addEventListener('change', () => showToast('展示价格已更新', 'success'));
+      });
+      document.querySelectorAll('.action-link').forEach(link => link.addEventListener('click', e => e.preventDefault()));
+    }
+
+    function openModal(id) { document.getElementById(id).classList.add('open'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+    document.querySelectorAll('[data-close]').forEach(btn => btn.addEventListener('click', () => closeModal(btn.dataset.close)));
+    document.querySelectorAll('.overlay').forEach(el => el.addEventListener('click', e => { if (e.target === el) closeModal(el.id); }));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.overlay.open').forEach(el => closeModal(el.id)); });
+
+    let toastTimer;
+    function showToast(text, type = 'success') {
+      const toast = document.getElementById('toast');
+      toast.textContent = text; toast.className = `toast ${type} show`;
+      clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    document.getElementById('treeSearch').addEventListener('input', e => renderTree(e.target.value));
+    document.getElementById('searchBtn').addEventListener('click', () => renderRows(document.getElementById('uniqueSearch').value));
+    document.getElementById('resetBtn').addEventListener('click', () => { document.getElementById('uniqueSearch').value = ''; renderRows(); });
+    document.getElementById('importBtn').addEventListener('click', () => openModal('importModal'));
+    document.getElementById('batchBtn').addEventListener('click', () => openModal('batchModal'));
+
+    // 批量比例设置
+    const ratioInput = document.getElementById('ratio');
+    function updateExample() {
+      const ratio = Math.max(0, Number(ratioInput.value) || 0);
+      document.getElementById('ratioExample').textContent = `${ratio}%`;
+      document.getElementById('totalExample').textContent = `${(460.82 * ratio / 100).toFixed(2)} 万元`;
+    }
+    ratioInput.addEventListener('input', updateExample);
+    document.getElementById('confirmBatch').addEventListener('click', () => {
+      const ratio = Number(ratioInput.value);
+      if (!Number.isFinite(ratio) || ratio <= 0 || ratio > 200) { showToast('请输入 1%～200% 的挂牌价比例', 'error'); return; }
+      houses.forEach(h => h.displayTotal = Number((h.listingTotal / 10000 * ratio / 100).toFixed(2)));
+      renderRows(document.getElementById('uniqueSearch').value);
+      closeModal('batchModal');
+      showToast(`已按挂牌价 ${ratio}% 为 10 套房源生成展示价格`, 'success');
+    });
+
+    // Excel 兼容模板下载与导入
+    let importedRows = [];
+    const fileInput = document.getElementById('fileInput');
+    const chooseFile = document.getElementById('chooseFile');
+    const dropzone = document.getElementById('dropzone');
+    chooseFile.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('click', e => { if (e.target !== chooseFile) fileInput.click(); });
+    ['dragenter','dragover'].forEach(type => dropzone.addEventListener(type, e => { e.preventDefault(); dropzone.classList.add('dragover'); }));
+    ['dragleave','drop'].forEach(type => dropzone.addEventListener(type, e => { e.preventDefault(); dropzone.classList.remove('dragover'); }));
+    dropzone.addEventListener('drop', e => { if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
+    fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
+
+    document.getElementById('downloadTemplate').addEventListener('click', () => {
+      const sampleRows = houses.slice(0, 3).map(h => `<tr><td>${h.id}</td><td></td></tr>`).join('');
+      const excel = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="UTF-8"></head><body><table><tr><th>房屋唯一号</th><th>对外展示总价（万元）</th></tr>${sampleRows}</table></body></html>`;
+      const blob = new Blob(['\ufeff', excel], {type:'application/vnd.ms-excel;charset=utf-8'});
+      const url = URL.createObjectURL(blob); const a = document.createElement('a');
+      a.href = url; a.download = '对外展示价格导入模板.xls'; a.click(); URL.revokeObjectURL(url);
+      showToast('模板下载成功', 'success');
+    });
+
+    async function handleFile(file) {
+      const ext = file.name.split('.').pop().toLowerCase();
+      if (!['xls','xlsx','csv'].includes(ext)) { showToast('请上传 xls、xlsx 或 csv 文件', 'error'); return; }
+      importedRows = [];
+      if (ext !== 'xlsx') {
+        try {
+          const text = await file.text();
+          const plain = text.replace(/<\/tr>/gi, '\n').replace(/<\/t[dh]>/gi, ',').replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ');
+          plain.split(/\r?\n/).forEach(line => {
+            const cols = line.split(/[,\t，]/).map(s => s.trim()).filter(Boolean);
+            if (/^\d{8,}$/.test(cols[0] || '') && Number(cols[1]) > 0) importedRows.push({id:cols[0], total:Number(cols[1])});
+          });
+        } catch (_) { importedRows = []; }
+      }
+      // 原型支持真实读取 xls/csv；二进制 xlsx 用校验通过后的示例数据模拟导入。
+      if (!importedRows.length) importedRows = houses.slice(0, 6).map((h, i) => ({id:h.id, total:Number((h.listingTotal / 10000 * (0.92 + i * .005)).toFixed(2))}));
+      document.getElementById('fileName').textContent = file.name;
+      document.getElementById('fileResult').textContent = `文件校验通过，可匹配 ${importedRows.length} 套房源`;
+      document.getElementById('fileCard').classList.add('show');
+      document.getElementById('confirmImport').disabled = false;
+    }
+
+    document.getElementById('removeFile').addEventListener('click', () => {
+      importedRows = []; fileInput.value = ''; document.getElementById('fileCard').classList.remove('show'); document.getElementById('confirmImport').disabled = true;
+    });
+    document.getElementById('confirmImport').addEventListener('click', () => {
+      let matched = 0;
+      importedRows.forEach(row => { const house = houses.find(h => h.id === row.id); if (house) { house.displayTotal = row.total; matched++; } });
+      renderRows(document.getElementById('uniqueSearch').value); closeModal('importModal');
+      showToast(`导入成功，已更新 ${matched} 套房源展示价格`, 'success');
+      importedRows = []; fileInput.value = ''; document.getElementById('fileCard').classList.remove('show'); document.getElementById('confirmImport').disabled = true;
+    });
+
+    renderTree();
+    renderRows();
+    const demoModal = new URLSearchParams(location.search).get('modal');
+    if (demoModal === 'import') openModal('importModal');
+    if (demoModal === 'batch') openModal('batchModal');
+  </script>
+</body>
+</html>

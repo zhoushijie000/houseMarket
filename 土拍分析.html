@@ -260,40 +260,6 @@
       padding: 14px 12px;
     }
 
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 4px;
-      text-align: center;
-    }
-
-    .stat-pill strong {
-      width: clamp(46px, 13vw, 54px);
-      height: clamp(46px, 13vw, 54px);
-      display: grid;
-      place-items: center;
-      margin: 0 auto 10px;
-      border-radius: 999px;
-      color: #fff;
-      font-size: 16px;
-      line-height: 1;
-      font-weight: 900;
-    }
-
-    .stat-pill span {
-      display: block;
-      color: #2f3338;
-      font-size: 11px;
-      line-height: 1.25;
-      font-weight: 700;
-    }
-
-    .stat-pill:nth-child(1) strong { background: linear-gradient(145deg, #ffae55, #ff8124); }
-    .stat-pill:nth-child(2) strong { background: linear-gradient(145deg, #ff9a3c, #fd5d00); }
-    .stat-pill:nth-child(3) strong { background: linear-gradient(145deg, #ff784f, #f04438); }
-    .stat-pill:nth-child(4) strong { background: linear-gradient(145deg, #ffb43f, #ff7a00); }
-    .stat-pill:nth-child(5) strong { background: linear-gradient(145deg, #ff7136, #d94b00); }
-
     .ranking {
       padding: 0;
       overflow: hidden;
@@ -301,7 +267,7 @@
 
     .ranking-tabs {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 6px;
       padding: 10px 10px 0;
       background: linear-gradient(180deg, #fff4e7 0, #fff9f4 100%);
@@ -352,10 +318,19 @@
     }
 
     .ranking-row {
+      width: 100%;
       display: grid;
       grid-template-columns: 32px 1fr auto;
       align-items: center;
       gap: 10px;
+      padding: 3px 2px;
+      border-radius: 8px;
+      text-align: left;
+      transition: background 0.18s ease;
+    }
+
+    .ranking-row:active {
+      background: #fff5ed;
     }
 
     .medal {
@@ -412,89 +387,279 @@
       white-space: nowrap;
     }
 
-    .batch-shell {
-      padding: 12px;
+    .ranking-detail-view {
+      min-height: calc(100vh - 34px);
+      padding-bottom: calc(20px + var(--safe-bottom));
+      background: var(--bg);
     }
 
-    .batch-tabs {
-      display: grid;
-      grid-auto-flow: column;
-      grid-auto-columns: minmax(124px, 1fr);
-      gap: 10px;
-      overflow-x: auto;
-      padding-bottom: 2px;
-      scrollbar-width: none;
-    }
-
-    .batch-tabs::-webkit-scrollbar {
-      display: none;
-    }
-
-    .batch-tab {
-      position: relative;
-      min-height: 86px;
-      padding: 14px 12px 12px;
-      border-radius: 10px;
-      color: #53616d;
-      background: #eef2f3;
-      text-align: left;
-      box-shadow: inset 0 0 0 1px rgba(216, 223, 226, 0.9);
-    }
-
-    .batch-tab.is-active {
-      color: var(--brand-deep);
-      background: linear-gradient(180deg, #fff7f0 0, #ffeadb 100%);
-      box-shadow: inset 0 0 0 2px rgba(253, 93, 0, 0.3);
-    }
-
-    .batch-tab.is-active::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      bottom: -7px;
-      width: 12px;
-      height: 12px;
-      background: #ffeadb;
-      border-right: 2px solid rgba(253, 93, 0, 0.3);
-      border-bottom: 2px solid rgba(253, 93, 0, 0.3);
-      transform: translateX(-50%) rotate(45deg);
-    }
-
-    .batch-tab.has-badge {
-      padding-top: 28px;
-    }
-
-    .batch-badge {
-      position: absolute;
-      top: 6px;
-      right: 7px;
-      min-width: 38px;
-      height: 18px;
-      display: inline-grid;
-      place-items: center;
-      padding: 0 6px;
-      border-radius: 6px;
+    .ranking-detail-hero {
+      padding: 8px 16px 28px;
       color: #fff;
-      background: linear-gradient(145deg, #ff9a3c, #fd5d00);
-      font-size: 9px;
+      background:
+        radial-gradient(circle at 90% 6%, rgba(255, 255, 255, 0.22), transparent 30%),
+        linear-gradient(145deg, var(--brand) 0%, var(--brand-2) 100%);
+    }
+
+    .ranking-detail-nav {
+      display: grid;
+      grid-template-columns: 40px 1fr 40px;
+      align-items: center;
+      min-height: 44px;
+    }
+
+    .ranking-detail-back {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(139, 51, 0, 0.18);
+    }
+
+    .ranking-detail-back svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .ranking-detail-nav h2 {
+      margin: 0;
+      font-size: 18px;
+      text-align: center;
+    }
+
+    .ranking-detail-nav__spacer {
+      width: 40px;
+      height: 40px;
+    }
+
+    .ranking-detail-heading {
+      margin-top: 14px;
+    }
+
+    .ranking-detail-heading h1 {
+      margin: 0;
+      font-size: 23px;
+      line-height: 1.35;
+      font-weight: 900;
+    }
+
+    .ranking-detail-content {
+      display: grid;
+      gap: 12px;
+      padding: 0 14px;
+      margin-top: -14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .ranking-detail-tabs {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 5px;
+      padding: 5px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(16, 24, 40, 0.09);
+    }
+
+    .ranking-detail-tab {
+      min-height: 40px;
+      padding: 0 5px;
+      border-radius: 9px;
+      color: var(--text-2);
+      font-size: 11px;
       font-weight: 800;
     }
 
-    .batch-tab strong {
+    .ranking-detail-tab.is-active {
+      color: var(--brand);
+      background: #fff1e7;
+    }
+
+    .ranking-overview {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      padding: 14px 8px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 5px 18px rgba(16, 24, 40, 0.055);
+    }
+
+    .ranking-overview__item {
+      min-width: 0;
+      padding: 0 6px;
+      text-align: center;
+    }
+
+    .ranking-overview__item + .ranking-overview__item {
+      border-left: 1px solid var(--line);
+    }
+
+    .ranking-overview strong,
+    .ranking-overview span {
+      display: block;
+    }
+
+    .ranking-overview strong {
+      color: #2e333a;
+      font-size: 14px;
+      line-height: 1.2;
+      font-weight: 900;
+    }
+
+    .ranking-overview span {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 9px;
+    }
+
+    .ranking-detail-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .leaderboard-card {
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      min-height: 86px;
+      padding: 12px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 5px 18px rgba(16, 24, 40, 0.055);
+    }
+
+    .leaderboard-rank {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      color: #7d8795;
+      background: #f1f3f6;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .leaderboard-card:nth-child(1) .leaderboard-rank {
+      color: #aa6818;
+      background: linear-gradient(145deg, #fff3d4, #ffd083);
+    }
+
+    .leaderboard-card:nth-child(2) .leaderboard-rank {
+      color: #6d7b93;
+      background: linear-gradient(145deg, #f3f6fb, #d9dfeb);
+    }
+
+    .leaderboard-card:nth-child(3) .leaderboard-rank {
+      color: #a96040;
+      background: linear-gradient(145deg, #fff0e6, #f5c4ad);
+    }
+
+    .leaderboard-main {
+      min-width: 0;
+    }
+
+    .leaderboard-main strong,
+    .leaderboard-main span {
       display: block;
       overflow: hidden;
-      color: currentColor;
-      font-size: 14px;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
-    .batch-tab span {
+    .leaderboard-main strong {
+      color: #242a31;
+      font-size: 13px;
+      line-height: 1.35;
+      font-weight: 800;
+    }
+
+    .leaderboard-main span {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .leaderboard-value {
+      color: var(--brand);
+      font-size: 15px;
+      font-weight: 900;
+      white-space: nowrap;
+      text-align: right;
+    }
+
+    .leaderboard-value small {
       display: block;
-      margin-top: 7px;
-      color: currentColor;
-      font-size: 11px;
-      opacity: 0.84;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 9px;
+      font-weight: 500;
+    }
+
+    .batch-shell {
+      padding: 12px;
+    }
+
+    .status-tabs {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(58px, 1fr));
+      gap: 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .status-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .status-tab {
+      min-width: 58px;
+      min-height: 54px;
+      padding: 7px 6px 6px;
+      border-radius: 9px;
+      color: #53616d;
+      background: #f1f3f5;
+      white-space: nowrap;
+      box-shadow: inset 0 0 0 1px rgba(216, 223, 226, 0.9);
+      transition: color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .status-tab strong,
+    .status-tab span {
+      display: block;
+    }
+
+    .status-tab strong {
+      font-size: 13px;
+      line-height: 1.2;
+      font-weight: 800;
+    }
+
+    .status-tab span {
+      margin-top: 4px;
+      color: #8a939e;
+      font-size: 10px;
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .status-tab.is-active {
+      color: var(--brand);
+      background: #fff1e7;
+      box-shadow: inset 0 0 0 1px rgba(253, 93, 0, 0.34);
+    }
+
+    .status-tab.is-active span {
+      color: var(--brand);
     }
 
     .batch-summary {
@@ -536,7 +701,7 @@
 
     .filters {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       min-width: 0;
       gap: 8px;
     }
@@ -555,6 +720,14 @@
       padding: 0 7px;
       font-size: 12px;
       font-weight: 700;
+      transition: color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .filter-chip.is-active,
+    .filter-chip.is-open {
+      color: var(--brand);
+      background: #fff7f1;
+      box-shadow: inset 0 0 0 1px rgba(253, 93, 0, 0.26), 0 4px 16px rgba(16, 24, 40, 0.06);
     }
 
     .filter-chip span {
@@ -568,6 +741,179 @@
       width: 14px;
       height: 14px;
       stroke-width: 2.2;
+      transition: transform 0.18s ease;
+    }
+
+    .filter-chip.is-open svg {
+      transform: rotate(180deg);
+    }
+
+    body.is-filter-open {
+      overflow: hidden;
+    }
+
+    .filter-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .filter-modal[hidden] {
+      display: none;
+    }
+
+    .filter-modal__backdrop {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(17, 24, 39, 0.48);
+      backdrop-filter: blur(1px);
+    }
+
+    .filter-sheet {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 390px);
+      max-height: min(72vh, 560px);
+      overflow-y: auto;
+      padding: 18px 16px calc(14px + var(--safe-bottom));
+      border-radius: 18px 18px 0 0;
+      background: var(--surface);
+      box-shadow: 0 -12px 36px rgba(15, 23, 42, 0.18);
+      animation: filter-sheet-in 0.22s ease-out;
+    }
+
+    @keyframes filter-sheet-in {
+      from { transform: translateY(18px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .filter-sheet__handle {
+      width: 36px;
+      height: 4px;
+      margin: -8px auto 12px;
+      border-radius: 999px;
+      background: #d8dce2;
+    }
+
+    .filter-sheet__head {
+      display: grid;
+      grid-template-columns: 36px minmax(0, 1fr) 36px;
+      align-items: center;
+    }
+
+    .filter-sheet__head h2 {
+      margin: 0;
+      color: #20252c;
+      font-size: 17px;
+      line-height: 1.4;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .filter-sheet__close {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      color: #66707c;
+      background: #f3f5f7;
+    }
+
+    .filter-sheet__close svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
+    .filter-sheet__hint {
+      margin: 7px 0 16px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .filter-options {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .filter-options.is-list {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 8px;
+    }
+
+    .filter-option {
+      position: relative;
+      min-height: 44px;
+      padding: 8px 10px;
+      border-radius: 9px;
+      color: #4d5764;
+      background: #f4f6f8;
+      box-shadow: inset 0 0 0 1px transparent;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .filter-options.is-list .filter-option {
+      min-height: 48px;
+      padding: 0 42px 0 14px;
+      text-align: left;
+    }
+
+    .filter-option.is-selected {
+      color: var(--brand);
+      background: #fff3e9;
+      box-shadow: inset 0 0 0 1px rgba(253, 93, 0, 0.34);
+    }
+
+    .filter-options.is-list .filter-option.is-selected::after {
+      content: "";
+      position: absolute;
+      right: 17px;
+      top: 15px;
+      width: 13px;
+      height: 7px;
+      border-left: 2px solid var(--brand);
+      border-bottom: 2px solid var(--brand);
+      transform: rotate(-45deg);
+    }
+
+    .filter-sheet__actions {
+      display: grid;
+      grid-template-columns: 92px minmax(0, 1fr);
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .filter-sheet__reset,
+    .filter-sheet__confirm {
+      min-height: 46px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .filter-sheet__reset {
+      color: #5d6672;
+      background: #f1f3f5;
+    }
+
+    .filter-sheet__confirm {
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand-2), var(--brand));
+      box-shadow: 0 7px 16px rgba(253, 93, 0, 0.24);
     }
 
     .land-list {
@@ -577,8 +923,28 @@
     }
 
     .land-card {
+      position: relative;
       overflow: hidden;
       padding: 13px 12px;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .land-card:active {
+      transform: scale(0.985);
+      box-shadow: 0 4px 14px rgba(16, 24, 40, 0.08);
+    }
+
+    .land-card::after {
+      content: "";
+      position: absolute;
+      right: 13px;
+      bottom: 16px;
+      width: 7px;
+      height: 7px;
+      border-top: 1.8px solid #b1b7c0;
+      border-right: 1.8px solid #b1b7c0;
+      transform: rotate(45deg);
     }
 
     .land-title {
@@ -660,6 +1026,189 @@
       overflow-wrap: anywhere;
     }
 
+    .view[hidden] {
+      display: none !important;
+    }
+
+    .detail-view {
+      min-height: calc(100vh - 34px);
+      padding-bottom: calc(20px + var(--safe-bottom));
+      background: var(--bg);
+    }
+
+    .detail-hero {
+      padding: 8px 16px 26px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 88% 10%, rgba(255, 255, 255, 0.2), transparent 28%),
+        linear-gradient(145deg, var(--brand) 0%, var(--brand-2) 100%);
+    }
+
+    .detail-nav {
+      display: grid;
+      grid-template-columns: 40px 1fr 40px;
+      align-items: center;
+      min-height: 44px;
+    }
+
+    .detail-back,
+    .detail-share {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(139, 51, 0, 0.18);
+    }
+
+    .detail-nav svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .detail-nav h2 {
+      margin: 0;
+      font-size: 18px;
+      text-align: center;
+    }
+
+    .detail-summary {
+      margin-top: 12px;
+    }
+
+    .detail-summary h1 {
+      margin: 0;
+      font-size: 21px;
+      line-height: 1.4;
+      font-weight: 800;
+    }
+
+    .deal-highlight {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin: -14px 14px 0;
+      padding: 16px 8px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(16, 24, 40, 0.1);
+      position: relative;
+      z-index: 1;
+    }
+
+    .deal-highlight__item {
+      min-width: 0;
+      padding: 0 8px;
+      text-align: center;
+    }
+
+    .deal-highlight__item + .deal-highlight__item {
+      border-left: 1px solid var(--line);
+    }
+
+    .deal-highlight strong,
+    .deal-highlight span {
+      display: block;
+    }
+
+    .deal-highlight strong {
+      color: var(--brand);
+      font-size: 17px;
+      line-height: 1.2;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .deal-highlight span {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .detail-content {
+      display: grid;
+      gap: 12px;
+      padding: 12px 14px 0;
+    }
+
+    .detail-card {
+      padding: 16px 14px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 5px 18px rgba(16, 24, 40, 0.055);
+    }
+
+    .detail-card__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .detail-card__title {
+      position: relative;
+      margin: 0;
+      padding-left: 10px;
+      color: #1f242b;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .detail-card__title::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 3px;
+      bottom: 3px;
+      width: 4px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--brand-2), var(--brand));
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 15px 16px;
+    }
+
+    .info-item {
+      min-width: 0;
+    }
+
+    .info-item.is-wide {
+      grid-column: 1 / -1;
+    }
+
+    .info-item dt,
+    .info-item dd {
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .info-item dt {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.3;
+    }
+
+    .info-item dd {
+      margin-top: 5px;
+      color: #353b43;
+      font-size: 13px;
+      line-height: 1.5;
+      font-weight: 700;
+    }
+
+    .info-item dd.is-brand {
+      color: var(--brand);
+    }
+
     @media (max-width: 360px) {
       .hero {
         padding-right: 12px;
@@ -701,6 +1250,16 @@
       box-shadow: 0 8px 24px rgba(16, 24, 40, 0.08);
     }
 
+    .data-disclaimer {
+      margin: 0;
+      padding: 6px 18px 0;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.7;
+      text-align: justify;
+      overflow-wrap: anywhere;
+    }
+
     @media (min-width: 431px) {
       body {
         padding: 16px 0;
@@ -725,6 +1284,7 @@
       </div>
     </div>
 
+    <div class="view" id="listView">
     <header class="hero">
       <div class="hero-top">
         <a class="hero-back" href="./安家成都-首页-扫码.html" aria-label="返回首页">
@@ -746,191 +1306,365 @@
     </header>
 
     <div class="content">
-      <section class="section" aria-label="土拍概览">
-        <div class="stats-grid" id="statsGrid"></div>
-      </section>
-
       <section class="section ranking" aria-label="成交榜单">
         <div class="ranking-tabs">
           <button class="ranking-tab is-active" type="button" data-ranking-tab="floor">成交楼面价</button>
-          <button class="ranking-tab" type="button" data-ranking-tab="brand">品牌土地成交</button>
           <button class="ranking-tab" type="button" data-ranking-tab="premium">土拍溢价率榜</button>
         </div>
         <div class="ranking-panel">
           <div class="section-head">
             <strong id="rankingTitle">历史成交地块排行</strong>
-            <a class="section-link" href="javascript:void(0)">完整榜单 &rsaquo;</a>
+            <button class="section-link" id="rankingDetailOpen" type="button">完整榜单 &rsaquo;</button>
           </div>
           <div class="ranking-list" id="rankingList"></div>
         </div>
       </section>
 
-      <section class="batch-shell" aria-label="批次与筛选">
-        <div class="batch-tabs" id="batchTabs"></div>
-        <div class="batch-summary">
-          <div class="batch-summary__meta" id="batchSummary"></div>
-          <button class="batch-cta" type="button">
-            查看批次详情
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
-          </button>
-        </div>
+      <section class="batch-shell" aria-label="地块状态筛选">
+        <div class="status-tabs" id="statusTabs"></div>
       </section>
 
       <div class="filters" aria-label="地块筛选">
-        <button class="filter-chip" type="button" data-filter-key="district"><span id="districtLabel">区域</span><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg></button>
-        <button class="filter-chip" type="button" data-filter-key="usage"><span id="usageLabel">用途</span><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg></button>
-        <button class="filter-chip" type="button" data-filter-key="status"><span id="statusLabel">状态</span><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg></button>
-        <button class="filter-chip" type="button" data-filter-key="sort"><span id="sortLabel">排序</span><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg></button>
+        <button class="filter-chip" type="button" data-filter-key="district" aria-expanded="false" aria-controls="filterModal"><span id="districtLabel">区域</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></button>
+        <button class="filter-chip" type="button" data-filter-key="usage" aria-expanded="false" aria-controls="filterModal"><span id="usageLabel">用途</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></button>
+        <button class="filter-chip" type="button" data-filter-key="sort" aria-expanded="false" aria-controls="filterModal"><span id="sortLabel">排序</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></button>
       </div>
 
       <section class="land-list" id="landList" aria-label="土拍地块列表"></section>
     </div>
+    </div>
+
+    <section class="detail-view view" id="detailView" aria-label="土拍详情" hidden>
+      <header class="detail-hero">
+        <nav class="detail-nav" aria-label="详情页导航">
+          <button class="detail-back" id="detailBack" type="button" aria-label="返回土拍列表">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+          </button>
+          <h2>土拍详情</h2>
+          <button class="detail-share" type="button" aria-label="分享地块">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5" /><circle cx="6" cy="12" r="2.5" /><circle cx="18" cy="19" r="2.5" /><path d="m8.2 10.8 7.6-4.5M8.2 13.2l7.6 4.5" /></svg>
+          </button>
+        </nav>
+        <div class="detail-summary">
+          <h1 id="detailTitle"></h1>
+        </div>
+      </header>
+
+      <div class="deal-highlight" id="dealHighlight"></div>
+
+      <div class="detail-content">
+        <section class="detail-card" aria-labelledby="basicInfoTitle">
+          <div class="detail-card__head">
+            <h3 class="detail-card__title" id="basicInfoTitle">基础信息</h3>
+          </div>
+          <dl class="info-grid" id="basicInfo"></dl>
+        </section>
+
+        <section class="detail-card" aria-labelledby="dealInfoTitle">
+          <div class="detail-card__head">
+            <h3 class="detail-card__title" id="dealInfoTitle">成交信息</h3>
+          </div>
+          <dl class="info-grid" id="dealInfo"></dl>
+        </section>
+
+      </div>
+    </section>
+
+    <section class="ranking-detail-view view" id="rankingDetailView" aria-label="土拍榜单详情" hidden>
+      <header class="ranking-detail-hero">
+        <nav class="ranking-detail-nav" aria-label="榜单详情导航">
+          <button class="ranking-detail-back" id="rankingDetailBack" type="button" aria-label="返回土拍分析">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+          </button>
+          <h2>榜单详情</h2>
+          <span class="ranking-detail-nav__spacer" aria-hidden="true"></span>
+        </nav>
+        <div class="ranking-detail-heading">
+          <h1 id="rankingDetailTitle"></h1>
+        </div>
+      </header>
+
+      <div class="ranking-detail-content">
+        <div class="ranking-detail-tabs" aria-label="切换榜单">
+          <button class="ranking-detail-tab is-active" type="button" data-ranking-detail-tab="floor">成交楼面价</button>
+          <button class="ranking-detail-tab" type="button" data-ranking-detail-tab="premium">土地溢价率</button>
+        </div>
+
+        <section class="ranking-overview" id="rankingOverview" aria-label="榜单统计"></section>
+        <section class="ranking-detail-list" id="rankingDetailList" aria-label="完整榜单"></section>
+      </div>
+    </section>
+
+    <p class="data-disclaimer" role="note">
+      注：本数据由系统基于互联网公开信息采集并加工生成，非政府官方发布。数据仅供参考，可能存在延迟或偏差，不构成任何交易、投资或决策依据。具体情况请以相关政府主管部门或官方机构最新公示为准。
+    </p>
   </main>
 
-  <script>
-    const stats = [
-      { value: 138, label: "拟出让" },
-      { value: 5, label: "即将拍卖" },
-      { value: 627, label: "成交地块" },
-      { value: 29, label: "流拍地块" },
-      { value: 821, label: "全部地块" }
-    ];
+  <div class="filter-modal" id="filterModal" hidden>
+    <button class="filter-modal__backdrop" id="filterBackdrop" type="button" aria-label="关闭筛选"></button>
+    <section class="filter-sheet" role="dialog" aria-modal="true" aria-labelledby="filterSheetTitle" aria-describedby="filterSheetHint">
+      <div class="filter-sheet__handle" aria-hidden="true"></div>
+      <header class="filter-sheet__head">
+        <span aria-hidden="true"></span>
+        <h2 id="filterSheetTitle">筛选</h2>
+        <button class="filter-sheet__close" id="filterSheetClose" type="button" aria-label="关闭筛选">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+        </button>
+      </header>
+      <p class="filter-sheet__hint" id="filterSheetHint">请选择筛选条件</p>
+      <div class="filter-options" id="filterSheetOptions" role="listbox"></div>
+      <footer class="filter-sheet__actions">
+        <button class="filter-sheet__reset" id="filterSheetReset" type="button">重置</button>
+        <button class="filter-sheet__confirm" id="filterSheetConfirm" type="button">确定</button>
+      </footer>
+    </section>
+  </div>
 
+  <script>
     const rankingData = {
       floor: {
-        title: "历史成交地块排行",
+        title: "历史成交楼面价榜",
+        cycle: "2026年度",
+        scope: "成都全市",
+        updated: "07-16",
         rows: [
-          { district: "锦江区", company: "建发地产", value: "41200元/㎡" },
-          { district: "锦江区", company: "国贸地产", value: "35500元/㎡" },
-          { district: "高新区", company: "招商蛇口", value: "31700元/㎡" }
-        ]
-      },
-      brand: {
-        title: "品牌拿地热度排行",
-        rows: [
-          { district: "高新区", company: "招商蛇口", value: "18宗" },
-          { district: "天府新区", company: "建发地产", value: "14宗" },
-          { district: "锦江区", company: "华润置地", value: "12宗" }
+          { district: "锦江区", company: "建发地产", value: "41,200元/㎡", name: "锦江区柳江街道38亩住宅地块", meta: "2026-06-18 · 38.42亩" },
+          { district: "锦江区", company: "国贸地产", value: "35,500元/㎡", name: "锦江区东大街沿线22亩住宅地块", meta: "2025-09-18 · 22.64亩" },
+          { district: "高新区", company: "招商蛇口", value: "31,700元/㎡", name: "高新区新川南组团42亩地块", meta: "2026-06-30 · 42.18亩" },
+          { district: "青羊区", company: "华润置地", value: "29,800元/㎡", name: "青羊新城外金沙29亩住宅地块", meta: "2026-05-21 · 29.36亩" },
+          { district: "天府新区", company: "建发地产", value: "26,800元/㎡", name: "天府新区麓湖东侧58亩综合地块", meta: "2026-05-26 · 58.02亩" },
+          { district: "武侯区", company: "华润置地", value: "24,600元/㎡", name: "武侯新城核心31亩住兼商地块", meta: "2024-12-16 · 31.07亩" },
+          { district: "成华区", company: "保利发展", value: "23,900元/㎡", name: "成华区杉板桥24亩住宅地块", meta: "2026-04-09 · 24.80亩" },
+          { district: "金牛区", company: "成都招商", value: "13,100元/㎡", name: "金牛区高新西区3号地块", meta: "2026-07-14 · 30.30亩" },
+          { district: "龙泉驿区", company: "中铁建", value: "12,800元/㎡", name: "龙泉驿区十陵35亩住宅地块", meta: "2026-03-27 · 35.16亩" },
+          { district: "双流区", company: "成都轨道", value: "11,900元/㎡", name: "双流区怡心湖西侧46亩地块", meta: "2026-02-14 · 46.20亩" }
         ]
       },
       premium: {
-        title: "高溢价成交排行",
+        title: "土地溢价率榜",
+        cycle: "2026年度",
+        scope: "成交地块",
+        updated: "07-16",
         rows: [
-          { district: "成华区", company: "保利发展", value: "21.6%" },
-          { district: "金牛区", company: "越秀地产", value: "19.8%" },
-          { district: "高新区", company: "招商蛇口", value: "17.4%" }
+          { district: "成华区", company: "保利发展", value: "21.6%", name: "成华区杉板桥24亩住宅地块", meta: "成交楼面价 23,900元/㎡" },
+          { district: "金牛区", company: "越秀地产", value: "19.8%", name: "金牛区茶店子26亩住宅地块", meta: "成交楼面价 21,600元/㎡" },
+          { district: "高新区", company: "招商蛇口", value: "17.4%", name: "高新区新川南组团42亩地块", meta: "成交楼面价 31,700元/㎡" },
+          { district: "青羊区", company: "华润置地", value: "15.9%", name: "青羊新城外金沙29亩住宅地块", meta: "成交楼面价 29,800元/㎡" },
+          { district: "锦江区", company: "建发地产", value: "14.6%", name: "锦江区柳江街道38亩住宅地块", meta: "成交楼面价 41,200元/㎡" },
+          { district: "武侯区", company: "中海地产", value: "12.8%", name: "武侯区簇桥33亩住宅地块", meta: "成交楼面价 25,300元/㎡" },
+          { district: "天府新区", company: "建发地产", value: "11.5%", name: "天府新区麓湖东侧58亩综合地块", meta: "成交楼面价 26,800元/㎡" },
+          { district: "双流区", company: "龙湖集团", value: "9.7%", name: "双流区怡心湖南侧40亩地块", meta: "成交楼面价 18,900元/㎡" },
+          { district: "龙泉驿区", company: "中铁建", value: "8.4%", name: "龙泉驿区十陵35亩住宅地块", meta: "成交楼面价 12,800元/㎡" },
+          { district: "温江区", company: "成都城投", value: "6.9%", name: "温江区光华新城44亩住宅地块", meta: "成交楼面价 10,600元/㎡" }
         ]
       }
     };
 
-    const batches = [
-      { id: "all", name: "全部土拍", range: "全周期数据", badge: "", status: "all", lands: 821, sold: 627 },
-      { id: "2026a", name: "土地出让清单", range: "2026.01.01-2026.12.31", badge: "进行中", status: "running", lands: 37, sold: 32 },
-      { id: "2025m", name: "成都2025年中期批次", range: "2025.03.11-2025.12.31", badge: "", status: "ended", lands: 20, sold: 19 },
-      { id: "2024w", name: "成都2024年尾批次", range: "2024.12.01-2024.12.31", badge: "", status: "ended", lands: 15, sold: 13 }
+    const statusOptions = [
+      { label: "全部", count: 821 },
+      { label: "待出让", count: 143 },
+      { label: "成交", count: 627 },
+      { label: "流拍", count: 29 },
+      { label: "终止", count: 22 }
     ];
 
     const landRecords = [
-      { batch: "2026a", status: "待出让", district: "金牛区", usage: "住宅", title: "金牛区高新西区3号地块30.30亩", company: "-", floorPrice: 11900, date: "2026-07-14", volumeRate: "2.0", area: "30.2955亩", zone: "金牛区-国宾" },
-      { batch: "2026a", status: "待出让", district: "金牛区", usage: "住宅", title: "金牛区国宾片区1号地块27.05亩", company: "-", floorPrice: 13800, date: "2026-07-17", volumeRate: "2.2", area: "27.05亩", zone: "金牛区-国宾" },
-      { batch: "2026a", status: "成交", district: "高新区", usage: "住宅", title: "高新区新川南组团42亩优质地块", company: "招商蛇口", floorPrice: 31700, date: "2026-06-30", volumeRate: "2.5", area: "42.18亩", zone: "高新区-新川" },
-      { batch: "2026a", status: "成交", district: "天府新区", usage: "商住", title: "天府新区麓湖东侧综合地块58亩", company: "建发地产", floorPrice: 26800, date: "2026-05-26", volumeRate: "2.8", area: "58.02亩", zone: "天府新区-麓湖" },
-      { batch: "2025m", status: "成交", district: "锦江区", usage: "住宅", title: "锦江区东大街沿线22亩纯住宅地块", company: "国贸地产", floorPrice: 35500, date: "2025-09-18", volumeRate: "2.1", area: "22.64亩", zone: "锦江区-东大街" },
-      { batch: "2025m", status: "流拍", district: "成华区", usage: "商办", title: "成华区二仙桥创智产业地块36亩", company: "-", floorPrice: 9200, date: "2025-08-11", volumeRate: "3.0", area: "36.11亩", zone: "成华区-二仙桥" },
-      { batch: "2024w", status: "成交", district: "武侯区", usage: "住宅", title: "武侯新城核心31亩住兼商地块", company: "华润置地", floorPrice: 24600, date: "2024-12-16", volumeRate: "2.3", area: "31.07亩", zone: "武侯区-武侯新城" }
+      {
+        id: "jn-2026-027",
+        batch: "2026a",
+        status: "成交",
+        district: "金牛区",
+        usage: "住宅",
+        title: "金牛区高新西区3号地块30.30亩",
+        company: "成都招商北湖置地有限公司",
+        floorPrice: 13100,
+        date: "2026-07-14",
+        volumeRate: "2.00",
+        area: "30.3000亩",
+        zone: "金牛区-高新西区",
+        landNo: "JN04(070102):2026-027",
+        location: "金牛区高新西区3号地块",
+        landTerm: "70年",
+        landNature: "二类城镇住宅用地",
+        landUsage: "住宅用地",
+        greenRate: "不小于35%",
+        buildingDensity: "不大于25%",
+        buildingHeight: "建筑物（含所有建、构筑物及设施）最高点不大于80米",
+        totalPrice: "52916.17万元",
+        pricePerMu: "1746.6700万元/亩",
+        premiumRate: "0.10%"
+      },
+      { id: "jn-2026-028", batch: "2026a", status: "待出让", district: "金牛区", usage: "住宅", title: "金牛区国宾片区1号地块27.05亩", company: "-", floorPrice: 13800, date: "2026-07-17", volumeRate: "2.2", area: "27.05亩", zone: "金牛区-国宾" },
+      { id: "gx-2026-011", batch: "2026a", status: "成交", district: "高新区", usage: "住宅", title: "高新区新川南组团42亩优质地块", company: "招商蛇口", floorPrice: 31700, date: "2026-06-30", volumeRate: "2.5", area: "42.18亩", zone: "高新区-新川" },
+      { id: "tf-2026-009", batch: "2026a", status: "成交", district: "天府新区", usage: "商住", title: "天府新区麓湖东侧综合地块58亩", company: "建发地产", floorPrice: 26800, date: "2026-05-26", volumeRate: "2.8", area: "58.02亩", zone: "天府新区-麓湖" },
+      { id: "jj-2025-036", batch: "2025m", status: "成交", district: "锦江区", usage: "住宅", title: "锦江区东大街沿线22亩纯住宅地块", company: "国贸地产", floorPrice: 35500, date: "2025-09-18", volumeRate: "2.1", area: "22.64亩", zone: "锦江区-东大街" },
+      { id: "ch-2025-031", batch: "2025m", status: "流拍", district: "成华区", usage: "商办", title: "成华区二仙桥创智产业地块36亩", company: "-", floorPrice: 9200, date: "2025-08-11", volumeRate: "3.0", area: "36.11亩", zone: "成华区-二仙桥" },
+      { id: "wh-2024-018", batch: "2024w", status: "成交", district: "武侯区", usage: "住宅", title: "武侯新城核心31亩住兼商地块", company: "华润置地", floorPrice: 24600, date: "2024-12-16", volumeRate: "2.3", area: "31.07亩", zone: "武侯区-武侯新城" }
     ];
 
     const filterOptions = {
       district: ["区域", "金牛区", "高新区", "天府新区", "锦江区", "成华区", "武侯区"],
       usage: ["用途", "住宅", "商住", "商办"],
-      status: ["状态", "待出让", "成交", "流拍"],
-      sort: ["排序", "最新出让", "楼面价从高到低", "地块面积从大到小"]
+      sort: ["最新出让", "楼面价从高到低", "地块面积从大到小"]
+    };
+
+    const filterConfig = {
+      district: { title: "选择区域", hint: "选择地块所在行政区域", defaultValue: "区域", defaultLabel: "不限区域", chipLabel: "区域" },
+      usage: { title: "选择用途", hint: "选择土地规划用途", defaultValue: "用途", defaultLabel: "不限用途", chipLabel: "用途" },
+      sort: { title: "排序方式", hint: "选择地块列表的排序规则", defaultValue: "最新出让", defaultLabel: "最新出让", chipLabel: "排序" }
     };
 
     const filterLabels = {
       district: document.getElementById("districtLabel"),
       usage: document.getElementById("usageLabel"),
-      status: document.getElementById("statusLabel"),
       sort: document.getElementById("sortLabel")
     };
 
-    const statsGrid = document.getElementById("statsGrid");
     const rankingList = document.getElementById("rankingList");
     const rankingTitle = document.getElementById("rankingTitle");
-    const batchTabs = document.getElementById("batchTabs");
-    const batchSummary = document.getElementById("batchSummary");
+    const rankingDetailOpen = document.getElementById("rankingDetailOpen");
+    const rankingDetailView = document.getElementById("rankingDetailView");
+    const rankingDetailBack = document.getElementById("rankingDetailBack");
+    const rankingDetailTitle = document.getElementById("rankingDetailTitle");
+    const rankingOverview = document.getElementById("rankingOverview");
+    const rankingDetailList = document.getElementById("rankingDetailList");
+    const statusTabs = document.getElementById("statusTabs");
     const landList = document.getElementById("landList");
     const searchInput = document.getElementById("searchInput");
+    const listView = document.getElementById("listView");
+    const detailView = document.getElementById("detailView");
+    const detailBack = document.getElementById("detailBack");
+    const detailTitle = document.getElementById("detailTitle");
+    const dealHighlight = document.getElementById("dealHighlight");
+    const basicInfo = document.getElementById("basicInfo");
+    const dealInfo = document.getElementById("dealInfo");
+    const filterModal = document.getElementById("filterModal");
+    const filterBackdrop = document.getElementById("filterBackdrop");
+    const filterSheetTitle = document.getElementById("filterSheetTitle");
+    const filterSheetHint = document.getElementById("filterSheetHint");
+    const filterSheetOptions = document.getElementById("filterSheetOptions");
+    const filterSheetClose = document.getElementById("filterSheetClose");
+    const filterSheetReset = document.getElementById("filterSheetReset");
+    const filterSheetConfirm = document.getElementById("filterSheetConfirm");
+    const filterButtons = [...document.querySelectorAll("[data-filter-key]")];
 
     let activeRanking = "floor";
-    let activeBatch = "2026a";
+    let activeStatus = "全部";
     let filters = {
       district: "区域",
       usage: "用途",
-      status: "状态",
       sort: "最新出让"
     };
-
-    function renderStats() {
-      statsGrid.innerHTML = stats.map((item) => `
-        <div class="stat-pill">
-          <strong>${item.value}</strong>
-          <span>${item.label}</span>
-        </div>
-      `).join("");
-    }
+    let currentDetailRecord = null;
+    let listScrollTop = 0;
+    let activeFilterKey = null;
+    let draftFilterValue = null;
+    let lastFilterTrigger = null;
 
     function renderRanking() {
       const current = rankingData[activeRanking];
       rankingTitle.textContent = current.title;
-      rankingList.innerHTML = current.rows.map((row, index) => {
+      rankingList.innerHTML = current.rows.slice(0, 3).map((row, index) => {
         const medalClass = index === 1 ? "silver" : index === 2 ? "bronze" : "";
+        const mainLabel = row.district;
+        const subLabel = row.company;
         return `
-          <div class="ranking-row">
+          <button class="ranking-row" type="button" data-open-ranking="${activeRanking}" aria-label="查看${current.title}完整榜单">
             <span class="medal ${medalClass}">${index + 1}</span>
             <span class="ranking-main">
-              <strong>${row.district}</strong>
-              <span>${row.company}</span>
+              <strong>${mainLabel}</strong>
+              <span>${subLabel}</span>
             </span>
             <span class="ranking-value">${row.value}</span>
-          </div>
+          </button>
         `;
       }).join("");
+
+      rankingList.querySelectorAll("[data-open-ranking]").forEach((button) => {
+        button.addEventListener("click", () => openRankingDetail(button.dataset.openRanking));
+      });
     }
 
-    function renderBatches() {
-      batchTabs.innerHTML = batches.map((batch) => `
-        <button class="batch-tab ${batch.id === activeBatch ? "is-active" : ""} ${batch.badge ? "has-badge" : ""}" type="button" data-batch-id="${batch.id}">
-          ${batch.badge ? `<span class="batch-badge">${batch.badge}</span>` : ""}
-          <strong>${batch.name}</strong>
-          <span>${batch.range}</span>
+    function syncRankingTabs() {
+      document.querySelectorAll("[data-ranking-tab]").forEach((tab) => {
+        tab.classList.toggle("is-active", tab.dataset.rankingTab === activeRanking);
+      });
+      document.querySelectorAll("[data-ranking-detail-tab]").forEach((tab) => {
+        tab.classList.toggle("is-active", tab.dataset.rankingDetailTab === activeRanking);
+      });
+    }
+
+    function renderRankingDetail() {
+      const current = rankingData[activeRanking];
+      const valueLabel = activeRanking === "floor" ? "成交楼面价" : "成交溢价率";
+      rankingDetailTitle.textContent = current.title;
+      rankingOverview.innerHTML = `
+        <div class="ranking-overview__item"><strong>TOP ${current.rows.length}</strong><span>榜单数量</span></div>
+        <div class="ranking-overview__item"><strong>${current.cycle}</strong><span>统计周期</span></div>
+        <div class="ranking-overview__item"><strong>${current.updated}</strong><span>数据更新</span></div>
+      `;
+      rankingDetailList.innerHTML = current.rows.map((row, index) => {
+        const primary = row.name;
+        const secondary = `${row.district} · ${row.company}`;
+        return `
+          <article class="leaderboard-card">
+            <span class="leaderboard-rank">${index + 1}</span>
+            <span class="leaderboard-main">
+              <strong>${primary}</strong>
+              <span>${secondary}</span>
+              <span>${row.meta}</span>
+            </span>
+            <span class="leaderboard-value">${row.value}<small>${valueLabel}</small></span>
+          </article>
+        `;
+      }).join("");
+      syncRankingTabs();
+    }
+
+    function openRankingDetail(type = activeRanking) {
+      listScrollTop = window.scrollY;
+      activeRanking = type;
+      renderRanking();
+      renderRankingDetail();
+      listView.hidden = true;
+      detailView.hidden = true;
+      rankingDetailView.hidden = false;
+      document.title = `${rankingData[activeRanking].title} - 土拍分析`;
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }
+
+    function closeRankingDetail() {
+      rankingDetailView.hidden = true;
+      listView.hidden = false;
+      document.title = "土拍分析";
+      requestAnimationFrame(() => window.scrollTo({ top: listScrollTop, behavior: "auto" }));
+    }
+
+    function renderStatusTabs() {
+      statusTabs.innerHTML = statusOptions.map((status) => `
+        <button class="status-tab ${status.label === activeStatus ? "is-active" : ""}" type="button" data-land-status="${status.label}" aria-pressed="${status.label === activeStatus}">
+          <strong>${status.label}</strong>
+          <span>${status.count}</span>
         </button>
       `).join("");
 
-      batchTabs.querySelectorAll("[data-batch-id]").forEach((button) => {
+      statusTabs.querySelectorAll("[data-land-status]").forEach((button) => {
         button.addEventListener("click", () => {
-          activeBatch = button.dataset.batchId;
-          renderBatches();
+          activeStatus = button.dataset.landStatus;
+          renderStatusTabs();
           renderLandList();
         });
       });
-
-      const current = batches.find((batch) => batch.id === activeBatch) || batches[0];
-      batchSummary.innerHTML = `
-        <span>出让地块 <strong>${current.lands}</strong></span>
-        <span>成交地块 <strong>${current.sold}</strong></span>
-      `;
     }
 
     function getFilteredRecords() {
-      let rows = landRecords.filter((row) => activeBatch === "all" || row.batch === activeBatch);
+      let rows = landRecords.filter((row) => activeStatus === "全部" || row.status === activeStatus);
       const keyword = searchInput.value.trim();
       if (keyword) {
         rows = rows.filter((row) => `${row.title}${row.district}${row.company}${row.zone}`.includes(keyword));
       }
       if (filters.district !== "区域") rows = rows.filter((row) => row.district === filters.district);
       if (filters.usage !== "用途") rows = rows.filter((row) => row.usage === filters.usage);
-      if (filters.status !== "状态") rows = rows.filter((row) => row.status === filters.status);
 
       rows = [...rows];
       if (filters.sort === "楼面价从高到低") rows.sort((a, b) => b.floorPrice - a.floorPrice);
@@ -945,6 +1679,87 @@
       return "status-failed";
     }
 
+    function getDetailData(row) {
+      return {
+        ...row,
+        landNo: row.landNo || `CD${row.district.slice(0, 1).toUpperCase()}-${row.date.replaceAll("-", "")}`,
+        location: row.location || row.title.replace(/\d+(?:\.\d+)?亩$/, ""),
+        landTerm: row.landTerm || (row.usage === "商办" ? "40年" : "70年"),
+        landNature: row.landNature || (row.usage === "住宅" ? "二类城镇住宅用地" : `${row.usage}用地`),
+        landUsage: row.landUsage || `${row.usage}用地`,
+        greenRate: row.greenRate || "不小于30%",
+        buildingDensity: row.buildingDensity || "不大于30%",
+        buildingHeight: row.buildingHeight || "建筑高度按规划条件执行",
+        totalPrice: row.totalPrice || `${Math.round(row.floorPrice * parseFloat(row.area) * 666.67 * parseFloat(row.volumeRate) / 10000).toLocaleString("zh-CN")}万元`,
+        pricePerMu: row.pricePerMu || `${(row.floorPrice * 666.67 * parseFloat(row.volumeRate) / 10000).toFixed(4)}万元/亩`,
+        premiumRate: row.premiumRate || (row.status === "成交" ? "0.00%" : "—")
+      };
+    }
+
+    function infoItem(label, value, wide = false, brand = false) {
+      return `
+        <div class="info-item ${wide ? "is-wide" : ""}">
+          <dt>${label}</dt>
+          <dd class="${brand ? "is-brand" : ""}">${value || "—"}</dd>
+        </div>
+      `;
+    }
+
+    function renderDetail(row) {
+      currentDetailRecord = getDetailData(row);
+      const detail = currentDetailRecord;
+      const dealStatus = detail.status === "成交" ? "已成交" : detail.status === "流拍" ? "已流拍" : detail.status === "终止" ? "已终止" : "待出让";
+
+      detailTitle.textContent = detail.title;
+
+      dealHighlight.innerHTML = `
+        <div class="deal-highlight__item"><strong>${Number(detail.floorPrice).toLocaleString("zh-CN")}</strong><span>成交楼面价(元/㎡)</span></div>
+        <div class="deal-highlight__item"><strong>${String(detail.totalPrice).replace("万元", "")}</strong><span>成交总价(万元)</span></div>
+        <div class="deal-highlight__item"><strong>${detail.premiumRate}</strong><span>溢价率</span></div>
+      `;
+
+      basicInfo.innerHTML = [
+        infoItem("土地宗号", detail.landNo, true),
+        infoItem("宗地位置", detail.location, true),
+        infoItem("净用地面积(亩)", detail.area.replace("亩", "")),
+        infoItem("最大容积率", detail.volumeRate),
+        infoItem("用途年限(年)", detail.landTerm.replace("年", "")),
+        infoItem("用地使用性质", detail.landNature),
+        infoItem("土地用途", detail.landUsage),
+        infoItem("绿地率", detail.greenRate),
+        infoItem("建筑密度", detail.buildingDensity),
+        infoItem("建筑高度", detail.buildingHeight, true)
+      ].join("");
+
+      dealInfo.innerHTML = [
+        infoItem("交易状况", dealStatus),
+        infoItem("招拍挂时间", detail.date),
+        infoItem("竞得方", detail.company, true),
+        infoItem("成交总价(万元)", String(detail.totalPrice).replace("万元", ""), false, true),
+        infoItem("成交价(万/亩)", String(detail.pricePerMu).replace("万元/亩", "")),
+        infoItem("成交楼面地价(元/平方米)", Number(detail.floorPrice).toLocaleString("zh-CN"), true),
+        infoItem("溢价率", detail.premiumRate, false, true)
+      ].join("");
+
+    }
+
+    function openDetail(row) {
+      listScrollTop = window.scrollY;
+      renderDetail(row);
+      listView.hidden = true;
+      detailView.hidden = false;
+      document.title = `${row.title} - 土拍详情`;
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }
+
+    function closeDetail() {
+      detailView.hidden = true;
+      listView.hidden = false;
+      currentDetailRecord = null;
+      document.title = "土拍分析";
+      requestAnimationFrame(() => window.scrollTo({ top: listScrollTop, behavior: "auto" }));
+    }
+
     function renderLandList() {
       const rows = getFilteredRecords();
       if (!rows.length) {
@@ -952,7 +1767,7 @@
         return;
       }
       landList.innerHTML = rows.map((row) => `
-        <article class="land-card">
+        <article class="land-card" data-land-id="${row.id}" role="button" tabindex="0" aria-label="查看${row.title}详情">
           <div class="land-title">
             <span class="status-tag ${getStatusClass(row.status)}">${row.status}</span>
             <h3>${row.title}</h3>
@@ -960,42 +1775,139 @@
           <div class="price-line">起拍楼面价：<strong>${row.floorPrice}</strong>（元/平方米）</div>
           <div class="land-meta">
             <span>区域：${row.zone}</span>
-            <span>${row.status === "成交" ? "成交时间" : "出让时间"}：${row.date}</span>
+            <span>${row.status === "成交" ? "成交时间" : row.status === "终止" ? "终止时间" : "出让时间"}：${row.date}</span>
             <span>面积：${row.area}</span>
             <span>容积率：${row.volumeRate}</span>
           </div>
         </article>
       `).join("");
+
+      landList.querySelectorAll("[data-land-id]").forEach((card) => {
+        const openCard = () => {
+          const row = landRecords.find((item) => item.id === card.dataset.landId);
+          if (row) openDetail(row);
+        };
+        card.addEventListener("click", openCard);
+        card.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openCard();
+          }
+        });
+      });
     }
 
-    function cycleFilter(key) {
-      const options = filterOptions[key];
-      const index = options.indexOf(filters[key]);
-      filters[key] = options[(index + 1) % options.length];
-      filterLabels[key].textContent = filters[key];
+    function getFilterOptionLabel(key, value) {
+      return value === filterConfig[key].defaultValue ? filterConfig[key].defaultLabel : value;
+    }
+
+    function syncFilterChips() {
+      filterButtons.forEach((button) => {
+        const key = button.dataset.filterKey;
+        const isActive = filters[key] !== filterConfig[key].defaultValue;
+        filterLabels[key].textContent = isActive ? filters[key] : filterConfig[key].chipLabel;
+        button.classList.toggle("is-active", isActive);
+        button.classList.toggle("is-open", activeFilterKey === key && !filterModal.hidden);
+        button.setAttribute("aria-expanded", String(activeFilterKey === key && !filterModal.hidden));
+      });
+    }
+
+    function renderFilterOptions() {
+      const options = filterOptions[activeFilterKey];
+      filterSheetOptions.classList.toggle("is-list", activeFilterKey === "sort");
+      filterSheetOptions.innerHTML = options.map((value) => `
+        <button class="filter-option ${value === draftFilterValue ? "is-selected" : ""}" type="button" role="option" aria-selected="${value === draftFilterValue}" data-filter-value="${value}">
+          ${getFilterOptionLabel(activeFilterKey, value)}
+        </button>
+      `).join("");
+    }
+
+    function openFilterSheet(key, trigger) {
+      const config = filterConfig[key];
+      activeFilterKey = key;
+      draftFilterValue = filters[key];
+      lastFilterTrigger = trigger;
+      filterSheetTitle.textContent = config.title;
+      filterSheetHint.textContent = config.hint;
+      renderFilterOptions();
+      filterModal.hidden = false;
+      document.body.classList.add("is-filter-open");
+      syncFilterChips();
+      requestAnimationFrame(() => filterSheetClose.focus());
+    }
+
+    function closeFilterSheet(restoreFocus = true) {
+      filterModal.hidden = true;
+      document.body.classList.remove("is-filter-open");
+      activeFilterKey = null;
+      draftFilterValue = null;
+      syncFilterChips();
+      if (restoreFocus && lastFilterTrigger) lastFilterTrigger.focus();
+    }
+
+    function applyFilterSheet() {
+      if (!activeFilterKey) return;
+      filters[activeFilterKey] = draftFilterValue;
+      syncFilterChips();
       renderLandList();
+      closeFilterSheet();
     }
 
     document.querySelectorAll("[data-ranking-tab]").forEach((button) => {
       button.addEventListener("click", () => {
         activeRanking = button.dataset.rankingTab;
-        document.querySelectorAll("[data-ranking-tab]").forEach((tab) => {
-          tab.classList.toggle("is-active", tab === button);
-        });
+        syncRankingTabs();
         renderRanking();
       });
     });
 
-    document.querySelectorAll("[data-filter-key]").forEach((button) => {
-      button.addEventListener("click", () => cycleFilter(button.dataset.filterKey));
+    document.querySelectorAll("[data-ranking-detail-tab]").forEach((button) => {
+      button.addEventListener("click", () => {
+        activeRanking = button.dataset.rankingDetailTab;
+        renderRanking();
+        renderRankingDetail();
+      });
+    });
+
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => openFilterSheet(button.dataset.filterKey, button));
+    });
+
+    filterSheetOptions.addEventListener("click", (event) => {
+      const option = event.target.closest("[data-filter-value]");
+      if (!option) return;
+      draftFilterValue = option.dataset.filterValue;
+      renderFilterOptions();
+    });
+
+    filterSheetReset.addEventListener("click", () => {
+      if (!activeFilterKey) return;
+      draftFilterValue = filterConfig[activeFilterKey].defaultValue;
+      renderFilterOptions();
+    });
+
+    filterSheetConfirm.addEventListener("click", applyFilterSheet);
+    filterSheetClose.addEventListener("click", () => closeFilterSheet());
+    filterBackdrop.addEventListener("click", () => closeFilterSheet());
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !filterModal.hidden) closeFilterSheet();
     });
 
     searchInput.addEventListener("input", renderLandList);
+    detailBack.addEventListener("click", closeDetail);
+    rankingDetailOpen.addEventListener("click", () => openRankingDetail(activeRanking));
+    rankingDetailBack.addEventListener("click", closeRankingDetail);
 
-    renderStats();
     renderRanking();
-    renderBatches();
+    renderStatusTabs();
+    syncFilterChips();
     renderLandList();
+
+    const requestedLandId = new URLSearchParams(window.location.search).get("land");
+    const requestedRankingType = new URLSearchParams(window.location.search).get("ranking");
+    const requestedLand = landRecords.find((row) => row.id === requestedLandId);
+    if (requestedLand) openDetail(requestedLand);
+    else if (rankingData[requestedRankingType]) openRankingDetail(requestedRankingType);
   </script>
 </body>
 </html>
