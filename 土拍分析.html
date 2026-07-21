@@ -483,43 +483,6 @@
       background: #fff1e7;
     }
 
-    .ranking-overview {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      padding: 14px 8px;
-      border-radius: 12px;
-      background: #fff;
-      box-shadow: 0 5px 18px rgba(16, 24, 40, 0.055);
-    }
-
-    .ranking-overview__item {
-      min-width: 0;
-      padding: 0 6px;
-      text-align: center;
-    }
-
-    .ranking-overview__item + .ranking-overview__item {
-      border-left: 1px solid var(--line);
-    }
-
-    .ranking-overview strong,
-    .ranking-overview span {
-      display: block;
-    }
-
-    .ranking-overview strong {
-      color: #2e333a;
-      font-size: 14px;
-      line-height: 1.2;
-      font-weight: 900;
-    }
-
-    .ranking-overview span {
-      margin-top: 5px;
-      color: var(--muted);
-      font-size: 9px;
-    }
-
     .ranking-detail-list {
       display: grid;
       gap: 10px;
@@ -994,8 +957,14 @@
       overflow-wrap: anywhere;
     }
 
-    .price-line {
+    .price-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 18px;
       margin-top: 10px;
+    }
+
+    .price-line {
       color: #171a1f;
       font-size: 13px;
       line-height: 1.5;
@@ -1007,6 +976,10 @@
       color: var(--brand);
       font-size: 17px;
       font-weight: 900;
+    }
+
+    .price-line--deal strong {
+      color: #e84f00;
     }
 
     .land-meta {
@@ -1390,7 +1363,6 @@
           <button class="ranking-detail-tab" type="button" data-ranking-detail-tab="premium">土地溢价率</button>
         </div>
 
-        <section class="ranking-overview" id="rankingOverview" aria-label="榜单统计"></section>
         <section class="ranking-detail-list" id="rankingDetailList" aria-label="完整榜单"></section>
       </div>
     </section>
@@ -1424,9 +1396,6 @@
     const rankingData = {
       floor: {
         title: "历史成交楼面价榜",
-        cycle: "2026年度",
-        scope: "成都全市",
-        updated: "07-16",
         rows: [
           { district: "锦江区", company: "建发地产", value: "41,200元/㎡", name: "锦江区柳江街道38亩住宅地块", meta: "2026-06-18 · 38.42亩" },
           { district: "锦江区", company: "国贸地产", value: "35,500元/㎡", name: "锦江区东大街沿线22亩住宅地块", meta: "2025-09-18 · 22.64亩" },
@@ -1442,9 +1411,6 @@
       },
       premium: {
         title: "土地溢价率榜",
-        cycle: "2026年度",
-        scope: "成交地块",
-        updated: "07-16",
         rows: [
           { district: "成华区", company: "保利发展", value: "21.6%", name: "成华区杉板桥24亩住宅地块", meta: "成交楼面价 23,900元/㎡" },
           { district: "金牛区", company: "越秀地产", value: "19.8%", name: "金牛区茶店子26亩住宅地块", meta: "成交楼面价 21,600元/㎡" },
@@ -1492,26 +1458,28 @@
         buildingHeight: "建筑物（含所有建、构筑物及设施）最高点不大于80米",
         totalPrice: "52916.17万元",
         pricePerMu: "1746.6700万元/亩",
-        premiumRate: "0.10%"
+        premiumRate: "0.10%",
+        publishDate: "2026-06-20",
+        dealDate: "2026-07-14"
       },
-      { id: "jn-2026-028", batch: "2026a", status: "待出让", district: "金牛区", usage: "住宅", title: "金牛区国宾片区1号地块27.05亩", company: "-", floorPrice: 13800, date: "2026-07-17", volumeRate: "2.2", area: "27.05亩", zone: "金牛区-国宾" },
-      { id: "gx-2026-011", batch: "2026a", status: "成交", district: "高新区", usage: "住宅", title: "高新区新川南组团42亩优质地块", company: "招商蛇口", floorPrice: 31700, date: "2026-06-30", volumeRate: "2.5", area: "42.18亩", zone: "高新区-新川" },
-      { id: "tf-2026-009", batch: "2026a", status: "成交", district: "天府新区", usage: "商住", title: "天府新区麓湖东侧综合地块58亩", company: "建发地产", floorPrice: 26800, date: "2026-05-26", volumeRate: "2.8", area: "58.02亩", zone: "天府新区-麓湖" },
-      { id: "jj-2025-036", batch: "2025m", status: "成交", district: "锦江区", usage: "住宅", title: "锦江区东大街沿线22亩纯住宅地块", company: "国贸地产", floorPrice: 35500, date: "2025-09-18", volumeRate: "2.1", area: "22.64亩", zone: "锦江区-东大街" },
-      { id: "ch-2025-031", batch: "2025m", status: "流拍", district: "成华区", usage: "商办", title: "成华区二仙桥创智产业地块36亩", company: "-", floorPrice: 9200, date: "2025-08-11", volumeRate: "3.0", area: "36.11亩", zone: "成华区-二仙桥" },
-      { id: "wh-2024-018", batch: "2024w", status: "成交", district: "武侯区", usage: "住宅", title: "武侯新城核心31亩住兼商地块", company: "华润置地", floorPrice: 24600, date: "2024-12-16", volumeRate: "2.3", area: "31.07亩", zone: "武侯区-武侯新城" }
+      { id: "jn-2026-028", batch: "2026a", status: "待出让", district: "金牛区", usage: "住宅", title: "金牛区国宾片区1号地块27.05亩", company: "-", floorPrice: 13800, date: "2026-07-17", publishDate: "2026-06-26", dealDate: "-", volumeRate: "2.2", area: "27.05亩", zone: "金牛区-国宾" },
+      { id: "gx-2026-011", batch: "2026a", status: "成交", district: "高新区", usage: "住宅", title: "高新区新川南组团42亩优质地块", company: "招商蛇口", floorPrice: 31700, date: "2026-06-30", publishDate: "2026-06-05", dealDate: "2026-06-30", volumeRate: "2.5", area: "42.18亩", zone: "高新区-新川", totalPrice: "222852.11万元", pricePerMu: "5283.3597万元/亩" },
+      { id: "tf-2026-009", batch: "2026a", status: "成交", district: "天府新区", usage: "商住", title: "天府新区麓湖东侧综合地块58亩", company: "建发地产", floorPrice: 26800, date: "2026-05-26", publishDate: "2026-04-30", dealDate: "2026-05-26", volumeRate: "2.8", area: "58.02亩", zone: "天府新区-麓湖", totalPrice: "290256.17万元", pricePerMu: "5002.6917万元/亩" },
+      { id: "jj-2025-036", batch: "2025m", status: "成交", district: "锦江区", usage: "住宅", title: "锦江区东大街沿线22亩纯住宅地块", company: "国贸地产", floorPrice: 35500, date: "2025-09-18", publishDate: "2025-08-22", dealDate: "2025-09-18", volumeRate: "2.1", area: "22.64亩", zone: "锦江区-东大街", totalPrice: "112521.36万元", pricePerMu: "4970.0248万元/亩" },
+      { id: "ch-2025-031", batch: "2025m", status: "流拍", district: "成华区", usage: "商办", title: "成华区二仙桥创智产业地块36亩", company: "-", floorPrice: 9200, date: "2025-08-11", publishDate: "2025-07-18", dealDate: "-", volumeRate: "3.0", area: "36.11亩", zone: "成华区-二仙桥" },
+      { id: "wh-2024-018", batch: "2024w", status: "成交", district: "武侯区", usage: "住宅", title: "武侯新城核心31亩住兼商地块", company: "华润置地", floorPrice: 24600, date: "2024-12-16", publishDate: "2024-11-22", dealDate: "2024-12-16", volumeRate: "2.3", area: "31.07亩", zone: "武侯区-武侯新城", totalPrice: "117196.63万元", pricePerMu: "3772.0189万元/亩" }
     ];
 
     const filterOptions = {
       district: ["区域", "金牛区", "高新区", "天府新区", "锦江区", "成华区", "武侯区"],
       usage: ["用途", "住宅", "商住", "商办"],
-      sort: ["最新出让", "楼面价从高到低", "地块面积从大到小"]
+      sort: ["最新发布", "楼面价从高到低", "地块面积从大到小"]
     };
 
     const filterConfig = {
       district: { title: "选择区域", hint: "选择地块所在行政区域", defaultValue: "区域", defaultLabel: "不限区域", chipLabel: "区域" },
       usage: { title: "选择用途", hint: "选择土地规划用途", defaultValue: "用途", defaultLabel: "不限用途", chipLabel: "用途" },
-      sort: { title: "排序方式", hint: "选择地块列表的排序规则", defaultValue: "最新出让", defaultLabel: "最新出让", chipLabel: "排序" }
+      sort: { title: "排序方式", hint: "选择地块列表的排序规则", defaultValue: "最新发布", defaultLabel: "最新发布", chipLabel: "排序" }
     };
 
     const filterLabels = {
@@ -1526,7 +1494,6 @@
     const rankingDetailView = document.getElementById("rankingDetailView");
     const rankingDetailBack = document.getElementById("rankingDetailBack");
     const rankingDetailTitle = document.getElementById("rankingDetailTitle");
-    const rankingOverview = document.getElementById("rankingOverview");
     const rankingDetailList = document.getElementById("rankingDetailList");
     const statusTabs = document.getElementById("statusTabs");
     const landList = document.getElementById("landList");
@@ -1553,7 +1520,7 @@
     let filters = {
       district: "区域",
       usage: "用途",
-      sort: "最新出让"
+      sort: "最新发布"
     };
     let currentDetailRecord = null;
     let listScrollTop = 0;
@@ -1566,8 +1533,8 @@
       rankingTitle.textContent = current.title;
       rankingList.innerHTML = current.rows.slice(0, 3).map((row, index) => {
         const medalClass = index === 1 ? "silver" : index === 2 ? "bronze" : "";
-        const mainLabel = row.district;
-        const subLabel = row.company;
+        const mainLabel = row.name;
+        const subLabel = `${row.district} · ${row.company}`;
         return `
           <button class="ranking-row" type="button" data-open-ranking="${activeRanking}" aria-label="查看${current.title}完整榜单">
             <span class="medal ${medalClass}">${index + 1}</span>
@@ -1598,11 +1565,6 @@
       const current = rankingData[activeRanking];
       const valueLabel = activeRanking === "floor" ? "成交楼面价" : "成交溢价率";
       rankingDetailTitle.textContent = current.title;
-      rankingOverview.innerHTML = `
-        <div class="ranking-overview__item"><strong>TOP ${current.rows.length}</strong><span>榜单数量</span></div>
-        <div class="ranking-overview__item"><strong>${current.cycle}</strong><span>统计周期</span></div>
-        <div class="ranking-overview__item"><strong>${current.updated}</strong><span>数据更新</span></div>
-      `;
       rankingDetailList.innerHTML = current.rows.map((row, index) => {
         const primary = row.name;
         const secondary = `${row.district} · ${row.company}`;
@@ -1669,7 +1631,7 @@
       rows = [...rows];
       if (filters.sort === "楼面价从高到低") rows.sort((a, b) => b.floorPrice - a.floorPrice);
       else if (filters.sort === "地块面积从大到小") rows.sort((a, b) => parseFloat(b.area) - parseFloat(a.area));
-      else rows.sort((a, b) => new Date(b.date) - new Date(a.date));
+      else rows.sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate));
       return rows;
     }
 
@@ -1682,7 +1644,7 @@
     function getDetailData(row) {
       return {
         ...row,
-        landNo: row.landNo || `CD${row.district.slice(0, 1).toUpperCase()}-${row.date.replaceAll("-", "")}`,
+        landNo: row.landNo || `CD${row.district.slice(0, 1).toUpperCase()}-${row.publishDate.replaceAll("-", "")}`,
         location: row.location || row.title.replace(/\d+(?:\.\d+)?亩$/, ""),
         landTerm: row.landTerm || (row.usage === "商办" ? "40年" : "70年"),
         landNature: row.landNature || (row.usage === "住宅" ? "二类城镇住宅用地" : `${row.usage}用地`),
@@ -1690,8 +1652,8 @@
         greenRate: row.greenRate || "不小于30%",
         buildingDensity: row.buildingDensity || "不大于30%",
         buildingHeight: row.buildingHeight || "建筑高度按规划条件执行",
-        totalPrice: row.totalPrice || `${Math.round(row.floorPrice * parseFloat(row.area) * 666.67 * parseFloat(row.volumeRate) / 10000).toLocaleString("zh-CN")}万元`,
-        pricePerMu: row.pricePerMu || `${(row.floorPrice * 666.67 * parseFloat(row.volumeRate) / 10000).toFixed(4)}万元/亩`,
+        totalPrice: row.totalPrice || "-",
+        pricePerMu: row.pricePerMu || "-",
         premiumRate: row.premiumRate || (row.status === "成交" ? "0.00%" : "—")
       };
     }
@@ -1733,7 +1695,8 @@
 
       dealInfo.innerHTML = [
         infoItem("交易状况", dealStatus),
-        infoItem("招拍挂时间", detail.date),
+        infoItem("发布时间", detail.publishDate),
+        infoItem("成交时间", detail.dealDate || "-"),
         infoItem("竞得方", detail.company, true),
         infoItem("成交总价(万元)", String(detail.totalPrice).replace("万元", ""), false, true),
         infoItem("成交价(万/亩)", String(detail.pricePerMu).replace("万元/亩", "")),
@@ -1766,21 +1729,31 @@
         landList.innerHTML = '<div class="empty">当前筛选条件下暂无匹配地块</div>';
         return;
       }
-      landList.innerHTML = rows.map((row) => `
+      landList.innerHTML = rows.map((row) => {
+        const detail = getDetailData(row);
+        const dealPrice = row.status === "成交"
+          ? `<div class="price-line price-line--deal">成交价：<strong>${Number(detail.floorPrice).toLocaleString("zh-CN")}</strong>（元/㎡）</div>`
+          : "";
+        return `
         <article class="land-card" data-land-id="${row.id}" role="button" tabindex="0" aria-label="查看${row.title}详情">
           <div class="land-title">
             <span class="status-tag ${getStatusClass(row.status)}">${row.status}</span>
             <h3>${row.title}</h3>
           </div>
-          <div class="price-line">起拍楼面价：<strong>${row.floorPrice}</strong>（元/平方米）</div>
+          <div class="price-group">
+            <div class="price-line">起拍楼面价：<strong>${row.floorPrice}</strong>（元/㎡）</div>
+            ${dealPrice}
+          </div>
           <div class="land-meta">
             <span>区域：${row.zone}</span>
-            <span>${row.status === "成交" ? "成交时间" : row.status === "终止" ? "终止时间" : "出让时间"}：${row.date}</span>
+            <span>发布时间：${row.publishDate}</span>
+            <span>成交时间：${row.dealDate || "-"}</span>
             <span>面积：${row.area}</span>
             <span>容积率：${row.volumeRate}</span>
           </div>
         </article>
-      `).join("");
+      `;
+      }).join("");
 
       landList.querySelectorAll("[data-land-id]").forEach((card) => {
         const openCard = () => {
