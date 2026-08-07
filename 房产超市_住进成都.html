@@ -3954,129 +3954,372 @@
     }
 
     #liveScreen .page-content {
-      padding: 12px 16px calc(24px + env(safe-area-inset-bottom, 0px));
+      padding: 12px 16px calc(28px + env(safe-area-inset-bottom, 0px));
     }
 
-    .live-tabs {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 8px;
-      margin-top: 0;
-      padding: 4px;
-      border-radius: 999px;
-      background: #ffffff;
-      box-shadow: 0 10px 22px rgba(17, 24, 39, 0.06);
+    .live-anchor-tabs {
+      position: sticky;
+      top: 60px;
+      z-index: 5;
+      display: flex;
+      gap: 22px;
+      margin: 0 -16px 8px;
+      padding: 10px 16px;
+      overflow-x: auto;
+      border-bottom: 1px solid rgba(228, 231, 237, 0.64);
+      background: rgba(243, 245, 246, 0.94);
+      backdrop-filter: blur(14px);
+      scrollbar-width: none;
     }
 
-    .live-tab {
+    .live-anchor-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .live-anchor-tab {
+      position: relative;
+      flex: 0 0 auto;
+      min-width: auto;
       min-height: 34px;
+      padding: 0 2px;
       border: none;
-      border-radius: 999px;
+      border-radius: 0;
       background: transparent;
-      color: #606266;
+      color: var(--text-primary);
       font-size: 13px;
       font-weight: 800;
       cursor: pointer;
     }
 
-    .live-tab.is-active {
-      background: linear-gradient(90deg, #fd5d00, #ff8f2e);
-      color: #ffffff;
-      box-shadow: 0 8px 18px rgba(253, 93, 0, 0.18);
+    .live-anchor-tab.is-active {
+      background: transparent;
+      color: var(--brand-primary);
+      box-shadow: none;
     }
 
-    .live-action {
-      min-height: 64px;
-      padding: 10px;
-      border-radius: 14px;
-      background: #ffffff;
-      box-shadow: 0 8px 18px rgba(17, 24, 39, 0.06);
+    .live-anchor-tab.is-active::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 18px;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--brand-primary);
+      transform: translateX(-50%);
     }
 
-    .live-action strong {
+    .live-anchor-tab:focus-visible {
+      outline: 2px solid var(--brand-secondary);
+      outline-offset: 2px;
+    }
+
+    .live-featured-rail {
+      display: flex;
+      gap: 10px;
+      margin: 0 -16px;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      touch-action: pan-x;
+    }
+
+    .live-featured-rail::-webkit-scrollbar {
+      display: none;
+    }
+
+    .live-featured {
+      position: relative;
+      flex: 0 0 100%;
       display: block;
-      color: #111827;
-      font-size: 16px;
-      line-height: 1;
+      min-height: 220px;
+      aspect-ratio: 16 / 9;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      border: 0;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      background: #303133;
+      box-shadow: 0 10px 24px rgba(255, 40, 40, 0.09);
+    }
+
+    .live-featured__cover {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      border-radius: 0;
+      background: #f0f1f3;
+    }
+
+    .live-featured__cover img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .live-featured__badges {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      z-index: 3;
+      display: flex;
+      gap: 5px;
+    }
+
+    .live-featured__badge {
+      min-height: 20px;
+      padding: 0 7px;
+      border-radius: 999px;
+      background: rgba(48, 49, 51, 0.82);
+      color: #ffffff;
+      font-size: 10px;
+      line-height: 20px;
       font-weight: 900;
     }
 
-    .live-action span {
+    .live-featured__badge--live {
+      background: var(--accent-red);
+      box-shadow: 0 0 0 4px rgba(255, 40, 40, 0.13);
+    }
+
+    .live-featured__body {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 4px;
+      min-width: 0;
+      padding: 16px 16px 60px;
+      background: linear-gradient(180deg, transparent 36%, rgba(17, 24, 39, 0.18) 58%, rgba(17, 24, 39, 0.82) 100%);
+    }
+
+    .live-featured__body h2 {
+      width: 100%;
+      margin: 0;
+      color: #ffffff;
+      font-size: 16px;
+      line-height: 1.4;
+      font-weight: 900;
+      text-align: center;
+      text-shadow: 0 2px 8px rgba(17, 24, 39, 0.45);
+    }
+
+    .live-featured__footer {
       display: block;
-      margin-top: 8px;
-      color: #606266;
-      font-size: 11px;
-      line-height: 1.3;
+    }
+
+    .live-featured .live-card__cta {
+      position: absolute;
+      left: 50%;
+      bottom: 14px;
+      min-height: 32px;
+      padding: 0 22px;
+      border: 1px solid rgba(255, 255, 255, 0.64);
+      background: rgba(255, 155, 94, 0.68);
+      transform: translateX(-50%);
+      white-space: nowrap;
+      box-shadow: 0 8px 18px rgba(17, 24, 39, 0.2);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+    }
+
+    .live-featured-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 20px;
+      margin: 0 -16px;
+      padding: 7px 0 5px;
+      background: #f3f5f6;
+    }
+
+    .live-featured-dot {
+      width: 6px;
+      height: 6px;
+      padding: 0;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(144, 147, 153, 0.42);
+      transition: width 180ms ease, background-color 180ms ease;
+      cursor: pointer;
+    }
+
+    .live-featured-dot.is-active {
+      width: 18px;
+      background: var(--brand-primary);
+    }
+
+    .live-featured-dot:focus-visible {
+      outline: 2px solid var(--brand-secondary);
+      outline-offset: 2px;
     }
 
     .live-list {
       display: grid;
-      gap: 10px;
-      margin-top: 14px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: stretch;
+      gap: 12px 10px;
+      margin-top: 24px;
+      scroll-margin-top: 116px;
+    }
+
+    .live-anchor-tabs + .live-list {
+      margin-top: 8px;
+    }
+
+    .live-list + .live-list {
+      padding-top: 22px;
+      border-top: 1px solid var(--line-soft);
+    }
+
+    .live-list__header {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      min-height: 24px;
+    }
+
+    .live-list__header h2 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+      color: var(--text-primary);
+      font-size: 17px;
+      line-height: 1.3;
+      font-weight: 900;
+    }
+
+    .live-list__header h2::before {
+      content: "";
+      width: 4px;
+      height: 17px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--brand-primary), var(--brand-secondary));
     }
 
     .live-card {
-      display: grid;
-      grid-template-columns: 92px minmax(0, 1fr);
-      gap: 10px;
-      padding: 10px;
-      border-radius: 14px;
-      background: #ffffff;
-      box-shadow: 0 8px 18px rgba(17, 24, 39, 0.06);
+      display: flex;
+      height: 100%;
+      min-width: 0;
+      overflow: hidden;
+      flex-direction: column;
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      box-shadow: 0 8px 20px rgba(48, 49, 51, 0.06);
     }
 
     .live-card__cover {
       position: relative;
-      min-height: 86px;
+      width: 100%;
+      min-height: 0;
+      aspect-ratio: 16 / 9;
       overflow: hidden;
-      border-radius: 10px;
-      background: var(--live-cover, #ffd8c0);
+      background: #f0f1f3;
+    }
+
+    .live-card__cover img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .live-card__cover::after {
-      content: "LIVE";
+      content: attr(data-status);
       position: absolute;
       left: 8px;
       top: 8px;
       min-height: 18px;
       padding: 0 7px;
       border-radius: 999px;
-      background: #ff2828;
+      background: var(--brand-primary);
       color: #ffffff;
       font-size: 10px;
       line-height: 18px;
       font-weight: 900;
     }
 
-    .live-card__body {
-      display: grid;
-      align-content: center;
-      gap: 6px;
-      min-width: 0;
+    .live-card__cover[data-state="live"]::after {
+      background: var(--accent-red);
+      box-shadow: 0 0 0 4px rgba(255, 40, 40, 0.14);
     }
 
-    .live-card__body h2 {
+    .live-card__body {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 6px;
+      min-width: 0;
+      padding: 10px;
+    }
+
+    .live-card__body h3 {
+      min-height: 39px;
       margin: 0;
       overflow: hidden;
-      color: #111827;
-      font-size: 15px;
-      line-height: 1.3;
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.4;
       font-weight: 900;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+
+    .live-card__host {
+      overflow: hidden;
+      color: var(--text-tertiary);
+      font-size: 10px;
+      line-height: 1.3;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
-    .live-card__body p {
-      margin: 0;
-      color: #606266;
-      font-size: 12px;
-      line-height: 1.45;
+    .live-card__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin-top: auto;
+      padding-top: 2px;
     }
 
     .live-card__meta {
-      color: #ff6728;
-      font-size: 12px;
+      overflow: hidden;
+      color: var(--brand-primary);
+      font-size: 10px;
       font-weight: 800;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .live-card__meta--live {
+      color: var(--accent-red);
+    }
+
+    .live-card__cta {
+      flex: 0 0 auto;
+      min-height: 26px;
+      padding: 0 8px;
+      border: none;
+      border-radius: 999px;
+      background: var(--surface-warm);
+      color: var(--brand-deep);
+      font-size: 10px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .live-card__cta--live {
+      background: linear-gradient(90deg, var(--brand-primary), var(--brand-secondary));
+      color: #ffffff;
     }
 
     #homeScreen .hero-card {
@@ -5377,9 +5620,9 @@
                 <a class="home-column-card home-column-card--live" id="homeLiveButton" href="javascript:void(0)">
                   <span>
                     <span class="home-column-card__eyebrow">LIVE</span>
-                    <strong class="home-column-card__title">大V直播</strong>
+                    <strong class="home-column-card__title">看房直播</strong>
                   </span>
-                  <span class="home-column-card__meta">3场直播预约中</span>
+                  <span class="home-column-card__meta">14场直播可看</span>
                 </a>
                 <a class="home-column-card home-column-card--land" href="javascript:void(0)">
                   <span>
@@ -5524,71 +5767,228 @@
         </header>
 
         <div class="page-content">
-          <nav class="live-tabs" aria-label="直播分类">
-            <button class="live-tab is-active" type="button" data-live-tab="expert">大V直播</button>
-            <button class="live-tab" type="button" data-live-tab="district">区县直播</button>
-            <button class="live-tab" type="button" data-live-tab="developer">开发商直播</button>
+          <section class="live-featured-rail" aria-label="正在开播的置顶直播">
+            <article class="live-featured" aria-label="城南热门楼盘实景连麦正在开播">
+              <div class="live-featured__cover">
+                <img src="./assets/楼盘实景-社区楼景.png" alt="城南热门楼盘实景连麦直播封面" />
+                <span class="live-featured__badges" aria-hidden="true">
+                  <span class="live-featured__badge live-featured__badge--live">正在开播</span>
+                </span>
+              </div>
+              <div class="live-featured__body">
+                <h2>城南热门楼盘实景连麦</h2>
+                <span class="live-featured__footer">
+                  <button class="live-card__cta live-card__cta--live" type="button">进入直播间</button>
+                </span>
+              </div>
+            </article>
+            <article class="live-featured" aria-label="锦江区新盘现场连线正在开播">
+              <div class="live-featured__cover">
+                <img src="./assets/锦江区-宣传视频封面.svg" alt="锦江区新盘现场连线直播封面" />
+                <span class="live-featured__badges" aria-hidden="true">
+                  <span class="live-featured__badge live-featured__badge--live">正在开播</span>
+                </span>
+              </div>
+              <div class="live-featured__body">
+                <h2>锦江区新盘现场连线</h2>
+                <span class="live-featured__footer">
+                  <button class="live-card__cta live-card__cta--live" type="button">进入直播间</button>
+                </span>
+              </div>
+            </article>
+            <article class="live-featured" aria-label="开发商在线答疑专场正在开播">
+              <div class="live-featured__cover">
+                <img src="./assets/楼盘实景-会所书吧.png" alt="开发商在线答疑专场直播封面" />
+                <span class="live-featured__badges" aria-hidden="true">
+                  <span class="live-featured__badge live-featured__badge--live">正在开播</span>
+                </span>
+              </div>
+              <div class="live-featured__body">
+                <h2>开发商在线答疑专场</h2>
+                <span class="live-featured__footer">
+                  <button class="live-card__cta live-card__cta--live" type="button">进入直播间</button>
+                </span>
+              </div>
+            </article>
+          </section>
+          <div class="live-featured-dots" role="group" aria-label="置顶直播轮播位置">
+            <button class="live-featured-dot is-active" type="button" data-live-featured-dot="0" aria-label="查看第1个置顶直播" aria-current="true"></button>
+            <button class="live-featured-dot" type="button" data-live-featured-dot="1" aria-label="查看第2个置顶直播"></button>
+            <button class="live-featured-dot" type="button" data-live-featured-dot="2" aria-label="查看第3个置顶直播"></button>
+          </div>
+          <nav class="live-anchor-tabs" aria-label="直播栏目快速定位">
+            <button class="live-anchor-tab is-active" type="button" data-live-anchor="liveSectionExpert" aria-current="true">大V直播</button>
+            <button class="live-anchor-tab" type="button" data-live-anchor="liveSectionDistrict">区县直播</button>
+            <button class="live-anchor-tab" type="button" data-live-anchor="liveSectionDeveloper">开发商直播</button>
+            <button class="live-anchor-tab" type="button" data-live-anchor="liveSectionPolicy">政策直播</button>
+            <button class="live-anchor-tab" type="button" data-live-anchor="liveSectionCourse">购房课堂</button>
           </nav>
-          <section class="live-list" data-live-panel="expert" aria-label="大V直播场次">
+          <section class="live-list" aria-labelledby="liveSectionExpert">
+            <header class="live-list__header">
+              <h2 id="liveSectionExpert">大V直播</h2>
+            </header>
             <article class="live-card">
-              <span class="live-card__cover" style="--live-cover:url('./assets/楼盘实景-客厅样板间.png') center / cover no-repeat"></span>
-              <span class="live-card__body">
-                <h2>招商·时代花园样板间直播</h2>
-                <p>大V带看 89㎡ 三房，重点讲解动线、采光和收纳。</p>
-                <span class="live-card__meta">今天 19:30 开播</span>
+              <span class="live-card__cover" data-status="直播中" data-state="live">
+                <img src="./assets/楼盘实景-客厅样板间.png" alt="招商时代花园样板间直播封面" />
               </span>
+              <div class="live-card__body">
+                <h3>招商·时代花园样板间直播</h3>
+                <span class="live-card__host">房产大V 阿城 · 锦江区</span>
+                <span class="live-card__footer">
+                  <span class="live-card__meta live-card__meta--live">1.2万人正在看</span>
+                  <button class="live-card__cta live-card__cta--live" type="button">进入直播</button>
+                </span>
+              </div>
             </article>
             <article class="live-card">
-              <span class="live-card__cover" style="--live-cover:url('./assets/楼盘实景-园林入口.png') center / cover no-repeat"></span>
-              <span class="live-card__body">
-                <h2>金牛改善盘社区实景巡游</h2>
-                <p>云逛园林、会所和归家动线，直播间可提交看房问题。</p>
-                <span class="live-card__meta">明天 10:00 预约中</span>
+              <span class="live-card__cover" data-status="预告" data-state="upcoming">
+                <img src="./assets/楼盘实景-园林入口.png" alt="金牛改善盘社区实景直播封面" />
               </span>
+              <div class="live-card__body">
+                <h3>金牛改善盘社区实景巡游</h3>
+                <span class="live-card__host">成都楼市观察 · 金牛区</span>
+                <span class="live-card__footer">
+                  <span class="live-card__meta">明天 10:00</span>
+                  <button class="live-card__cta" type="button">预约</button>
+                </span>
+              </div>
             </article>
             <article class="live-card">
-              <span class="live-card__cover" style="--live-cover:url('./assets/楼盘实景-楼栋外立面.png') center / cover no-repeat"></span>
-              <span class="live-card__body">
-                <h2>天府新区开售前专场答疑</h2>
-                <p>围绕价格、取证节奏、在线选房流程做集中解答。</p>
-                <span class="live-card__meta">7月17日 20:00</span>
+              <span class="live-card__cover" data-status="预告" data-state="upcoming">
+                <img src="./assets/楼盘实景-楼栋外立面.png" alt="天府新区开售前专场直播封面" />
               </span>
+              <div class="live-card__body">
+                <h3>天府新区开售前专场答疑</h3>
+                <span class="live-card__host">买房参谋 小夏 · 天府新区</span>
+                <span class="live-card__footer">
+                  <span class="live-card__meta">周日 20:00</span>
+                  <button class="live-card__cta" type="button">预约</button>
+                </span>
+              </div>
             </article>
           </section>
-          <section class="live-list" data-live-panel="district" aria-label="区县直播场次" hidden>
+          <section class="live-list" aria-labelledby="liveSectionDistrict">
+            <header class="live-list__header">
+              <h2 id="liveSectionDistrict">区县直播</h2>
+            </header>
             <article class="live-card">
-              <span class="live-card__cover" style="--live-cover:url('./assets/锦江.png') center / cover no-repeat"></span>
-              <span class="live-card__body">
-                <h2>锦江区新盘云逛街</h2>
-                <p>围绕东大街、三圣乡板块，直播展示楼盘分布和生活配套。</p>
-                <span class="live-card__meta">今天 20:00 开播</span>
+              <span class="live-card__cover" data-status="直播中" data-state="live">
+                <img src="./assets/锦江.png" alt="锦江区新盘直播封面" />
               </span>
+              <div class="live-card__body">
+                <h3>锦江区新盘云逛街</h3>
+                <span class="live-card__host">锦江区房产服务 · 锦江区</span>
+                <span class="live-card__footer">
+                  <span class="live-card__meta live-card__meta--live">8,632人正在看</span>
+                  <button class="live-card__cta live-card__cta--live" type="button">进入直播</button>
+                </span>
+              </div>
             </article>
             <article class="live-card">
-              <span class="live-card__cover" style="--live-cover:url('./assets/成华.jpg') center / cover no-repeat"></span>
-              <span class="live-card__body">
-                <h2>成华区改善房源连线</h2>
-                <p>从地铁通勤、商业成熟度和总价段三个角度做集中讲解。</p>
-                <span class="live-card__meta">明天 15:00 预约中</span>
+              <span class="live-card__cover" data-status="预告" data-state="upcoming">
+                <img src="./assets/成华.jpg" alt="成华区改善房源直播封面" />
               </span>
+              <div class="live-card__body">
+                <h3>成华区改善房源连线</h3>
+                <span class="live-card__host">成华区房产服务 · 成华区</span>
+                <span class="live-card__footer">
+                  <span class="live-card__meta">明天 15:00</span>
+                  <button class="live-card__cta" type="button">预约</button>
+                </span>
+              </div>
             </article>
           </section>
-          <section class="live-list" data-live-panel="developer" aria-label="开发商直播场次" hidden>
+          <section class="live-list" aria-labelledby="liveSectionDeveloper">
+            <header class="live-list__header">
+              <h2 id="liveSectionDeveloper">开发商直播</h2>
+            </header>
             <article class="live-card">
-              <span class="live-card__cover" style="--live-cover:url('./assets/楼盘实景-会所书吧.png') center / cover no-repeat"></span>
-              <span class="live-card__body">
-                <h2>招商置业顾问专场答疑</h2>
-                <p>开发商团队讲解取证节奏、监管账户、付款节点和签约流程。</p>
-                <span class="live-card__meta">7月18日 19:30</span>
+              <span class="live-card__cover" data-status="预告" data-state="upcoming">
+                <img src="./assets/楼盘实景-会所书吧.png" alt="招商置业顾问直播封面" />
               </span>
+              <div class="live-card__body">
+                <h3>招商置业顾问专场答疑</h3>
+                <span class="live-card__host">招商蛇口成都公司 · 官方直播</span>
+                <span class="live-card__footer">
+                  <span class="live-card__meta">周六 19:30</span>
+                  <button class="live-card__cta" type="button">预约</button>
+                </span>
+              </div>
             </article>
             <article class="live-card">
-              <span class="live-card__cover" style="--live-cover:url('./assets/楼盘实景-楼栋外立面.png') center / cover no-repeat"></span>
-              <span class="live-card__body">
-                <h2>首开·龙湖紫宸线上说明会</h2>
-                <p>项目负责人介绍楼栋排布、户型选择和到访预约安排。</p>
-                <span class="live-card__meta">7月20日 10:00</span>
+              <span class="live-card__cover" data-status="预告" data-state="upcoming">
+                <img src="./assets/楼盘实景-楼栋外立面.png" alt="首开龙湖紫宸直播封面" />
               </span>
+              <div class="live-card__body">
+                <h3>首开·龙湖紫宸线上说明会</h3>
+                <span class="live-card__host">首开龙湖 · 项目官方直播</span>
+                <span class="live-card__footer">
+                  <span class="live-card__meta">周日 10:00</span>
+                  <button class="live-card__cta" type="button">预约</button>
+                </span>
+              </div>
+            </article>
+          </section>
+          <section class="live-list" aria-labelledby="liveSectionPolicy">
+            <header class="live-list__header">
+              <h2 id="liveSectionPolicy">政策直播</h2>
+            </header>
+            <article class="live-card">
+              <span class="live-card__cover" data-status="直播中" data-state="live">
+                <img src="./assets/chengdu-home-cover.svg" alt="成都购房政策直播封面" />
+              </span>
+              <div class="live-card__body">
+                <h3>成都购房资格与材料答疑</h3>
+                <span class="live-card__host">成都住建政策服务 · 官方解读</span>
+                <span class="live-card__footer">
+                  <span class="live-card__meta live-card__meta--live">5,921人正在看</span>
+                  <button class="live-card__cta live-card__cta--live" type="button">进入直播</button>
+                </span>
+              </div>
+            </article>
+            <article class="live-card">
+              <span class="live-card__cover" data-status="预告" data-state="upcoming">
+                <img src="./assets/天府新区.png" alt="公积金贷款政策直播封面" />
+              </span>
+              <div class="live-card__body">
+                <h3>公积金贷款额度与办理流程</h3>
+                <span class="live-card__host">安家政策讲堂 · 政策直播</span>
+                <span class="live-card__footer">
+                  <span class="live-card__meta">周三 19:30</span>
+                  <button class="live-card__cta" type="button">预约</button>
+                </span>
+              </div>
+            </article>
+          </section>
+          <section class="live-list" aria-labelledby="liveSectionCourse">
+            <header class="live-list__header">
+              <h2 id="liveSectionCourse">购房课堂</h2>
+            </header>
+            <article class="live-card">
+              <span class="live-card__cover" data-status="预告" data-state="upcoming">
+                <img src="./assets/floorplan-3room.png" alt="户型采光和动线购房课堂封面" />
+              </span>
+              <div class="live-card__body">
+                <h3>户型采光与生活动线怎么看</h3>
+                <span class="live-card__host">户型研究所 · 购房课堂</span>
+                <span class="live-card__footer">
+                  <span class="live-card__meta">周四 20:00</span>
+                  <button class="live-card__cta" type="button">预约</button>
+                </span>
+              </div>
+            </article>
+            <article class="live-card">
+              <span class="live-card__cover" data-status="预告" data-state="upcoming">
+                <img src="./assets/floorplan-4room.png" alt="新房网签备案购房课堂封面" />
+              </span>
+              <div class="live-card__body">
+                <h3>新房认购到网签全流程</h3>
+                <span class="live-card__host">安家交易课堂 · 流程讲解</span>
+                <span class="live-card__footer">
+                  <span class="live-card__meta">周六 14:30</span>
+                  <button class="live-card__cta" type="button">预约</button>
+                </span>
+              </div>
             </article>
           </section>
         </div>
@@ -8064,17 +8464,111 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         goMainHome();
       });
     }
-    document.querySelectorAll("[data-live-tab]").forEach((tabButton) => {
-      tabButton.addEventListener("click", () => {
-        const target = tabButton.getAttribute("data-live-tab");
-        document.querySelectorAll("[data-live-tab]").forEach((button) => {
-          button.classList.toggle("is-active", button === tabButton);
-        });
-        document.querySelectorAll("[data-live-panel]").forEach((panel) => {
-          panel.hidden = panel.getAttribute("data-live-panel") !== target;
+    const liveFeaturedRail = document.querySelector(".live-featured-rail");
+    const liveFeaturedCards = Array.from(document.querySelectorAll(".live-featured"));
+    const liveFeaturedDots = Array.from(document.querySelectorAll("[data-live-featured-dot]"));
+
+    function setActiveLiveFeatured(index) {
+      liveFeaturedDots.forEach((dot, dotIndex) => {
+        const isActive = dotIndex === index;
+        dot.classList.toggle("is-active", isActive);
+        if (isActive) {
+          dot.setAttribute("aria-current", "true");
+        } else {
+          dot.removeAttribute("aria-current");
+        }
+      });
+    }
+
+    if (liveFeaturedRail && liveFeaturedCards.length && liveFeaturedDots.length) {
+      liveFeaturedDots.forEach((dot, index) => {
+        dot.addEventListener("click", () => {
+          const card = liveFeaturedCards[index];
+          if (!card) {
+            return;
+          }
+          const railRect = liveFeaturedRail.getBoundingClientRect();
+          const cardRect = card.getBoundingClientRect();
+          const targetLeft = liveFeaturedRail.scrollLeft + cardRect.left - railRect.left;
+          liveFeaturedRail.scrollTo({ left: targetLeft, behavior: "smooth" });
+          setActiveLiveFeatured(index);
         });
       });
+
+      let liveFeaturedScrollFrame = 0;
+      liveFeaturedRail.addEventListener("scroll", () => {
+        if (liveFeaturedScrollFrame) {
+          return;
+        }
+        liveFeaturedScrollFrame = requestAnimationFrame(() => {
+          liveFeaturedScrollFrame = 0;
+          const railLeft = liveFeaturedRail.getBoundingClientRect().left;
+          let activeIndex = 0;
+          let nearestDistance = Number.POSITIVE_INFINITY;
+          liveFeaturedCards.forEach((card, index) => {
+            const distance = Math.abs(card.getBoundingClientRect().left - railLeft);
+            if (distance < nearestDistance) {
+              nearestDistance = distance;
+              activeIndex = index;
+            }
+          });
+          setActiveLiveFeatured(activeIndex);
+        });
+      }, { passive: true });
+    }
+    const liveAnchorButtons = Array.from(document.querySelectorAll("[data-live-anchor]"));
+    const liveAnchorSections = liveAnchorButtons
+      .map((button) => document.getElementById(button.getAttribute("data-live-anchor"))?.closest(".live-list"))
+      .filter(Boolean);
+
+    function setActiveLiveAnchor(targetId) {
+      liveAnchorButtons.forEach((button) => {
+        const isActive = button.getAttribute("data-live-anchor") === targetId;
+        button.classList.toggle("is-active", isActive);
+        if (isActive) {
+          button.setAttribute("aria-current", "true");
+        } else {
+          button.removeAttribute("aria-current");
+        }
+      });
+    }
+
+    liveAnchorButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const targetId = button.getAttribute("data-live-anchor");
+        const targetSection = document.getElementById(targetId)?.closest(".live-list");
+        if (!targetSection || !screens.live) {
+          return;
+        }
+        const screenRect = screens.live.getBoundingClientRect();
+        const targetTop = screens.live.scrollTop + targetSection.getBoundingClientRect().top - screenRect.top - 112;
+        screens.live.scrollTo({ top: Math.max(0, targetTop), behavior: "smooth" });
+        setActiveLiveAnchor(targetId);
+      });
     });
+
+    let liveAnchorScrollFrame = 0;
+    if (screens.live && liveAnchorSections.length) {
+      screens.live.addEventListener("scroll", () => {
+        if (liveAnchorScrollFrame) {
+          return;
+        }
+        liveAnchorScrollFrame = requestAnimationFrame(() => {
+          liveAnchorScrollFrame = 0;
+          const threshold = screens.live.getBoundingClientRect().top + 124;
+          let activeSection = liveAnchorSections[0];
+          liveAnchorSections.forEach((section) => {
+            if (section.getBoundingClientRect().top <= threshold) {
+              activeSection = section;
+            }
+          });
+          const activeHeading = activeSection.querySelector("h2[id]");
+          if (activeHeading) {
+            setActiveLiveAnchor(activeHeading.id);
+          }
+        });
+      }, { passive: true });
+    }
     if (homeAiButton) {
       homeAiButton.addEventListener("click", openHomeAiAnalysis);
     }

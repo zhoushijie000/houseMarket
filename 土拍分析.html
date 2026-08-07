@@ -978,10 +978,6 @@
       font-weight: 900;
     }
 
-    .price-line--deal strong {
-      color: #e84f00;
-    }
-
     .land-meta {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1667,6 +1663,12 @@
       `;
     }
 
+    function formatFloorPrice(value) {
+      if (value === null || value === undefined || value === "") return "—";
+      const price = Number(value);
+      return Number.isFinite(price) ? price.toLocaleString("zh-CN") : "—";
+    }
+
     function renderDetail(row) {
       currentDetailRecord = getDetailData(row);
       const detail = currentDetailRecord;
@@ -1675,7 +1677,7 @@
       detailTitle.textContent = detail.title;
 
       dealHighlight.innerHTML = `
-        <div class="deal-highlight__item"><strong>${Number(detail.floorPrice).toLocaleString("zh-CN")}</strong><span>成交楼面价(元/㎡)</span></div>
+        <div class="deal-highlight__item"><strong>${formatFloorPrice(detail.floorPrice)}</strong><span>成交楼面价(元/㎡)</span></div>
         <div class="deal-highlight__item"><strong>${String(detail.totalPrice).replace("万元", "")}</strong><span>成交总价(万元)</span></div>
         <div class="deal-highlight__item"><strong>${detail.premiumRate}</strong><span>溢价率</span></div>
       `;
@@ -1700,7 +1702,8 @@
         infoItem("竞得方", detail.company, true),
         infoItem("成交总价(万元)", String(detail.totalPrice).replace("万元", ""), false, true),
         infoItem("成交价(万/亩)", String(detail.pricePerMu).replace("万元/亩", "")),
-        infoItem("成交楼面地价(元/平方米)", Number(detail.floorPrice).toLocaleString("zh-CN"), true),
+        infoItem("起拍楼面价(元/平方米)", formatFloorPrice(detail.floorPrice)),
+        infoItem("成交楼面地价(元/平方米)", formatFloorPrice(detail.floorPrice), true),
         infoItem("溢价率", detail.premiumRate, false, true)
       ].join("");
 
@@ -1731,17 +1734,18 @@
       }
       landList.innerHTML = rows.map((row) => {
         const detail = getDetailData(row);
+        const displayTitle = row.title.replace(/\d+(?:\.\d+)?亩$/, "");
         const dealPrice = row.status === "成交"
-          ? `<div class="price-line price-line--deal">成交价：<strong>${Number(detail.floorPrice).toLocaleString("zh-CN")}</strong>（元/㎡）</div>`
+          ? `<div class="price-line">成交楼面价：<strong>${formatFloorPrice(detail.floorPrice)}</strong>（元/㎡）</div>`
           : "";
         return `
-        <article class="land-card" data-land-id="${row.id}" role="button" tabindex="0" aria-label="查看${row.title}详情">
+        <article class="land-card" data-land-id="${row.id}" role="button" tabindex="0" aria-label="查看${displayTitle}详情">
           <div class="land-title">
             <span class="status-tag ${getStatusClass(row.status)}">${row.status}</span>
-            <h3>${row.title}</h3>
+            <h3>${displayTitle}</h3>
           </div>
           <div class="price-group">
-            <div class="price-line">起拍楼面价：<strong>${row.floorPrice}</strong>（元/㎡）</div>
+            <div class="price-line">起拍楼面价：<strong>${formatFloorPrice(row.floorPrice)}</strong>（元/㎡）</div>
             ${dealPrice}
           </div>
           <div class="land-meta">
