@@ -331,6 +331,7 @@
       overflow: hidden;
       border-radius: 8px;
       background: url("./assets/anjia-home-banner-2026.png") center / cover no-repeat;
+      transform: translateY(-12px);
     }
 
     .section-main {
@@ -539,7 +540,7 @@
 
     .quick-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(20, minmax(0, 1fr));
       row-gap: 18px;
       margin-top: 20px;
     }
@@ -553,6 +554,16 @@
       font-size: 14px;
       line-height: 1;
       white-space: nowrap;
+    }
+
+    .quick-item--stat {
+      grid-column: span 5;
+    }
+
+    .quick-item--tool {
+      grid-column: span 4;
+      gap: 6px;
+      font-size: 12px;
     }
 
     .quick-icon {
@@ -577,6 +588,18 @@
       stroke-linejoin: round;
     }
 
+    .quick-item--tool .quick-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      font-size: 18px;
+    }
+
+    .quick-item--tool .quick-icon svg {
+      width: 25px;
+      height: 25px;
+    }
+
     .quick-item:nth-child(1) .quick-icon { background: linear-gradient(180deg, #77b9ff, #2d94ef); }
     .quick-item:nth-child(2) .quick-icon { background: linear-gradient(180deg, #9bea45, #58ca28); }
     .quick-item:nth-child(3) .quick-icon { background: linear-gradient(180deg, #ffd383, #ff8d30); }
@@ -585,6 +608,7 @@
     .quick-item:nth-child(6) .quick-icon { background: linear-gradient(180deg, #9df18a, #44ca77); }
     .quick-item:nth-child(7) .quick-icon { background: linear-gradient(180deg, #ffc777, #ff9140); }
     .quick-item:nth-child(8) .quick-icon { background: linear-gradient(180deg, #7dd2ff, #2a8cf3); }
+    .quick-item:nth-child(9) .quick-icon { background: linear-gradient(180deg, #ffad78, #fd5d00); }
 
     .home-column {
       margin-top: 12px;
@@ -593,7 +617,7 @@
     .home-column__grid {
       display: grid;
       grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-      grid-template-rows: 76px 76px;
+      grid-template-rows: 178px;
       gap: 10px;
     }
 
@@ -621,18 +645,87 @@
     }
 
     .home-column-card--live {
-      grid-row: 1 / span 2;
       color: #fff;
       background: linear-gradient(140deg, #2f91ff 0%, #20c59a 100%);
       box-shadow: 0 10px 22px rgba(47, 145, 255, 0.16);
     }
 
-    .home-column-card--land {
-      background: linear-gradient(135deg, #fff0d9 0%, #ffd08a 100%);
+    .home-topic-panel {
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+      padding: 12px;
+      border-radius: 10px;
+      background: linear-gradient(145deg, #fff0d9 0%, #ffdba4 56%, #cde1ff 100%);
     }
 
-    .home-column-card--market {
-      background: linear-gradient(135deg, #eef5ff 0%, #cde1ff 100%);
+    .home-topic-panel::after {
+      content: "";
+      position: absolute;
+      right: -24px;
+      bottom: -30px;
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .home-topic-panel__header {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .home-topic-panel__title {
+      margin: 0;
+      color: #303133;
+      font-size: 15px;
+      line-height: 1.2;
+      font-weight: 900;
+    }
+
+    .home-topic-panel__more {
+      flex: 0 0 auto;
+      color: #8a5a28;
+      font-size: 10px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .home-topic-panel__list {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .home-topic-entry {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-width: 0;
+      min-height: 34px;
+      padding: 0 9px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.7);
+      color: #303133;
+      font-size: 11px;
+      font-weight: 800;
+      text-decoration: none;
+      backdrop-filter: blur(6px);
+    }
+
+    .home-topic-entry::after {
+      content: "›";
+      flex: 0 0 auto;
+      margin-left: 4px;
+      color: #fd5d00;
+      font-size: 15px;
+      line-height: 1;
     }
 
     .home-column-card__eyebrow,
@@ -666,11 +759,6 @@
       white-space: nowrap;
     }
 
-    .home-column-card:not(.home-column-card--live) .home-column-card__title {
-      margin-top: 0;
-      font-size: 15px;
-    }
-
     .home-column-card__meta {
       display: block;
       overflow: hidden;
@@ -683,48 +771,51 @@
       white-space: nowrap;
     }
 
-    .ticker {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      height: 48px;
-      margin: 16px -16px 0;
-      padding: 0 16px;
-      background: #fff;
-      border-top: 10px solid #f4f6f8;
-      font-size: 13px;
-      white-space: nowrap;
-      overflow: hidden;
-    }
-
-    .ticker strong {
-      color: #e65b2e;
-      font-size: 16px;
-      font-weight: 900;
-    }
-
-    .ticker span {
-      color: #909399;
-    }
-
-    .ticker em {
-      color: #ff4c35;
-      font-style: normal;
-    }
-
-    .ticker a {
-      margin-left: auto;
-      color: #9aa1aa;
-      font-size: 18px;
-      line-height: 1;
-      text-decoration: none;
-    }
-
     .estate-section {
       margin: 0 -16px;
       padding: 16px 16px 22px;
       border-top: 10px solid #f4f6f8;
       background: #fff;
+    }
+
+    .presale-feature {
+      margin-bottom: 18px;
+      padding: 12px;
+      border: 1px solid #ffe0cc;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #fff7ef, #fff);
+    }
+
+    .presale-feature__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .presale-feature__head strong {
+      color: #111827;
+      font-size: 17px;
+      font-weight: 900;
+    }
+
+    .presale-feature__head span {
+      color: #ff6b2a;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .estate-card--presale {
+      margin-top: 12px;
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .estate-card--presale .estate-cover::after {
+      display: none !important;
+    }
+
+    .estate-card--presale .estate-cover::before {
+      display: none;
     }
 
     .estate-tabs {
@@ -806,6 +897,7 @@
 
     .estate-cover::before {
       content: "";
+      display: none;
       position: absolute;
       left: 14px;
       bottom: 12px;
@@ -834,19 +926,6 @@
     .estate-card--home .estate-cover::after {
       content: attr(data-badge);
       display: block;
-    }
-
-    .estate-cover__views {
-      position: absolute;
-      left: 6px;
-      bottom: 4px;
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      padding-left: 22px;
-      color: #fff;
-      font-size: 10px;
-      font-weight: 700;
     }
 
     .estate-info {
@@ -1934,7 +2013,7 @@
 
     <section class="section-main">
       <section class="featured-grid" aria-label="首页重点板块">
-        <a class="featured-card featured-card--city" href="./房产超市_住进成都.html?screen=activity&group=0&item=0">
+        <a class="featured-card featured-card--city" href="./房产超市_住进成都.html?screen=city-tour">
           <img class="featured-card__image" src="./assets/home-card-city.svg" alt="住进成都 进入专题">
         </a>
         <a class="featured-card featured-card--district" href="./district-zone/index.html">
@@ -1943,23 +2022,16 @@
       </section>
 
       <nav class="quick-grid" aria-label="首页功能入口">
-        <a class="quick-item" href="javascript:void(0)"><span class="quick-icon">356</span><span>在售新盘</span></a>
-        <a class="quick-item" href="javascript:void(0)"><span class="quick-icon">23</span><span>最新取证</span></a>
-        <a class="quick-item" href="javascript:void(0)"><span class="quick-icon">169</span><span>热门楼盘</span></a>
-        <a class="quick-item" href="javascript:void(0)"><span class="quick-icon">2</span><span>即将开盘</span></a>
-        <a class="quick-item" href="./网签成交.html"><span class="quick-icon"><svg viewBox="0 0 32 32"><path d="M6 24V10l6 3 6-6 8 4v13Z" /><path d="M10 22v-6M16 22v-8M22 22v-5" /></svg></span><span>网签成交</span></a>
-        <a class="quick-item" href="javascript:void(0)"><span class="quick-icon"><svg viewBox="0 0 32 32"><path d="M10 7h12l3 7-9 12-9-12Z" /><circle cx="16" cy="16" r="4" /></svg></span><span>楼盘榜单</span></a>
-        <a class="quick-item" href="javascript:void(0)"><span class="quick-icon"><svg viewBox="0 0 32 32"><path d="M9 7h14v18H9Z" /><path d="M12 12h3M18 12h3M12 17h3M18 17h3M12 22h9" /></svg></span><span>房贷计算</span></a>
-        <a class="quick-item" href="./地图搜索.html"><span class="quick-icon"><svg viewBox="0 0 32 32"><path d="m6 26 7-3 7 3 6-3V6l-6 3-7-3-7 3Z" /><path d="M13 6v17M20 9v17" /><path d="M20 19s4-3.4 4-7a4 4 0 1 0-8 0c0 3.6 4 7 4 7Z" /></svg></span><span>地图找房</span></a>
+        <a class="quick-item quick-item--stat" href="javascript:void(0)"><span class="quick-icon">356</span><span>在售新盘</span></a>
+        <a class="quick-item quick-item--stat" href="javascript:void(0)"><span class="quick-icon">23</span><span>最新取证</span></a>
+        <a class="quick-item quick-item--stat" href="javascript:void(0)"><span class="quick-icon">169</span><span>热门楼盘</span></a>
+        <a class="quick-item quick-item--stat" href="javascript:void(0)"><span class="quick-icon">2</span><span>即将开盘</span></a>
+        <a class="quick-item quick-item--tool" href="./网签成交.html"><span class="quick-icon"><svg viewBox="0 0 32 32"><path d="M6 24V10l6 3 6-6 8 4v13Z" /><path d="M10 22v-6M16 22v-8M22 22v-5" /></svg></span><span>网签成交</span></a>
+        <a class="quick-item quick-item--tool" href="javascript:void(0)"><span class="quick-icon"><svg viewBox="0 0 32 32"><path d="M10 7h12l3 7-9 12-9-12Z" /><circle cx="16" cy="16" r="4" /></svg></span><span>楼盘榜单</span></a>
+        <a class="quick-item quick-item--tool" href="javascript:void(0)"><span class="quick-icon"><svg viewBox="0 0 32 32"><path d="M9 7h14v18H9Z" /><path d="M12 12h3M18 12h3M12 17h3M18 17h3M12 22h9" /></svg></span><span>房贷计算</span></a>
+        <a class="quick-item quick-item--tool" href="./地图搜索.html"><span class="quick-icon"><svg viewBox="0 0 32 32"><path d="m6 26 7-3 7 3 6-3V6l-6 3-7-3-7 3Z" /><path d="M13 6v17M20 9v17" /><path d="M20 19s4-3.4 4-7a4 4 0 1 0-8 0c0 3.6 4 7 4 7Z" /></svg></span><span>地图找房</span></a>
+        <a class="quick-item quick-item--tool" href="./购房政策.html"><span class="quick-icon"><svg viewBox="0 0 32 32"><path d="M8 5h16v22H8Z" /><path d="M12 11h8M12 16h8M12 21h5" /><path d="m19 21 2 2 4-5" /></svg></span><span>政策列表</span></a>
       </nav>
-
-      <div class="ticker">
-        <strong>新房行情</strong>
-        <span>2026年7月</span>
-        <em>345套</em>
-        <em>24980元/㎡</em>
-        <a href="./网签成交.html" aria-label="查看网签成交行情">›</a>
-      </div>
 
       <section class="home-column" aria-label="安居内容专栏">
         <div class="home-column__grid">
@@ -1970,27 +2042,45 @@
             </span>
             <span class="home-column-card__meta">14场直播可看</span>
           </a>
-          <a class="home-column-card home-column-card--land" href="./土拍分析.html">
-            <span>
-              <strong class="home-column-card__title">土拍分析</strong>
-              <span class="home-column-card__meta">读懂板块热度</span>
-            </span>
-          </a>
-          <a class="home-column-card home-column-card--market" href="./网签成交.html">
-            <span>
-              <strong class="home-column-card__title">网签统计</strong>
-              <span class="home-column-card__meta">成交统计一房一价</span>
-            </span>
-          </a>
+          <section class="home-topic-panel" aria-labelledby="homeTopicPanelTitle">
+            <header class="home-topic-panel__header">
+              <h2 class="home-topic-panel__title" id="homeTopicPanelTitle">专题找房</h2>
+              <a class="home-topic-panel__more" href="./专题找房.html">更多 ›</a>
+            </header>
+            <div class="home-topic-panel__list">
+              <a class="home-topic-entry" href="./专题找房.html?topic=new-rule">新规产品</a>
+              <a class="home-topic-entry" href="./专题找房.html?topic=metro">地铁产品</a>
+              <a class="home-topic-entry" href="./专题找房.html?topic=subsidy">购房补贴产品</a>
+            </div>
+          </section>
         </div>
       </section>
 
       <section class="estate-section" id="estateList" aria-label="安家成都楼盘列表">
+        <section class="presale-feature" aria-labelledby="presaleFeatureTitle">
+          <header class="presale-feature__head">
+            <strong id="presaleFeatureTitle">即将预售</strong>
+            <span>预计9月取证</span>
+          </header>
+          <a class="estate-card estate-card--home estate-card--presale" href="./project-detail.html?presale=1" aria-label="查看锦江天际云境预售详情">
+            <div class="estate-cover estate-cover--green">
+            </div>
+            <div class="estate-info">
+              <h2 class="estate-title">锦江·天际云境</h2>
+              <div class="estate-price">价格待定</div>
+              <div class="estate-meta">锦江区 / 建面105~138㎡</div>
+              <div class="estate-tags">
+                <span>改善住宅</span>
+                <span>预计9月取证</span>
+              </div>
+            </div>
+            <span class="estate-actions" aria-hidden="true">
+              <span class="estate-favorite is-muted">♡</span>
+            </span>
+          </a>
+        </section>
         <div class="estate-tabs">
-          <span class="active">在售房源</span>
-          <span>热门二手房</span>
-          <span>个人二手房</span>
-          <span>租赁房源</span>
+          <span class="active">在售楼盘</span>
         </div>
         <div class="filters">
           <button type="button">区域⌄</button>
@@ -2001,7 +2091,6 @@
         </div>
         <a class="estate-card estate-card--home" href="./project-detail.html" aria-label="查看招商·时代花园楼盘详情">
           <div class="estate-cover estate-cover--photo" data-badge="实景现房">
-            <span class="estate-cover__views">3456</span>
           </div>
           <div class="estate-info">
             <h2 class="estate-title">招商·时代花园</h2>
@@ -2020,7 +2109,6 @@
         </a>
         <a class="estate-card estate-card--home" href="./project-detail.html" aria-label="查看首开·龙湖紫宸楼盘详情">
           <div class="estate-cover estate-cover--blue" data-badge="实景现房">
-            <span class="estate-cover__views">2118</span>
           </div>
           <div class="estate-info">
             <h2 class="estate-title">首开·龙湖紫宸</h2>
@@ -2038,7 +2126,6 @@
         </a>
         <a class="estate-card estate-card--home" href="./project-detail.html" aria-label="查看融创·春风十里楼盘详情">
           <div class="estate-cover estate-cover--green" data-badge="安家成都">
-            <span class="estate-cover__views">1896</span>
           </div>
           <div class="estate-info">
             <h2 class="estate-title">融创·春风十里</h2>

@@ -4,6 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>房产超市 - 住进成都专题原型</title>
+  <script>
+    if (new URLSearchParams(location.search).get("screen") === "city-tour") {
+      document.documentElement.classList.add("city-tour-mode");
+    }
+  </script>
   <style>
     :root {
       --brand-primary: #fd5d00;
@@ -4251,6 +4256,10 @@
       box-shadow: 0 0 0 4px rgba(255, 40, 40, 0.14);
     }
 
+    .live-card__cover[data-state="ended"]::after {
+      background: var(--text-tertiary);
+    }
+
     .live-card__body {
       display: flex;
       flex-direction: column;
@@ -4304,6 +4313,10 @@
       color: var(--accent-red);
     }
 
+    .live-card__meta--ended {
+      color: var(--text-tertiary);
+    }
+
     .live-card__cta {
       flex: 0 0 auto;
       min-height: 26px;
@@ -4320,6 +4333,11 @@
     .live-card__cta--live {
       background: linear-gradient(90deg, var(--brand-primary), var(--brand-secondary));
       color: #ffffff;
+    }
+
+    .live-card__cta--ended {
+      background: #f0f1f3;
+      color: var(--text-secondary);
     }
 
     #homeScreen .hero-card {
@@ -5518,6 +5536,566 @@
         grid-template-columns: 1fr;
       }
     }
+
+    /* 住进成都城市专题：复用现有横幅、栏目和活动卡片，仅更新视觉风格 */
+    html.city-tour-mode body {
+      background: #eef1f4;
+    }
+
+    html.city-tour-mode .phone-shell,
+    html.city-tour-mode #homeScreen,
+    html.city-tour-mode #homeScreen .page-content,
+    html.city-tour-mode #homeScreen .home-supermarket {
+      background: #0752d8;
+    }
+
+    html.city-tour-mode #homeScreen .topbar {
+      background: #fff;
+    }
+
+    html.city-tour-mode #homeScreen.home-screen--supermarket .topbar__meta {
+      justify-content: space-between;
+    }
+
+    html.city-tour-mode #homeScreen .topbar__meta > span:first-child {
+      display: none;
+    }
+
+    html.city-tour-mode #backPreviousButton {
+      width: 58px;
+      height: 36px;
+      display: grid !important;
+      place-items: center;
+      border: 1px solid rgba(17, 24, 39, 0.1);
+      border-radius: 999px;
+      background: #fff;
+      color: transparent;
+      box-shadow: 0 4px 12px rgba(17, 24, 39, 0.04);
+    }
+
+    html.city-tour-mode #backPreviousButton::before {
+      content: "‹";
+      color: #101828;
+      font-size: 32px;
+      line-height: 1;
+      transform: translateY(-1px);
+    }
+
+    html.city-tour-mode #homeScreen .topbar__title {
+      color: #101828;
+      font-size: 19px;
+      font-weight: 900;
+    }
+
+    html.city-tour-mode #homeScreen .topbar-pill--trailing .topbar-pill__button:nth-child(2) {
+      display: none;
+    }
+
+    html.city-tour-mode #homeScreen .home-supermarket {
+      min-height: calc(100vh - 76px);
+      padding: 0 0 72px;
+      overflow: visible;
+    }
+
+    html.city-tour-mode #homeScreen .home-supermarket::before,
+    html.city-tour-mode #homeScreen .home-search,
+    html.city-tour-mode #homeScreen .featured-grid,
+    html.city-tour-mode #homeScreen .quick-grid,
+    html.city-tour-mode #homeScreen .home-column,
+    html.city-tour-mode #homeScreen .sign-stats,
+    html.city-tour-mode #homeScreen .presale-preview,
+    html.city-tour-mode #homeScreen .bank-banner,
+    html.city-tour-mode #homeScreen .bottom-tabbar,
+    html.city-tour-mode .chat-fab {
+      display: none !important;
+    }
+
+    html.city-tour-mode #homeScreen .promo-banner {
+      width: 100%;
+      height: 188px;
+      margin: 0;
+      border-radius: 0;
+      background:
+        linear-gradient(180deg, rgba(4, 62, 120, 0.02) 0 56%, rgba(5, 80, 217, 0.96) 100%),
+        url("./assets/天府新区.png") center / cover no-repeat;
+      box-shadow: none;
+    }
+
+    html.city-tour-mode #homeScreen .promo-banner::before {
+      content: "▶";
+      position: absolute;
+      left: 50%;
+      top: 56%;
+      width: 56px;
+      height: 56px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(4, 27, 55, 0.58);
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 25px;
+      text-indent: 4px;
+      transform: translate(-50%, -50%);
+      backdrop-filter: blur(3px);
+    }
+
+    html.city-tour-mode #homeScreen .promo-banner::after {
+      display: none;
+    }
+
+    html.city-tour-mode #homeScreen .promo-banner__sub {
+      left: 12px;
+      top: 12px;
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 7px;
+      background: linear-gradient(180deg, #ffe88a, #ffc95c);
+      color: #332702;
+      font-size: 13px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    html.city-tour-mode #homeScreen #cityFilters {
+      display: grid !important;
+      gap: 24px;
+      padding: 16px 12px 54px;
+      background: #0752d8;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section {
+      gap: 12px;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section__head {
+      padding: 0 4px;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section__title-wrap {
+      padding-left: 12px;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section__title-wrap::before {
+      width: 5px;
+      height: 20px;
+      background: linear-gradient(180deg, #fff46a, #9fefff);
+      box-shadow: 0 0 12px rgba(255, 246, 93, 0.78);
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section__heading {
+      color: #fff;
+      font-size: 19px;
+      text-shadow: none;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section__count,
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section] .home-activity-section__count {
+      min-width: 44px;
+      min-height: 28px;
+      padding: 0 11px;
+      border: 0;
+      background: rgba(0, 48, 139, 0.68);
+      color: #fff;
+      box-shadow: none;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section__rail,
+    html.city-tour-mode #homeScreen .home-activity-section__list {
+      gap: 14px;
+      padding: 0;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section__rail {
+      overflow-x: visible;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section__rail .city-card__panel,
+    html.city-tour-mode #homeScreen .city-card__panel {
+      width: 351px;
+      border-radius: 15px;
+      box-shadow: none;
+    }
+
+    html.city-tour-mode #homeScreen .city-card--featured .city-card__panel::after {
+      display: none;
+    }
+
+    html.city-tour-mode #homeScreen .city-card__activity-title {
+      background: linear-gradient(90deg, #0058d4, #04a6d6);
+      color: #fff;
+    }
+
+    html.city-tour-mode #homeScreen .activity-status-pill--live {
+      background: #43c982;
+      color: #fff;
+    }
+
+    html.city-tour-mode #homeScreen .activity-status-pill--signup {
+      background: #fff1e8;
+      color: #ff6b2a;
+    }
+
+    html.city-tour-mode #homeScreen .activity-status-pill--ended {
+      background: #eef0f3;
+      color: #8a9099;
+    }
+
+    /* 住进成都：活动聚合布局。正在进行置顶，其余活动使用紧凑横向卡片。 */
+    html.city-tour-mode #homeScreen .home-activity-section--featured {
+      gap: 10px;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section--featured .home-activity-section__rail {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 3px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      overscroll-behavior-inline: contain;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section--featured .home-activity-section__rail::-webkit-scrollbar {
+      display: none;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section--featured .city-card {
+      position: relative;
+      display: block;
+      flex: 0 0 calc(100% - 28px);
+      width: calc(100% - 28px);
+      min-width: calc(100% - 28px);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 18px;
+      background: #063fae;
+      box-shadow: 0 16px 30px rgba(0, 31, 108, 0.24);
+      scroll-snap-align: start;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section--featured .city-card__station {
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      z-index: 5;
+      margin: 0;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: rgba(3, 49, 134, 0.82);
+      color: #fff;
+      font-size: 15px;
+      line-height: 1;
+      text-shadow: none;
+      backdrop-filter: blur(6px);
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section--featured .city-card__panel,
+    html.city-tour-mode #homeScreen .home-activity-section__rail .city-card--featured .city-card__panel {
+      width: 100%;
+      min-height: 218px;
+      border-radius: 18px;
+      background: #063fae;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section--featured .city-card__backdrop {
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 18px;
+      background: var(--city-card-cover) center / cover no-repeat;
+      box-shadow: none;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section--featured .city-card__panel::before {
+      background: linear-gradient(180deg, rgba(2, 33, 91, 0.04) 18%, rgba(2, 38, 111, 0.24) 50%, rgba(2, 35, 105, 0.96) 100%);
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section--featured .city-card__content,
+    html.city-tour-mode #homeScreen .home-activity-section__rail .city-card--featured .city-card__content {
+      display: flex;
+      align-items: flex-end;
+      width: 100%;
+      min-height: 218px;
+      padding: 70px 16px 16px;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section--featured .city-card__activity-list,
+    html.city-tour-mode #homeScreen .home-activity-section__rail .city-card--featured .city-card__activity-list {
+      width: 100%;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section--featured .city-card__activity-title {
+      justify-content: flex-start;
+      align-items: flex-start;
+      min-height: 0;
+      padding: 0;
+      background: transparent;
+      color: #fff;
+      font-size: 17px;
+      text-align: left;
+      white-space: normal;
+      text-shadow: 0 2px 8px rgba(0, 26, 82, 0.55);
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section--featured .city-card__activity-time {
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 13px;
+      text-shadow: 0 2px 6px rgba(0, 25, 77, 0.5);
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section:not(.home-activity-section--featured) {
+      gap: 10px;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section:not(.home-activity-section--featured) .home-activity-section__list {
+      gap: 12px;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section:not(.home-activity-section--featured) .city-card {
+      position: relative;
+      display: block;
+      width: 100%;
+      overflow: visible;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section:not(.home-activity-section--featured) .city-card__station {
+      position: relative;
+      left: auto;
+      top: auto;
+      display: block;
+      margin: 0 0 6px 12px;
+      max-width: none;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1;
+      text-shadow: none;
+      white-space: nowrap;
+      overflow: visible;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section:not(.home-activity-section--featured) .city-card__panel {
+      width: 100%;
+      min-height: 120px;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 9px 22px rgba(0, 34, 108, 0.16);
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section:not(.home-activity-section--featured) .city-card--single .city-card__panel {
+      min-height: 106px;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section:not(.home-activity-section--featured) .city-card__backdrop {
+      left: 146px;
+      top: 0;
+      width: 245px;
+      height: 100%;
+      border-radius: 14px;
+      background: var(--city-card-cover) center / cover no-repeat;
+      box-shadow: none;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section:not(.home-activity-section--featured) .city-card__panel::before {
+      background: linear-gradient(90deg, #fff 0%, rgba(255, 255, 255, 0.99) 49%, rgba(255, 255, 255, 0.76) 70%, rgba(255, 255, 255, 0.1) 100%);
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section:not(.home-activity-section--featured) .city-card__content {
+      width: 100%;
+      min-height: 120px;
+      padding: 13px 15px;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section:not(.home-activity-section--featured) .city-card--single .city-card__content {
+      min-height: 106px;
+      padding-top: 11px;
+      padding-bottom: 11px;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section:not(.home-activity-section--featured) .city-card__activity-list {
+      width: 262px;
+      gap: 10px;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section:not(.home-activity-section--featured) .city-card__activity + .city-card__activity {
+      padding-top: 10px;
+      border-top: 1px solid rgba(13, 54, 125, 0.1);
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section:not(.home-activity-section--featured) .city-card__activity-title {
+      justify-content: center;
+      align-items: center;
+      min-height: 25px;
+      padding: 4px 8px;
+      background: linear-gradient(90deg, #0058d4, #04a6d6);
+      color: #fff;
+      font-size: 11.5px;
+      line-height: 1.3;
+      text-align: center;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section:not(.home-activity-section--featured) .activity-status-pill {
+      flex: 0 0 auto;
+      min-height: 21px;
+      padding: 0 7px;
+      font-size: 10.5px;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section:not(.home-activity-section--featured) .city-card__activity-time {
+      margin-top: 7px;
+      color: #101828;
+      font-size: 11.5px;
+      line-height: 1.35;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+    }
+
+    /* 即将开启：采用预告海报式大卡，与历史活动列表拉开层级。 */
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .home-activity-section__list {
+      display: grid;
+      gap: 14px;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card {
+      overflow: hidden;
+      border: 1px solid rgba(255, 208, 146, 0.92);
+      border-radius: 17px;
+      background: #fff8ed;
+      box-shadow: 0 12px 24px rgba(0, 37, 117, 0.18);
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__station {
+      position: absolute;
+      left: 13px;
+      top: 13px;
+      z-index: 5;
+      margin: 0;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: rgba(255, 126, 39, 0.92);
+      color: #fff;
+      font-size: 13px;
+      backdrop-filter: blur(5px);
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__panel,
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card--single .city-card__panel {
+      min-height: 148px;
+      border-radius: 17px;
+      background: #fff8ed;
+      box-shadow: none;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__backdrop {
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 17px;
+      filter: saturate(1.05);
+      opacity: 1;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__panel::before {
+      background: linear-gradient(180deg, rgba(255, 248, 237, 0.02) 0%, rgba(255, 248, 237, 0.16) 44%, rgba(255, 248, 237, 0.97) 76%, #fff8ed 100%);
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__content,
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card--single .city-card__content {
+      display: flex;
+      align-items: flex-end;
+      min-height: 148px;
+      padding: 56px 14px 12px;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__activity-list {
+      width: 100%;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__activity-title {
+      justify-content: flex-start;
+      align-items: flex-start;
+      min-height: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: #0752d8;
+      font-size: 13px;
+      font-weight: 900;
+      text-align: left;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__activity-time {
+      margin-top: 7px;
+      color: #34486c;
+      font-size: 12px;
+    }
+
+    /* 往期回顾：降低图片饱和度并使用轻量信息条，突出回顾属性。 */
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .home-activity-section__list {
+      gap: 15px;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .city-card__station {
+      margin: 0 0 7px 11px;
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 16px;
+      letter-spacing: 0.03em;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .city-card__panel {
+      border: 1px solid rgba(219, 228, 244, 0.9);
+      background: #f8faff;
+      box-shadow: 0 9px 20px rgba(0, 33, 100, 0.13);
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .city-card__backdrop {
+      left: 154px;
+      width: 237px;
+      filter: saturate(0.9) contrast(1.04);
+      opacity: 1;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .city-card__panel::before {
+      background: linear-gradient(90deg, #f8faff 0%, rgba(248, 250, 255, 0.98) 47%, rgba(248, 250, 255, 0.7) 62%, rgba(248, 250, 255, 0.06) 100%);
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .city-card__activity-title {
+      justify-content: flex-start;
+      align-items: flex-start;
+      border: 1px solid rgba(7, 82, 216, 0.08);
+      background: rgba(7, 82, 216, 0.08);
+      color: #174a99;
+      text-align: left;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .city-card__activity-time {
+      color: #6e7890;
+      font-weight: 600;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .activity-status-pill--ended {
+      background: rgba(116, 128, 150, 0.12);
+      color: #788296;
+    }
+
+    html.city-tour-mode #homeScreen #cityFilters .activity-status-pill {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -5528,7 +6106,7 @@
           <div class="topbar__meta">
             <span aria-hidden="true"></span>
             <button id="backPreviousButton" type="button" hidden aria-hidden="true"></button>
-            <span class="topbar__title">成都住建房产超市</span>
+            <span class="topbar__title">住进成都</span>
             <div class="topbar-pill topbar-pill--trailing">
               <button class="topbar-pill__button" type="button" aria-label="更多操作">
                 <span class="topbar-pill__icon topbar-pill__icon--more">•••</span>
@@ -5569,8 +6147,8 @@
               </button>
             </div>
 
-            <section class="promo-banner" aria-label="万千气象，幸福成都活动横幅">
-              <span class="promo-banner__sub">成都城市价值推介暨市场拓展活动<br>（乌鲁木齐站）<br>CHENGDU X URUMQI<br>2026</span>
+            <section class="promo-banner" aria-label="住进成都城市专题视频">
+              <span class="promo-banner__sub">城市专题视频</span>
             </section>
 
             <section class="featured-grid" aria-label="首页重点板块">
@@ -5978,15 +6556,15 @@
               </div>
             </article>
             <article class="live-card">
-              <span class="live-card__cover" data-status="预告" data-state="upcoming">
+              <span class="live-card__cover" data-status="已结束" data-state="ended">
                 <img src="./assets/floorplan-4room.png" alt="新房网签备案购房课堂封面" />
               </span>
               <div class="live-card__body">
                 <h3>新房认购到网签全流程</h3>
                 <span class="live-card__host">安家交易课堂 · 流程讲解</span>
                 <span class="live-card__footer">
-                  <span class="live-card__meta">周六 14:30</span>
-                  <button class="live-card__cta" type="button">预约</button>
+                  <span class="live-card__meta live-card__meta--ended">8.6万人看过</span>
+                  <button class="live-card__cta live-card__cta--ended" type="button">查看回放</button>
                 </span>
               </div>
             </article>
@@ -6411,6 +6989,22 @@
             venue: "国贸大酒店 2F",
             projects: 11,
             note: "面向换房家庭，突出教育、医疗和通勤资源。"
+          }
+        ]
+      },
+      {
+        city: "上海",
+        stationLabel: "上海浦东站",
+        theme: "浦东人才安居专场",
+        cover: "./assets/上海.png",
+        coords: [31.2304, 121.4737],
+        items: [
+          {
+            title: "上海浦东成都人才安居品鉴会",
+            time: "2026.03.30 - 2026.04.02",
+            venue: "上海浦东香格里拉酒店 3F",
+            projects: 10,
+            note: "面向人才与改善置业客群，集中展示成都优质住宅项目。"
           }
         ]
       }
@@ -6968,7 +7562,9 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
 
     function getActivityStatusMeta(timeText) {
       const { start, end } = getActivityTimeRange(timeText);
-      const now = new Date();
+      const now = document.documentElement.classList.contains("city-tour-mode")
+        ? new Date(2026, 2, 31, 12, 0, 0)
+        : new Date();
 
       if (!start || !end) {
         return { key: "ended", label: "已开展", className: "activity-status-pill--ended", sortOrder: 2 };
@@ -8406,6 +9002,12 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
 
       if (screen === "live") {
         showScreen("live");
+        return;
+      }
+
+      if (screen === "city-tour") {
+        cityFilters.hidden = false;
+        showScreen("home");
         return;
       }
 

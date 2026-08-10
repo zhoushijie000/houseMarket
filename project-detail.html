@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>招商时代花园一期 - 楼盘详情</title>
+  <script>
+    if (new URLSearchParams(location.search).get("presale") === "1") {
+      document.documentElement.classList.add("is-presale");
+    }
+  </script>
   <style>
     :root {
       --brand: #fd5d00;
@@ -373,6 +378,19 @@
       margin-top: 10px;
       padding: 18px 10px;
       background: #fff;
+    }
+
+    html.is-presale #openRoomButton,
+    html.is-presale #salesSituation,
+    html.is-presale #permit,
+    html.is-presale #roomPriceSection,
+    html.is-presale #projectTimeline,
+    html.is-presale #roomSheet {
+      display: none !important;
+    }
+
+    html.is-presale .quick-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
     .quick-entry {
@@ -1698,7 +1716,7 @@
       <a class="expand-link" href="#review">展开全部信息 〉</a>
     </section>
 
-    <section class="section">
+    <section class="section" id="salesSituation">
       <div class="section-head"><h2 class="section-title">销售情况</h2><a class="more" href="./网签成交.html?project=%E6%8B%9B%E5%95%86%E6%97%B6%E4%BB%A3%E8%8A%B1%E5%9B%AD%E4%B8%80%E6%9C%9F">更多 〉</a></div>
       <div class="sales-grid">
         <div><strong>643套</strong><span>总套数</span></div>
@@ -1810,7 +1828,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="roomPriceSection">
       <div class="section-head"><h2 class="section-title">一房一价图</h2><button class="more" id="inlineRoomButton" type="button">更多 〉</button></div>
       <div class="room-list">
         <article class="room-preview"><em>已售1折</em><strong>269.24万</strong><span>107.24㎡</span><b>3室1厅1卫</b><span>9栋1单元10楼1002</span></article>
@@ -1818,7 +1836,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="projectTimeline">
       <div class="section-head"><h2 class="section-title">楼盘动态</h2></div>
       <div class="timeline">
         <div class="timeline-item"><span>2024-10-24</span><br><strong>楼盘开盘</strong></div>
@@ -1919,6 +1937,21 @@
   </section>
 
   <script>
+    const isPresaleProject = document.documentElement.classList.contains("is-presale");
+    if (isPresaleProject) {
+      document.title = "锦江·天际云境 - 即将预售";
+      const projectTitle = document.querySelector(".summary-head h2");
+      const projectDistrict = document.querySelector(".location-row > span:not(.pill)");
+      const projectStatus = document.querySelector(".tag-row .tag--green");
+      const projectPrice = document.querySelector(".summary .price");
+      projectTitle.textContent = "锦江·天际云境";
+      projectDistrict.textContent = "锦江区";
+      projectStatus.textContent = "即将预售";
+      projectPrice.innerHTML = "价格待定<small>预售价格以取证信息为准</small>";
+      document.getElementById("heroImage").src = "./assets/楼盘实景-楼栋外立面.png";
+      document.getElementById("heroImage").alt = "锦江天际云境楼盘实景";
+    }
+
     const heroImage = document.getElementById("heroImage");
     document.querySelectorAll(".album-tab").forEach((button) => {
       button.addEventListener("click", () => {

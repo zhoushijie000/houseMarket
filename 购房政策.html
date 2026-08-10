@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>购房政策</title>
+  <style>
+    :root {
+      --brand: #fd5d00;
+      --brand-light: #ff8f2e;
+      --text-primary: #303133;
+      --text-regular: #606266;
+      --text-muted: #909399;
+      --line: #e4e7ed;
+      --page: #f3f5f6;
+      --surface: #ffffff;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --shadow-card: 0 4px 16px rgba(48, 49, 51, 0.05);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: #f7f1ed;
+      color: var(--text-primary);
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+    }
+
+    button {
+      border: 0;
+      background: none;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .policy-page {
+      width: min(100vw, 375px);
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: var(--page);
+      box-shadow: 0 20px 50px rgba(48, 49, 51, 0.12);
+    }
+
+    .policy-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 60px;
+      border-bottom: 1px solid rgba(228, 231, 237, 0.7);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+    }
+
+    .policy-topbar__title {
+      margin: 0;
+      color: #000000;
+      font-size: 17px;
+      line-height: 1;
+      font-weight: 600;
+    }
+
+    .policy-back {
+      position: absolute;
+      left: 8px;
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+    }
+
+    .policy-back svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: #111827;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .policy-actions {
+      position: absolute;
+      right: 8px;
+      display: flex;
+      align-items: center;
+      height: 36px;
+      overflow: hidden;
+      border: 1px solid rgba(151, 151, 151, 0.24);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .policy-actions__button {
+      position: relative;
+      width: 42px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+    }
+
+    .policy-actions__button + .policy-actions__button::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 9px;
+      width: 1px;
+      height: 18px;
+      background: rgba(144, 147, 153, 0.36);
+    }
+
+    .policy-actions__more {
+      display: flex;
+      gap: 3px;
+    }
+
+    .policy-actions__more i {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #111827;
+    }
+
+    .policy-actions__target {
+      width: 17px;
+      height: 17px;
+      display: grid;
+      place-items: center;
+      border: 2px solid #111827;
+      border-radius: 50%;
+    }
+
+    .policy-actions__target::after {
+      content: "";
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #111827;
+    }
+
+    .policy-content {
+      padding: 8px 16px calc(32px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .policy-card-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .policy-district-group {
+      min-width: 0;
+    }
+
+    .policy-district-group__header {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      min-height: 30px;
+      margin-bottom: 8px;
+      padding-left: 9px;
+      border-left: 3px solid var(--brand);
+    }
+
+    .policy-district-group__title {
+      margin: 0;
+      color: var(--text-primary);
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .policy-district-group__cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .policy-card {
+      display: flex;
+      min-width: 0;
+      min-height: 178px;
+      flex-direction: column;
+      padding: 12px;
+      border: 1px solid rgba(228, 231, 237, 0.72);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      box-shadow: var(--shadow-card);
+    }
+
+    .policy-card__title {
+      min-width: 0;
+      margin: 0;
+      color: #000000;
+      font-size: 15px;
+      line-height: 1.45;
+      font-weight: 800;
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+    }
+
+    .policy-card__district {
+      margin-top: 8px;
+      overflow: hidden;
+      color: var(--text-muted);
+      font-size: 11px;
+      line-height: 1.4;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .policy-card__period {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 3px;
+      margin-top: auto;
+      padding-top: 12px;
+      color: var(--text-muted);
+      font-size: 10px;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .policy-card__period time {
+      color: var(--text-regular);
+      font-weight: 700;
+    }
+
+    .policy-card__detail {
+      width: 100%;
+      min-height: 32px;
+      margin-top: 10px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: #fff1e8;
+      color: var(--brand);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .policy-card__detail:active {
+      background: linear-gradient(90deg, var(--brand), var(--brand-light));
+      color: #ffffff;
+    }
+
+    .policy-empty {
+      display: grid;
+      place-items: center;
+      min-height: 190px;
+      padding: 24px;
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      color: var(--text-muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .policy-dialog {
+      width: min(calc(100vw - 32px), 343px);
+      max-height: min(72vh, 560px);
+      padding: 0;
+      overflow: hidden;
+      border: 0;
+      border-radius: 16px;
+      color: var(--text-primary);
+      box-shadow: 0 20px 60px rgba(17, 24, 39, 0.24);
+    }
+
+    .policy-dialog::backdrop {
+      background: rgba(17, 24, 39, 0.46);
+      backdrop-filter: blur(3px);
+    }
+
+    .policy-dialog__head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 16px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .policy-dialog__head h2 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.45;
+    }
+
+    .policy-dialog__close {
+      flex: 0 0 auto;
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--page);
+      color: var(--text-regular);
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .policy-dialog__body {
+      max-height: calc(min(72vh, 560px) - 60px);
+      padding: 14px 16px 20px;
+      overflow-y: auto;
+    }
+
+    .policy-dialog__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 12px;
+    }
+
+    .policy-dialog__tag {
+      min-height: 24px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: #fff1e8;
+      color: var(--brand);
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .policy-dialog__body p {
+      margin: 0;
+      color: var(--text-regular);
+      font-size: 13px;
+      line-height: 1.75;
+    }
+
+    @media (max-width: 340px) {
+      .policy-card-grid,
+      .policy-district-group__cards {
+        grid-template-columns: 1fr;
+      }
+
+      .policy-card {
+        min-height: 168px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="policy-page">
+    <header class="policy-topbar">
+      <button class="policy-back" id="policyBack" type="button" aria-label="返回首页">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+      </button>
+      <h1 class="policy-topbar__title">购房政策</h1>
+      <div class="policy-actions" aria-label="页面操作">
+        <button class="policy-actions__button" type="button" aria-label="更多操作">
+          <span class="policy-actions__more" aria-hidden="true"><i></i><i></i><i></i></span>
+        </button>
+        <button class="policy-actions__button" type="button" aria-label="关闭页面">
+          <span class="policy-actions__target" aria-hidden="true"></span>
+        </button>
+      </div>
+    </header>
+
+    <div class="policy-content">
+      <section class="policy-card-grid" id="policyCards" aria-label="按区县归类的购房政策" aria-live="polite"></section>
+    </div>
+  </main>
+
+  <dialog class="policy-dialog" id="policyDialog">
+    <div class="policy-dialog__head">
+      <h2 id="policyDialogTitle"></h2>
+      <button class="policy-dialog__close" id="policyDialogClose" type="button" aria-label="关闭详情">×</button>
+    </div>
+    <div class="policy-dialog__body">
+      <div class="policy-dialog__meta">
+        <span class="policy-dialog__tag" id="policyDialogDistrict"></span>
+        <span class="policy-dialog__tag" id="policyDialogType"></span>
+        <span class="policy-dialog__tag" id="policyDialogDate"></span>
+      </div>
+      <p id="policyDialogSummary"></p>
+    </div>
+  </dialog>
+
+  <script>
+    const districtOrder = [
+      "四川天府新区",
+      "成都东部新区",
+      "成都高新区",
+      "锦江区",
+      "青羊区",
+      "金牛区",
+      "武侯区",
+      "成华区",
+      "龙泉驿区",
+      "青白江区",
+      "新都区",
+      "温江区",
+      "双流区",
+      "郫都区",
+      "新津区",
+      "简阳市",
+      "都江堰市",
+      "彭州市",
+      "邛崃市",
+      "崇州市",
+      "金堂县",
+      "大邑县",
+      "蒲江县"
+    ];
+
+    const basePolicies = [
+      {
+        id: "east-talent",
+        title: "东部新区人才购房补贴最高100万元",
+        district: "成都东部新区",
+        type: "人才安居",
+        start: "2026.01.08",
+        end: "2029.01.08",
+        summary: "面向符合条件的人才提供分层分类购房支持。具体申报范围、资格条件、补贴标准及办理材料，以主管部门正式发布的政策文件和申报通知为准。"
+      },
+      {
+        id: "qingyang-market",
+        title: "青羊房地产市场健康发展的若干措施",
+        district: "青羊区",
+        type: "市场支持",
+        start: "2026.06.18",
+        end: "2027.03.01",
+        summary: "围绕住房消费、人才安居和房地产市场平稳健康发展制定支持措施。政策适用对象、办理流程及执行口径以正式文件为准。"
+      },
+      {
+        id: "longquanyi-subsidy",
+        title: "龙泉驿区购房补贴措施",
+        district: "龙泉驿区",
+        type: "购房补贴",
+        start: "2026.02.13",
+        end: "2026.12.31",
+        summary: "对政策有效期内符合条件的购房人给予相应支持。补贴对象、房源范围、申请时限和审核方式以龙泉驿区相关部门公布内容为准。"
+      },
+      {
+        id: "qingbaijiang-coupon",
+        title: "关于2026年青白江区发放购房“消费券”",
+        district: "青白江区",
+        type: "购房补贴",
+        start: "2026.01.01",
+        end: "2026.12.31",
+        summary: "通过购房消费券形式支持合理住房需求。适用房源、领取资格、核销规则及资金安排以青白江区正式活动通知为准。"
+      },
+      {
+        id: "jianyang-ticket",
+        title: "简阳市房票购房支持政策",
+        district: "简阳市",
+        type: "房票安置",
+        start: "2026.03.31",
+        end: "2028.03.30",
+        summary: "针对符合条件的房票使用人提供购房支持。房票适用范围、使用期限、抵扣方式和办理流程以简阳市正式政策文件为准。"
+      },
+      {
+        id: "pengzhou-subsidy",
+        title: "彭州市购房补贴措施",
+        district: "彭州市",
+        type: "购房补贴",
+        start: "2026.01.04",
+        end: "2027.01.03",
+        summary: "对符合条件的住房消费给予购房补贴。申请对象、补贴金额、申报材料及兑付流程以彭州市主管部门公布的实施细则为准。"
+      }
+    ];
+
+    const policyTemplates = [
+      {
+        key: "subsidy-guide",
+        title: "购房补贴申领实施细则",
+        type: "购房补贴",
+        start: "2026.01.01",
+        end: "2026.12.31",
+        summary: "面向符合条件的购房人提供住房消费支持。适用对象、补贴标准、申请材料和兑付流程以属地区县主管部门正式发布内容为准。"
+      },
+      {
+        key: "talent-support",
+        title: "人才安居购房支持办法",
+        type: "人才安居",
+        start: "2026.03.01",
+        end: "2027.02.28",
+        summary: "面向符合条件的人才提供购房支持。人才认定、房源范围、支持标准和办理方式以属地区县主管部门正式发布内容为准。"
+      },
+      {
+        key: "market-measures",
+        title: "促进住房消费若干措施",
+        type: "市场支持",
+        start: "2026.05.01",
+        end: "2027.04.30",
+        summary: "围绕合理住房需求和房地产市场平稳健康发展提供支持。适用条件、执行期限和办理口径以属地区县正式政策文件为准。"
+      }
+    ];
+
+    const threePolicyDistricts = new Set(["四川天府新区"]);
+
+    const policies = districtOrder.flatMap((district, districtIndex) => {
+      const existingPolicies = basePolicies.filter((policy) => policy.district === district);
+      const existingTypes = new Set(existingPolicies.map((policy) => policy.type));
+      const targetPolicyCount = threePolicyDistricts.has(district) ? 3 : 2;
+      const rotatedTemplates = policyTemplates
+        .slice(districtIndex % policyTemplates.length)
+        .concat(policyTemplates.slice(0, districtIndex % policyTemplates.length));
+      const preferredTemplates = rotatedTemplates
+        .filter((template) => !existingTypes.has(template.type))
+        .concat(rotatedTemplates.filter((template) => existingTypes.has(template.type)));
+      const additions = preferredTemplates
+        .slice(0, Math.max(0, targetPolicyCount - existingPolicies.length))
+        .map((template, templateIndex) => ({
+          id: `district-${districtIndex}-${template.key}-${templateIndex}`,
+          title: `${district}${template.title}`,
+          district,
+          type: template.type,
+          start: template.start,
+          end: template.end,
+          summary: template.summary
+        }));
+
+      return [...existingPolicies, ...additions];
+    });
+
+    const policyCards = document.getElementById("policyCards");
+    const policyBack = document.getElementById("policyBack");
+    const policyDialog = document.getElementById("policyDialog");
+    const policyDialogClose = document.getElementById("policyDialogClose");
+    const policyDialogTitle = document.getElementById("policyDialogTitle");
+    const policyDialogDistrict = document.getElementById("policyDialogDistrict");
+    const policyDialogType = document.getElementById("policyDialogType");
+    const policyDialogDate = document.getElementById("policyDialogDate");
+    const policyDialogSummary = document.getElementById("policyDialogSummary");
+
+    function policyCardMarkup(policy) {
+      return `
+        <article class="policy-card">
+          <h3 class="policy-card__title">${policy.title}</h3>
+          <span class="policy-card__district">${policy.district}</span>
+          <div class="policy-card__period" aria-label="政策时间：${policy.start}至${policy.end}">
+            <time datetime="${policy.start.replaceAll(".", "-")}">${policy.start}</time>
+            <span aria-hidden="true">—</span>
+            <time datetime="${policy.end.replaceAll(".", "-")}">${policy.end}</time>
+          </div>
+          <button class="policy-card__detail" type="button" data-policy-detail="${policy.id}">查看详情</button>
+        </article>
+      `;
+    }
+
+    function renderPolicyCards() {
+      if (!policies.length) {
+        policyCards.innerHTML = '<div class="policy-empty">暂无已收录政策</div>';
+        return;
+      }
+
+      const knownDistricts = new Set(districtOrder);
+      const extraDistricts = [...new Set(policies.map((policy) => policy.district))]
+        .filter((district) => !knownDistricts.has(district))
+        .sort((a, b) => a.localeCompare(b, "zh-CN"));
+      const visibleDistricts = [...districtOrder, ...extraDistricts]
+        .filter((district) => policies.some((policy) => policy.district === district));
+
+      policyCards.innerHTML = visibleDistricts.map((district, index) => {
+        const districtPolicies = policies.filter((policy) => policy.district === district);
+        return `
+          <section class="policy-district-group" aria-labelledby="policyDistrict${index}">
+            <header class="policy-district-group__header">
+              <h3 class="policy-district-group__title" id="policyDistrict${index}">${district}</h3>
+            </header>
+            <div class="policy-district-group__cards">
+              ${districtPolicies.map(policyCardMarkup).join("")}
+            </div>
+          </section>
+        `;
+      }).join("");
+    }
+
+    function openPolicyDetail(policyId) {
+      const policy = policies.find((item) => item.id === policyId);
+      if (!policy) {
+        return;
+      }
+      policyDialogTitle.textContent = policy.title;
+      policyDialogDistrict.textContent = policy.district;
+      policyDialogType.textContent = policy.type;
+      policyDialogDate.textContent = `${policy.start}-${policy.end}`;
+      policyDialogSummary.textContent = policy.summary;
+      policyDialog.showModal();
+    }
+
+    policyCards.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-policy-detail]");
+      if (button) {
+        openPolicyDetail(button.dataset.policyDetail);
+      }
+    });
+
+    policyDialogClose.addEventListener("click", () => policyDialog.close());
+    policyDialog.addEventListener("click", (event) => {
+      if (event.target === policyDialog) {
+        policyDialog.close();
+      }
+    });
+
+    policyBack.addEventListener("click", () => {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = "./安家成都-首页-扫码.html";
+      }
+    });
+
+    renderPolicyCards();
+  </script>
+</body>
+</html>

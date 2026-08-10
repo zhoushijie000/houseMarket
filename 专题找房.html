@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>专题找房</title>
+  <style>
+    * { box-sizing: border-box; }
+    html { background: #f3f5f7; }
+    body {
+      margin: 0;
+      color: #111827;
+      background: #f3f5f7;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    button { border: 0; padding: 0; background: none; color: inherit; font: inherit; }
+    .page {
+      width: min(100%, 450px);
+      min-height: 100vh;
+      margin: 0 auto;
+      background: #fff;
+      box-shadow: 0 0 30px rgba(31, 41, 55, .08);
+    }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      height: 60px;
+      display: grid;
+      grid-template-columns: 48px 1fr 48px;
+      align-items: center;
+      padding: 0 12px;
+      border-bottom: 1px solid #edf0f3;
+      background: rgba(255, 255, 255, .96);
+      backdrop-filter: blur(12px);
+    }
+    .back {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 30px;
+      line-height: 1;
+    }
+    .topbar h1 { margin: 0; text-align: center; font-size: 19px; font-weight: 900; }
+    .topbar__more { text-align: center; color: #4b5563; font-size: 23px; letter-spacing: 1px; }
+    .topic-summary { padding: 16px 16px 12px; background: linear-gradient(135deg, #fff7ef, #fff); }
+    .topic-summary strong { display: block; font-size: 21px; font-weight: 900; }
+    .topic-summary p { margin: 6px 0 0; color: #7b8492; font-size: 13px; line-height: 1.5; }
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      padding: 14px 16px;
+      border-bottom: 8px solid #f4f6f8;
+      background: #fff;
+      color: #303133;
+      font-size: 13px;
+    }
+    .filters button { text-align: center; white-space: nowrap; cursor: pointer; }
+    .result-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 16px 0;
+    }
+    .result-head strong { font-size: 17px; font-weight: 900; }
+    .result-head span { color: #9aa1aa; font-size: 12px; }
+    .estate-list { padding: 0 16px 24px; }
+    .estate-card {
+      display: grid;
+      grid-template-columns: 108px minmax(0, 1fr) 42px;
+      gap: 10px;
+      margin-top: 18px;
+      padding-bottom: 17px;
+      border-bottom: 1px solid #f0f2f5;
+      color: inherit;
+      text-decoration: none;
+    }
+    .estate-cover {
+      position: relative;
+      height: 92px;
+      overflow: hidden;
+      border-radius: 5px;
+      background-position: center;
+      background-size: cover;
+    }
+    .estate-cover::before {
+      content: attr(data-badge);
+      position: absolute;
+      left: 0;
+      top: 0;
+      padding: 3px 8px;
+      border-radius: 0 0 7px 0;
+      background: rgba(0, 132, 255, .78);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .estate-cover__views {
+      position: absolute;
+      left: 7px;
+      bottom: 5px;
+      padding: 2px 5px;
+      border-radius: 4px;
+      background: rgba(17, 24, 39, .48);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .estate-info { min-width: 0; display: grid; align-content: start; gap: 5px; }
+    .estate-title {
+      margin: 0;
+      overflow: hidden;
+      color: #111827;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 17px;
+      line-height: 1.15;
+      font-weight: 900;
+    }
+    .estate-price { color: #f04438; font-size: 15px; line-height: 1; font-weight: 900; }
+    .estate-meta { overflow: hidden; color: #606266; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
+    .estate-tags { display: flex; gap: 5px; overflow: hidden; white-space: nowrap; }
+    .estate-tags span { padding: 2px 5px; border-radius: 3px; background: #eaf8df; color: #49a529; font-size: 10px; }
+    .estate-tags span:nth-child(2) { background: #fff4d8; color: #b9861d; }
+    .topic-note {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      min-width: 0;
+      margin-top: 1px;
+      padding: 5px 7px;
+      border-radius: 4px;
+      background: #fff4ec;
+      color: #f05a22;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+    .topic-note::before { content: "●"; flex: 0 0 auto; font-size: 7px; }
+    .topic-note--metro { background: #eef6ff; color: #2677db; }
+    .topic-note--subsidy { background: #fff6da; color: #a86f00; }
+    .estate-actions { display: grid; align-content: space-between; justify-items: end; min-height: 92px; }
+    .estate-favorite { color: #c8ccd3; font-size: 27px; line-height: 1; }
+    .estate-leftover {
+      width: 42px;
+      min-height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: #fff0e4;
+      color: #ff6b2a;
+      text-align: center;
+      font-size: 11px;
+      line-height: 1.25;
+      font-weight: 800;
+    }
+    @media (max-width: 360px) {
+      .estate-card { grid-template-columns: 96px minmax(0, 1fr) 38px; gap: 8px; }
+      .estate-leftover { width: 38px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <button class="back" type="button" aria-label="返回" onclick="history.length > 1 ? history.back() : location.href='./安家成都-首页-扫码.html'">‹</button>
+      <h1 id="pageTitle">专题找房</h1>
+      <span class="topbar__more" aria-hidden="true">•••</span>
+    </header>
+
+    <section class="topic-summary">
+      <strong id="topicName">新规产品</strong>
+      <p id="topicDescription">聚合符合成都住宅新规的在售项目。</p>
+    </section>
+
+    <div class="filters" aria-label="项目筛选">
+      <button type="button">区域⌄</button>
+      <button type="button">价格⌄</button>
+      <button type="button">户型⌄</button>
+      <button type="button">面积⌄</button>
+      <button type="button">更多⌄</button>
+    </div>
+
+    <div class="result-head">
+      <strong>在售项目</strong>
+      <span id="resultCount">5个项目</span>
+    </div>
+    <section class="estate-list" id="estateList" aria-live="polite"></section>
+  </main>
+
+  <script>
+    const topicConfig = {
+      "new-rule": {
+        title: "新规产品",
+        description: "聚合符合成都住宅新规的在售项目。",
+        noteClass: "",
+        notes: [
+          "新规亮点：第四代住宅，配置空中花园",
+          "新规亮点：架空层公共空间与大面宽阳台",
+          "新规亮点：立体生态住宅，得房率提升",
+          "新规亮点：改善型产品，公共空间升级",
+          "新规亮点：绿色建筑与全龄社区配套"
+        ]
+      },
+      metro: {
+        title: "地铁产品",
+        description: "精选地铁站周边在售项目，步行距离清晰标注。",
+        noteClass: "topic-note--metro",
+        notes: [
+          "步行约420m至地铁6号线新川路站",
+          "步行约680m至地铁8号线十里店站",
+          "步行约560m至地铁1号线武汉路站",
+          "步行约750m至地铁5号线锦城湖站",
+          "步行约390m至地铁2号线洪河站"
+        ]
+      },
+      subsidy: {
+        title: "购房补贴产品",
+        description: "汇集可申请购房补贴的项目，补贴信息随项目展示。",
+        noteClass: "topic-note--subsidy",
+        notes: [
+          "补贴说明：符合条件最高可享5万元购房补贴",
+          "补贴说明：可申请成华区新房消费补贴",
+          "补贴说明：人才购房补贴资格可用",
+          "补贴说明：企业优惠可与区级补贴叠加",
+          "补贴说明：符合条件可享契税补贴"
+        ]
+      }
+    };
+
+    const projects = [
+      { name: "招商·时代花园", price: "31000-32000元/㎡", meta: "天府新区 / 建面120~130㎡", tags: ["精装", "企业优惠减8.8万"], image: "楼盘实景-楼栋外立面.png", badge: "实景现房", views: "3456", leftover: "30套<br>剩余" },
+      { name: "首开·龙湖紫宸", price: "32300-35600元/㎡", meta: "成华区 / 建面118~142㎡", tags: ["毛坯", "容积率2.3"], image: "楼盘实景-园林入口.png", badge: "实景现房", views: "2118", leftover: "18套<br>剩余" },
+      { name: "融创·春风十里", price: "价格待定", meta: "天府新区 / 建面95~128㎡", tags: ["安家成都", "企业优惠享96折"], image: "楼盘实景-社区楼景.png", badge: "安家成都", views: "1896", leftover: "待开<br>预告" },
+      { name: "中海·锦江城", price: "26800-29800元/㎡", meta: "锦江区 / 建面105~138㎡", tags: ["精装", "低密社区"], image: "楼盘实景-客厅样板间.png", badge: "热销楼盘", views: "1682", leftover: "24套<br>剩余" },
+      { name: "保利·天悦", price: "28500元/㎡起", meta: "龙泉驿区 / 建面108~143㎡", tags: ["现房", "品牌房企"], image: "楼盘实景-会所书吧.png", badge: "到访有礼", views: "1320", leftover: "12套<br>剩余" }
+    ];
+
+    const requestedTopic = new URLSearchParams(location.search).get("topic");
+    const currentTopic = topicConfig[requestedTopic] ? requestedTopic : "new-rule";
+    const config = topicConfig[currentTopic];
+
+    document.title = config.title + " - 专题找房";
+    document.getElementById("pageTitle").textContent = config.title;
+    document.getElementById("topicName").textContent = config.title;
+    document.getElementById("topicDescription").textContent = config.description;
+    document.getElementById("resultCount").textContent = projects.length + "个项目";
+    document.getElementById("estateList").innerHTML = projects.map((project, index) => `
+      <a class="estate-card" href="./project-detail.html" aria-label="查看${project.name}楼盘详情">
+        <div class="estate-cover" data-badge="${project.badge}" style="background-image:url('./assets/${project.image}')">
+          <span class="estate-cover__views">${project.views}人关注</span>
+        </div>
+        <div class="estate-info">
+          <h2 class="estate-title">${project.name}</h2>
+          <div class="estate-price">${project.price}</div>
+          <div class="estate-meta">${project.meta}</div>
+          <div class="estate-tags">${project.tags.map(tag => `<span>${tag}</span>`).join("")}</div>
+          <div class="topic-note ${config.noteClass}">${config.notes[index]}</div>
+        </div>
+        <span class="estate-actions" aria-hidden="true">
+          <span class="estate-favorite">♡</span>
+          <span class="estate-leftover">${project.leftover}</span>
+        </span>
+      </a>
+    `).join("");
+  </script>
+</body>
+</html>

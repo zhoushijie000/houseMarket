@@ -416,12 +416,6 @@ button {
   font-weight: var(--font-weight-semibold);
 }
 
-.district-card__location {
-  margin-top: 2px;
-  color: var(--color-text-3);
-  font-size: var(--font-size-xs);
-}
-
 .district-card__intro {
   display: -webkit-box;
   min-height: 36px;

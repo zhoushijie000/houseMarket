@@ -2,7 +2,7 @@
   const DISTRICTS = [
     {
       id: "gaoxin",
-      name: "高新区",
+      name: "成都高新区",
       shortName: "高新",
       location: "成都南部",
       focus: "科创产业 / 金融城 / 改善住区",
@@ -34,7 +34,7 @@
     },
     {
       id: "tianfu",
-      name: "天府新区",
+      name: "四川天府新区",
       shortName: "天府",
       location: "成都南拓",
       focus: "总部商务 / 会展生态 / 滨水住区",
@@ -193,6 +193,46 @@
       ]
     }
   ];
+
+  const OFFICIAL_DISTRICT_ORDER = [
+    "四川天府新区",
+    "成都东部新区",
+    "成都高新区",
+    "锦江区",
+    "青羊区",
+    "金牛区",
+    "武侯区",
+    "成华区",
+    "龙泉驿区",
+    "青白江区",
+    "新都区",
+    "温江区",
+    "双流区",
+    "郫都区",
+    "新津区",
+    "简阳市",
+    "都江堰市",
+    "彭州市",
+    "邛崃市",
+    "崇州市",
+    "金堂县",
+    "大邑县",
+    "蒲江县"
+  ];
+  const officialDistrictRank = OFFICIAL_DISTRICT_ORDER.reduce(function (rank, districtName, index) {
+    rank[districtName] = index;
+    return rank;
+  }, {});
+
+  DISTRICTS.sort(function (a, b) {
+    const rankA = Object.prototype.hasOwnProperty.call(officialDistrictRank, a.name)
+      ? officialDistrictRank[a.name]
+      : Number.MAX_SAFE_INTEGER;
+    const rankB = Object.prototype.hasOwnProperty.call(officialDistrictRank, b.name)
+      ? officialDistrictRank[b.name]
+      : Number.MAX_SAFE_INTEGER;
+    return rankA - rankB || a.name.localeCompare(b.name, "zh-CN");
+  });
 
   const DISTRICT_MAP = DISTRICTS.reduce(function (acc, district) {
     acc[district.id] = district;
@@ -528,7 +568,6 @@
     const tabsEl = document.getElementById("districtTabs");
     const gridEl = document.getElementById("districtGrid");
     const selectionPanelEl = document.getElementById("selectionPanel");
-    const districtCountEl = document.getElementById("districtCount");
     const focusNameEl = document.getElementById("focusName");
     const focusLocationEl = document.getElementById("focusLocation");
     const focusIntroEl = document.getElementById("focusIntro");
@@ -553,7 +592,6 @@
               '<div class="district-logo">' + district.shortName + "</div>" +
               "<div>" +
                 '<div class="district-card__name">' + district.name + "</div>" +
-                '<div class="district-card__location">' + district.location + "</div>" +
               "</div>" +
             "</div>" +
             '<p class="district-card__intro">' + district.intro + "</p>" +
@@ -602,8 +640,6 @@
       renderFocus(district);
     }
 
-    districtCountEl.textContent = DISTRICTS.length + "个区县";
-
     tabsEl.addEventListener("click", function (event) {
       const button = event.target.closest("button[data-id]");
       if (button) {
@@ -626,7 +662,6 @@
     const collectionBackButton = document.getElementById("collectionBackButton");
     const searchInputEl = document.getElementById("districtSearchInput");
     const gridEl = document.getElementById("districtGrid");
-    const districtCountEl = document.getElementById("districtCount");
     const defaultDistrict = DISTRICT_MAP[LOCATED_DISTRICT_ID];
     let selectedDistrictId = getDistrictFromQuery("");
     let keyword = "";
@@ -656,8 +691,6 @@
       });
 
       setPageAccent(pageEl, hasSelectedDistrict && selectedDistrictId ? DISTRICT_MAP[selectedDistrictId] : defaultDistrict);
-      districtCountEl.textContent = filteredDistricts.length + "个区县";
-
       if (!filteredDistricts.length) {
         gridEl.innerHTML = '<div class="district-empty">未找到相关区县</div>';
         return;
@@ -671,7 +704,6 @@
               '<div class="district-logo">' + district.shortName + "</div>" +
               "<div>" +
                 '<div class="district-card__name">' + district.name + "</div>" +
-                '<div class="district-card__location">' + district.location + "</div>" +
               "</div>" +
             "</div>" +
             '<p class="district-card__intro">' + district.intro + "</p>" +
