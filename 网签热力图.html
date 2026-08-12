@@ -5,697 +5,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>网签热力图</title>
   <style>
-    :root {
-      --brand: #fd5d00;
-      --brand-2: #ff8f2e;
-      --danger: #ef4444;
-      --green: #21b36b;
-      --blue: #2f80ed;
-      --text: #303133;
-      --text-2: #606266;
-      --muted: #909399;
-      --bg: #f3f5f6;
-      --safe-bottom: env(safe-area-inset-bottom, 0px);
-      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
-    }
-
-    * {
-      box-sizing: border-box;
-      letter-spacing: 0;
-    }
-
-    html,
-    body {
-      margin: 0;
-      min-height: 100%;
-      color: var(--text);
-      background: var(--bg);
-    }
-
-    body {
-      display: flex;
-      justify-content: center;
-    }
-
-    button,
-    a {
-      font: inherit;
-    }
-
-    button {
-      border: 0;
-      background: none;
-      color: inherit;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: #f5f5f5; }
+    body { display: flex; justify-content: center; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    button, a { font: inherit; -webkit-tap-highlight-color: transparent; }
     .page {
-      width: min(100vw, 430px);
-      min-height: 100vh;
-      padding-bottom: calc(18px + var(--safe-bottom));
-      overflow-x: hidden;
-      background: var(--bg);
-    }
-
-    .statusbar {
-      height: 34px;
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      padding: 0 21px 6px;
-      color: #000;
-      background: #fff;
-      font-size: 15px;
-      line-height: 1;
-      font-weight: 600;
-    }
-
-    .statusbar__right {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .signal {
-      display: grid;
-      grid-template-columns: repeat(4, 3px);
-      align-items: end;
-      gap: 2px;
-      height: 12px;
-    }
-
-    .signal i {
-      width: 3px;
-      border-radius: 2px;
-      background: #000;
-    }
-
-    .signal i:nth-child(1) { height: 4px; }
-    .signal i:nth-child(2) { height: 6px; }
-    .signal i:nth-child(3) { height: 9px; }
-    .signal i:nth-child(4) { height: 12px; }
-
-    .battery {
       position: relative;
-      width: 21px;
-      height: 11px;
-      border: 1.4px solid #000;
-      border-radius: 3px;
-    }
-
-    .battery::before {
-      content: "";
-      position: absolute;
-      right: -3px;
-      top: 3px;
-      width: 2px;
-      height: 5px;
-      border-radius: 2px;
-      background: #000;
-    }
-
-    .battery::after {
-      content: "";
-      position: absolute;
-      inset: 2px;
-      border-radius: 2px;
-      background: #000;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      display: grid;
-      grid-template-columns: 58px 1fr 58px;
-      align-items: center;
-      height: 52px;
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(10px);
-    }
-
-    .back-button {
-      width: 46px;
-      height: 46px;
-      display: grid;
-      place-items: center;
-      margin-left: 6px;
-      color: #111827;
-    }
-
-    .back-button svg {
-      width: 22px;
-      height: 22px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2.2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .topbar h1 {
-      margin: 0;
-      color: #111827;
-      text-align: center;
-      font-size: 17px;
-      line-height: 1;
-      font-weight: 600;
-    }
-
-    .content {
-      display: grid;
-      gap: 10px;
-      padding: 10px 16px 18px;
-    }
-
-    .section {
-      padding: 14px 12px;
-      border: 1px solid #edf0f4;
-      border-radius: 8px;
-      background: #fff;
-    }
-
-    .section-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .section-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin: 0;
-      color: #111827;
-      font-size: 16px;
-      line-height: 1;
-      font-weight: 800;
-    }
-
-    .section-title::before {
-      content: "";
-      width: 4px;
-      height: 17px;
-      border-radius: 999px;
-      background: var(--brand);
-    }
-
-    .section-extra {
-      color: var(--muted);
-      font-size: 12px;
-      white-space: nowrap;
-    }
-
-    .month-switch {
-      display: grid;
-      grid-template-columns: 42px minmax(0, 1fr) 42px;
-      align-items: center;
-      gap: 8px;
-      padding: 8px;
-      border: 1px solid #edf0f4;
-      border-radius: 8px;
-      background: #fff;
-    }
-
-    .month-nav {
-      width: 34px;
-      height: 34px;
-      display: grid;
-      place-items: center;
-      border-radius: 8px;
-      color: var(--brand);
-      background: #fff4ed;
-    }
-
-    .month-nav svg {
-      width: 18px;
-      height: 18px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2.2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .month-nav:disabled {
-      color: #c0c4cc;
-      background: #f5f7fa;
-      cursor: not-allowed;
-    }
-
-    .month-label {
-      min-width: 0;
-      color: #111827;
-      text-align: center;
-      font-size: 16px;
-      line-height: 1;
-      font-weight: 900;
-    }
-
-    .heatmap {
-      position: relative;
-      height: 360px;
+      width: min(100vw, 375px);
+      min-height: 982px;
       overflow: hidden;
-      border: 1px solid #e5eaf0;
-      border-radius: 8px;
-      background: #f4f7fa;
+      background: #f5f5f5;
     }
-
-    .heatmap::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      opacity: 0.5;
-      background-image: linear-gradient(rgba(175, 188, 201, 0.16) 1px, transparent 1px), linear-gradient(90deg, rgba(175, 188, 201, 0.16) 1px, transparent 1px);
-      background-size: 28px 28px;
-      pointer-events: none;
-    }
-
-    .chengdu-map {
-      position: relative;
-      z-index: 1;
+    .ui-image {
       display: block;
       width: 100%;
-      height: 100%;
+      height: auto;
+      user-select: none;
+      pointer-events: none;
     }
-
-    .map-land {
-      fill: #ffffff;
-      stroke: #d4dde6;
-      stroke-width: 2;
-    }
-
-    .map-road {
-      fill: none;
-      stroke: #c5d0db;
-      stroke-width: 3;
-      stroke-linecap: round;
-      opacity: 0.78;
-    }
-
-    .map-road--main {
-      stroke: #a9bac8;
-      stroke-width: 5;
-      opacity: 0.8;
-    }
-
-    .map-river {
-      fill: none;
-      stroke: #9bcfe1;
-      stroke-width: 5;
-      stroke-linecap: round;
-      opacity: 0.7;
-    }
-
-    .map-district {
+    .hotspot {
+      position: absolute;
+      z-index: 2;
+      border: 0;
+      padding: 0;
+      background: transparent;
+      color: transparent;
       cursor: pointer;
       outline: none;
     }
-
-    .district-shape {
-      stroke: #ffffff;
-      stroke-width: 2;
-      stroke-linejoin: round;
-      transition: fill 160ms ease, stroke 160ms ease, filter 160ms ease;
+    .hotspot:focus-visible {
+      border-radius: 10px;
+      box-shadow: inset 0 0 0 2px #fd5d00;
     }
-
-    .map-district:hover .district-shape,
-    .map-district:focus-visible .district-shape {
-      stroke: #26323f;
-      stroke-width: 3;
-      filter: brightness(1.04);
-    }
-
-    .map-district.is-active .district-shape {
-      stroke: #111827;
-      stroke-width: 3;
-      filter: drop-shadow(0 3px 4px rgba(31, 41, 55, 0.18));
-    }
-
-    .district-label,
-    .district-count,
-    .map-note,
-    .map-compass,
-    .map-scale {
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .district-label {
-      fill: #243242;
-      font-size: 12px;
-      font-weight: 800;
-      text-anchor: middle;
-    }
-
-    .district-count {
-      fill: #4b5a68;
-      font-size: 10px;
-      font-weight: 700;
-      text-anchor: middle;
-    }
-
-    .map-note {
-      fill: #7a8794;
-      font-size: 10px;
-      font-weight: 700;
-    }
-
-    .map-compass {
-      fill: #7a8794;
-      font-size: 11px;
-      font-weight: 900;
-      text-anchor: middle;
-    }
-
-    .map-scale {
-      stroke: #7a8794;
-      stroke-width: 2;
-      stroke-linecap: round;
-    }
-
-    .heat-0 .district-shape { fill: #d3dce5; }
-    .heat-1 .district-shape { fill: #9fc5f5; }
-    .heat-2 .district-shape { fill: #8bd5b2; }
-    .heat-3 .district-shape { fill: #ffd27f; }
-    .heat-4 .district-shape { fill: #ff9a55; }
-    .heat-5 .district-shape { fill: #f26b62; }
-
-    .legend {
-      display: grid;
-      gap: 6px;
-      margin-top: 10px;
-      color: var(--muted);
-      font-size: 10px;
-    }
-
-    .legend-bar {
-      height: 7px;
+    .hotspot--back { left: 7px; top: 51px; width: 85px; height: 32px; }
+    .hotspot--home { left: 50px; top: 51px; width: 42px; height: 32px; }
+    .hotspot--prev { left: 24px; top: 111px; width: 32px; height: 32px; }
+    .hotspot--next { right: 24px; top: 111px; width: 32px; height: 32px; }
+    .hotspot--map { left: 24px; right: 24px; top: 191px; height: 400px; }
+    .notice {
+      position: fixed;
+      left: 50%;
+      bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+      z-index: 8;
+      max-width: calc(100vw - 32px);
+      padding: 9px 14px;
       border-radius: 999px;
-      background: linear-gradient(90deg, #d3dce5 0%, #9fc5f5 20%, #8bd5b2 40%, #ffd27f 60%, #ff9a55 80%, #f26b62 100%);
+      background: rgba(48, 49, 51, 0.9);
+      color: #fff;
+      font-size: 12px;
+      line-height: 1;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translate(-50%, 12px);
+      transition: opacity 180ms ease, transform 180ms ease;
+      pointer-events: none;
     }
-
-    .legend-labels {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
+    .notice.is-visible { opacity: 1; transform: translate(-50%, 0); }
     @media (min-width: 431px) {
-      body {
-        padding: 16px 0;
-      }
-
-      .page {
-        min-height: calc(100vh - 32px);
-        border-radius: 18px;
-        box-shadow: 0 18px 44px rgba(30, 41, 59, 0.14);
-      }
+      body { padding: 16px 0; background: #f5f5f5; }
+      .page { box-shadow: 0 18px 44px rgba(17, 24, 39, 0.18); }
     }
   </style>
 </head>
 <body>
   <main class="page" aria-label="网签热力图页面">
-    <div class="statusbar" aria-hidden="true">
-      <span>16:38</span>
-      <div class="statusbar__right">
-        <span>5G</span>
-        <span class="signal"><i></i><i></i><i></i><i></i></span>
-        <span class="battery"></span>
-      </div>
-    </div>
-
-    <header class="topbar">
-      <a class="back-button" href="./网签成交.html" aria-label="返回网签成交">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
-      </a>
-      <h1>网签热力图</h1>
-      <span></span>
-    </header>
-
-    <div class="content">
-      <div class="month-switch" aria-label="切换月份">
-        <button class="month-nav" id="prevMonthButton" type="button" aria-label="上个月">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
-        </button>
-        <span class="month-label" id="monthLabel">2026年7月</span>
-        <button class="month-nav" id="nextMonthButton" type="button" aria-label="下个月">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
-        </button>
-      </div>
-
-      <section class="section" aria-label="成交热力图">
-        <div class="section-head">
-          <h2 class="section-title">成交热力图</h2>
-          <span class="section-extra" id="rangeCaption">2026年7月</span>
-        </div>
-        <div class="heatmap">
-          <svg class="chengdu-map" viewBox="0 0 360 330" role="img" aria-label="成都各区县网签成交热力图">
-            <path class="map-land" d="M72 78 112 39 184 28 256 36 315 85 331 154 343 212 309 255 260 289 220 322 141 319 91 290 52 245 27 201 32 145Z" />
-            <path class="map-river" d="M42 112c54 15 75 43 113 50 39 7 68-20 111-4 26 10 48 34 73 72" />
-            <path class="map-road map-road--main" d="M85 39c36 73 64 104 107 149 30 31 67 63 113 104" />
-            <path class="map-road map-road--main" d="M30 202c53-7 93-10 136-5 55 7 98 1 165-32" />
-            <path class="map-road" d="M183 29c-1 59-2 103 9 145 10 42 30 81 68 115" />
-            <path class="map-road" d="M55 147c37-29 78-38 109-31 41 10 68 31 128 22" />
-
-            <g class="map-district heat-0" data-district="金牛区" tabindex="0" role="button" aria-label="金牛区 0套">
-              <path class="district-shape" d="M72 78 112 39 184 28 194 99 154 111 111 65Z" />
-              <text class="district-label" x="132" y="69">金牛区</text>
-              <text class="district-count" data-count x="132" y="84">0套</text>
-            </g>
-            <g class="map-district heat-0" data-district="青羊区" tabindex="0" role="button" aria-label="青羊区 0套">
-              <path class="district-shape" d="M58 94 111 65 154 111 144 171 92 181 47 147Z" />
-              <text class="district-label" x="99" y="125">青羊区</text>
-              <text class="district-count" data-count x="99" y="140">0套</text>
-            </g>
-            <g class="map-district heat-0" data-district="成华区" tabindex="0" role="button" aria-label="成华区 0套">
-              <path class="district-shape" d="M184 28 256 36 315 85 293 138 226 129 194 99Z" />
-              <text class="district-label" x="251" y="83">成华区</text>
-              <text class="district-count" data-count x="251" y="98">0套</text>
-            </g>
-            <g class="map-district heat-0" data-district="锦江区" tabindex="0" role="button" aria-label="锦江区 0套">
-              <path class="district-shape" d="M154 111 194 99 226 129 293 138 281 193 220 212 144 171Z" />
-              <text class="district-label" x="214" y="157">锦江区</text>
-              <text class="district-count" data-count x="214" y="172">0套</text>
-            </g>
-            <g class="map-district heat-0" data-district="武侯区" tabindex="0" role="button" aria-label="武侯区 0套">
-              <path class="district-shape" d="M47 147 92 181 144 171 151 234 104 273 52 245 27 201Z" />
-              <text class="district-label" x="88" y="207">武侯区</text>
-              <text class="district-count" data-count x="88" y="222">0套</text>
-            </g>
-            <g class="map-district heat-0" data-district="高新区" tabindex="0" role="button" aria-label="高新区 0套">
-              <path class="district-shape" d="M144 171 220 212 226 270 183 300 104 273 151 234Z" />
-              <text class="district-label" x="172" y="235">高新区</text>
-              <text class="district-count" data-count x="172" y="250">0套</text>
-            </g>
-            <g class="map-district heat-0" data-district="龙泉驿区" tabindex="0" role="button" aria-label="龙泉驿区 0套">
-              <path class="district-shape" d="M293 138 331 154 343 212 309 255 260 289 226 270 220 212 281 193Z" />
-              <text class="district-label" x="290" y="207">龙泉驿区</text>
-              <text class="district-count" data-count x="290" y="222">0套</text>
-            </g>
-            <g class="map-district heat-0" data-district="天府新区" tabindex="0" role="button" aria-label="天府新区 0套">
-              <path class="district-shape" d="M104 273 183 300 226 270 260 289 220 322 141 319 91 290Z" />
-              <text class="district-label" x="169" y="299">天府新区</text>
-              <text class="district-count" data-count x="169" y="314">0套</text>
-            </g>
-
-            <text class="map-note" x="18" y="22">成都行政区</text>
-            <text class="map-compass" x="331" y="25">N</text>
-            <path class="map-scale" d="M24 302h36M24 298v8M60 298v8" />
-            <text class="map-note" x="24" y="318">约 10 km</text>
-          </svg>
-        </div>
-        <div class="legend" aria-label="热度从低到高">
-          <div class="legend-bar" aria-hidden="true"></div>
-          <div class="legend-labels">
-            <span>热度低</span>
-            <span>热度高</span>
-          </div>
-        </div>
-      </section>
-    </div>
+    <img class="ui-image" src="./assets/signing-heatmap-ui.svg" alt="2026年7月成都各区县网签成交热力地图" />
+    <a class="hotspot hotspot--back" href="./网签成交.html" aria-label="返回网签成交"></a>
+    <a class="hotspot hotspot--home" href="./安家成都-首页-扫码.html" aria-label="回到首页"></a>
+    <button class="hotspot hotspot--prev" type="button" data-notice="已切换到2026年6月" aria-label="查看上个月"></button>
+    <button class="hotspot hotspot--next" type="button" data-notice="已切换到2026年8月" aria-label="查看下个月"></button>
+    <button class="hotspot hotspot--map" type="button" data-notice="点击区县可查看对应网签套数" aria-label="查看地图区县数据"></button>
   </main>
-
+  <div class="notice" id="notice" role="status" aria-live="polite"></div>
   <script>
-    const roomRecords = [
-      { district: "高新区", total: 468, status: "signed", date: "2026-07-12" },
-      { district: "高新区", total: 386, status: "signed", date: "2026-07-11" },
-      { district: "高新区", total: 421, status: "locked", date: "2026-07-10" },
-      { district: "天府新区", total: 342, status: "signed", date: "2026-07-12" },
-      { district: "天府新区", total: 266, status: "signed", date: "2026-07-09" },
-      { district: "天府新区", total: 522, status: "available", date: "2026-07-08" },
-      { district: "锦江区", total: 347, status: "signed", date: "2026-07-13" },
-      { district: "锦江区", total: 352, status: "signed", date: "2026-07-07" },
-      { district: "青羊区", total: 382, status: "signed", date: "2026-07-12" },
-      { district: "青羊区", total: 418, status: "signed", date: "2026-07-10" },
-      { district: "青羊区", total: 462, status: "locked", date: "2026-07-08" },
-      { district: "金牛区", total: 269, status: "signed", date: "2026-07-11" },
-      { district: "金牛区", total: 428, status: "signed", date: "2026-07-06" },
-      { district: "金牛区", total: 365, status: "available", date: "2026-07-05" },
-      { district: "成华区", total: 218, status: "signed", date: "2026-07-13" },
-      { district: "成华区", total: 246, status: "signed", date: "2026-07-03" },
-      { district: "武侯区", total: 358, status: "signed", date: "2026-07-10" },
-      { district: "武侯区", total: 416, status: "available", date: "2026-07-02" },
-      { district: "龙泉驿区", total: 205, status: "signed", date: "2026-07-09" },
-      { district: "龙泉驿区", total: 214, status: "locked", date: "2026-07-06" },
-      { district: "高新区", total: 409, status: "signed", date: "2026-06-24" },
-      { district: "天府新区", total: 438, status: "signed", date: "2026-06-18" },
-      { district: "锦江区", total: 568, status: "signed", date: "2026-06-15" },
-      { district: "青羊区", total: 336, status: "signed", date: "2026-06-12" },
-      { district: "成华区", total: 296, status: "signed", date: "2026-05-28" },
-      { district: "金牛区", total: 412, status: "signed", date: "2026-05-18" },
-      { district: "武侯区", total: 492, status: "signed", date: "2026-05-09" },
-      { district: "龙泉驿区", total: 188, status: "signed", date: "2026-04-26" }
-    ];
-
-    let selectedDistrict = "all";
-    const districtOrder = ["高新区", "天府新区", "锦江区", "青羊区", "金牛区", "成华区", "武侯区", "龙泉驿区"];
-    const zoneButtons = document.querySelectorAll("[data-district]");
-    const prevMonthButton = document.getElementById("prevMonthButton");
-    const nextMonthButton = document.getElementById("nextMonthButton");
-    const monthLabel = document.getElementById("monthLabel");
-    const rangeCaption = document.getElementById("rangeCaption");
-    const minVisibleMonth = getBoundaryMonth(roomRecords, "min") || monthStart("2026-07-01");
-    const maxVisibleMonth = getBoundaryMonth(roomRecords, "max") || monthStart("2026-07-01");
-    let visibleMonth = maxVisibleMonth;
-
-    function monthStart(dateText) {
-      const [year, month] = dateText.split("-").map(Number);
-      return new Date(year, month - 1, 1);
-    }
-
-    function monthKey(date) {
-      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
-    }
-
-    function getMonthLabel(date) {
-      return `${date.getFullYear()}年${date.getMonth() + 1}月`;
-    }
-
-    function compareMonth(a, b) {
-      return (a.getFullYear() - b.getFullYear()) || (a.getMonth() - b.getMonth());
-    }
-
-    function addMonths(date, amount) {
-      return new Date(date.getFullYear(), date.getMonth() + amount, 1);
-    }
-
-    function clampMonth(date) {
-      if (compareMonth(date, minVisibleMonth) < 0) return new Date(minVisibleMonth);
-      if (compareMonth(date, maxVisibleMonth) > 0) return new Date(maxVisibleMonth);
-      return date;
-    }
-
-    function getBoundaryMonth(records, type) {
-      return records
-        .map((record) => monthStart(record.date))
-        .reduce((boundary, month) => {
-          if (!boundary) return month;
-          const order = compareMonth(month, boundary);
-          return type === "min" ? (order < 0 ? month : boundary) : (order > 0 ? month : boundary);
-        }, null);
-    }
-
-    function signedInVisibleMonth() {
-      const currentMonthKey = monthKey(visibleMonth);
-      return roomRecords.filter((record) => record.status === "signed" && record.date.startsWith(currentMonthKey));
-    }
-
-    function groupBy(records, getKey) {
-      return records.reduce((groups, record) => {
-        const key = getKey(record);
-        if (!groups[key]) groups[key] = [];
-        groups[key].push(record);
-        return groups;
-      }, {});
-    }
-
-    function getHeatClass(count, max) {
-      if (!count) return "heat-0";
-      const ratio = max ? count / max : 0;
-      if (ratio >= 0.85) return "heat-5";
-      if (ratio >= 0.65) return "heat-4";
-      if (ratio >= 0.45) return "heat-3";
-      if (ratio >= 0.25) return "heat-2";
-      return "heat-1";
-    }
-
-    function districtEntries() {
-      const groups = groupBy(signedInVisibleMonth(), (record) => record.district);
-      return districtOrder
-        .map((district) => {
-          const records = groups[district] || [];
-          return {
-            district,
-            count: records.length,
-            total: records.reduce((sum, record) => sum + record.total, 0)
-          };
-        })
-        .sort((a, b) => {
-          if (b.count !== a.count) return b.count - a.count;
-          return districtOrder.indexOf(a.district) - districtOrder.indexOf(b.district);
-        });
-    }
-
-    function renderHeatmap() {
-      const entries = districtEntries();
-      const counts = Object.fromEntries(entries.map((entry) => [entry.district, entry.count]));
-      const max = Math.max(...entries.map((entry) => entry.count), 1);
-      zoneButtons.forEach((button) => {
-        const count = counts[button.dataset.district] || 0;
-        button.classList.remove("heat-0", "heat-1", "heat-2", "heat-3", "heat-4", "heat-5");
-        button.classList.add(getHeatClass(count, max));
-        button.classList.toggle("is-active", button.dataset.district === selectedDistrict);
-        button.querySelector("[data-count]").textContent = `${count}套`;
-        button.setAttribute("aria-label", `${button.dataset.district} ${count}套`);
-      });
-    }
-
-    function render() {
-      const label = getMonthLabel(visibleMonth);
-      monthLabel.textContent = label;
-      rangeCaption.textContent = label;
-      prevMonthButton.disabled = compareMonth(visibleMonth, minVisibleMonth) <= 0;
-      nextMonthButton.disabled = compareMonth(visibleMonth, maxVisibleMonth) >= 0;
-      renderHeatmap();
-    }
-
-    function setVisibleMonth(nextMonth) {
-      visibleMonth = clampMonth(nextMonth);
-      selectedDistrict = "all";
-      render();
-    }
-
-    prevMonthButton.addEventListener("click", () => {
-      setVisibleMonth(addMonths(visibleMonth, -1));
-    });
-
-    nextMonthButton.addEventListener("click", () => {
-      setVisibleMonth(addMonths(visibleMonth, 1));
-    });
-
-    zoneButtons.forEach((button) => {
+    const notice = document.getElementById("notice");
+    let noticeTimer = 0;
+    document.querySelectorAll("[data-notice]").forEach((button) => {
       button.addEventListener("click", () => {
-        selectedDistrict = selectedDistrict === button.dataset.district ? "all" : button.dataset.district;
-        render();
-      });
-      button.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          button.click();
-        }
+        window.clearTimeout(noticeTimer);
+        notice.textContent = button.dataset.notice;
+        notice.classList.add("is-visible");
+        noticeTimer = window.setTimeout(() => notice.classList.remove("is-visible"), 1400);
       });
     });
-
-    render();
   </script>
 </body>
 </html>
