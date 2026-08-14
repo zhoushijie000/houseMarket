@@ -191,6 +191,38 @@
         { name: "华侨城熙成里", area: "成华区 / 建面 108-143㎡", desc: "二仙桥更新住区 / 生活配套提升", price: "23200-27200", stock: "剩余 28 套", badge: "二仙桥", thumb: "更新区", tags: ["更新", "配套"] },
         { name: "中粮悦著云廷", area: "成华区 / 建面 120-160㎡", desc: "东部新城改善住区 / 景观界面新", price: "26000-30200", stock: "剩余 17 套", badge: "东部新城", thumb: "新住区", tags: ["改善", "景观"] }
       ]
+    },
+    {
+      id: "xindu",
+      name: "新都区",
+      shortName: "新都",
+      location: "成都北拓",
+      focus: "北部新城 / 轨交通勤 / 生态宜居",
+      intro: "总部商务区、科学城和麓湖板块衔接，兼具生态资源与新城配套。",
+      features: ["北部新城", "轨交通勤", "生态宜居"],
+      accent: "#ff5a00",
+      accentSoft: "rgba(255, 90, 0, 0.14)",
+      palette: { start: "#ffb389", end: "#ff5a00" },
+      map: { markerX: "59%", markerY: "38%" },
+      advantages: [
+        { title: "北部新城提速", desc: "毗河生态带与北部新城持续建设，生活界面和城市配套同步完善。" },
+        { title: "轨交通勤便捷", desc: "地铁 3 号线连接主城，成绵通勤廊道覆盖北部主要居住板块。" },
+        { title: "改善选择丰富", desc: "新都老城、大丰与三河片区兼具成熟配套和改善型住宅供给。" }
+      ],
+      services: [
+        { id: "serviceSubsidyCard", title: "优惠补贴申领", desc: "购房支持、人才安居和资格办理入口集中查看。", action: "立即申领", items: ["人才安居", "购房支持", "资格办理"] },
+        { id: "servicePolicyCard", title: "区县政策", desc: "北部新城规划、交易规则和配套进展统一查看。", action: "查看政策", items: ["新城规划", "交易规则", "配套进展"] }
+      ],
+      videos: [
+        { title: "新都北部新城导览", meta: "大丰 · 三河 · 新都老城", duration: "03:06" },
+        { title: "新都轨交通勤线路", meta: "地铁 3 号线 · 主城通勤", duration: "02:42" },
+        { title: "新都宜居板块盘点", meta: "毗河 · 公园 · 改善住区", duration: "02:55" }
+      ],
+      projects: [
+        { name: "万科星光都会", area: "新都区 / 建面 96-128㎡", desc: "北部新城住区 / 轨交通勤", price: "15800-18600", stock: "剩余 31 套", badge: "北部新城", thumb: "北拓芯", tags: ["轨交", "改善"] },
+        { name: "保利北新时区", area: "新都区 / 建面 105-143㎡", desc: "大丰成熟板块 / 配套完善", price: "17200-20500", stock: "剩余 24 套", badge: "大丰", thumb: "成熟区", tags: ["配套", "改善"] },
+        { name: "香江悦湖春天", area: "新都区 / 建面 89-118㎡", desc: "毗河生态住区 / 公园宜居", price: "14200-16800", stock: "剩余 36 套", badge: "毗河", thumb: "生态区", tags: ["生态", "刚改"] }
+      ]
     }
   ];
 
@@ -662,9 +694,19 @@
     const collectionBackButton = document.getElementById("collectionBackButton");
     const searchInputEl = document.getElementById("districtSearchInput");
     const gridEl = document.getElementById("districtGrid");
+    const modalEl = document.getElementById("districtModal");
+    const modalDialogEl = document.getElementById("districtModalDialog");
+    const modalBackdropEl = document.getElementById("districtModalBackdrop");
+    const modalCloseEl = document.getElementById("districtModalClose");
+    const modalTitleEl = document.getElementById("districtModalTitle");
+    const modalLocationEl = document.getElementById("districtModalLocation");
+    const modalIntroEl = document.getElementById("districtModalIntro");
+    const modalMapEl = document.getElementById("districtModalMap");
+    const modalEnterEl = document.getElementById("districtModalEnter");
     const defaultDistrict = DISTRICT_MAP[LOCATED_DISTRICT_ID];
     let selectedDistrictId = getDistrictFromQuery("");
     let keyword = "";
+    let lastTriggerEl = null;
 
     function getFilteredDistricts() {
       if (!keyword) {
@@ -686,58 +728,107 @@
 
     function renderGrid() {
       const filteredDistricts = getFilteredDistricts();
-      const hasSelectedDistrict = filteredDistricts.some(function (district) {
-        return district.id === selectedDistrictId;
-      });
-
-      setPageAccent(pageEl, hasSelectedDistrict && selectedDistrictId ? DISTRICT_MAP[selectedDistrictId] : defaultDistrict);
       if (!filteredDistricts.length) {
         gridEl.innerHTML = '<div class="district-empty">未找到相关区县</div>';
         return;
       }
 
       gridEl.innerHTML = filteredDistricts.map(function (district) {
-        const activeClass = district.id === selectedDistrictId ? "district-card is-active" : "district-card";
-        const cardHtml = '' +
-          '<button class="' + activeClass + '" type="button" data-id="' + district.id + '" style="--district-logo-start:' + district.palette.start + ";--district-logo-end:" + district.palette.end + '">' +
+        return '' +
+          '<button class="district-card" type="button" data-id="' + district.id + '" aria-haspopup="dialog" style="--district-card-accent:' + district.accent + '">' +
             '<div class="district-card__head">' +
               '<div class="district-logo">' + district.shortName + "</div>" +
-              "<div>" +
-                '<div class="district-card__name">' + district.name + "</div>" +
-              "</div>" +
+              '<div class="district-card__name">' + district.name + "</div>" +
+              '<span class="district-card__chevron" aria-hidden="true"></span>' +
             "</div>" +
             '<p class="district-card__intro">' + district.intro + "</p>" +
           "</button>";
-
-        if (hasSelectedDistrict && district.id === selectedDistrictId) {
-          return cardHtml + renderCollectionFocusCard(district);
-        }
-
-        return cardHtml;
       }).join("");
     }
 
-    function selectDistrict(districtId) {
-      if (selectedDistrictId === districtId) {
-        selectedDistrictId = "";
-        updateQuery("");
-        setPageAccent(pageEl, defaultDistrict);
-        renderGrid();
+    function renderModalMap(district) {
+      if (district.id === "xindu") {
+        return '' +
+          '<div class="district-modal__reference-map" role="img" aria-label="成都区县地图，新都区已高亮">' +
+            '<img src="./district-popup-reference.svg" alt="" aria-hidden="true" />' +
+          "</div>";
+      }
+
+      const active = function (targetId) {
+        return targetId === district.id ? " is-active" : "";
+      };
+
+      return '' +
+        '<div class="district-modal__vector-map" style="--marker-x:' + district.map.markerX + ";--marker-y:" + district.map.markerY + '">' +
+          '<svg viewBox="0 0 327 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="成都区县地图，' + district.name + '已高亮">' +
+            '<path class="district-modal__map-outline" d="M89 23 138 12l31 20 41 2 21 29 34 25-8 43 29 29-21 43-49-5-34 28-45-16-49 16-34-33 8-46-26-35 23-35 30-17Z" />' +
+            '<polygon class="city-map__region' + active("qingyang") + '" points="91,75 132,58 151,88 128,119 83,105" />' +
+            '<text class="city-map__label' + active("qingyang") + '" x="99" y="90">青羊区</text>' +
+            '<polygon class="city-map__region' + active("jinjiang") + '" points="152,88 196,70 213,105 179,135 129,119" />' +
+            '<text class="city-map__label' + active("jinjiang") + '" x="155" y="105">锦江区</text>' +
+            '<polygon class="city-map__region' + active("chenghua") + '" points="198,69 239,85 248,129 214,151 179,135 213,105" />' +
+            '<text class="city-map__label' + active("chenghua") + '" x="207" y="112">成华区</text>' +
+            '<polygon class="city-map__region' + active("wuhou") + '" points="67,116 111,116 128,158 91,187 50,151" />' +
+            '<text class="city-map__label' + active("wuhou") + '" x="69" y="151">武侯区</text>' +
+            '<polygon class="city-map__region' + active("gaoxin") + '" points="128,158 180,135 196,181 150,211 91,187" />' +
+            '<text class="city-map__label' + active("gaoxin") + '" x="136" y="173">高新区</text>' +
+            '<polygon class="city-map__region' + active("tianfu") + '" points="196,181 231,167 258,206 211,229 150,211" />' +
+            '<text class="city-map__label' + active("tianfu") + '" x="190" y="204">天府新区</text>' +
+          "</svg>" +
+          '<span class="district-modal__map-callout">' + district.name + "</span>" +
+        "</div>";
+    }
+
+    function openDistrictModal(district, triggerEl) {
+      if (!district || !modalEl) {
         return;
       }
 
-      if (DISTRICT_MAP[districtId]) {
-        selectedDistrictId = districtId;
-        updateQuery(districtId);
-        setPageAccent(pageEl, DISTRICT_MAP[districtId]);
-        renderGrid();
+      selectedDistrictId = district.id;
+      lastTriggerEl = triggerEl || null;
+      updateQuery(district.id);
+      setPageAccent(pageEl, district);
+      modalTitleEl.textContent = district.name;
+      modalLocationEl.textContent = district.location;
+      modalIntroEl.textContent = district.intro;
+      modalMapEl.innerHTML = renderModalMap(district);
+      modalEnterEl.href = "./detail.html?district=" + district.id;
+      modalEl.hidden = false;
+      document.body.classList.add("is-district-modal-open");
+      window.requestAnimationFrame(function () {
+        modalDialogEl.focus();
+      });
+    }
+
+    function closeDistrictModal() {
+      if (!modalEl || modalEl.hidden) {
+        return;
+      }
+
+      modalEl.hidden = true;
+      selectedDistrictId = "";
+      updateQuery("");
+      setPageAccent(pageEl, defaultDistrict);
+      document.body.classList.remove("is-district-modal-open");
+      if (lastTriggerEl && document.contains(lastTriggerEl)) {
+        lastTriggerEl.focus();
+      } else if (searchInputEl) {
+        searchInputEl.focus();
       }
     }
 
     gridEl.addEventListener("click", function (event) {
       const button = event.target.closest("button[data-id]");
       if (button) {
-        selectDistrict(button.getAttribute("data-id"));
+        openDistrictModal(DISTRICT_MAP[button.getAttribute("data-id")], button);
+      }
+    });
+
+    modalBackdropEl.addEventListener("click", closeDistrictModal);
+    modalCloseEl.addEventListener("click", closeDistrictModal);
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && !modalEl.hidden) {
+        closeDistrictModal();
       }
     });
 
@@ -751,6 +842,9 @@
     setPageAccent(pageEl, selectedDistrictId ? DISTRICT_MAP[selectedDistrictId] : defaultDistrict);
     bindHistoryBack(collectionBackButton, "../房产超市_住进成都.html");
     renderGrid();
+    if (selectedDistrictId && DISTRICT_MAP[selectedDistrictId]) {
+      openDistrictModal(DISTRICT_MAP[selectedDistrictId]);
+    }
   }
 
   function initDetailPage() {

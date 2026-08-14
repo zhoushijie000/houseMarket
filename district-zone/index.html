@@ -5,15 +5,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>成都区县专区</title>
   <link rel="stylesheet" href="./components.css" />
+  <link rel="stylesheet" href="./collection.css" />
 </head>
 <body data-page="collection">
-  <main class="mobile-page" id="collectionPage">
-    <header class="topbar">
-      <button class="topbar__back" id="collectionBackButton" type="button" aria-label="返回">&lt;</button>
-      <div class="topbar__title">成都区县专区</div>
+  <main class="mobile-page collection-page" id="collectionPage">
+    <header class="topbar collection-topbar">
+      <div class="collection-statusbar" aria-hidden="true">
+        <span class="collection-statusbar__time">9:41</span>
+        <span class="collection-statusbar__icons">
+          <svg viewBox="0 0 68 14" role="presentation">
+            <rect x="0" y="8" width="3" height="5" rx="1"></rect>
+            <rect x="5" y="6" width="3" height="7" rx="1"></rect>
+            <rect x="10" y="3" width="3" height="10" rx="1"></rect>
+            <rect x="15" y="0" width="3" height="13" rx="1"></rect>
+            <path d="M26 4.8c5.1-4.7 12.8-4.7 17.9 0l-2.1 2.2a9 9 0 0 0-13.7 0L26 4.8Zm4 4a8.2 8.2 0 0 1 11.8 0l-2.2 2.2a5 5 0 0 0-7.4 0L30 8.8Zm4.3 4.1a2.2 2.2 0 0 1 3.2 0l-1.6 1.6-1.6-1.6Z"></path>
+            <rect x="49" y="1" width="17" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"></rect>
+            <rect x="51" y="3" width="13" height="7" rx="1"></rect>
+            <rect x="67" y="4" width="1" height="5" rx=".5"></rect>
+          </svg>
+        </span>
+      </div>
+
+      <div class="collection-navbar">
+        <div class="collection-nav-pill collection-nav-pill--left">
+          <button class="collection-nav-button" id="collectionBackButton" type="button" aria-label="返回">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 4-8 8 8 8"></path></svg>
+          </button>
+          <span class="collection-nav-divider" aria-hidden="true"></span>
+          <a class="collection-nav-button" href="../安家成都-首页-扫码.html" aria-label="返回首页">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 11 8-7 8 7v9h-6v-5h-4v5H4v-9Z"></path></svg>
+          </a>
+        </div>
+        <div class="topbar__title">成都区县专区</div>
+        <div class="collection-nav-pill collection-nav-pill--right" aria-hidden="true">
+          <span class="collection-more-icon"><i></i><i></i><i></i></span>
+          <span class="collection-nav-divider"></span>
+          <span class="collection-round-icon"></span>
+        </div>
+      </div>
     </header>
 
-    <section class="search-panel">
+    <section class="collection-hero" aria-label="成都区县专题">
+      <img class="collection-hero__image" src="./assets-district-hero.png" alt="成都城市地标与熊猫插画" />
+      <h1 class="collection-hero__title"><span>成都</span><strong>区县专题</strong></h1>
+    </section>
+
+    <section class="search-panel collection-search-panel">
       <label class="search-box search-box--compact" for="districtSearchInput">
         <span class="search-box__icon" aria-hidden="true"></span>
         <input
@@ -27,12 +64,39 @@
       </label>
     </section>
 
-    <section class="page-section page-stack">
+    <section class="page-section page-stack collection-list" aria-label="区县列表">
       <div class="district-grid" id="districtGrid"></div>
     </section>
 
     <div class="spacer"></div>
   </main>
+
+  <div class="district-modal" id="districtModal" hidden>
+    <button class="district-modal__backdrop" id="districtModalBackdrop" type="button" tabindex="-1" aria-label="关闭区县弹窗"></button>
+    <section
+      class="district-modal__dialog"
+      id="districtModalDialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="districtModalTitle"
+      aria-describedby="districtModalIntro"
+      tabindex="-1"
+    >
+      <div class="district-modal__heading">
+        <h2 class="district-modal__title" id="districtModalTitle"></h2>
+        <div class="district-modal__location">
+          <span class="district-modal__pin" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.4A2.4 2.4 0 1 1 12 6.6a2.4 2.4 0 0 1 0 4.8Z"></path></svg>
+          </span>
+          <span id="districtModalLocation"></span>
+        </div>
+      </div>
+      <p class="district-modal__intro" id="districtModalIntro"></p>
+      <div class="district-modal__map" id="districtModalMap"></div>
+      <a class="district-modal__primary" id="districtModalEnter" href="./detail.html">进入专区</a>
+      <button class="district-modal__secondary" id="districtModalClose" type="button">返回</button>
+    </section>
+  </div>
 
   <script src="./main.js"></script>
 </body>

@@ -7,16 +7,14 @@
   <style>
     :root {
       --brand: #fd5d00;
-      --brand-light: #ff8f2e;
-      --text-primary: #303133;
-      --text-regular: #606266;
-      --text-muted: #909399;
+      --brand-soft: #fff0e9;
+      --text-primary: #1f2430;
+      --text-regular: #5f6570;
+      --text-muted: #8a9099;
       --line: #e4e7ed;
-      --page: #f3f5f6;
+      --page: #fdf9f5;
       --surface: #ffffff;
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --shadow-card: 0 4px 16px rgba(48, 49, 51, 0.05);
+      --phone-width: 375px;
       font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
     }
 
@@ -28,7 +26,7 @@
     body {
       margin: 0;
       min-height: 100%;
-      background: #f7f1ed;
+      background: #eef0f2;
       color: var(--text-primary);
     }
 
@@ -39,6 +37,8 @@
 
     button {
       border: 0;
+      margin: 0;
+      padding: 0;
       background: none;
       color: inherit;
       font: inherit;
@@ -46,2171 +46,1081 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    .policy-page {
-      width: min(100vw, 375px);
+    button:focus-visible {
+      outline: 2px solid rgba(253, 93, 0, 0.5);
+      outline-offset: 2px;
+    }
+
+    .policy-app {
+      position: relative;
+      width: min(100%, var(--phone-width));
       min-height: 100vh;
       overflow-x: hidden;
       background: var(--page);
-      box-shadow: 0 20px 50px rgba(48, 49, 51, 0.12);
+      box-shadow: 0 18px 52px rgba(31, 36, 48, 0.12);
     }
 
-    .policy-topbar {
+    /* 小程序顶部栏 */
+    .mini-header {
       position: sticky;
       top: 0;
       z-index: 20;
+      height: 88px;
+      background: #ffffff;
+    }
+
+    .status-bar {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      height: 44px;
+      padding: 0 19px 8px 21px;
+      color: #000000;
+      font-size: 15px;
+      line-height: 1;
+      font-weight: 650;
+      letter-spacing: -0.2px;
+    }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-icons svg {
+      display: block;
+      width: auto;
+      height: 13px;
+    }
+
+    .nav-bar {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 60px;
-      border-bottom: 1px solid rgba(228, 231, 237, 0.7);
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(12px);
+      height: 44px;
     }
 
-    .policy-topbar__title {
+    .nav-title {
       margin: 0;
       color: #000000;
-      font-size: 17px;
+      font-size: 18px;
       line-height: 1;
-      font-weight: 600;
+      font-weight: 650;
     }
 
-    .policy-back {
+    .nav-back {
       position: absolute;
-      left: 8px;
-      width: 42px;
-      height: 42px;
+      left: 18px;
+      top: 50%;
       display: grid;
+      width: 32px;
+      height: 36px;
       place-items: center;
-      border-radius: 50%;
+      transform: translateY(-50%);
     }
 
-    .policy-back svg {
-      width: 24px;
-      height: 24px;
+    .nav-back svg {
+      width: 25px;
+      height: 25px;
       fill: none;
-      stroke: #111827;
-      stroke-width: 2;
+      stroke: #000000;
       stroke-linecap: round;
       stroke-linejoin: round;
+      stroke-width: 2.2;
     }
 
-    .policy-actions {
+    .mini-actions {
       position: absolute;
-      right: 8px;
+      right: 6px;
+      top: 50%;
       display: flex;
       align-items: center;
-      height: 36px;
+      width: 88px;
+      height: 34px;
+      transform: translateY(-50%);
       overflow: hidden;
-      border: 1px solid rgba(151, 151, 151, 0.24);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid #eceef1;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.96);
     }
 
-    .policy-actions__button {
+    .mini-actions button {
       position: relative;
-      width: 42px;
-      height: 36px;
       display: grid;
+      width: 44px;
+      height: 100%;
       place-items: center;
     }
 
-    .policy-actions__button + .policy-actions__button::before {
-      content: "";
+    .mini-actions button + button::before {
       position: absolute;
       left: 0;
-      top: 9px;
+      top: 7px;
       width: 1px;
-      height: 18px;
-      background: rgba(144, 147, 153, 0.36);
+      height: 20px;
+      background: #e0e2e5;
+      content: "";
     }
 
-    .policy-actions__more {
+    .more-dots {
       display: flex;
       gap: 3px;
     }
 
-    .policy-actions__more i {
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: #111827;
-    }
-
-    .policy-actions__target {
-      width: 17px;
-      height: 17px;
-      display: grid;
-      place-items: center;
-      border: 2px solid #111827;
-      border-radius: 50%;
-    }
-
-    .policy-actions__target::after {
-      content: "";
+    .more-dots i {
       width: 5px;
       height: 5px;
       border-radius: 50%;
-      background: #111827;
+      background: #000000;
+    }
+
+    .mini-target {
+      position: relative;
+      width: 17px;
+      height: 17px;
+      border: 2px solid #000000;
+      border-radius: 50%;
+    }
+
+    .mini-target::after {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #000000;
+      content: "";
+      transform: translate(-50%, -50%);
+    }
+
+    /* 页面 Tab 与内容 */
+    .policy-tabs {
+      position: sticky;
+      top: 88px;
+      z-index: 19;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      height: 42px;
+      padding: 0 16px;
+      border-bottom: 1px solid rgba(228, 231, 237, 0.78);
+      background: rgba(253, 249, 245, 0.97);
+      backdrop-filter: blur(10px);
+    }
+
+    .policy-tab {
+      position: relative;
+      color: #4d535d;
+      font-size: 14px;
+      line-height: 42px;
+      text-align: center;
+    }
+
+    .policy-tab::after {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 24px;
+      height: 3px;
+      border-radius: 2px 2px 0 0;
+      background: var(--brand);
+      content: "";
+      opacity: 0;
+      transform: translateX(-50%) scaleX(0.5);
+      transition: 0.18s ease;
+    }
+
+    .policy-tab.is-active {
+      color: var(--brand);
+      font-weight: 600;
+    }
+
+    .policy-tab.is-active::after {
+      opacity: 1;
+      transform: translateX(-50%) scaleX(1);
     }
 
     .policy-content {
-      padding: 8px 16px calc(32px + env(safe-area-inset-bottom, 0px));
+      min-height: calc(100vh - 130px);
+      padding: 12px 16px 28px;
+      background: var(--page);
     }
 
-    .policy-card-grid {
+    .tab-panel[hidden] {
+      display: none;
+    }
+
+    .policy-sections {
+      overflow: hidden;
+      border-radius: 12px 12px 0 0;
+      background: var(--surface);
+    }
+
+    .recent-section,
+    .region-section {
+      position: relative;
+      padding: 14px 12px 12px;
+      border-bottom: 1px solid var(--line);
+      background: var(--surface);
+    }
+
+    .recent-section {
+      min-height: 84px;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 20px;
+      margin: 0;
+      color: #11151c;
+      font-size: 16px;
+      line-height: 20px;
+      font-weight: 650;
+    }
+
+    .section-heading--region::before {
+      width: 4px;
+      height: 16px;
+      border-radius: 2px;
+      background: var(--brand);
+      content: "";
+    }
+
+    .recent-clock {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: var(--brand);
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 1.8;
+    }
+
+    .recent-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      min-height: 32px;
+      margin-top: 12px;
+    }
+
+    .recent-chip {
+      height: 32px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      color: var(--text-primary);
+      background: #ffffff;
+      font-size: 14px;
+      line-height: 30px;
+      white-space: nowrap;
+    }
+
+    .recent-chip.is-active {
+      border-color: rgba(253, 93, 0, 0.36);
+      color: var(--brand);
+      background: #fffaf7;
+    }
+
+    .region-section {
+      padding-top: 15px;
+    }
+
+    .district-grid {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 18px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 9px;
     }
 
-    .policy-district-group {
+    .district-button {
+      display: flex;
+      align-items: center;
       min-width: 0;
+      height: 48px;
+      padding: 0 1px;
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 20px;
+      text-align: left;
+      white-space: nowrap;
     }
 
-    .policy-district-group__header {
+    .district-button.is-active {
+      color: var(--brand);
+      font-weight: 500;
+    }
+
+    .district-button:active,
+    .recent-chip:active {
+      opacity: 0.65;
+    }
+
+    .policy-type-section {
+      overflow: hidden;
+      padding: 10px 12px 14px;
+      border-radius: 12px 12px 0 0;
+      border-bottom: 1px solid var(--line);
+      background: var(--surface);
+    }
+
+    .policy-type-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 20px;
+      row-gap: 12px;
+    }
+
+    .policy-type-button {
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      gap: 10px;
-      min-height: 30px;
-      margin-bottom: 8px;
-      padding-left: 9px;
-      border-left: 3px solid var(--brand);
-    }
-
-    .policy-district-group__title {
-      margin: 0;
+      min-height: 36px;
+      padding: 0 1px;
+      border: 0;
+      border-radius: 0;
       color: var(--text-primary);
-      font-size: 15px;
-      font-weight: 800;
+      background: transparent;
+      font-size: 14px;
+      line-height: 20px;
+      text-align: left;
+      white-space: nowrap;
     }
 
-    .policy-district-group__cards {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
+    .policy-type-button.is-wide {
+      grid-column: 1 / -1;
     }
 
-    .policy-card {
+    .policy-type-button.is-active {
+      color: var(--brand);
+      font-weight: 500;
+    }
+
+    .policy-type-button:active {
+      opacity: 0.68;
+    }
+
+    /* 区县政策底部弹框 */
+    .sheet-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
       display: flex;
-      min-width: 0;
-      min-height: 178px;
-      flex-direction: column;
-      padding: 12px;
-      border: 1px solid rgba(228, 231, 237, 0.72);
-      border-radius: var(--radius-md);
-      background: var(--surface);
-      box-shadow: var(--shadow-card);
+      align-items: flex-end;
+      justify-content: center;
     }
 
-    .policy-card__title {
-      min-width: 0;
+    .sheet-layer[hidden] {
+      display: none;
+    }
+
+    .sheet-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.48);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .policy-sheet {
+      position: relative;
+      z-index: 1;
+      width: min(100%, var(--phone-width));
+      max-height: min(70vh, 520px);
+      overflow: hidden;
+      border-radius: 12px 12px 0 0;
+      background: #ffffff;
+      box-shadow: 0 -8px 30px rgba(31, 36, 48, 0.12);
+      transform: translateY(100%);
+      transition: transform 0.24s cubic-bezier(0.22, 0.76, 0.28, 1);
+    }
+
+    .policy-sheet:focus {
+      outline: none;
+    }
+
+    .sheet-layer.is-open .sheet-backdrop {
+      opacity: 1;
+    }
+
+    .sheet-layer.is-open .policy-sheet {
+      transform: translateY(0);
+    }
+
+    .sheet-header {
+      display: flex;
+      align-items: center;
+      min-height: 62px;
+      padding: 16px 16px 13px;
+    }
+
+    .sheet-title {
       margin: 0;
-      color: #000000;
-      font-size: 15px;
-      line-height: 1.45;
-      font-weight: 800;
-      display: -webkit-box;
-      overflow: hidden;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 3;
+      color: #30343b;
+      font-size: 18px;
+      line-height: 26px;
+      font-weight: 650;
     }
 
-    .policy-card__district {
-      margin-top: 8px;
+    .sheet-count {
+      margin-left: 9px;
+      color: var(--text-regular);
+      font-size: 14px;
+      line-height: 24px;
+    }
+
+    .sheet-close {
+      display: grid;
+      width: 32px;
+      height: 32px;
+      margin-left: auto;
+      place-items: center;
+      border: 1px solid #e2e5e9;
+      border-radius: 50%;
+      color: #68707d;
+    }
+
+    .sheet-close svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-width: 2;
+    }
+
+    .policy-list {
+      max-height: calc(min(70vh, 520px) - 62px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding: 0 16px env(safe-area-inset-bottom);
+      scrollbar-width: none;
+    }
+
+    .policy-list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .policy-item {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 24px;
+      gap: 8px;
+      width: 100%;
+      min-height: 112px;
+      padding: 14px 0 12px;
+      border-top: 1px solid #edf0f3;
+      text-align: left;
+    }
+
+    .policy-item:first-child {
+      border-top: 0;
+    }
+
+    .policy-item__title {
+      display: block;
       overflow: hidden;
-      color: var(--text-muted);
-      font-size: 11px;
-      line-height: 1.4;
+      color: #30343b;
+      font-size: 16px;
+      line-height: 22px;
+      font-weight: 650;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
-    .policy-card__period {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 3px;
-      margin-top: auto;
-      padding-top: 12px;
-      color: var(--text-muted);
-      font-size: 10px;
-      font-variant-numeric: tabular-nums;
-      white-space: nowrap;
-    }
-
-    .policy-card__period time {
-      color: var(--text-regular);
-      font-weight: 700;
-    }
-
-    .policy-card__detail {
-      width: 100%;
-      min-height: 32px;
-      margin-top: 10px;
-      padding: 0 10px;
-      border-radius: 999px;
-      background: #fff1e8;
-      color: var(--brand);
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .policy-card__detail:active {
-      background: linear-gradient(90deg, var(--brand), var(--brand-light));
-      color: #ffffff;
-    }
-
-    .policy-empty {
-      display: grid;
-      place-items: center;
-      min-height: 190px;
-      padding: 24px;
-      border-radius: var(--radius-md);
-      background: var(--surface);
-      color: var(--text-muted);
-      font-size: 13px;
-      text-align: center;
-    }
-
-    .policy-dialog {
-      width: min(calc(100vw - 32px), 343px);
-      max-height: min(72vh, 560px);
-      padding: 0;
-      overflow: hidden;
-      border: 0;
-      border-radius: 16px;
-      color: var(--text-primary);
-      box-shadow: 0 20px 60px rgba(17, 24, 39, 0.24);
-    }
-
-    .policy-dialog::backdrop {
-      background: rgba(17, 24, 39, 0.46);
-      backdrop-filter: blur(3px);
-    }
-
-    .policy-dialog__head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 16px 16px 12px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .policy-dialog__head h2 {
-      margin: 0;
-      font-size: 16px;
-      line-height: 1.45;
-    }
-
-    .policy-dialog__close {
-      flex: 0 0 auto;
-      width: 30px;
-      height: 30px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: var(--page);
-      color: var(--text-regular);
-      font-size: 20px;
-      line-height: 1;
-    }
-
-    .policy-dialog__body {
-      max-height: calc(min(72vh, 560px) - 60px);
-      padding: 14px 16px 20px;
-      overflow-y: auto;
-    }
-
-    .policy-dialog__meta {
+    .policy-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 7px;
-      margin-bottom: 12px;
-    }
-
-    .policy-dialog__tag {
-      min-height: 24px;
-      display: inline-flex;
-      align-items: center;
-      padding: 0 9px;
-      border-radius: 999px;
-      background: #fff1e8;
-      color: var(--brand);
-      font-size: 10px;
-      font-weight: 700;
-    }
-
-    .policy-dialog__body p {
-      margin: 0;
-      color: var(--text-regular);
-      font-size: 13px;
-      line-height: 1.75;
-    }
-
-    @media (max-width: 340px) {
-      .policy-card-grid,
-      .policy-district-group__cards {
-        grid-template-columns: 1fr;
-      }
-
-      .policy-card {
-        min-height: 168px;
-      }
-    }
-
-    /* 补贴专区：参考政策专题页的纵向信息卡布局 */
-    .policy-page {
-      background:
-        radial-gradient(circle at 86% 4%, rgba(255, 191, 91, 0.38), transparent 24%),
-        linear-gradient(180deg, #ee4b2e 0%, #df3824 100%);
-    }
-
-    .policy-content {
-      padding: 14px 12px calc(34px + env(safe-area-inset-bottom, 0px));
-    }
-
-    .policy-card-grid {
-      gap: 20px;
-    }
-
-    .policy-district-group__header {
-      min-height: 28px;
-      margin: 0 2px 8px;
-      padding: 0;
-      border-left: 0;
-    }
-
-    .policy-district-group__header::before {
-      content: "";
-      width: 4px;
-      height: 18px;
-      border-radius: 999px;
-      background: linear-gradient(180deg, #fff36c, #ffb349);
-      box-shadow: 0 0 10px rgba(255, 235, 91, 0.72);
-    }
-
-    .policy-district-group__title {
-      color: #fff;
-      font-size: 16px;
-      letter-spacing: 0.02em;
-    }
-
-    .policy-district-group__cards {
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-
-    .policy-card {
-      min-height: 0;
-      padding: 10px;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.7);
-      border-radius: 16px;
-      background: #fff;
-      box-shadow: 0 12px 26px rgba(121, 28, 12, 0.18);
-    }
-
-    .policy-card__head {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 10px;
-      align-items: center;
-      padding: 13px 12px 12px;
-      border-radius: 12px;
-      background: linear-gradient(180deg, #fff8df 0%, #fff0ea 100%);
-      box-shadow:
-        inset 0 0 0 2px rgba(255, 202, 88, 0.72),
-        inset 0 -3px 0 rgba(245, 87, 72, 0.82);
-    }
-
-    .policy-card__head-main {
-      min-width: 0;
-    }
-
-    .policy-card__type {
-      display: inline-flex;
-      align-items: center;
-      min-height: 21px;
-      margin-bottom: 7px;
-      padding: 0 8px;
-      border-radius: 999px;
-      background: rgba(238, 75, 46, 0.1);
-      color: #d43b26;
-      font-size: 10px;
-      font-weight: 800;
-    }
-
-    .policy-card__title {
-      color: #b92f22;
-      font-size: 17px;
-      line-height: 1.35;
-      -webkit-line-clamp: unset;
-    }
-
-    .policy-card__district {
-      display: none;
-    }
-
-    .policy-card__period {
       gap: 4px;
-      margin-top: 8px;
-      padding-top: 0;
-      color: #61646b;
-      font-size: 11px;
-      white-space: normal;
-    }
-
-    .policy-card__period-label {
-      color: #50535a;
-      font-weight: 700;
-    }
-
-    .policy-card__period time {
-      color: #3d4047;
-      font-weight: 600;
-    }
-
-    .policy-card__detail {
-      width: auto;
-      min-width: 72px;
-      min-height: 40px;
-      margin-top: 0;
-      padding: 0 4px;
-      border-radius: 0;
-      background: transparent;
-      color: #47423f;
-      font-size: 12px;
-      white-space: nowrap;
-    }
-
-    .policy-card__detail:active {
-      background: transparent;
-      color: var(--brand);
-    }
-
-    .policy-card__detail-arrow {
-      margin-left: 3px;
-      font-size: 20px;
-      line-height: 1;
-      vertical-align: -2px;
-    }
-
-    .policy-card__body {
-      margin-top: 10px;
-      padding: 13px 12px;
-      border-radius: 10px;
-      background: #f7f7f7;
-    }
-
-    .policy-card__summary {
-      margin: 0;
-      color: #3d4047;
-      font-size: 12px;
-      line-height: 1.75;
-      text-align: justify;
-    }
-
-    @media (max-width: 340px) {
-      .policy-card {
-        min-height: 0;
-      }
-
-      .policy-card__head {
-        grid-template-columns: 1fr;
-      }
-
-      .policy-card__detail {
-        justify-self: end;
-        min-height: 28px;
-      }
-    }
-
-    /* 每个区县合并为一个总卡片，区内政策保留独立入口 */
-    .policy-card-grid {
-      gap: 16px;
-    }
-
-    .policy-district-card {
-      padding: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.78);
-      border-radius: 18px;
-      background: #fff;
-      box-shadow: 0 14px 30px rgba(112, 26, 14, 0.2);
-    }
-
-    .policy-district-card .policy-district-group__header {
-      min-height: 42px;
-      margin: 0 0 2px;
-      padding: 0 13px;
-      border-radius: 11px;
-      background: linear-gradient(100deg, #f05a35, #e33b28);
-    }
-
-    .policy-district-card .policy-district-group__header::before {
-      width: 4px;
-      height: 17px;
-      background: #ffe765;
-      box-shadow: 0 0 9px rgba(255, 231, 101, 0.7);
-    }
-
-    .policy-district-card .policy-district-group__title {
-      color: #fff;
-      font-size: 16px;
-    }
-
-    .policy-district-card .policy-district-group__cards {
-      display: block;
-    }
-
-    .policy-district-card .policy-card {
-      min-height: 0;
-      padding: 12px 2px 0;
-      overflow: visible;
-      border: 0;
-      border-radius: 0;
-      background: transparent;
-      box-shadow: none;
-    }
-
-    .policy-district-card .policy-card + .policy-card {
-      margin-top: 12px;
-      padding-top: 13px;
-      border-top: 1px dashed #ead8ce;
-    }
-
-    .policy-district-card .policy-card__head {
-      display: block;
-      padding: 12px;
-      border-radius: 11px;
-      box-shadow:
-        inset 0 0 0 1px rgba(255, 202, 88, 0.7),
-        inset 0 -2px 0 rgba(245, 87, 72, 0.68);
-    }
-
-    .policy-district-card .policy-card__type {
-      margin-bottom: 6px;
-    }
-
-    .policy-district-card .policy-card__title {
-      font-size: 16px;
-      line-height: 1.4;
-    }
-
-    .policy-district-card .policy-card__body {
-      margin-top: 8px;
-      padding: 11px 12px;
-    }
-
-    .policy-district-card .policy-card__summary {
-      line-height: 1.7;
-    }
-
-    .policy-district-card .policy-card__detail {
-      width: 100%;
-      min-height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
       margin-top: 7px;
-      padding: 0 10px;
-      border-radius: 8px;
-      background: #fff3ed;
-      color: #df462d;
-      font-weight: 800;
     }
 
-    .policy-district-card .policy-card__detail:active {
-      background: #ffe5d8;
-      color: #c9311d;
-    }
-
-    /* 视觉精修：弱化大面积红色，强化区县与政策两级信息层次 */
-    .policy-page {
-      background:
-        radial-gradient(circle at 92% 2%, rgba(255, 181, 124, 0.22), transparent 28%),
-        linear-gradient(180deg, #fff5ef 0%, #f5f2ef 36%, #f1f3f5 100%);
-    }
-
-    .policy-content {
-      padding: 16px 13px calc(36px + env(safe-area-inset-bottom, 0px));
-    }
-
-    .policy-card-grid {
-      gap: 14px;
-    }
-
-    .policy-district-card {
-      padding: 9px;
-      border: 1px solid rgba(229, 218, 210, 0.86);
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.96);
-      box-shadow: 0 10px 24px rgba(74, 50, 39, 0.08);
-    }
-
-    .policy-district-card .policy-district-group__header {
-      min-height: 44px;
-      margin-bottom: 9px;
-      padding: 0 14px;
-      border-radius: 12px;
-      background: linear-gradient(105deg, #ff7848 0%, #ef4d34 62%, #e63e31 100%);
-      box-shadow: 0 7px 16px rgba(224, 67, 43, 0.18);
-    }
-
-    .policy-district-card .policy-district-group__header::before {
-      width: 3px;
-      height: 18px;
-      background: #fff1a8;
-      box-shadow: 0 0 8px rgba(255, 241, 168, 0.7);
-    }
-
-    .policy-district-card .policy-district-group__title {
-      font-size: 15px;
-      letter-spacing: 0.01em;
-    }
-
-    .policy-district-card .policy-district-group__cards {
-      display: grid;
-      gap: 9px;
-    }
-
-    .policy-district-card .policy-card,
-    .policy-district-card .policy-card + .policy-card {
-      position: relative;
-      min-height: 0;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      border: 1px solid #efe4dc;
-      border-radius: 12px;
-      background: #fffaf7;
-      box-shadow: 0 4px 12px rgba(75, 47, 34, 0.045);
-    }
-
-    .policy-district-card .policy-card::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 13px;
-      bottom: 13px;
-      width: 3px;
-      border-radius: 0 999px 999px 0;
-      background: linear-gradient(180deg, #ffaf62, #f05a3b);
-    }
-
-    .policy-district-card .policy-card__head {
-      padding: 13px 13px 12px 15px;
-      border-radius: 0;
-      background: linear-gradient(110deg, rgba(255, 251, 246, 0.98), rgba(255, 245, 237, 0.86));
-      box-shadow: none;
-    }
-
-    .policy-district-card .policy-card__title {
-      color: #2f3034;
-      font-size: 15px;
-      line-height: 1.42;
-      font-weight: 800;
-    }
-
-    .policy-district-card .policy-card__period {
-      width: fit-content;
+    .policy-tag {
       min-height: 24px;
-      margin-top: 9px;
-      padding: 4px 7px;
-      border-radius: 6px;
-      background: rgba(239, 77, 52, 0.06);
-      color: #74767b;
-      font-size: 10.5px;
-      line-height: 1.35;
-    }
-
-    .policy-district-card .policy-card__period-label {
-      color: #d95036;
-      font-weight: 800;
-    }
-
-    .policy-district-card .policy-card__period time {
-      color: #53565c;
-      font-weight: 700;
-    }
-
-    /* 参考区县政策矩阵：标题分隔线 + 2~3 列彩色政策卡 */
-    .policy-page {
-      background:
-        radial-gradient(circle at 50% 0%, rgba(105, 212, 245, 0.17), transparent 30%),
-        linear-gradient(180deg, #eef8ff 0%, #f8fbfd 42%, #eef3f7 100%);
-    }
-
-    .policy-content {
-      padding: 20px 12px calc(40px + env(safe-area-inset-bottom, 0px));
-    }
-
-    .policy-card-grid {
-      gap: 30px;
-    }
-
-    .policy-district-card {
-      padding: 0;
-      border: 0;
-      border-radius: 0;
-      background: transparent;
-      box-shadow: none;
-    }
-
-    .policy-district-card .policy-district-group__header {
-      min-height: 35px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin: 0 5px 13px;
-      padding: 0;
-      border-radius: 0;
-      background: transparent;
-      box-shadow: none;
-    }
-
-    .policy-district-card .policy-district-group__header::before,
-    .policy-district-card .policy-district-group__header::after {
-      content: "";
-      flex: 1 1 auto;
-      width: auto;
-      height: 1px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, rgba(255, 161, 65, 0.25), #f6a143);
-      box-shadow: none;
-    }
-
-    .policy-district-card .policy-district-group__header::after {
-      background: linear-gradient(90deg, #f6a143, rgba(255, 161, 65, 0.25));
-    }
-
-    .policy-district-card .policy-district-group__title {
-      position: relative;
-      flex: 0 0 auto;
-      min-width: 82px;
-      padding: 5px 12px;
-      border-radius: 5px;
-      background: rgba(226, 239, 248, 0.92);
-      color: #363d46;
-      font-size: 15px;
-      line-height: 1;
-      text-align: center;
-      box-shadow: 0 3px 9px rgba(67, 92, 113, 0.08);
-    }
-
-    .policy-district-card .policy-district-group__title::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      bottom: -5px;
-      width: 8px;
-      height: 8px;
-      border-right: 2px solid #f3a24b;
-      border-bottom: 2px solid #f3a24b;
-      background: #eef8ff;
-      transform: translateX(-50%) rotate(45deg);
-    }
-
-    .policy-district-card .policy-district-group__cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
-      gap: 8px;
-      align-items: stretch;
-    }
-
-    .policy-district-card .policy-card,
-    .policy-district-card .policy-card + .policy-card {
-      min-height: 154px;
-      overflow: hidden;
-      border: 0;
-      border-radius: 10px;
-      background: linear-gradient(145deg, #40bdd7, #5599d9);
-      box-shadow: 0 8px 18px rgba(55, 117, 161, 0.16);
-    }
-
-    .policy-district-card .policy-card:nth-child(3n + 2) {
-      background: linear-gradient(145deg, #6689ed, #6575d6);
-      box-shadow: 0 8px 18px rgba(79, 91, 187, 0.17);
-    }
-
-    .policy-district-card .policy-card:nth-child(3n) {
-      background: linear-gradient(145deg, #a360cf, #7955b6);
-      box-shadow: 0 8px 18px rgba(104, 71, 162, 0.18);
-    }
-
-    .policy-district-card .policy-card::before {
-      display: none;
-    }
-
-    .policy-district-card .policy-card__head {
-      height: 100%;
-      padding: 15px 10px 11px;
-      background: transparent;
-    }
-
-    .policy-district-card .policy-card__head-main {
-      min-height: 128px;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    .policy-district-card .policy-card__title {
-      color: #fff;
-      font-size: 12px;
-      line-height: 1.48;
-      font-weight: 800;
-      text-align: center;
-      text-shadow: 0 1px 2px rgba(37, 65, 100, 0.16);
-    }
-
-    .policy-district-card .policy-card__period {
-      width: 100%;
-      min-height: 0;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2px;
-      margin-top: auto;
-      padding: 8px 0 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.24);
-      border-radius: 0;
-      background: transparent;
-      color: rgba(255, 255, 255, 0.82);
-      font-size: 8.5px;
-      line-height: 1.35;
-      text-align: center;
-    }
-
-    .policy-district-card .policy-card__period-label {
-      display: none;
-    }
-
-    .policy-district-card .policy-card__period time {
-      color: #fff;
-      font-size: 8.5px;
-      font-weight: 700;
-    }
-
-    /* 橙色主题与单行日期优化 */
-    .policy-page {
-      background:
-        radial-gradient(circle at 50% 0%, rgba(255, 182, 102, 0.2), transparent 32%),
-        linear-gradient(180deg, #fff4e9 0%, #fffaf5 44%, #f7f2ed 100%);
-    }
-
-    .policy-district-card .policy-district-group__header::before,
-    .policy-district-card .policy-district-group__header::after {
-      background: linear-gradient(90deg, rgba(243, 137, 45, 0.2), #ef8d36);
-    }
-
-    .policy-district-card .policy-district-group__header::after {
-      background: linear-gradient(90deg, #ef8d36, rgba(243, 137, 45, 0.2));
-    }
-
-    .policy-district-card .policy-district-group__title {
-      background: #fff0df;
-      color: #854022;
-      box-shadow: 0 3px 9px rgba(139, 76, 37, 0.09);
-    }
-
-    .policy-district-card .policy-district-group__title::after {
-      border-color: #ef8d36;
-      background: #fff4e9;
-    }
-
-    .policy-district-card .policy-card,
-    .policy-district-card .policy-card + .policy-card {
-      background: linear-gradient(145deg, #ffad4f, #f47a36);
-      box-shadow: 0 8px 18px rgba(203, 91, 30, 0.17);
-    }
-
-    .policy-district-card .policy-card:nth-child(3n + 2) {
-      background: linear-gradient(145deg, #ff8d45, #eb5a31);
-      box-shadow: 0 8px 18px rgba(196, 67, 37, 0.17);
-    }
-
-    .policy-district-card .policy-card:nth-child(3n) {
-      background: linear-gradient(145deg, #ffc05a, #e98a2e);
-      box-shadow: 0 8px 18px rgba(190, 108, 35, 0.17);
-    }
-
-    .policy-district-card .policy-card__title {
-      font-size: 13.5px;
-      line-height: 1.45;
-      text-shadow: 0 1px 2px rgba(117, 51, 19, 0.16);
-    }
-
-    .policy-district-card .policy-card__period {
-      flex-wrap: nowrap;
-      gap: 2px;
-      white-space: nowrap;
-    }
-
-    .policy-district-card .policy-card__period time {
-      flex: 0 0 auto;
-      font-size: 8px;
-      white-space: nowrap;
-    }
-
-    .policy-district-card .policy-district-group__cards:has(> .policy-card:nth-child(3)) {
-      display: flex;
-      gap: 9px;
-      overflow-x: auto;
-      padding: 0 2px 5px;
-      scroll-snap-type: x mandatory;
-      scrollbar-width: none;
-    }
-
-    .policy-district-card .policy-district-group__cards:has(> .policy-card:nth-child(3))::-webkit-scrollbar {
-      display: none;
-    }
-
-    .policy-district-card .policy-district-group__cards:has(> .policy-card:nth-child(3)) .policy-card {
-      flex: 0 0 160px;
-      width: 160px;
-      scroll-snap-align: start;
-    }
-
-    /* 三卡同排、政策标签与大号单行日期 */
-    .policy-district-card .policy-district-group__cards:has(> .policy-card:nth-child(3)) {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 7px;
-      overflow: visible;
-      padding: 0;
-      scroll-snap-type: none;
-    }
-
-    .policy-district-card .policy-district-group__cards:has(> .policy-card:nth-child(3)) .policy-card {
-      flex: initial;
-      width: auto;
-    }
-
-    .policy-district-card .policy-card,
-    .policy-district-card .policy-card + .policy-card {
-      min-height: 166px;
-    }
-
-    .policy-district-card .policy-card__head {
-      padding: 12px 8px 10px;
-    }
-
-    .policy-district-card .policy-card__head-main {
-      min-height: 144px;
-      align-items: center;
-    }
-
-    .policy-district-card .policy-card__type {
-      min-height: 21px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 0 9px;
-      padding: 0 7px;
-      border: 1px solid rgba(255, 255, 255, 0.34);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.18);
-      color: #fff;
-      font-size: 9px;
-      font-weight: 800;
-      line-height: 1;
-      white-space: nowrap;
-    }
-
-    .policy-district-card .policy-card__title {
-      width: 100%;
-      font-size: 12.5px;
-    }
-
-    .policy-district-card .policy-card__period {
-      justify-content: center;
-      gap: 1px;
-      padding-top: 8px;
-      font-size: 9.5px;
-    }
-
-    .policy-district-card .policy-card__period time {
-      font-size: 9.5px;
-      letter-spacing: -0.02em;
-    }
-
-    .policy-district-card .policy-card,
-    .policy-district-card .policy-card + .policy-card {
-      min-height: 178px;
-    }
-
-    .policy-district-card .policy-card__head-main {
-      min-height: 156px;
-    }
-
-    .policy-district-card .policy-card__tags {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 4px;
-      margin-top: 9px;
-    }
-
-    .policy-district-card .policy-card__tag {
-      min-height: 19px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 6px;
-      border: 1px solid rgba(255, 255, 255, 0.36);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.18);
-      color: #fff;
-      font-size: 8px;
-      line-height: 1.3;
-      font-weight: 800;
-      text-align: center;
-      white-space: normal;
-    }
-
-    /* 区县折叠列表：默认仅展示区县，点击后展开政策 */
-    .policy-card-grid {
-      gap: 10px;
-    }
-
-    .policy-district-card {
-      overflow: hidden;
-      border: 1px solid #f0d9c6;
-      border-radius: 13px;
-      background: rgba(255, 255, 255, 0.94);
-      box-shadow: 0 5px 14px rgba(126, 73, 38, 0.07);
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .policy-district-card.is-open {
-      border-color: #f2a260;
-      box-shadow: 0 10px 22px rgba(178, 82, 30, 0.12);
-    }
-
-    .policy-district-card .policy-district-group__header {
-      width: 100%;
-      min-height: 48px;
-      justify-content: flex-start;
-      gap: 10px;
-      margin: 0;
-      padding: 0 14px;
-      border-radius: 12px;
-      background: linear-gradient(100deg, #fff7ee, #ffead8);
-      box-shadow: none;
-      text-align: left;
-    }
-
-    .policy-district-card.is-open .policy-district-group__header {
-      border-radius: 12px 12px 0 0;
-      background: linear-gradient(100deg, #ff9f4d, #f06a36);
-    }
-
-    .policy-district-card .policy-district-group__header::before {
-      flex: 0 0 auto;
-      width: 4px;
-      height: 18px;
-      border-radius: 999px;
-      background: linear-gradient(180deg, #ffb35f, #ef6f34);
-    }
-
-    .policy-district-card .policy-district-group__header::after {
-      display: none;
-    }
-
-    .policy-district-card .policy-district-group__title {
-      flex: 1 1 auto;
-      min-width: 0;
-      padding: 0;
-      border-radius: 0;
-      background: transparent;
-      color: #783b20;
-      font-size: 15px;
-      text-align: left;
-      box-shadow: none;
-    }
-
-    .policy-district-card.is-open .policy-district-group__title {
-      color: #fff;
-    }
-
-    .policy-district-card .policy-district-group__title::after {
-      display: none;
-    }
-
-    .policy-district-group__chevron {
-      position: relative;
-      flex: 0 0 auto;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: rgba(239, 111, 52, 0.1);
-    }
-
-    .policy-district-group__chevron::before {
-      content: "";
-      position: absolute;
-      left: 6px;
-      top: 5px;
-      width: 5px;
-      height: 5px;
-      border-right: 2px solid #dc6733;
-      border-bottom: 2px solid #dc6733;
-      transform: rotate(45deg);
-      transition: transform 0.2s ease, top 0.2s ease;
-    }
-
-    .policy-district-card.is-open .policy-district-group__chevron {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .policy-district-card.is-open .policy-district-group__chevron::before {
-      top: 7px;
-      border-color: #fff;
-      transform: rotate(225deg);
-    }
-
-    .policy-district-card .policy-district-group__cards {
-      padding: 11px;
-      background: #fffaf5;
-    }
-
-    .policy-district-card .policy-district-group__cards[hidden] {
-      display: none !important;
-    }
-
-    /* 区县入口矩阵：每行三个矩形入口，展开项横跨整行 */
-    .policy-card-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-      align-items: start;
-    }
-
-    .policy-district-group {
-      min-width: 0;
-    }
-
-    .policy-district-group:has(.policy-district-card.is-open) {
-      grid-column: 1 / -1;
-    }
-
-    .policy-district-card {
-      border: 0;
-      border-radius: 11px;
-      background: transparent;
-      box-shadow: none;
-    }
-
-    .policy-district-card .policy-district-group__header {
-      min-height: 76px;
-      flex-direction: column;
-      justify-content: center;
-      gap: 7px;
-      padding: 10px 6px 8px;
-      border: 0;
-      border-radius: 11px;
-      background: linear-gradient(145deg, #ffad4f, #f47a36);
-      color: #fff;
-      box-shadow: 0 7px 16px rgba(189, 86, 29, 0.17);
-      text-align: center;
-    }
-
-    .policy-district-group:nth-child(3n + 2) .policy-district-group__header {
-      background: linear-gradient(145deg, #ff8d45, #eb5a31);
-    }
-
-    .policy-district-group:nth-child(3n) .policy-district-group__header {
-      background: linear-gradient(145deg, #ffc05a, #e98a2e);
-    }
-
-    .policy-district-card .policy-district-group__header::before {
-      width: 24px;
-      height: 3px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.78);
-    }
-
-    .policy-district-card .policy-district-group__title {
-      flex: 0 1 auto;
-      width: 100%;
-      color: #fff;
-      font-size: 12px;
-      line-height: 1.35;
-      font-weight: 800;
-      text-align: center;
-      white-space: normal;
-    }
-
-    .policy-district-group__chevron {
-      width: 16px;
-      height: 16px;
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .policy-district-group__chevron::before {
-      left: 5px;
-      top: 4px;
-      border-color: #fff;
-    }
-
-    .policy-district-card.is-open {
-      border: 1px solid #f2a260;
-      border-radius: 13px;
-      background: #fffaf5;
-      box-shadow: 0 10px 22px rgba(178, 82, 30, 0.12);
-    }
-
-    .policy-district-card.is-open .policy-district-group__header {
-      min-height: 50px;
-      flex-direction: row;
-      justify-content: flex-start;
-      gap: 10px;
-      padding: 0 14px;
-      border-radius: 12px 12px 0 0;
-      text-align: left;
-    }
-
-    .policy-district-card.is-open .policy-district-group__header::before {
-      width: 4px;
-      height: 18px;
-    }
-
-    .policy-district-card.is-open .policy-district-group__title {
-      flex: 1 1 auto;
-      width: auto;
-      font-size: 15px;
-      text-align: left;
-    }
-
-    /* 区县入口精简：移除横线与箭头，强化纯文字矩形卡片 */
-    .policy-district-card .policy-district-group__header {
-      min-height: 64px;
-      gap: 0;
-      padding: 10px 8px;
-      border-radius: 12px;
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.25),
-        0 7px 15px rgba(178, 77, 27, 0.15);
-      transition: transform 0.16s ease, filter 0.16s ease;
-    }
-
-    .policy-district-card .policy-district-group__header:active {
-      filter: brightness(0.97);
-      transform: scale(0.98);
-    }
-
-    .policy-district-card .policy-district-group__header::before,
-    .policy-district-card .policy-district-group__header::after,
-    .policy-district-group__chevron {
-      display: none;
-    }
-
-    .policy-district-card .policy-district-group__title {
+      padding: 2px 9px;
+      color: var(--brand);
+      background: var(--brand-soft);
       font-size: 13px;
-      line-height: 1.4;
-      letter-spacing: 0.01em;
-      text-shadow: 0 1px 2px rgba(111, 45, 14, 0.12);
-    }
-
-    .policy-district-card.is-open .policy-district-group__header {
-      min-height: 48px;
-      justify-content: center;
-      padding: 0 14px;
-      border-radius: 12px 12px 0 0;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
-      text-align: center;
-    }
-
-    .policy-district-card.is-open .policy-district-group__title {
-      flex: 0 1 auto;
-      width: 100%;
-      text-align: center;
-    }
-
-    /* 展开态精修 */
-    .policy-district-card.is-open {
-      padding: 8px;
-      overflow: visible;
-      border: 1px solid rgba(238, 143, 76, 0.58);
-      border-radius: 16px;
-      background:
-        radial-gradient(circle at 86% 0%, rgba(255, 177, 102, 0.15), transparent 34%),
-        #fffdfb;
-      box-shadow: 0 14px 30px rgba(144, 67, 28, 0.13);
-    }
-
-    .policy-district-card.is-open .policy-district-group__header {
-      width: 100%;
-      min-height: 46px;
-      margin: 0;
-      padding: 0 14px;
-      border-radius: 11px;
-      background: linear-gradient(100deg, #ff9e4b 0%, #f36c38 68%, #eb5733 100%);
-      box-shadow: 0 7px 16px rgba(203, 83, 32, 0.18);
-    }
-
-    .policy-district-card.is-open .policy-district-group__title {
-      color: #fff;
-      font-size: 15px;
-      letter-spacing: 0.04em;
-      text-shadow: 0 1px 2px rgba(117, 45, 16, 0.18);
-    }
-
-    .policy-district-card.is-open .policy-district-group__cards {
-      margin-top: 9px;
-      padding: 10px;
-      border: 1px solid #f4e1d3;
-      border-radius: 12px;
-      background: linear-gradient(180deg, #fff7ef, #fffdfb);
-      animation: policyPanelReveal 0.22s ease-out both;
-    }
-
-    .policy-district-card.is-open .policy-card,
-    .policy-district-card.is-open .policy-card + .policy-card {
-      border: 1px solid rgba(255, 255, 255, 0.24);
-      box-shadow: 0 8px 17px rgba(172, 77, 26, 0.15);
-    }
-
-    @keyframes policyPanelReveal {
-      from {
-        opacity: 0;
-        transform: translateY(-6px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* 区县图片入口 */
-    .policy-district-card .policy-district-group__header,
-    .policy-district-group:nth-child(3n + 2) .policy-district-group__header,
-    .policy-district-group:nth-child(3n) .policy-district-group__header {
-      min-height: 88px;
-      flex-direction: row;
-      align-items: flex-end;
-      justify-content: flex-start;
-      padding: 10px;
-      background:
-        linear-gradient(180deg, rgba(34, 24, 17, 0.02) 18%, rgba(25, 17, 11, 0.7) 100%),
-        var(--district-cover) center / cover no-repeat;
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.22),
-        0 8px 18px rgba(63, 43, 30, 0.17);
-    }
-
-    .policy-district-card .policy-district-group__title {
-      flex: 1 1 auto;
-      width: 100%;
-      color: #fff;
-      font-size: 12.5px;
-      line-height: 1.35;
-      text-align: left;
-      text-shadow: 0 2px 7px rgba(0, 0, 0, 0.62);
-    }
-
-    .policy-district-card.is-open .policy-district-group__header {
-      min-height: 76px;
-      align-items: flex-end;
-      justify-content: flex-start;
-      padding: 12px 14px;
-      background:
-        linear-gradient(180deg, rgba(34, 24, 17, 0.03) 12%, rgba(25, 17, 11, 0.72) 100%),
-        var(--district-cover) center / cover no-repeat;
-      box-shadow: 0 8px 18px rgba(91, 51, 25, 0.19);
-    }
-
-    .policy-district-card.is-open .policy-district-group__title {
-      flex: 1 1 auto;
-      width: 100%;
-      font-size: 16px;
-      text-align: left;
-    }
-
-    /* 缩小默认区县图片入口 */
-    .policy-card-grid {
-      gap: 8px;
-    }
-
-    .policy-district-card:not(.is-open) .policy-district-group__header {
-      min-height: 70px;
-      padding: 8px;
-      border-radius: 10px;
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.2),
-        0 6px 13px rgba(63, 43, 30, 0.14);
-    }
-
-    .policy-district-card:not(.is-open) .policy-district-group__title {
-      font-size: 11.5px;
-      line-height: 1.3;
-    }
-
-    /* 区县图片与政策抽屉统一为一体卡片 */
-    .policy-card-grid {
-      gap: 9px;
-    }
-
-    .policy-district-card,
-    .policy-district-card.is-open {
-      padding: 0;
-      border-radius: 12px;
-      background: transparent;
-      transition:
-        border-color 0.22s ease,
-        box-shadow 0.22s ease,
-        background-color 0.22s ease;
-    }
-
-    .policy-district-card.is-open {
-      overflow: hidden;
-      border: 1px solid rgba(224, 211, 201, 0.94);
-      background: #ffffff;
-      box-shadow: 0 14px 30px rgba(72, 50, 38, 0.13);
-    }
-
-    .policy-district-card .policy-district-group__header,
-    .policy-district-group:nth-child(3n + 2) .policy-district-group__header,
-    .policy-district-group:nth-child(3n) .policy-district-group__header,
-    .policy-district-card.is-open .policy-district-group__header {
-      position: relative;
-      min-height: 70px;
-      display: flex;
-      flex-direction: row;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 7px;
-      margin: 0;
-      padding: 8px;
-      overflow: hidden;
-      border: 0;
-      border-radius: 10px;
-      background:
-        linear-gradient(180deg, rgba(18, 14, 11, 0.03) 16%, rgba(20, 15, 11, 0.74) 100%),
-        var(--district-cover) center / cover no-repeat;
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.2),
-        0 6px 13px rgba(63, 43, 30, 0.14);
-      text-align: left;
-      transition:
-        min-height 0.22s ease,
-        border-radius 0.22s ease,
-        padding 0.22s ease,
-        box-shadow 0.22s ease;
-    }
-
-    .policy-district-card.is-open .policy-district-group__header {
-      min-height: 96px;
-      padding: 12px;
-      border-radius: 11px 11px 0 0;
-      background:
-        linear-gradient(180deg, rgba(18, 14, 11, 0.02) 10%, rgba(20, 15, 11, 0.78) 100%),
-        var(--district-cover) center / cover no-repeat;
-      box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.22);
-    }
-
-    .policy-district-card .policy-district-group__title,
-    .policy-district-card.is-open .policy-district-group__title {
-      flex: 1 1 auto;
-      width: auto;
-      min-width: 0;
-      padding: 0;
-      color: #ffffff;
-      font-size: 11.5px;
-      line-height: 1.3;
-      font-weight: 800;
-      letter-spacing: 0;
-      text-align: left;
-      text-shadow: 0 2px 7px rgba(0, 0, 0, 0.68);
-    }
-
-    .policy-district-card.is-open .policy-district-group__title {
-      font-size: 16px;
-      line-height: 1.35;
-    }
-
-    .policy-district-group__meta {
-      flex: 0 0 auto;
-      width: 23px;
-      min-height: 23px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      padding: 0;
-      border: 1px solid rgba(255, 255, 255, 0.34);
-      border-radius: 999px;
-      background: rgba(27, 23, 20, 0.34);
-      color: #ffffff;
-      font-size: 9.5px;
-      line-height: 1;
-      font-weight: 700;
+      line-height: 20px;
       white-space: nowrap;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
-      backdrop-filter: blur(5px);
     }
 
-    .policy-district-group__meta::before {
-      content: none;
-    }
-
-    .policy-district-card.is-open .policy-district-group__meta {
-      width: auto;
-      padding: 0 7px 0 8px;
-    }
-
-    .policy-district-card.is-open .policy-district-group__meta::before {
-      content: "收起";
-    }
-
-    .policy-district-group__chevron,
-    .policy-district-card .policy-district-group__chevron {
-      position: relative;
-      width: 12px;
-      height: 12px;
+    .policy-period {
       display: block;
-      border-radius: 0;
-      background: transparent;
-    }
-
-    .policy-district-group__chevron::before,
-    .policy-district-card .policy-district-group__chevron::before {
-      left: 3px;
-      top: 2px;
-      width: 4px;
-      height: 4px;
-      border-right: 1.5px solid #ffffff;
-      border-bottom: 1.5px solid #ffffff;
-      transform: rotate(45deg);
-      transition: top 0.2s ease, transform 0.2s ease;
-    }
-
-    .policy-district-card.is-open .policy-district-group__chevron::before {
-      top: 5px;
-      transform: rotate(225deg);
-    }
-
-    .policy-district-card .policy-district-group__cards,
-    .policy-district-card.is-open .policy-district-group__cards,
-    .policy-district-card .policy-district-group__cards:has(> .policy-card:nth-child(3)) {
-      grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
-      gap: 8px;
-      margin: 0;
-      padding: 10px;
-      border: 0;
-      border-radius: 0 0 11px 11px;
-      background:
-        linear-gradient(180deg, #fffdfb 0%, #fff8f2 100%);
-      animation: districtPolicyDrawerReveal 0.24s ease-out both;
-    }
-
-    .policy-district-card .policy-district-group__cards[hidden] {
-      display: none !important;
-    }
-
-    .policy-district-card.is-open .policy-card,
-    .policy-district-card.is-open .policy-card + .policy-card,
-    .policy-district-card.is-open .policy-card:nth-child(3n + 2),
-    .policy-district-card.is-open .policy-card:nth-child(3n) {
-      min-height: 164px;
-      overflow: hidden;
-      border: 1px solid #eee4dc;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.96);
-      box-shadow: 0 5px 13px rgba(86, 62, 48, 0.08);
-    }
-
-    .policy-district-card.is-open .policy-card__head {
-      height: 100%;
-      padding: 12px 8px 10px;
-      background:
-        linear-gradient(180deg, rgba(255, 247, 240, 0.88), rgba(255, 255, 255, 0.98));
-    }
-
-    .policy-district-card.is-open .policy-card__head-main {
-      min-height: 142px;
-    }
-
-    .policy-district-card.is-open .policy-card__title {
-      color: #35312f;
-      text-shadow: none;
-    }
-
-    .policy-district-card.is-open .policy-card__tag {
-      border-color: #ffd5bd;
-      background: #fff0e6;
-      color: #db5b26;
-    }
-
-    .policy-district-card.is-open .policy-card__period {
-      border-top-color: #f0e5dd;
-      color: #8a7d75;
-    }
-
-    .policy-district-card.is-open .policy-card__period time {
-      color: #756a64;
-    }
-
-    @keyframes districtPolicyDrawerReveal {
-      from {
-        opacity: 0;
-        transform: translateY(-5px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .policy-district-card,
-      .policy-district-group__header,
-      .policy-district-group__chevron::before {
-        transition: none !important;
-      }
-
-      .policy-district-group__cards {
-        animation: none !important;
-      }
-    }
-
-    /* 区县入口下方的最新政策列表 */
-    .latest-policy-section {
-      margin-top: 28px;
-    }
-
-    .latest-policy-section__head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin: 0 2px 11px;
-    }
-
-    .latest-policy-section__title {
-      position: relative;
-      margin: 0;
-      padding-left: 11px;
-      color: #2f3034;
-      font-size: 17px;
-      line-height: 1.3;
-      font-weight: 800;
-    }
-
-    .latest-policy-section__title::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 2px;
-      bottom: 2px;
-      width: 4px;
-      border-radius: 999px;
-      background: linear-gradient(180deg, #ff8a42, #fd5d00);
-    }
-
-    .latest-policy-list {
-      display: grid;
-      gap: 9px;
-    }
-
-    .latest-policy-item {
-      position: relative;
-      width: 100%;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 26px;
-      gap: 10px;
-      align-items: center;
-      padding: 13px 12px 12px 14px;
-      overflow: hidden;
-      border: 1px solid #ebe3dd;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.96);
-      box-shadow: 0 6px 16px rgba(67, 50, 40, 0.06);
-      text-align: left;
-      transition: border-color 0.16s ease, transform 0.16s ease, box-shadow 0.16s ease;
-    }
-
-    .latest-policy-item::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 14px;
-      width: 3px;
-      height: 30px;
-      border-radius: 0 999px 999px 0;
-      background: linear-gradient(180deg, #ff9a54, #fd5d00);
-    }
-
-    .latest-policy-item:active {
-      border-color: #ffc6a4;
-      box-shadow: 0 4px 11px rgba(161, 73, 28, 0.09);
-      transform: scale(0.985);
-    }
-
-    .latest-policy-item__main {
-      min-width: 0;
-    }
-
-    .latest-policy-item__title {
-      margin: 0;
-      display: -webkit-box;
-      overflow: hidden;
-      color: #303133;
+      margin-top: 5px;
+      color: #626873;
       font-size: 14px;
-      line-height: 1.45;
-      font-weight: 800;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
+      line-height: 20px;
     }
 
-    .latest-policy-item__date {
-      display: block;
-      margin-top: 7px;
-      color: #909399;
-      font-size: 10.5px;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .latest-policy-item__arrow {
-      width: 26px;
-      height: 26px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: #fff1e8;
-      color: #e45f29;
-    }
-
-    .latest-policy-item__arrow svg {
-      width: 14px;
-      height: 14px;
+    .policy-item__arrow {
+      align-self: center;
+      justify-self: end;
+      width: 20px;
+      height: 20px;
       fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
+      stroke: #68707d;
       stroke-linecap: round;
       stroke-linejoin: round;
+      stroke-width: 2.3;
+    }
+
+    .empty-state {
+      padding: 42px 16px;
+      color: var(--text-muted);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 28px;
+      z-index: 150;
+      max-width: calc(100vw - 48px);
+      padding: 9px 14px;
+      border-radius: 6px;
+      color: #ffffff;
+      background: rgba(31, 36, 48, 0.86);
+      font-size: 13px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 8px);
+      transition: 0.18s ease;
+    }
+
+    .toast.is-visible {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    @media (max-width: 360px) {
+      .policy-content {
+        padding-right: 12px;
+        padding-left: 12px;
+      }
+
+      .district-button {
+        font-size: 13px;
+      }
+
+      .policy-type-button {
+        font-size: 13px;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .latest-policy-item {
+      .sheet-backdrop,
+      .policy-sheet,
+      .toast {
         transition: none;
       }
     }
   </style>
 </head>
 <body>
-  <main class="policy-page">
-    <header class="policy-topbar">
-      <button class="policy-back" id="policyBack" type="button" aria-label="返回首页">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
-      </button>
-      <h1 class="policy-topbar__title">购房政策</h1>
-      <div class="policy-actions" aria-label="页面操作">
-        <button class="policy-actions__button" type="button" aria-label="更多操作">
-          <span class="policy-actions__more" aria-hidden="true"><i></i><i></i><i></i></span>
+  <main class="policy-app">
+    <header class="mini-header">
+      <div class="status-bar" aria-hidden="true">
+        <span>9:41</span>
+        <span class="status-icons">
+          <svg viewBox="0 0 19 13"><path d="M1 12V9h2v3H1Zm4 0V6h2v6H5Zm4 0V4h2v8H9Zm4 0V1h2v11h-2Zm4 0V0h2v12h-2Z" fill="currentColor" /></svg>
+          <svg viewBox="0 0 17 13"><path d="M1 4.7C5.2.7 11.8.7 16 4.7M3.8 7.4c2.7-2.5 6.7-2.5 9.4 0M6.7 10c1-1 2.6-1 3.6 0M8.5 12h.01" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" /></svg>
+          <svg viewBox="0 0 25 13"><rect x=".7" y=".7" width="21" height="11.6" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.4" /><rect x="2.7" y="2.7" width="17" height="7.6" rx="1" fill="currentColor" /><path d="M23 4.2v4.6c1-.2 1.5-.9 1.5-2.3S24 4.4 23 4.2Z" fill="currentColor" /></svg>
+        </span>
+      </div>
+
+      <div class="nav-bar">
+        <button class="nav-back" id="policyBack" type="button" aria-label="返回首页">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 19-7-7 7-7" /></svg>
         </button>
-        <button class="policy-actions__button" type="button" aria-label="关闭页面">
-          <span class="policy-actions__target" aria-hidden="true"></span>
-        </button>
+        <h1 class="nav-title">购房政策</h1>
+        <div class="mini-actions" aria-label="页面操作">
+          <button id="moreAction" type="button" aria-label="更多操作">
+            <span class="more-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          </button>
+          <button id="closeAction" type="button" aria-label="关闭页面">
+            <span class="mini-target" aria-hidden="true"></span>
+          </button>
+        </div>
       </div>
     </header>
 
+    <nav class="policy-tabs" role="tablist" aria-label="政策筛选方式">
+      <button
+        class="policy-tab is-active"
+        id="districtTab"
+        type="button"
+        role="tab"
+        aria-selected="true"
+        aria-controls="districtTabPanel"
+        data-policy-tab="district"
+      >区市县</button>
+      <button
+        class="policy-tab"
+        id="policyTypeTab"
+        type="button"
+        role="tab"
+        aria-selected="false"
+        aria-controls="policyTypeTabPanel"
+        data-policy-tab="policy"
+      >政策类型</button>
+    </nav>
+
     <div class="policy-content">
-      <section class="policy-card-grid" id="policyCards" aria-label="按区县归类的购房政策" aria-live="polite"></section>
-      <section class="latest-policy-section" aria-labelledby="latestPolicyTitle">
-        <div class="latest-policy-section__head">
-          <h2 class="latest-policy-section__title" id="latestPolicyTitle">最新政策</h2>
+      <section class="tab-panel" id="districtTabPanel" role="tabpanel" aria-labelledby="districtTab">
+        <div class="policy-sections">
+          <section class="recent-section" aria-labelledby="recentTitle">
+            <h2 class="section-heading" id="recentTitle">
+              <svg class="recent-clock" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="7" /><path d="M9 5v4h3" /></svg>
+              最近查看
+            </h2>
+            <div class="recent-list" id="recentList"></div>
+          </section>
+
+          <div id="regionSections"></div>
         </div>
-        <div class="latest-policy-list" id="latestPolicyList"></div>
+      </section>
+
+      <section class="tab-panel" id="policyTypeTabPanel" role="tabpanel" aria-labelledby="policyTypeTab" hidden>
+        <div class="policy-type-section">
+          <div class="policy-type-grid" id="policyTypeGrid" aria-label="购房支持政策维度"></div>
+        </div>
       </section>
     </div>
   </main>
 
-  <dialog class="policy-dialog" id="policyDialog">
-    <div class="policy-dialog__head">
-      <h2 id="policyDialogTitle"></h2>
-      <button class="policy-dialog__close" id="policyDialogClose" type="button" aria-label="关闭详情">×</button>
-    </div>
-    <div class="policy-dialog__body">
-      <div class="policy-dialog__meta">
-        <span class="policy-dialog__tag" id="policyDialogDistrict"></span>
-        <span class="policy-dialog__tag" id="policyDialogType"></span>
-        <span class="policy-dialog__tag" id="policyDialogDate"></span>
-      </div>
-      <p id="policyDialogSummary"></p>
-    </div>
-  </dialog>
+  <div class="sheet-layer" id="policySheetLayer" hidden>
+    <button class="sheet-backdrop" id="policySheetBackdrop" type="button" aria-label="关闭政策列表弹框"></button>
+    <section class="policy-sheet" id="policySheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" tabindex="-1">
+      <header class="sheet-header">
+        <h2 class="sheet-title" id="sheetTitle"></h2>
+        <span class="sheet-count" id="sheetCount"></span>
+        <button class="sheet-close" id="policySheetClose" type="button" aria-label="关闭弹框">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m4 4 12 12M16 4 4 16" /></svg>
+        </button>
+      </header>
+      <div class="policy-list" id="policyList"></div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
-    const districtOrder = [
-      "四川天府新区",
-      "成都东部新区",
-      "成都高新区",
-      "锦江区",
-      "青羊区",
-      "金牛区",
-      "武侯区",
-      "成华区",
-      "龙泉驿区",
-      "青白江区",
-      "新都区",
-      "温江区",
-      "双流区",
-      "郫都区",
-      "新津区",
-      "简阳市",
-      "都江堰市",
-      "彭州市",
-      "邛崃市",
-      "崇州市",
-      "金堂县",
-      "大邑县",
-      "蒲江县"
-    ];
-
-    const basePolicies = [
+    const districtGroups = [
       {
-        id: "east-talent",
-        title: "东部新区人才购房补贴最高100万元",
-        district: "成都东部新区",
-        type: "人才安居",
-        start: "2026.01.08",
-        end: "2029.01.08",
-        summary: "面向符合条件的人才提供分层分类购房支持。具体申报范围、资格条件、补贴标准及办理材料，以主管部门正式发布的政策文件和申报通知为准。"
+        name: "城市新区",
+        districts: ["四川天府新区", "成都东部新区", "成都高新区"]
       },
       {
-        id: "qingyang-market",
-        title: "青羊房地产市场健康发展的若干措施",
-        district: "青羊区",
-        type: "市场支持",
-        start: "2026.06.18",
-        end: "2027.03.01",
-        summary: "围绕住房消费、人才安居和房地产市场平稳健康发展制定支持措施。政策适用对象、办理流程及执行口径以正式文件为准。"
+        name: "中心城区",
+        districts: [
+          "锦江区", "青羊区", "金牛区", "武侯区", "成华区", "龙泉驿区",
+          "青白江区", "新都区", "温江区", "双流区", "郫都区", "新津区"
+        ]
       },
       {
-        id: "longquanyi-subsidy",
-        title: "龙泉驿区购房补贴措施",
-        district: "龙泉驿区",
-        type: "购房补贴",
-        start: "2026.02.13",
-        end: "2026.12.31",
-        summary: "对政策有效期内符合条件的购房人给予相应支持。补贴对象、房源范围、申请时限和审核方式以龙泉驿区相关部门公布内容为准。"
-      },
-      {
-        id: "qingbaijiang-coupon",
-        title: "关于2026年青白江区发放购房“消费券”",
-        district: "青白江区",
-        type: "购房补贴",
-        start: "2026.01.01",
-        end: "2026.12.31",
-        summary: "通过购房消费券形式支持合理住房需求。适用房源、领取资格、核销规则及资金安排以青白江区正式活动通知为准。"
-      },
-      {
-        id: "jianyang-ticket",
-        title: "简阳市房票购房支持政策",
-        district: "简阳市",
-        type: "房票安置",
-        start: "2026.03.31",
-        end: "2028.03.30",
-        summary: "针对符合条件的房票使用人提供购房支持。房票适用范围、使用期限、抵扣方式和办理流程以简阳市正式政策文件为准。"
-      },
-      {
-        id: "pengzhou-subsidy",
-        title: "彭州市购房补贴措施",
-        district: "彭州市",
-        type: "购房补贴",
-        start: "2026.01.04",
-        end: "2027.01.03",
-        summary: "对符合条件的住房消费给予购房补贴。申请对象、补贴金额、申报材料及兑付流程以彭州市主管部门公布的实施细则为准。"
+        name: "县市新城",
+        districts: [
+          "简阳市", "都江堰市", "彭州市", "邛崃市",
+          "崇州市", "金堂县", "大邑县", "蒲江县"
+        ]
       }
     ];
 
-    const policyTemplates = [
+    const districtOrder = districtGroups.flatMap((group) => group.districts);
+
+    const policySupportDimensions = [
+      "人才购房支持",
+      "就学支持",
+      "购房补贴支持",
+      "购房消费券支持",
+      "以旧换新支持",
+      "交通优惠支持",
+      "车位购买支持",
+      "房票购房支持",
+      "房票安置支持",
+      "公房承租人购买新建商品住房补贴支持"
+    ];
+
+    const specialPolicies = {
+      "四川天府新区": [
+        {
+          title: "四川天府新区购房补贴申领实施细则",
+          tags: ["购房补贴支持", "公房承租人购买新建商品住房补贴支持"],
+          start: "2026-01-01",
+          end: "2026-12-31",
+          summary: "面向符合条件的购房人提供住房消费支持。适用对象、补贴标准、申请材料和兑付流程以四川天府新区主管部门正式发布内容为准。"
+        },
+        {
+          title: "四川天府新区人才安居购房支持办法",
+          tags: ["人才购房支持", "就学支持"],
+          start: "2026-03-01",
+          end: "2027-02-28",
+          summary: "面向符合条件的人才提供购房支持。人才认定、房源范围、支持标准和办理方式以四川天府新区主管部门正式发布内容为准。"
+        }
+      ],
+      "成都东部新区": [
+        {
+          title: "成都东部新区人才购房支持办法",
+          tags: ["人才购房支持", "就学支持"],
+          start: "2026-01-08",
+          end: "2029-01-08",
+          summary: "面向符合条件的人才提供分层分类购房支持。具体申报范围、资格条件、补贴标准及办理材料，以主管部门正式发布的政策文件和申报通知为准。"
+        },
+        {
+          title: "成都东部新区促进住房消费若干措施",
+          tags: ["以旧换新支持", "交通优惠支持"],
+          start: "2026-05-01",
+          end: "2027-04-30",
+          summary: "围绕合理住房需求和房地产市场平稳健康发展提供支持，具体适用条件和办理口径以正式政策文件为准。"
+        }
+      ],
+      "成华区": [
+        {
+          title: "成华区人才安居购房支持办法",
+          tags: ["人才购房支持", "就学支持"],
+          start: "2026-12-12",
+          end: "2027-12-12",
+          summary: "面向符合条件的人才提供购房与安居支持。人才认定、房源范围、支持标准和办理方式以成华区主管部门正式发布内容为准。"
+        },
+        {
+          title: "成华区促进住房消费若干措施",
+          tags: ["以旧换新支持", "交通优惠支持"],
+          start: "2026-12-12",
+          end: "2027-12-12",
+          summary: "围绕住房消费、存量住房改善和交通配套提供支持。适用条件、执行期限和申报方式以成华区正式政策文件为准。"
+        }
+      ],
+      "龙泉驿区": [
+        {
+          title: "龙泉驿区购房补贴措施",
+          tags: ["购房补贴支持", "车位购买支持"],
+          start: "2026-02-13",
+          end: "2026-12-31",
+          summary: "对政策有效期内符合条件的购房人给予相应支持。补贴对象、房源范围、申请时限和审核方式以龙泉驿区相关部门公布内容为准。"
+        }
+      ],
+      "青白江区": [
+        {
+          title: "关于2026年青白江区发放购房消费券",
+          tags: ["购房消费券支持", "购房补贴支持"],
+          start: "2026-01-01",
+          end: "2026-12-31",
+          summary: "通过购房消费券形式支持合理住房需求。适用房源、领取资格、核销规则及资金安排以青白江区正式活动通知为准。"
+        }
+      ],
+      "简阳市": [
+        {
+          title: "简阳市房票购房支持政策",
+          tags: ["房票购房支持", "房票安置支持"],
+          start: "2026-03-31",
+          end: "2028-03-30",
+          summary: "针对符合条件的房票使用人提供购房支持。房票适用范围、使用期限、抵扣方式和办理流程以简阳市正式政策文件为准。"
+        }
+      ],
+      "彭州市": [
+        {
+          title: "彭州市购房补贴措施",
+          tags: ["购房补贴支持", "车位购买支持"],
+          start: "2026-01-04",
+          end: "2027-01-03",
+          summary: "对符合条件的住房消费给予购房补贴。申请对象、补贴金额、申报材料及兑付流程以彭州市主管部门公布的实施细则为准。"
+        }
+      ]
+    };
+
+    const fallbackTemplates = [
       {
-        key: "subsidy-guide",
-        title: "购房补贴申领实施细则",
-        type: "购房补贴",
-        start: "2026.01.01",
-        end: "2026.12.31",
-        summary: "面向符合条件的购房人提供住房消费支持。适用对象、补贴标准、申请材料和兑付流程以属地区县主管部门正式发布内容为准。"
-      },
-      {
-        key: "talent-support",
         title: "人才安居购房支持办法",
-        type: "人才安居",
-        start: "2026.03.01",
-        end: "2027.02.28",
+        tags: ["人才购房支持", "就学支持"],
+        start: "2026-03-01",
+        end: "2027-02-28",
         summary: "面向符合条件的人才提供购房支持。人才认定、房源范围、支持标准和办理方式以属地区县主管部门正式发布内容为准。"
       },
       {
-        key: "market-measures",
         title: "促进住房消费若干措施",
-        type: "市场支持",
-        start: "2026.05.01",
-        end: "2027.04.30",
+        tags: ["以旧换新支持", "交通优惠支持"],
+        start: "2026-05-01",
+        end: "2027-04-30",
         summary: "围绕合理住房需求和房地产市场平稳健康发展提供支持。适用条件、执行期限和办理口径以属地区县正式政策文件为准。"
       }
     ];
 
-    const threePolicyDistricts = new Set(["四川天府新区"]);
+    const policiesByDistrict = Object.fromEntries(districtOrder.map((district) => {
+      const policies = [...(specialPolicies[district] || [])];
+      for (const template of fallbackTemplates) {
+        if (policies.length >= 2) break;
+        policies.push({ ...template, title: `${district}${template.title}` });
+      }
+      return [district, policies.map((policy, index) => ({
+        ...policy,
+        id: `${district}-${index}`,
+        district
+      }))];
+    }));
 
-    const policies = districtOrder.flatMap((district, districtIndex) => {
-      const existingPolicies = basePolicies.filter((policy) => policy.district === district);
-      const existingTypes = new Set(existingPolicies.map((policy) => policy.type));
-      const targetPolicyCount = threePolicyDistricts.has(district) ? 3 : 2;
-      const rotatedTemplates = policyTemplates
-        .slice(districtIndex % policyTemplates.length)
-        .concat(policyTemplates.slice(0, districtIndex % policyTemplates.length));
-      const preferredTemplates = rotatedTemplates
-        .filter((template) => !existingTypes.has(template.type))
-        .concat(rotatedTemplates.filter((template) => existingTypes.has(template.type)));
-      const additions = preferredTemplates
-        .slice(0, Math.max(0, targetPolicyCount - existingPolicies.length))
-        .map((template, templateIndex) => ({
-          id: `district-${districtIndex}-${template.key}-${templateIndex}`,
-          title: `${district}${template.title}`,
-          district,
-          type: template.type,
-          start: template.start,
-          end: template.end,
-          summary: template.summary
-        }));
+    const allPolicies = districtOrder.flatMap((district) => policiesByDistrict[district]);
 
-      return [...existingPolicies, ...additions];
-    });
-
-    const policyCards = document.getElementById("policyCards");
-    const latestPolicyList = document.getElementById("latestPolicyList");
+    const regionSections = document.getElementById("regionSections");
+    const recentList = document.getElementById("recentList");
+    const policyTypeGrid = document.getElementById("policyTypeGrid");
+    const districtTabPanel = document.getElementById("districtTabPanel");
+    const policyTypeTabPanel = document.getElementById("policyTypeTabPanel");
+    const policyTabs = [...document.querySelectorAll("[data-policy-tab]")];
+    const policySheetLayer = document.getElementById("policySheetLayer");
+    const policySheet = document.getElementById("policySheet");
+    const policySheetBackdrop = document.getElementById("policySheetBackdrop");
+    const policySheetClose = document.getElementById("policySheetClose");
+    const sheetTitle = document.getElementById("sheetTitle");
+    const sheetCount = document.getElementById("sheetCount");
+    const policyList = document.getElementById("policyList");
     const policyBack = document.getElementById("policyBack");
-    const policyDialog = document.getElementById("policyDialog");
-    const policyDialogClose = document.getElementById("policyDialogClose");
-    const policyDialogTitle = document.getElementById("policyDialogTitle");
-    const policyDialogDistrict = document.getElementById("policyDialogDistrict");
-    const policyDialogType = document.getElementById("policyDialogType");
-    const policyDialogDate = document.getElementById("policyDialogDate");
-    const policyDialogSummary = document.getElementById("policyDialogSummary");
+    const moreAction = document.getElementById("moreAction");
+    const closeAction = document.getElementById("closeAction");
+    const toast = document.getElementById("toast");
 
-    const districtCoverMap = {
-      "四川天府新区": "./assets/区县-四川天府新区.jpg",
-      "成都东部新区": "./assets/区县-成都东部新区.jpg",
-      "成都高新区": "./assets/区县-成都高新区.jpg",
-      "锦江区": "./assets/区县-锦江区.jpg",
-      "青羊区": "./assets/区县-青羊区.jpg",
-      "金牛区": "./assets/区县-金牛区.jpg",
-      "武侯区": "./assets/区县-武侯区.jpg",
-      "成华区": "./assets/区县-成华区.jpg",
-      "龙泉驿区": "./assets/区县-龙泉驿区.jpg",
-      "青白江区": "./assets/区县-青白江区.jpg",
-      "新都区": "./assets/区县-新都区.jpg",
-      "温江区": "./assets/区县-温江区.jpg",
-      "双流区": "./assets/区县-双流区.jpg",
-      "郫都区": "./assets/区县-郫都区.jpg",
-      "新津区": "./assets/区县-新津区.jpg",
-      "简阳市": "./assets/区县-简阳市.jpg",
-      "都江堰市": "./assets/区县-都江堰市.jpg",
-      "彭州市": "./assets/区县-彭州市.jpg",
-      "邛崃市": "./assets/区县-邛崃市.jpg",
-      "崇州市": "./assets/区县-崇州市.jpg",
-      "金堂县": "./assets/区县-金堂县.jpg",
-      "大邑县": "./assets/区县-大邑县.jpg",
-      "蒲江县": "./assets/区县-蒲江县.jpg"
-    };
+    let activeDistrict = "";
+    let activePolicyType = "";
+    let activeTab = "district";
+    let lastFocusedElement = null;
+    let toastTimer = null;
+    let recentDistricts = readRecentDistricts();
 
-    function getDistrictCover(district) {
-      return districtCoverMap[district] || "./assets/chengdu-home-cover.svg";
+    function readRecentDistricts() {
+      try {
+        const stored = JSON.parse(localStorage.getItem("policyRecentDistricts") || "null");
+        if (Array.isArray(stored)) {
+          const valid = stored.filter((district) => districtOrder.includes(district));
+          if (valid.length) return valid.slice(0, 4);
+        }
+      } catch (error) {
+        console.warn("无法读取最近查看记录", error);
+      }
+      return ["成华区", "成都东部新区"];
     }
 
-    function compactPolicyPeriod(start, end) {
-      const startParts = start.split(".");
-      const endParts = end.split(".");
-      if (startParts[0] === endParts[0]) {
-        return {
-          start,
-          end: `${endParts[1]}.${endParts[2]}`
-        };
+    function saveRecentDistricts() {
+      try {
+        localStorage.setItem("policyRecentDistricts", JSON.stringify(recentDistricts));
+      } catch (error) {
+        console.warn("无法保存最近查看记录", error);
       }
-      return {
-        start: `${startParts[0].slice(-2)}.${startParts[1]}.${startParts[2]}`,
-        end: `${endParts[0].slice(-2)}.${endParts[1]}.${endParts[2]}`
-      };
     }
 
-    function getPolicySubsidyTags(policy) {
-      if (policy.title.includes("人才") || policy.type === "人才安居") {
-        return ["人才购房支持", "就学支持"];
-      }
-      if (policy.title.includes("房票") || policy.type === "房票安置") {
-        return ["房票购房支持", "房票安置支持"];
-      }
-      if (policy.title.includes("消费券")) {
-        return ["购房消费券支持", "购房补贴支持"];
-      }
-      if (policy.type === "市场支持" || policy.title.includes("住房消费")) {
-        return ["以旧换新支持", "交通优惠支持"];
-      }
-      if (policy.title.includes("申领实施细则")) {
-        return ["购房补贴支持", "公房承租人购买新建商品住房补贴支持"];
-      }
-      if (policy.type === "购房补贴") {
-        return ["购房补贴支持", "车位购买支持"];
-      }
-      return ["购房补贴支持", "交通优惠支持"];
-    }
-
-    function policyCardMarkup(policy) {
-      const compactPeriod = compactPolicyPeriod(policy.start, policy.end);
-      const subsidyTags = getPolicySubsidyTags(policy);
-      return `
-        <article class="policy-card">
-          <div class="policy-card__head">
-            <div class="policy-card__head-main">
-              <h3 class="policy-card__title">${policy.title}</h3>
-              <span class="policy-card__tags" aria-label="政策标签：${subsidyTags.join("、")}">
-                ${subsidyTags.map((tag) => `<span class="policy-card__tag">${tag}</span>`).join("")}
-              </span>
-              <span class="policy-card__district">${policy.district}</span>
-              <div class="policy-card__period" aria-label="政策时间：${policy.start}至${policy.end}">
-                <span class="policy-card__period-label">政策时间：</span>
-                <time datetime="${policy.start.replaceAll(".", "-")}">${compactPeriod.start}</time>
-                <span aria-hidden="true">—</span>
-                <time datetime="${policy.end.replaceAll(".", "-")}">${compactPeriod.end}</time>
-              </div>
-            </div>
-          </div>
-        </article>
-      `;
-    }
-
-    function renderPolicyCards() {
-      if (!policies.length) {
-        policyCards.innerHTML = '<div class="policy-empty">暂无已收录政策</div>';
-        return;
-      }
-
-      const knownDistricts = new Set(districtOrder);
-      const extraDistricts = [...new Set(policies.map((policy) => policy.district))]
-        .filter((district) => !knownDistricts.has(district))
-        .sort((a, b) => a.localeCompare(b, "zh-CN"));
-      const visibleDistricts = [...districtOrder, ...extraDistricts]
-        .filter((district) => policies.some((policy) => policy.district === district));
-
-      policyCards.innerHTML = visibleDistricts.map((district, index) => {
-        const districtPolicies = policies.filter((policy) => policy.district === district);
-        return `
-          <section class="policy-district-group" aria-labelledby="policyDistrict${index}">
-            <article class="policy-district-card">
+    function renderRegions() {
+      regionSections.innerHTML = districtGroups.map((group, index) => `
+        <section class="region-section" aria-labelledby="regionTitle${index}">
+          <h2 class="section-heading section-heading--region" id="regionTitle${index}">${group.name}</h2>
+          <div class="district-grid">
+            ${group.districts.map((district) => `
               <button
-                class="policy-district-group__header"
+                class="district-button${district === activeDistrict ? " is-active" : ""}"
                 type="button"
-                data-district-toggle
-                aria-expanded="false"
-                aria-controls="policyDistrictPanel${index}"
-                style="--district-cover: url('${getDistrictCover(district)}')"
-              >
-                <span class="policy-district-group__title" id="policyDistrict${index}">${district}</span>
-                <span class="policy-district-group__meta" aria-hidden="true">
-                  <span class="policy-district-group__chevron"></span>
-                </span>
-              </button>
-              <div class="policy-district-group__cards" id="policyDistrictPanel${index}" hidden>
-                ${districtPolicies.map(policyCardMarkup).join("")}
-              </div>
-            </article>
-          </section>
-        `;
-      }).join("");
-    }
-
-    function renderLatestPolicies() {
-      const latestPolicies = [...policies]
-        .sort((a, b) => b.start.localeCompare(a.start))
-        .slice(0, 6);
-
-      latestPolicyList.innerHTML = latestPolicies.map((policy) => `
-        <button class="latest-policy-item" type="button" data-policy-detail="${policy.id}" aria-label="查看${policy.title}详情">
-          <span class="latest-policy-item__main">
-            <strong class="latest-policy-item__title">${policy.title}</strong>
-            <time class="latest-policy-item__date" datetime="${policy.start.replaceAll(".", "-")}">政策时间：${policy.start}</time>
-          </span>
-          <span class="latest-policy-item__arrow" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></svg>
-          </span>
-        </button>
+                data-district="${district}"
+                aria-haspopup="dialog"
+              >${district}</button>
+            `).join("")}
+          </div>
+        </section>
       `).join("");
     }
 
-    function openPolicyDetail(policyId) {
-      const policy = policies.find((item) => item.id === policyId);
-      if (!policy) {
-        return;
-      }
-      policyDialogTitle.textContent = policy.title;
-      policyDialogDistrict.textContent = policy.district;
-      policyDialogType.textContent = policy.type;
-      policyDialogDate.textContent = `${policy.start}-${policy.end}`;
-      policyDialogSummary.textContent = policy.summary;
-      policyDialog.showModal();
+    function renderRecent() {
+      recentList.innerHTML = recentDistricts.map((district) => `
+        <button
+          class="recent-chip${district === activeDistrict ? " is-active" : ""}"
+          type="button"
+          data-district="${district}"
+          aria-haspopup="dialog"
+        >${district}</button>
+      `).join("");
     }
 
-    policyCards.addEventListener("click", (event) => {
-      const districtToggle = event.target.closest("[data-district-toggle]");
-      if (districtToggle) {
-        const districtCard = districtToggle.closest(".policy-district-card");
-        const districtPanel = document.getElementById(districtToggle.getAttribute("aria-controls"));
-        const willOpen = districtToggle.getAttribute("aria-expanded") !== "true";
+    function renderPolicyTypes() {
+      policyTypeGrid.innerHTML = policySupportDimensions.map((type) => `
+        <button
+          class="policy-type-button${type === activePolicyType ? " is-active" : ""}${type.length > 10 ? " is-wide" : ""}"
+          type="button"
+          data-policy-type="${type}"
+          aria-haspopup="dialog"
+        >${type}</button>
+      `).join("");
+    }
 
-        policyCards.querySelectorAll("[data-district-toggle]").forEach((toggle) => {
-          toggle.setAttribute("aria-expanded", "false");
-          toggle.closest(".policy-district-card")?.classList.remove("is-open");
-          const panel = document.getElementById(toggle.getAttribute("aria-controls"));
-          if (panel) {
-            panel.hidden = true;
-          }
-        });
+    function renderPolicyResults(title, policies, emptyText) {
+      sheetTitle.textContent = title;
+      sheetCount.textContent = `共${policies.length}项`;
 
-        if (willOpen && districtPanel) {
-          districtToggle.setAttribute("aria-expanded", "true");
-          districtCard?.classList.add("is-open");
-          districtPanel.hidden = false;
-        }
+      if (!policies.length) {
+        policyList.innerHTML = `<div class="empty-state">${emptyText}</div>`;
         return;
       }
 
-      const button = event.target.closest("[data-policy-detail]");
-      if (button) {
-        openPolicyDetail(button.dataset.policyDetail);
-      }
-    });
+      policyList.innerHTML = policies.map((policy) => `
+        <article class="policy-item">
+          <span>
+            <strong class="policy-item__title">${policy.title}</strong>
+            <span class="policy-tags">
+              ${policy.tags.map((tag) => `<span class="policy-tag">${tag}</span>`).join("")}
+            </span>
+            <time class="policy-period" datetime="${policy.start}">${policy.start} 至 ${policy.end}</time>
+          </span>
+          <svg class="policy-item__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+        </article>
+      `).join("");
+      policyList.scrollTop = 0;
+    }
 
-    latestPolicyList.addEventListener("click", (event) => {
-      const button = event.target.closest("[data-policy-detail]");
-      if (button) {
-        openPolicyDetail(button.dataset.policyDetail);
-      }
-    });
+    function updateActiveDistrict() {
+      document.querySelectorAll("[data-district]").forEach((button) => {
+        button.classList.toggle("is-active", button.dataset.district === activeDistrict);
+      });
+    }
 
-    policyDialogClose.addEventListener("click", () => policyDialog.close());
-    policyDialog.addEventListener("click", (event) => {
-      if (event.target === policyDialog) {
-        policyDialog.close();
-      }
-    });
+    function updateActivePolicyType() {
+      document.querySelectorAll("[data-policy-type]").forEach((button) => {
+        button.classList.toggle("is-active", button.dataset.policyType === activePolicyType);
+      });
+    }
 
-    policyBack.addEventListener("click", () => {
+    function showPolicySheet() {
+      policySheetLayer.hidden = false;
+      document.body.style.overflow = "hidden";
+      requestAnimationFrame(() => {
+        policySheetLayer.classList.add("is-open");
+        policySheet.focus({ preventScroll: true });
+      });
+    }
+
+    function openDistrictPolicies(district, trigger) {
+      if (!districtOrder.includes(district)) return;
+
+      activeDistrict = district;
+      lastFocusedElement = trigger || document.activeElement;
+      recentDistricts = [district, ...recentDistricts.filter((item) => item !== district)].slice(0, 4);
+      saveRecentDistricts();
+      renderRecent();
+      updateActiveDistrict();
+      renderPolicyResults(`${district}政策`, policiesByDistrict[district] || [], "该区域暂无已收录政策");
+
+      showPolicySheet();
+    }
+
+    function openPolicyTypePolicies(type, trigger) {
+      if (!policySupportDimensions.includes(type)) return;
+
+      activePolicyType = type;
+      lastFocusedElement = trigger || document.activeElement;
+      updateActivePolicyType();
+      const matchedPolicies = allPolicies.filter((policy) => policy.tags.includes(type));
+      renderPolicyResults(type, matchedPolicies, "该购房支持维度暂无已收录政策");
+
+      showPolicySheet();
+    }
+
+    function switchPolicyTab(tab) {
+      if (!['district', 'policy'].includes(tab)) return;
+      activeTab = tab;
+      policyTabs.forEach((button) => {
+        const isActive = button.dataset.policyTab === tab;
+        button.classList.toggle("is-active", isActive);
+        button.setAttribute("aria-selected", String(isActive));
+      });
+      districtTabPanel.hidden = tab !== "district";
+      policyTypeTabPanel.hidden = tab !== "policy";
+    }
+
+    function closePolicySheet() {
+      policySheetLayer.classList.remove("is-open");
+      document.body.style.overflow = "";
+      window.setTimeout(() => {
+        policySheetLayer.hidden = true;
+        lastFocusedElement?.focus?.({ preventScroll: true });
+      }, window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 240);
+    }
+
+    function showToast(message) {
+      window.clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.add("is-visible");
+      toastTimer = window.setTimeout(() => toast.classList.remove("is-visible"), 1600);
+    }
+
+    function navigateBack() {
+      if (!policySheetLayer.hidden) {
+        closePolicySheet();
+        return;
+      }
       if (window.history.length > 1) {
         window.history.back();
       } else {
         window.location.href = "./安家成都-首页-扫码.html";
       }
+    }
+
+    document.addEventListener("click", (event) => {
+      const policyTypeButton = event.target.closest("[data-policy-type]");
+      if (policyTypeButton) {
+        openPolicyTypePolicies(policyTypeButton.dataset.policyType, policyTypeButton);
+        return;
+      }
+
+      const districtButton = event.target.closest("[data-district]");
+      if (districtButton) {
+        openDistrictPolicies(districtButton.dataset.district, districtButton);
+      }
     });
 
-    renderPolicyCards();
-    renderLatestPolicies();
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !policySheetLayer.hidden) {
+        closePolicySheet();
+      }
+
+      if (event.key === "Tab" && !policySheetLayer.hidden) {
+        const focusable = [...policySheet.querySelectorAll("button:not([hidden])")]
+          .filter((element) => element.offsetParent !== null);
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last?.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first?.focus();
+        }
+      }
+    });
+
+    policySheetBackdrop.addEventListener("click", closePolicySheet);
+    policySheetClose.addEventListener("click", closePolicySheet);
+    policyBack.addEventListener("click", navigateBack);
+    closeAction.addEventListener("click", navigateBack);
+    moreAction.addEventListener("click", () => showToast("更多功能正在完善中"));
+    policyTabs.forEach((button) => {
+      button.addEventListener("click", () => switchPolicyTab(button.dataset.policyTab));
+    });
+
+    renderRegions();
+    renderRecent();
+    renderPolicyTypes();
+
+    const previewParams = new URLSearchParams(window.location.search);
+    const previewTab = previewParams.get("tab");
+    const previewDistrict = previewParams.get("district");
+    const previewPolicyType = previewParams.get("type");
+    if (previewTab === "policy") {
+      switchPolicyTab("policy");
+    }
+    if (previewDistrict && districtOrder.includes(previewDistrict)) {
+      window.setTimeout(() => openDistrictPolicies(previewDistrict), 80);
+    } else if (previewPolicyType && policySupportDimensions.includes(previewPolicyType)) {
+      switchPolicyTab("policy");
+      window.setTimeout(() => openPolicyTypePolicies(previewPolicyType), 80);
+    }
   </script>
 </body>
 </html>

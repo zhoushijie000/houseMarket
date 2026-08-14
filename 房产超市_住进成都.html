@@ -6250,6 +6250,779 @@
     html.city-tour-mode #homeScreen #cityFilters .activity-status-pill {
       display: none;
     }
+
+    /* 住进成都专题：按照 375px SVG / 454px PNG 活动聚合稿复刻。 */
+    html.city-tour-mode body {
+      background: #f4f0e9;
+    }
+
+    html.city-tour-mode .phone-shell {
+      width: min(100%, 454px);
+      background: #fff7e9;
+    }
+
+    html.city-tour-mode .screen {
+      height: min(100vh, 2030px);
+    }
+
+    html.city-tour-mode #homeScreen,
+    html.city-tour-mode #homeScreen .page-content,
+    html.city-tour-mode #homeScreen .home-supermarket {
+      background: #fff7e9;
+    }
+
+    html.city-tour-mode #homeScreen .topbar {
+      position: sticky;
+      display: block;
+      min-height: 107px;
+      padding: 0;
+      background: #fff;
+      border-bottom: 1px solid #edf0f4;
+      box-shadow: none;
+    }
+
+    .city-tour-statusbar {
+      display: none;
+    }
+
+    html.city-tour-mode .city-tour-statusbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 48px;
+      padding: 12px 25px 0;
+      color: #17191c;
+      font-size: 18px;
+      line-height: 1;
+      font-weight: 500;
+    }
+
+    html.city-tour-mode .city-tour-statusbar__icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    html.city-tour-mode .city-tour-statusbar__icons svg {
+      width: 19px;
+      height: 13px;
+      overflow: visible;
+      fill: none;
+      stroke: #090b0d;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    html.city-tour-mode .city-tour-statusbar__icons svg:first-child {
+      fill: #090b0d;
+      stroke: #090b0d;
+      stroke-width: 2.6;
+    }
+
+    html.city-tour-mode .city-tour-statusbar__icons .city-tour-statusbar__battery {
+      width: 28px;
+    }
+
+    html.city-tour-mode .city-tour-statusbar__battery rect:first-child {
+      fill: none;
+      stroke: #9a9a9a;
+      stroke-width: 1;
+    }
+
+    html.city-tour-mode .city-tour-statusbar__battery rect:last-child {
+      fill: #090b0d;
+      stroke: none;
+    }
+
+    html.city-tour-mode #homeScreen.home-screen--supermarket .topbar__meta {
+      position: relative;
+      min-height: 59px;
+      padding: 0 8px;
+      justify-content: space-between;
+    }
+
+    html.city-tour-mode #homeScreen .topbar__meta > span:first-child {
+      display: none;
+    }
+
+    .city-tour-nav-pill {
+      display: none;
+    }
+
+    html.city-tour-mode .city-tour-nav-pill {
+      display: inline-flex;
+      align-items: stretch;
+      width: 105px;
+      height: 38px;
+      overflow: hidden;
+      border: 1px solid #eceef1;
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 0 3px 8px rgba(17, 24, 39, 0.025);
+    }
+
+    html.city-tour-mode .city-tour-nav-pill button,
+    html.city-tour-mode .city-tour-nav-pill a {
+      display: grid;
+      flex: 1 1 50%;
+      place-items: center;
+      min-width: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: #111315;
+      cursor: pointer;
+    }
+
+    html.city-tour-mode .city-tour-nav-pill a {
+      border-left: 1px solid #eceef1;
+      text-decoration: none;
+    }
+
+    html.city-tour-mode .city-tour-nav-pill svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    html.city-tour-mode #backPreviousButton {
+      position: static;
+      display: grid !important;
+      width: auto;
+      height: auto;
+      border: 0;
+      border-radius: 0;
+      color: #111315;
+      box-shadow: none;
+    }
+
+    html.city-tour-mode #backPreviousButton::before {
+      display: none;
+    }
+
+    html.city-tour-mode #homeScreen .topbar__title {
+      color: #181a1d;
+      font-size: 20px;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    html.city-tour-mode #homeScreen .topbar-pill--trailing {
+      position: static;
+      width: 105px;
+      min-height: 38px;
+      height: 38px;
+      padding: 0 4px;
+      border-color: #eceef1;
+      box-shadow: 0 3px 8px rgba(17, 24, 39, 0.025);
+    }
+
+    html.city-tour-mode #homeScreen .topbar-pill--trailing .topbar-pill__button {
+      min-width: 45px;
+      color: #111315;
+    }
+
+    html.city-tour-mode #homeScreen .topbar-pill--trailing .topbar-pill__button:nth-child(2) {
+      display: none;
+    }
+
+    html.city-tour-mode #homeScreen .home-supermarket {
+      min-height: calc(100vh - 107px);
+      padding: 0 0 66px;
+      overflow: visible;
+    }
+
+    html.city-tour-mode #homeScreen .promo-banner {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1.816 / 1;
+      margin: 0;
+      border-radius: 0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0) 0 72%, #fff7e9 100%),
+        url("./assets/city-tour-reference-0.png") center / cover no-repeat;
+      box-shadow: none;
+      cursor: pointer;
+    }
+
+    html.city-tour-mode #homeScreen .promo-banner::before {
+      content: "";
+      left: 50%;
+      top: 54%;
+      width: 70px;
+      height: 70px;
+      background: rgba(19, 39, 54, 0.74);
+      box-shadow: 0 4px 14px rgba(17, 24, 39, 0.2);
+      transform: translate(-50%, -50%);
+      backdrop-filter: blur(4px);
+    }
+
+    html.city-tour-mode #homeScreen .promo-banner::after {
+      content: "";
+      position: absolute;
+      z-index: 2;
+      left: 50%;
+      top: 54%;
+      display: block;
+      width: 0;
+      height: 0;
+      border-top: 11px solid transparent;
+      border-bottom: 11px solid transparent;
+      border-left: 17px solid rgba(255,255,255,0.95);
+      transform: translate(-38%, -50%);
+    }
+
+    html.city-tour-mode #homeScreen .promo-banner__sub {
+      left: 15px;
+      top: 14px;
+      min-height: 35px;
+      gap: 6px;
+      padding: 0 11px;
+      border-radius: 9px;
+      background: rgba(255, 250, 239, 0.9);
+      color: #7b431a;
+      font-size: 16px;
+      font-weight: 700;
+      backdrop-filter: blur(6px);
+      box-shadow: none;
+    }
+
+    html.city-tour-mode #homeScreen .promo-banner__sub::before {
+      content: "";
+      width: 20px;
+      height: 15px;
+      border-radius: 5px;
+      background: #ff5c0a;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.18);
+    }
+
+    html.city-tour-mode #homeScreen .promo-banner__sub::after {
+      content: "";
+      position: absolute;
+      left: 17px;
+      top: 50%;
+      width: 0;
+      height: 0;
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+      border-left: 6px solid #fff;
+      transform: translateY(-50%);
+    }
+
+    html.city-tour-mode #homeScreen #cityFilters {
+      display: grid !important;
+      gap: 14px;
+      padding: 0 9px 66px;
+      background: #fff7e9;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section {
+      gap: 0;
+      overflow: hidden;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: none;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section__head {
+      min-height: 66px;
+      padding: 0 15px;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section__title-wrap {
+      gap: 7px;
+      padding: 0;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section__title-wrap::before {
+      display: none;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section__icon {
+      display: grid;
+      flex: 0 0 24px;
+      width: 24px;
+      height: 24px;
+      place-items: center;
+      color: #ff5b0a;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section__icon svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section__heading {
+      color: #3f4044;
+      font-size: 20px;
+      line-height: 1.2;
+      font-weight: 600;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section__count {
+      display: none;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section__rail,
+    html.city-tour-mode #homeScreen .home-activity-section__list {
+      gap: 12px;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section--featured .home-activity-section__rail {
+      display: flex;
+      overflow-x: auto;
+      padding: 0 14px 16px;
+      scroll-padding-left: 14px;
+      scroll-snap-type: x mandatory;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section--featured .city-card {
+      flex: 0 0 73.2%;
+      width: 73.2%;
+      min-width: 73.2%;
+      aspect-ratio: 1.61 / 1;
+      overflow: hidden;
+      border: 0;
+      border-radius: 10px;
+      background: #18233a;
+      box-shadow: none;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section--featured .city-card__station {
+      left: 14px;
+      top: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+      width: fit-content;
+      margin: 0;
+      padding: 7px 12px;
+      border-radius: 7px;
+      background: #ff5b0a;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 1;
+      backdrop-filter: none;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section--featured .city-card__station svg,
+    html.city-tour-mode #homeScreen .home-activity-section--featured .city-card__station small {
+      display: none;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section--featured .city-card__panel,
+    html.city-tour-mode #homeScreen .home-activity-section__rail .city-card--featured .city-card__panel {
+      width: 100%;
+      min-height: 100%;
+      height: 100%;
+      border-radius: 10px;
+      background: #18233a;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section--featured .city-card__backdrop {
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      background: var(--city-card-cover) center / cover no-repeat;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section--featured .city-card__panel::before {
+      background: linear-gradient(180deg, rgba(5,12,25,0) 40%, rgba(5,12,25,.78) 100%);
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section--featured .city-card__content,
+    html.city-tour-mode #homeScreen .home-activity-section__rail .city-card--featured .city-card__content {
+      align-items: flex-end;
+      min-height: 100%;
+      height: 100%;
+      padding: 72px 15px 15px;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section--featured .city-card__activity {
+      display: block;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section--featured .city-card__activity-cover {
+      display: none;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section--featured .city-card__activity-title {
+      display: block;
+      min-height: 0;
+      padding: 0;
+      background: transparent;
+      color: #fff;
+      font-size: clamp(15px, 4vw, 18px);
+      line-height: 1.35;
+      font-weight: 500;
+      text-align: left;
+      white-space: normal;
+      text-shadow: 0 2px 7px rgba(0,0,0,.5);
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section--featured .city-card__activity-time {
+      display: block;
+      margin-top: 4px;
+      color: rgba(255,255,255,.95);
+      font-size: clamp(13px, 3.3vw, 16px);
+      line-height: 1.25;
+      font-weight: 400;
+      text-shadow: 0 2px 7px rgba(0,0,0,.5);
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section:not(.home-activity-section--featured) {
+      gap: 0;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section:not(.home-activity-section--featured) .home-activity-section__list {
+      padding: 0 14px 16px;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .home-activity-section__list {
+      display: grid;
+      gap: 10px;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card {
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      border: 1px solid #ffd6aa;
+      border-radius: 13px;
+      background: #fff;
+      box-shadow: none;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__station {
+      position: relative;
+      left: auto;
+      top: auto;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      min-height: 44px;
+      margin: 0;
+      padding: 0 12px;
+      border-radius: 0;
+      background: linear-gradient(90deg, #fff7eb, #fff);
+      color: #4a4b4e;
+      font-size: 17px;
+      line-height: 1;
+      font-weight: 600;
+      backdrop-filter: none;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__station svg {
+      display: block;
+      width: 21px;
+      height: 21px;
+      margin-right: 3px;
+      fill: #ff5b0a;
+      stroke: #fff;
+      stroke-width: 1.6;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__station small {
+      display: block;
+      margin-left: auto;
+      color: #73767c;
+      font-size: 15px;
+      font-weight: 400;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__panel,
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card--single .city-card__panel {
+      width: 100%;
+      min-height: 0;
+      border-radius: 0;
+      background: #fff;
+      box-shadow: none;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__panel::before,
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__backdrop {
+      display: none;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__content,
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card--single .city-card__content {
+      display: block;
+      min-height: 0;
+      padding: 0 9px 8px;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__activity-list {
+      display: grid;
+      width: 100%;
+      gap: 0;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__activity {
+      display: grid;
+      grid-template-columns: 124px minmax(0, 1fr);
+      align-items: center;
+      gap: 10px;
+      min-height: 108px;
+      padding: 10px 0;
+      border-radius: 0;
+      background: #fff;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__activity + .city-card__activity {
+      border-top: 1px dashed #ffe1c2;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__activity-cover {
+      display: block;
+      width: 124px;
+      height: 90px;
+      border: 1px solid #eff0f2;
+      border-radius: 6px;
+      background-position: center;
+      background-size: cover;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__activity-title {
+      display: block;
+      min-height: 0;
+      padding: 0;
+      background: transparent;
+      color: #36373a;
+      font-size: 17px;
+      line-height: 1.3;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__activity-time {
+      display: block;
+      margin-top: 4px;
+      color: #808287;
+      font-size: 15px;
+      line-height: 1.35;
+      font-weight: 400;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .home-activity-section__list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+      gap: 14px;
+      padding: 0 14px 16px;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .city-card {
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      border: 0;
+      border-radius: 12px;
+      background: #fff8ed;
+      box-shadow: none;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .city-card__station,
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .city-card__backdrop,
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .city-card__panel::before {
+      display: none;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .city-card__panel {
+      width: 100%;
+      min-height: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .city-card__content {
+      min-height: 0;
+      padding: 0;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .city-card__activity-list {
+      display: block;
+      width: 100%;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .city-card__activity {
+      display: block;
+      padding: 0;
+      background: transparent;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .city-card__activity-cover {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1.61 / 1;
+      background-position: center;
+      background-size: cover;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .city-card__activity-body {
+      display: block;
+      min-height: 94px;
+      padding: 14px 14px 13px;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .city-card__activity-title {
+      display: block;
+      min-height: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: #444548;
+      font-size: 17px;
+      line-height: 1.35;
+      font-weight: 500;
+      text-align: left;
+    }
+
+    html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .city-card__activity-time {
+      display: block;
+      margin-top: 4px;
+      overflow: hidden;
+      color: #85868a;
+      font-size: 15px;
+      line-height: 1.3;
+      font-weight: 400;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    html.city-tour-mode #homeScreen #cityFilters .activity-status-pill {
+      display: none;
+    }
+
+    @media (max-width: 400px) {
+      html.city-tour-mode #homeScreen .topbar {
+        min-height: 87px;
+      }
+
+      html.city-tour-mode .city-tour-statusbar {
+        height: 39px;
+        padding: 9px 20px 0;
+        font-size: 15px;
+      }
+
+      html.city-tour-mode #homeScreen.home-screen--supermarket .topbar__meta {
+        min-height: 48px;
+        padding: 0 6px;
+      }
+
+      html.city-tour-mode .city-tour-nav-pill,
+      html.city-tour-mode #homeScreen .topbar-pill--trailing {
+        width: 87px;
+        height: 33px;
+        min-height: 33px;
+      }
+
+      html.city-tour-mode #homeScreen .topbar__title {
+        font-size: 17px;
+      }
+
+      html.city-tour-mode #homeScreen .home-supermarket {
+        min-height: calc(100vh - 87px);
+      }
+
+      html.city-tour-mode #homeScreen .promo-banner__sub {
+        min-height: 29px;
+        font-size: 13px;
+      }
+
+      html.city-tour-mode #homeScreen #cityFilters {
+        gap: 12px;
+        padding-right: 8px;
+        padding-left: 8px;
+      }
+
+      html.city-tour-mode #homeScreen .home-activity-section__head {
+        min-height: 55px;
+        padding: 0 13px;
+      }
+
+      html.city-tour-mode #homeScreen .home-activity-section__heading {
+        font-size: 17px;
+      }
+
+      html.city-tour-mode #homeScreen .home-activity-section__icon,
+      html.city-tour-mode #homeScreen .home-activity-section__icon svg {
+        width: 21px;
+        height: 21px;
+        flex-basis: 21px;
+      }
+
+      html.city-tour-mode #homeScreen .home-activity-section--featured .home-activity-section__rail,
+      html.city-tour-mode #homeScreen .home-activity-section:not(.home-activity-section--featured) .home-activity-section__list {
+        padding-right: 12px;
+        padding-bottom: 13px;
+        padding-left: 12px;
+      }
+
+      html.city-tour-mode #homeScreen .home-activity-section--featured .city-card__station {
+        left: 12px;
+        top: 12px;
+        padding: 6px 10px;
+        font-size: 14px;
+      }
+
+      html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__station {
+        min-height: 38px;
+        font-size: 14px;
+      }
+
+      html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__station small {
+        font-size: 12px;
+      }
+
+      html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__activity {
+        grid-template-columns: 102px minmax(0, 1fr);
+        gap: 9px;
+        min-height: 94px;
+        padding: 8px 0;
+      }
+
+      html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__activity-cover {
+        width: 102px;
+        height: 75px;
+      }
+
+      html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__activity-title,
+      html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .city-card__activity-title {
+        font-size: 14px;
+      }
+
+      html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="upcoming"] .city-card__activity-time,
+      html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .city-card__activity-time {
+        font-size: 12px;
+      }
+
+      html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .home-activity-section__list {
+        gap: 12px;
+        padding-right: 12px;
+        padding-bottom: 13px;
+        padding-left: 12px;
+      }
+
+      html.city-tour-mode #homeScreen .home-activity-section[data-activity-section="ended"] .city-card__activity-body {
+        min-height: 82px;
+        padding: 11px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -6257,9 +7030,24 @@
     <main class="page-stack">
       <section class="screen is-active home-screen--supermarket" id="homeScreen" aria-label="成都住建房产超市首页">
         <header class="topbar topbar--ios">
+          <div class="city-tour-statusbar" aria-hidden="true">
+            <span>9:41</span>
+            <span class="city-tour-statusbar__icons">
+              <svg viewBox="0 0 18 12"><path d="M1 11V8M5 11V6M9 11V4M13 11V2" /></svg>
+              <svg viewBox="0 0 18 12"><path d="M1.5 4.5C5.7.6 12.3.6 16.5 4.5M4.3 7.2c2.6-2.3 6.8-2.3 9.4 0M7.2 9.8a2.6 2.6 0 0 1 3.6 0" /></svg>
+              <svg class="city-tour-statusbar__battery" viewBox="0 0 27 12"><rect x="1" y="1" width="22" height="10" rx="2.5"/><path d="M25 4v4"/><rect x="3" y="3" width="18" height="6" rx="1" /></svg>
+            </span>
+          </div>
           <div class="topbar__meta">
             <span aria-hidden="true"></span>
-            <button id="backPreviousButton" type="button" hidden aria-hidden="true"></button>
+            <div class="city-tour-nav-pill">
+              <button id="backPreviousButton" type="button" aria-label="返回上一页">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 5-7 7 7 7" /></svg>
+              </button>
+              <a href="./安家成都-首页-扫码.html" aria-label="返回首页">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 11 8-7 8 7v8a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1Z" /></svg>
+              </a>
+            </div>
             <span class="topbar__title">住进成都</span>
             <div class="topbar-pill topbar-pill--trailing">
               <button class="topbar-pill__button" type="button" aria-label="更多操作">
@@ -7019,23 +7807,23 @@
 <script>
     const cityActivities = [
       {
-        city: "西宁",
-        stationLabel: "西宁站",
-        theme: "高原置业专场",
-        cover: "./assets/西宁.png",
-        coords: [36.6171, 101.7782],
+        city: "西安",
+        stationLabel: "西安站",
+        theme: "西部人才安居专场",
+        cover: "./assets/city-tour-reference-3.png",
+        coords: [34.3416, 108.9398],
         items: [
           {
-            title: "西宁春季成都好房展",
+            title: "西安人才安家成都专场",
             time: "2026.03.20 - 2026.03.22",
-            venue: "西宁万达嘉华酒店 3F 宴会厅",
+            venue: "西安曲江会展中心 3F 宴会厅",
             projects: 18,
             note: "重点展示成都改善盘、地铁盘与返乡置业优惠。"
           },
           {
-            title: "海湖新区异地安家沙龙",
+            title: "曲江新区异地安家沙龙",
             time: "2026.04.12 14:00 - 18:00",
-            venue: "西宁海湖新区城市会客厅",
+            venue: "西安曲江新区城市会客厅",
             projects: 9,
             note: "面向返乡客群，增加政策问答与装修打包服务。"
           }
@@ -7432,10 +8220,10 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
     let activeChatFlow = null;
     let suspendedTalentAssessment = null;
     let returnHomeOnChatClose = false;
-    const cityDisplayOrder = ["上海", "西宁", "北京"];
+    const cityDisplayOrder = ["上海", "西安", "北京"];
     const cityVisualMetaMap = {
       上海: { accent: "#ff7a00" },
-      西宁: { accent: "#45c79a" },
+      西安: { accent: "#45c79a" },
       北京: { accent: "#2875f5" }
     };
 
@@ -7791,14 +8579,19 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         .slice(0, 3)
         .map((item) => `
           <span class="city-card__activity">
-            <span class="city-card__activity-head">
-              <strong class="city-card__activity-title">${item.title}</strong>
-              <span class="activity-status-pill ${item.status.className}">${item.status.label}</span>
+            <span class="city-card__activity-cover" style="background-image:url('${item.cover || entry.cover || entry.group.cover}')" aria-hidden="true"></span>
+            <span class="city-card__activity-body">
+              <span class="city-card__activity-head">
+                <strong class="city-card__activity-title">${item.title}</strong>
+                <span class="activity-status-pill ${item.status.className}">${item.status.label}</span>
+              </span>
+              <span class="city-card__activity-time">${formatActivityTimeDisplay(item.time)}</span>
             </span>
-            <span class="city-card__activity-time">${formatActivityTimeDisplay(item.time)}</span>
           </span>
         `)
         .join("");
+
+      const cardCover = entry.cover || entry.group.cover;
 
       return `
         <button
@@ -7807,9 +8600,13 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
           data-city="${entry.group.city}"
           data-group-index="${entry.groupIndex}"
           data-item-index="${entry.defaultItemIndex}"
-          style="--city-card-cover:url('${entry.group.cover}'); --city-accent:${entry.visualMeta.accent};"
+          style="--city-card-cover:url('${cardCover}'); --city-accent:${entry.visualMeta.accent};"
         >
-          <span class="city-card__station">${entry.stationLabel}</span>
+          <span class="city-card__station">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s6-5.4 6-12A6 6 0 0 0 6 9c0 6.6 6 12 6 12Z"/><circle cx="12" cy="9" r="2"/></svg>
+            <span>${entry.stationLabel}</span>
+            <small>${entry.activities.length}场</small>
+          </span>
           <span class="city-card__panel">
             <span class="city-card__backdrop" aria-hidden="true"></span>
             <span class="city-card__content">
@@ -7830,13 +8627,20 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       const containerClass = featured
         ? "home-activity-section__rail"
         : "home-activity-section__list";
+      const sectionIcon = state === "live"
+        ? '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="m10 8 6 4-6 4Z"/><path d="M3 7h3M3 12h3M3 17h3"/></svg>'
+        : state === "upcoming"
+          ? '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/><path d="M3 7h3M3 12h3M3 17h3"/></svg>'
+          : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h10a3 3 0 0 1 3 3v9H9a5 5 0 0 1 0-10h8"/><path d="m7 14-3 3 3 3"/></svg>';
+      const headingText = state === "live" ? `${title}${activityCount}场活动` : title;
 
       return `
         <section class="home-activity-section ${featured ? "home-activity-section--featured" : ""}" data-activity-section="${state}">
           <div class="home-activity-section__head">
             <div class="home-activity-section__title-wrap">
+              <span class="home-activity-section__icon">${sectionIcon}</span>
               ${eyebrow ? `<span class="home-activity-section__eyebrow">${eyebrow}</span>` : ""}
-              <h3 class="home-activity-section__heading">${title}</h3>
+              <h3 class="home-activity-section__heading">${headingText}</h3>
               ${meta ? `<p class="home-activity-section__meta">${meta}</p>` : ""}
             </div>
             <span class="home-activity-section__count">${activityCount}场</span>
@@ -7848,11 +8652,91 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       `;
     }
 
+    function getCityTourReferenceEntries() {
+      const status = {
+        live: { key: "live", label: "开展中", className: "activity-status-pill--live" },
+        upcoming: { key: "upcoming", label: "未开展", className: "activity-status-pill--signup" },
+        ended: { key: "ended", label: "已开展", className: "activity-status-pill--ended" }
+      };
+      const makeItem = (groupIndex, itemIndex, state, overrides = {}) => ({
+        ...cityActivities[groupIndex].items[itemIndex],
+        itemIndex,
+        status: status[state],
+        ...overrides
+      });
+      const makeEntry = (groupIndex, stationLabel, state, activities, cover) => ({
+        group: cityActivities[groupIndex],
+        groupIndex,
+        stationLabel,
+        visualMeta: getCityVisualMeta(cityActivities[groupIndex].city),
+        activities,
+        defaultItemIndex: activities[0].itemIndex,
+        sectionKey: state,
+        cover
+      });
+
+      return {
+        live: [
+          makeEntry(3, "上海站", "live", [makeItem(3, 0, "live", {
+            title: "上海浦东成都人才安居品鉴会",
+            time: "2026.03.30 - 2026.04.02",
+            cover: "./assets/city-tour-reference-1.png"
+          })], "./assets/city-tour-reference-1.png"),
+          makeEntry(1, "上海站", "live", [makeItem(1, 0, "live", {
+            title: "上海春季浦东成都人才安居品鉴会",
+            time: "2026.03.30 - 2026.04.02",
+            cover: "./assets/city-tour-reference-2.png"
+          })], "./assets/city-tour-reference-2.png")
+        ],
+        upcoming: [
+          makeEntry(1, "上海站", "upcoming", [
+            makeItem(1, 0, "upcoming", {
+              title: "上海浦东成都人才安居品鉴会",
+              time: "2026.03.30 10:00 - 18:00",
+              cover: "./assets/city-tour-reference-1.png"
+            }),
+            makeItem(1, 1, "upcoming", {
+              title: "上海春季浦东成都人才安居品鉴会",
+              time: "2026.03.30 10:00 - 2026.04.02 18:00",
+              cover: "./assets/city-tour-reference-2.png"
+            })
+          ]),
+          makeEntry(0, "西安站", "upcoming", [makeItem(0, 1, "upcoming", {
+            title: "西安人才安家成都专场",
+            time: "2026.07.30 10:00 - 18:00",
+            cover: "./assets/city-tour-reference-3.png"
+          })]),
+          makeEntry(2, "北京站", "upcoming", [makeItem(2, 0, "upcoming", {
+            title: "北京人才安家成都专场",
+            time: "2026.07.30 10:00 - 18:00",
+            cover: "./assets/city-tour-reference-4.png"
+          })])
+        ],
+        ended: [
+          makeEntry(3, "上海站", "ended", [makeItem(3, 0, "ended", {
+            title: "上海浦东成都人才安居品鉴会",
+            time: "2026.03.30 10:00 - 18:00"
+          })], "./assets/city-tour-reference-5.png"),
+          makeEntry(0, "西宁站", "ended", [makeItem(0, 0, "ended", {
+            title: "西宁春季成都好房展",
+            time: "2026.03.30 10:00 - 18:00"
+          })], "./assets/city-tour-reference-6.png"),
+          makeEntry(1, "上海站", "ended", [makeItem(1, 1, "ended", {
+            title: "上海浦东成都人才安居品鉴会",
+            time: "2026.03.30 10:00 - 18:00"
+          })], "./assets/city-tour-reference-7.png")
+        ]
+      };
+    }
+
     function renderFilters() {
       const cityEntries = getHomeCityGroups();
-      const liveEntries = cityEntries.filter((entry) => entry.sectionKey === "live");
-      const upcomingEntries = cityEntries.filter((entry) => entry.sectionKey === "upcoming");
-      const endedEntries = cityEntries.filter((entry) => entry.sectionKey === "ended");
+      const referenceEntries = document.documentElement.classList.contains("city-tour-mode")
+        ? getCityTourReferenceEntries()
+        : null;
+      const liveEntries = referenceEntries ? referenceEntries.live : cityEntries.filter((entry) => entry.sectionKey === "live");
+      const upcomingEntries = referenceEntries ? referenceEntries.upcoming : cityEntries.filter((entry) => entry.sectionKey === "upcoming");
+      const endedEntries = referenceEntries ? referenceEntries.ended : cityEntries.filter((entry) => entry.sectionKey === "ended");
 
       if (!cityEntries.length) {
         cityFilters.innerHTML = '<div class="city-card-grid__empty">当前暂无可展示的活动内容。</div>';
