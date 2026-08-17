@@ -2191,8 +2191,37 @@
     }
 
     #homeView .home-topic-panel {
-      padding: 14px 10px 10px;
+      position: relative;
+      overflow: hidden;
+      padding: 0;
       background: #fff8f4;
+    }
+
+    #homeView .home-topic-panel__art {
+      display: block;
+      width: 100%;
+      height: 196px;
+      object-fit: fill;
+    }
+
+    #homeView .home-topic-panel__hit {
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      z-index: 2;
+      height: 41px;
+    }
+
+    #homeView .home-topic-panel__hit--new {
+      top: 44px;
+    }
+
+    #homeView .home-topic-panel__hit--metro {
+      top: 92px;
+    }
+
+    #homeView .home-topic-panel__hit--subsidy {
+      top: 140px;
     }
 
     #homeView .home-topic-panel::after {
@@ -2416,7 +2445,765 @@
       content: "";
     }
 
-    @media (max-width: 375px) {
+    /* 0817 首页升级：参考智慧购房视觉，保留原有业务路由 */
+    .page {
+      width: min(100vw, 425px);
+      background: #fff9f5;
+      box-shadow: 0 0 42px rgba(70, 48, 31, 0.08);
+    }
+
+    #homeView {
+      background:
+        radial-gradient(circle at 0 270px, rgba(255, 224, 201, 0.34), transparent 220px),
+        #fff9f5;
+    }
+
+    #homeView > .statusbar {
+      height: 44px;
+      padding: 0 28px 8px;
+      background: #fff;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    #homeView > .statusbar + .topbar {
+      position: relative;
+      top: auto;
+      height: 44px;
+      justify-content: flex-start;
+      background: #fff;
+      backdrop-filter: none;
+    }
+
+    #homeView .topbar__title {
+      margin-left: 14px;
+      color: #111;
+      font-size: 20px;
+      line-height: 1;
+      font-weight: 800;
+    }
+
+    #homeView .topbar .nav-pill--left {
+      left: 11px;
+      top: 5px;
+      min-height: 34px;
+      border: 0;
+      background: transparent;
+    }
+
+    #homeView .topbar .nav-pill--left .nav-pill__button {
+      width: 34px;
+      height: 34px;
+    }
+
+    #homeView .topbar .nav-pill--left .nav-pill__button + .nav-pill__button {
+      display: none;
+    }
+
+    #homeView .topbar .nav-pill--right {
+      top: 2px;
+      right: 14px;
+      min-height: 40px;
+      border-color: rgba(31, 34, 38, 0.08);
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 2px 8px rgba(31, 34, 38, 0.04);
+    }
+
+    #homeView .topbar .nav-pill--right .nav-pill__button {
+      width: 40px;
+      height: 40px;
+    }
+
+    #homeView .hero {
+      min-height: auto;
+      padding: 2px 14px 0;
+      overflow: visible;
+      background: #fff;
+    }
+
+    #homeView .search-row {
+      display: block;
+    }
+
+    #homeView .search-box {
+      position: relative;
+      height: 40px;
+      display: grid;
+      grid-template-columns: 78px minmax(0, 1fr) 56px;
+      padding: 0;
+      overflow: visible;
+      border: 1px solid #ffd5b7;
+      border-radius: 17px;
+      background: #fff;
+      box-shadow: 0 8px 20px rgba(223, 112, 42, 0.12);
+    }
+
+    #homeView .search-box::after {
+      position: absolute;
+      z-index: 10;
+      inset: -1px;
+      border: 1px solid #ffc79e;
+      border-radius: inherit;
+      content: "";
+      pointer-events: none;
+    }
+
+    #homeView .city-picker {
+      position: relative;
+      z-index: 8;
+      height: 100%;
+      min-width: 0;
+    }
+
+    #homeView .city-picker__button {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 0 7px;
+      color: #242424;
+      font-size: 14px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    #homeView .city-picker__button svg {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+      fill: #ff7a32;
+    }
+
+    #homeView .city-picker__button::after {
+      width: 6px;
+      height: 6px;
+      border-right: 1.5px solid #222;
+      border-bottom: 1.5px solid #222;
+      content: "";
+      transform: translateY(-2px) rotate(45deg);
+    }
+
+    #homeView .city-picker__menu {
+      position: absolute;
+      left: 0;
+      top: 46px;
+      width: 208px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+      padding: 10px;
+      border: 1px solid #ffe5d3;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 16px 34px rgba(54, 35, 22, 0.15);
+    }
+
+    #homeView .city-picker__menu[hidden] {
+      display: none;
+    }
+
+    #homeView .city-picker__option {
+      min-height: 34px;
+      border-radius: 9px;
+      background: #fff7f0;
+      color: #4d443e;
+      font-size: 13px;
+    }
+
+    #homeView .city-picker__option.is-active {
+      color: #fff;
+      background: linear-gradient(135deg, #ff9c35, #ff6430);
+    }
+
+    #homeView .search-field {
+      height: auto;
+      align-self: stretch;
+      gap: 9px;
+      padding: 0 11px;
+      border-left: 1px solid #f1f1f1;
+      border-right: 1px solid #f1f1f1;
+      background: #fff;
+    }
+
+    #homeView .search-field svg {
+      width: 19px;
+      height: 19px;
+      stroke: #85898f;
+    }
+
+    #homeView .search-field input {
+      font-size: 14px;
+    }
+
+    #homeView .search-field input::placeholder {
+      color: #9a9da3;
+    }
+
+    #homeView .map-button {
+      height: auto;
+      align-self: stretch;
+      display: grid;
+      place-content: center;
+      gap: 1px;
+      border: 0;
+      color: #ff6a20;
+      font-size: 11px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    #homeView .map-button svg {
+      width: 20px;
+      height: 20px;
+      margin: 0 auto;
+    }
+
+    #homeView .promo {
+      height: 140px;
+      margin-top: 10px;
+      overflow: hidden;
+      border-radius: 15px;
+      background:
+        radial-gradient(circle at 52% 42%, rgba(255, 255, 255, 0.92), transparent 38%),
+        linear-gradient(135deg, #fff0e6 0%, #ffe5cf 50%, #fff8ed 100%);
+      box-shadow: inset 0 0 0 1px rgba(255, 174, 112, 0.12);
+      transform: none;
+    }
+
+    #homeView .promo__art {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    #homeView .promo__copy {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      justify-items: center;
+      padding-top: 17px;
+      text-align: center;
+    }
+
+    #homeView .promo__title {
+      margin: 0;
+      color: #cf4718;
+      font-size: clamp(25px, 6.9vw, 30px);
+      line-height: 1.08;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 0 rgba(255, 255, 255, 0.62);
+    }
+
+    #homeView .promo__subtitle {
+      margin: 7px 0 0;
+      color: #4f3327;
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    #homeView .promo__cta {
+      min-width: 78px;
+      height: 25px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 11px;
+      padding: 0 15px;
+      border-radius: 999px;
+      color: #fff;
+      background: linear-gradient(90deg, #ff9a29, #ff5626);
+      box-shadow: 0 5px 12px rgba(255, 92, 39, 0.22);
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    #homeView .section-main {
+      z-index: 3;
+      margin-top: 8px;
+      padding: 0 14px calc(118px + var(--safe-bottom));
+      background: transparent;
+    }
+
+    #homeView .home-overview-card,
+    #homeView .home-services-card,
+    #homeView .estate-section {
+      border: 1px solid rgba(255, 126, 53, 0.06);
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 12px 28px rgba(170, 88, 36, 0.08);
+    }
+
+    #homeView .home-overview-card {
+      position: relative;
+      z-index: 4;
+      padding: 10px 10px 12px;
+      border-radius: 20px;
+    }
+
+    #homeView .featured-grid {
+      gap: 10px;
+    }
+
+    #homeView .featured-card {
+      height: 100px;
+      border-radius: 10px;
+    }
+
+    #homeView .featured-card__image {
+      width: 100%;
+      height: 100px;
+      object-fit: fill;
+      object-position: center;
+    }
+
+    #homeView .featured-card--district .featured-card__image {
+      width: 100%;
+      height: 115px;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    #homeView .quick-grid--stats {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 9px;
+      margin-top: 10px;
+    }
+
+    #homeView .quick-grid--stats .quick-item--stat {
+      min-width: 0;
+      min-height: 77px;
+      display: grid;
+      grid-template-rows: 24px 21px auto;
+      align-content: center;
+      justify-items: center;
+      gap: 2px;
+      padding: 6px 2px 5px;
+      border-radius: 11px;
+      color: #333;
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    #homeView .quick-grid--stats .quick-item--stat:nth-child(1) { background: linear-gradient(145deg, #fff7f0, #fff0e4); }
+    #homeView .quick-grid--stats .quick-item--stat:nth-child(2) { background: linear-gradient(145deg, #f5fbf0, #eaf6d8); }
+    #homeView .quick-grid--stats .quick-item--stat:nth-child(3) { background: linear-gradient(145deg, #fffaf0, #fff0c9); }
+    #homeView .quick-grid--stats .quick-item--stat:nth-child(4) { background: linear-gradient(145deg, #fff5f3, #ffe4df); }
+
+    #homeView .stat-icon {
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+    }
+
+    #homeView .stat-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    #homeView .quick-item--stat:nth-child(1) .stat-icon,
+    #homeView .quick-item--stat:nth-child(1) strong { color: #f06b2b; }
+    #homeView .quick-item--stat:nth-child(2) .stat-icon,
+    #homeView .quick-item--stat:nth-child(2) strong { color: #67af32; }
+    #homeView .quick-item--stat:nth-child(3) .stat-icon,
+    #homeView .quick-item--stat:nth-child(3) strong { color: #f6a11c; }
+    #homeView .quick-item--stat:nth-child(4) .stat-icon,
+    #homeView .quick-item--stat:nth-child(4) strong { color: #ef4d47; }
+
+    #homeView .quick-item--stat strong {
+      font-size: 20px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    #homeView .stat-label {
+      max-width: 100%;
+      overflow: hidden;
+      color: #242424;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    #homeView .home-services-card {
+      margin-top: 11px;
+      padding: 12px 10px 10px;
+      border-radius: 20px;
+    }
+
+    #homeView .home-tool-strip {
+      width: calc(100% + 12px);
+      height: 72px;
+      margin: 0 -6px;
+    }
+
+    #homeView .home-tool-strip__art {
+      width: 100%;
+      height: 72px;
+      object-fit: fill;
+    }
+
+    #homeView .home-column {
+      margin-top: 10px;
+    }
+
+    #homeView .home-column__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: 148px;
+      gap: 10px;
+    }
+
+    #homeView .home-column-card--live {
+      position: relative;
+      display: block;
+      overflow: hidden;
+      height: 148px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #edf7ff, #e9f1ff);
+    }
+
+    #homeView .home-live-copy {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      justify-items: start;
+      padding: 12px 0 0 12px;
+    }
+
+    #homeView .home-live-title {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: #2f8ef2;
+      font-size: 17px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    #homeView .home-live-title em {
+      padding: 3px 5px;
+      border-radius: 4px;
+      color: #fff;
+      background: #4d9df1;
+      font-size: 9px;
+      font-style: normal;
+    }
+
+    #homeView .home-live-copy > span {
+      margin-top: 7px;
+      color: #4c80bd;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    #homeView .home-live-cta {
+      min-width: 70px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 9px;
+      padding: 0 10px;
+      border-radius: 999px;
+      color: #fff;
+      background: linear-gradient(90deg, #3f97f6, #3274ef);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    #homeView .home-live-person {
+      position: absolute;
+      right: -10px;
+      bottom: 0;
+      z-index: 1;
+      width: 54%;
+      height: 116px;
+      object-fit: cover;
+      object-position: 50% 16%;
+      border-radius: 44% 0 0 0;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 25%);
+      mask-image: linear-gradient(90deg, transparent 0, #000 25%);
+    }
+
+    #homeView .home-topic-panel {
+      height: 148px;
+      padding: 11px;
+      border-radius: 11px;
+      background: linear-gradient(145deg, #fff9f5, #fff2eb);
+    }
+
+    #homeView .home-topic-panel__header {
+      display: grid;
+      gap: 4px;
+    }
+
+    #homeView .home-topic-panel__title {
+      color: #f25b20;
+      font-size: 17px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    #homeView .home-topic-panel__subtitle {
+      color: #97918e;
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    #homeView .home-topic-panel__list {
+      display: grid;
+      gap: 5px;
+      margin-top: 8px;
+    }
+
+    #homeView .home-topic-entry {
+      min-height: 25px;
+      justify-content: flex-start;
+      padding: 0 7px;
+      border-radius: 6px;
+      color: #303236;
+      background: rgba(255, 255, 255, 0.92);
+      font-size: 10px;
+      font-weight: 700;
+      backdrop-filter: none;
+    }
+
+    #homeView .home-topic-entry b {
+      margin-left: 8px;
+      color: #9a9da3;
+      font-size: 9px;
+      font-weight: 400;
+    }
+
+    #homeView .home-topic-entry::after {
+      margin-left: auto;
+      color: #9ca0a6;
+      font-size: 13px;
+    }
+
+    #homeView .home-topic-entry:nth-child(1) { border-left: 3px solid #4e91ef; }
+    #homeView .home-topic-entry:nth-child(2) { border-left: 3px solid #3bc3c3; }
+    #homeView .home-topic-entry:nth-child(3) { border-left: 3px solid #ff7a32; }
+
+    #homeView .property-news {
+      margin-top: 8px;
+      padding: 0 12px 2px;
+      border-radius: 11px;
+      background: #fff;
+      box-shadow: 0 5px 14px rgba(69, 54, 43, 0.05);
+    }
+
+    #homeView .property-news__head {
+      height: 32px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #homeView .property-news__head h2 {
+      order: 1;
+      margin: 0;
+      flex: 0 0 auto;
+      color: #222;
+      font-size: 16px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    #homeView .property-news__head::after {
+      order: 2;
+      height: 1px;
+      flex: 1;
+      background: #ececec;
+      content: "";
+    }
+
+    #homeView .property-news__more {
+      order: 3;
+      flex: 0 0 auto;
+      color: #8d8f94;
+      font-size: 12px;
+      text-decoration: none;
+    }
+
+    #homeView .property-news__list {
+      display: grid;
+    }
+
+    #homeView .property-news__item {
+      min-width: 0;
+      min-height: 25px;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 8px;
+      color: #343434;
+      font-size: 11px;
+      text-decoration: none;
+    }
+
+    #homeView .property-news__tag {
+      padding: 3px 5px;
+      border-radius: 5px;
+      color: #e9a11b;
+      background: #fff4d8;
+    }
+
+    #homeView .property-news__item:nth-child(2) .property-news__tag {
+      color: #398bdf;
+      background: #eaf4ff;
+    }
+
+    #homeView .property-news__title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    #homeView .property-news__date {
+      color: #999ca2;
+    }
+
+    #homeView .estate-section {
+      margin: 12px 0 0;
+      padding: 15px 12px 20px;
+      border-top: 0;
+      border-radius: 20px;
+    }
+
+    #homeView .estate-section__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 13px;
+    }
+
+    #homeView .estate-section__head h2 {
+      margin: 0;
+      color: #202124;
+      font-size: 20px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    #homeView .estate-section__head a {
+      color: #909399;
+      font-size: 12px;
+      text-decoration: none;
+    }
+
+    #homeView .presale-feature {
+      margin-bottom: 16px;
+      padding: 11px;
+      border: 1px solid #ffe0cb;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #fff8f1, #fffdfb);
+    }
+
+    #homeView .presale-feature__head strong {
+      font-size: 16px;
+    }
+
+    #homeView .presale-feature__head {
+      justify-content: flex-end;
+    }
+
+    #homeView .estate-tabs .active {
+      font-size: 18px;
+    }
+
+    #homeView .estate-card--home {
+      grid-template-columns: 108px minmax(0, 1fr) 38px;
+      gap: 9px;
+      margin-top: 15px;
+      padding-bottom: 15px;
+    }
+
+    #homeView .estate-cover {
+      height: 90px;
+      border-radius: 8px;
+    }
+
+    #homeView .estate-title {
+      font-size: 15px;
+    }
+
+    #homeView .estate-price {
+      font-size: 14px;
+    }
+
+    #homeView .estate-meta {
+      font-size: 11px;
+    }
+
+    #homeView .estate-info {
+      gap: 4px;
+    }
+
+    #homeView .estate-actions {
+      min-height: 90px;
+    }
+
+    #homeView .estate-favorite {
+      width: 25px;
+      height: 25px;
+      display: grid;
+      place-items: center;
+      color: #ff7043;
+    }
+
+    #homeView .estate-favorite svg {
+      width: 23px;
+      height: 23px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    #homeView .estate-leftover {
+      width: 38px;
+      min-height: 38px;
+      font-size: 10px;
+    }
+
+    .tabbar {
+      width: min(100vw, 425px);
+      height: calc(80px + var(--safe-bottom));
+      padding: 8px 4px calc(20px + var(--safe-bottom));
+      border-top-color: #f0f0f0;
+      background: #fff;
+      box-shadow: 0 -8px 22px rgba(72, 49, 31, 0.05);
+    }
+
+    .tabbar::after {
+      bottom: calc(6px + var(--safe-bottom));
+    }
+
+    .tabbar__ai-icon {
+      top: -28px;
+    }
+
+    .tabbar__ai span {
+      top: 22px;
+    }
+
+    .qr-scanner__panel {
+      width: min(100vw, 425px);
+    }
+
+    @media (max-width: 425px) {
       body {
         justify-content: flex-start;
       }
@@ -2443,15 +3230,7 @@
     </div>
 
     <header class="topbar">
-      <div class="nav-pill nav-pill--left">
-        <button class="nav-pill__button" type="button" aria-label="返回">
-          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></svg>
-        </button>
-        <button class="nav-pill__button" type="button" aria-label="首页">
-          <svg viewBox="0 0 24 24"><path d="m4 11 8-7 8 7v8a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1Z" /></svg>
-        </button>
-      </div>
-      <div class="topbar__title">成都房产超市</div>
+      <div class="topbar__title">成都住建房产超市</div>
       <div class="nav-pill nav-pill--right">
         <button class="nav-pill__button" type="button" aria-label="更多"><span class="nav-more">•••</span></button>
         <button class="nav-pill__button" type="button" aria-label="圆点入口"><span class="nav-target">◎</span></button>
@@ -2461,84 +3240,135 @@
     <section class="hero">
       <div class="search-row" role="search">
         <div class="search-box">
+          <div class="city-picker">
+            <button class="city-picker__button" id="cityPickerButton" type="button" aria-haspopup="true" aria-expanded="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.1 7-13A7 7 0 0 0 5 9c0 6.9 7 13 7 13Z" /><circle cx="12" cy="9" r="2.4" fill="#fff" /></svg>
+              <span id="cityPickerValue">成都</span>
+            </button>
+            <div class="city-picker__menu" id="cityPickerMenu" role="menu" hidden>
+              <button class="city-picker__option is-active" type="button" data-city="成都">成都全城</button>
+              <button class="city-picker__option" type="button" data-city="天府新区">天府新区</button>
+              <button class="city-picker__option" type="button" data-city="高新区">高新区</button>
+              <button class="city-picker__option" type="button" data-city="锦江区">锦江区</button>
+            </div>
+          </div>
           <label class="search-field">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke-width="2" />
               <path d="m15.5 15.5 5 5" fill="none" stroke-width="2" stroke-linecap="round" />
             </svg>
-            <input type="search" placeholder="请输入搜索关键字" aria-label="请输入搜索关键字" />
+            <input id="homeSearchInput" type="search" placeholder="请输入楼盘/区域/商圈关键词" aria-label="请输入楼盘、区域或商圈关键词" />
           </label>
-          <button class="map-button" type="button" aria-label="地图">
+          <a class="map-button" href="./地图搜索.html" aria-label="地图找房">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M12 22s7-6.1 7-13A7 7 0 0 0 5 9c0 6.9 7 13 7 13Z" />
               <circle cx="12" cy="9" r="2.5" fill="#fff" />
             </svg>
             <span>地图</span>
-          </button>
+          </a>
         </div>
-        <button class="scan-button" id="scanEntry" type="button" aria-label="扫一扫">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M5 8V5h3M16 5h3v3M19 16v3h-3M8 19H5v-3" />
-            <path d="M7 12h10" />
-          </svg>
-          <span>扫一扫</span>
-        </button>
       </div>
 
-      <section class="promo" aria-label="安家成都金秋购房好房节">
-        <img class="promo__image" src="./assets/home-banner-v4.svg" alt="万千气象 幸福成都">
+      <section class="promo" aria-label="智慧购房，安居成都">
+        <svg class="promo__art" viewBox="0 0 397 140" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="bannerRoad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffbd6a" /><stop offset="0.52" stop-color="#ff6f2c" /><stop offset="1" stop-color="#ff9a45" /></linearGradient>
+            <linearGradient id="bannerCity" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffc071" /><stop offset="1" stop-color="#ed7133" /></linearGradient>
+          </defs>
+          <path d="M0 72 32 48 57 67 88 41 116 70 145 53 171 78V140H0Z" fill="#f1cda6" opacity=".66" />
+          <path d="M235 71 264 50 286 66 323 38 353 64 397 48V140H235Z" fill="#e9c8a8" opacity=".7" />
+          <g fill="url(#bannerCity)" opacity=".88">
+            <path d="M7 103h14v37H7zM24 94h18v46H24zM45 108h13v32H45zM61 97h18v43H61z" />
+            <path d="M321 101h16v39h-16zM341 86h17v54h-17zM362 96h12v44h-12zM378 77h14v63h-14z" />
+          </g>
+          <g fill="#fff4de" opacity=".65">
+            <path d="M12 110h5v5h-5zM29 101h6v6h-6zM49 115h5v5h-5zM66 104h6v6h-6z" />
+            <path d="M326 108h6v6h-6zM346 94h6v6h-6zM365 103h5v5h-5zM382 86h6v6h-6z" />
+          </g>
+          <path d="M-22 137C68 95 115 137 178 119c62-18 87-44 148-20 27 11 53 10 91-5" fill="none" stroke="url(#bannerRoad)" stroke-width="30" stroke-linecap="round" />
+          <path d="M-14 134C70 105 116 143 179 123c63-20 89-42 148-18 24 10 51 8 83-3" fill="none" stroke="#fff7e9" stroke-width="5" stroke-linecap="round" opacity=".96" />
+          <path d="M-10 132C66 113 116 145 180 127c63-18 91-36 147-15 27 10 50 8 78-2" fill="none" stroke="#ffd3a1" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <div class="promo__copy">
+          <h1 class="promo__title">智慧购房 安居成都</h1>
+          <p class="promo__subtitle">权威数据 · 安心交易 · 贴心服务</p>
+          <a class="promo__cta" href="#estateList">了解详情</a>
+        </div>
       </section>
     </section>
 
     <section class="section-main">
-      <section class="featured-grid" aria-label="首页重点板块">
-        <a class="featured-card featured-card--city" href="./房产超市_住进成都.html?screen=city-tour">
-          <img class="featured-card__image" src="./assets/home-card-city.svg" alt="住进成都 进入专题">
-        </a>
-        <a class="featured-card featured-card--district" href="./district-zone/index.html">
-          <img class="featured-card__image" src="./assets/home-card-district.svg" alt="区县专区 查看专区">
-        </a>
+      <section class="home-overview-card" aria-label="首页重点数据">
+        <section class="featured-grid" aria-label="首页重点板块">
+          <a class="featured-card featured-card--city" href="./房产超市_住进成都.html?screen=city-tour">
+            <img class="featured-card__image" src="./assets/home-card-city.svg" alt="住进成都 进入专题">
+          </a>
+          <a class="featured-card featured-card--district" href="./district-zone/index.html">
+            <img class="featured-card__image" src="./assets/home-card-district.svg" alt="区县专区 查看专区">
+          </a>
+        </section>
+
+        <nav class="quick-grid quick-grid--stats" aria-label="首页楼盘数据">
+          <a class="quick-item quick-item--stat" href="#estateList"><span class="stat-icon"><svg viewBox="0 0 32 32"><path d="M5 27V10h10v17M15 27V4h12v23M2 27h28M9 14h2m-2 5h2m8-10h3m-3 5h3m-3 5h3" /></svg></span><strong>356</strong><span class="stat-label">在售新盘</span></a>
+          <a class="quick-item quick-item--stat" href="#estateList"><span class="stat-icon"><svg viewBox="0 0 32 32"><circle cx="16" cy="14" r="9" /><path d="m12 14 3 3 6-7M11 23l-2 6 7-3 7 3-2-6" /></svg></span><strong>23</strong><span class="stat-label">最新取证</span></a>
+          <a class="quick-item quick-item--stat" href="#estateList"><span class="stat-icon"><svg viewBox="0 0 32 32"><path d="M17 3c2 6-2 7 1 11 3-1 4-4 4-7 5 4 7 9 6 14-1 6-6 9-12 9S5 26 4 20c-1-5 2-10 7-14 0 5 1 7 3 8 2-3 0-6 3-11Z" /></svg></span><strong>169</strong><span class="stat-label">热门楼盘</span></a>
+          <a class="quick-item quick-item--stat" href="#estateList"><span class="stat-icon"><svg viewBox="0 0 32 32"><circle cx="16" cy="17" r="11" /><path d="M16 10v7l5 3M12 3h8" /></svg></span><strong>2</strong><span class="stat-label">即将开盘</span></a>
+        </nav>
       </section>
 
-      <nav class="quick-grid quick-grid--stats" aria-label="首页楼盘数据">
-        <a class="quick-item quick-item--stat" href="javascript:void(0)"><span class="quick-icon">356</span><span>在售新盘</span></a>
-        <a class="quick-item quick-item--stat" href="javascript:void(0)"><span class="quick-icon">23</span><span>最新取证</span></a>
-        <a class="quick-item quick-item--stat" href="javascript:void(0)"><span class="quick-icon">169</span><span>热门楼盘</span></a>
-        <a class="quick-item quick-item--stat" href="javascript:void(0)"><span class="quick-icon">2</span><span>即将开盘</span></a>
-      </nav>
+      <section class="home-services-card" aria-label="便民找房服务">
+        <nav class="home-tool-strip" aria-label="核心服务入口">
+          <img class="home-tool-strip__art" src="./assets/home-five-tools-2026.svg" alt="">
+          <a href="./网签成交.html" aria-label="网签成交"></a>
+          <a href="./楼盘投票.html" aria-label="楼盘榜单"></a>
+          <a href="javascript:void(0)" aria-label="房贷计算"></a>
+          <a href="./地图搜索.html" aria-label="地图找房"></a>
+          <a href="./购房政策.html" aria-label="政策列表"></a>
+        </nav>
 
-      <nav class="home-tool-strip" aria-label="首页功能入口">
-        <img class="home-tool-strip__art" src="./assets/home-five-tools-2026.svg" alt="">
-        <a href="./网签成交.html" aria-label="网签成交"></a>
-        <a href="javascript:void(0)" aria-label="楼盘榜单"></a>
-        <a href="javascript:void(0)" aria-label="房贷计算"></a>
-        <a href="./地图搜索.html" aria-label="地图找房"></a>
-        <a href="./购房政策.html" aria-label="政策列表"></a>
-      </nav>
+        <section class="home-column" aria-label="直播与专题找房">
+          <div class="home-column__grid">
+            <a class="home-column-card home-column-card--live" id="homeLiveEntry" href="./房产超市_住进成都.html?screen=live">
+              <span class="home-live-copy">
+                <strong class="home-live-title">看房直播 <em>LIVE</em></strong>
+                <span>14场直播中<br>在线找房 · 实时互动</span>
+                <b class="home-live-cta">立即观看 ›</b>
+              </span>
+              <img class="home-live-person" src="./assets/advisor-avatar.png" alt="置业顾问正在直播讲房">
+            </a>
+            <section class="home-topic-panel" aria-labelledby="homeTopicTitle">
+              <header class="home-topic-panel__header">
+                <h2 class="home-topic-panel__title" id="homeTopicTitle">专题找房</h2>
+                <span class="home-topic-panel__subtitle">为您精选优质房源</span>
+              </header>
+              <div class="home-topic-panel__list">
+                <a class="home-topic-entry" href="./专题找房.html?topic=rigid">刚需优选 <b>低总价好上车</b></a>
+                <a class="home-topic-entry" href="./专题找房.html?topic=improve">改善优选 <b>品质大三房</b></a>
+                <a class="home-topic-entry" href="./专题找房.html?topic=invest">投资优选 <b>潜力区域好盘</b></a>
+              </div>
+            </section>
+          </div>
+        </section>
 
-      <section class="home-column" aria-label="安居内容专栏">
-        <div class="home-column__grid">
-          <a class="home-column-card home-column-card--live" id="homeLiveEntry" href="./房产超市_住进成都.html?screen=live">
-            <img class="home-live-cover" src="./assets/home-live-cover-2026.svg" alt="看房直播，14场直播可看">
-          </a>
-          <section class="home-topic-panel" aria-labelledby="homeTopicPanelTitle">
-            <header class="home-topic-panel__header">
-              <h2 class="home-topic-panel__title" id="homeTopicPanelTitle">专题找房</h2>
-              <a class="home-topic-panel__more" href="./专题找房.html">更多 ›</a>
-            </header>
-            <div class="home-topic-panel__list">
-              <a class="home-topic-entry" href="./专题找房.html?topic=new-rule"><span class="home-topic-entry__icon"><svg viewBox="0 0 20 20"><path d="M3 3h7v14H3Zm9 4h5v10h-5ZM5 6h3v2H5Zm0 4h3v2H5Zm9 0h1v2h-1Z" /></svg></span>新规产品</a>
-              <a class="home-topic-entry" href="./专题找房.html?topic=metro"><span class="home-topic-entry__icon"><svg viewBox="0 0 20 20"><path d="M4 3h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2l1 2h-3l-1-2H7l-1 2H3l1-2a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm1 3v5h10V6Zm1 7a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm8 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z" /></svg></span>地铁产品</a>
-              <a class="home-topic-entry" href="./专题找房.html?topic=subsidy"><span class="home-topic-entry__icon"><svg viewBox="0 0 20 20"><path d="M2 5h16v4H2Zm1 5h14v7H3Zm5-8h4v3H8Zm1 9h2v5H9Z" /></svg></span>购房补贴产品</a>
-            </div>
-          </section>
-        </div>
+        <section class="property-news" id="propertyNews" aria-labelledby="propertyNewsTitle">
+          <header class="property-news__head">
+            <h2 id="propertyNewsTitle">房产动态</h2>
+            <a class="property-news__more" href="javascript:void(0)">更多 ›</a>
+          </header>
+          <div class="property-news__list">
+            <a class="property-news__item" href="./购房政策.html"><span class="property-news__tag">政策</span><span class="property-news__title">成都最新公积金贷款政策解读，首付比例下调</span><time class="property-news__date">06-20</time></a>
+            <a class="property-news__item" href="#estateList"><span class="property-news__tag">市场</span><span class="property-news__title">上周成都新房成交1234套，环比上涨12.5%</span><time class="property-news__date">06-19</time></a>
+          </div>
+        </section>
       </section>
 
       <section class="estate-section" id="estateList" aria-label="安家成都楼盘列表">
-        <section class="presale-feature" aria-labelledby="presaleFeatureTitle">
+        <header class="estate-section__head">
+          <h2>即将预售</h2>
+          <a href="javascript:void(0)">查看全部 ›</a>
+        </header>
+        <section class="presale-feature" aria-label="即将预售楼盘">
           <header class="presale-feature__head">
-            <strong id="presaleFeatureTitle">即将预售</strong>
             <span>预计9月取证</span>
           </header>
           <a class="estate-card estate-card--home estate-card--presale" href="./project-detail.html?presale=1" aria-label="查看招商·时代花园预售详情">
@@ -2581,7 +3411,7 @@
             </div>
           </div>
           <span class="estate-actions" aria-hidden="true">
-            <span class="estate-favorite">♥</span>
+            <span class="estate-favorite"><svg viewBox="0 0 24 24"><path d="M20.8 4.7a5.6 5.6 0 0 0-7.9 0L12 5.6l-.9-.9a5.6 5.6 0 0 0-7.9 7.9l.9.9L12 21l7.9-7.5.9-.9a5.6 5.6 0 0 0 0-7.9Z" /></svg></span>
             <span class="estate-leftover">30套<br>剩余</span>
           </span>
         </a>
@@ -2599,7 +3429,7 @@
             </div>
           </div>
           <span class="estate-actions" aria-hidden="true">
-            <span class="estate-favorite is-muted">♡</span>
+            <span class="estate-favorite is-muted"><svg viewBox="0 0 24 24"><path d="M20.8 4.7a5.6 5.6 0 0 0-7.9 0L12 5.6l-.9-.9a5.6 5.6 0 0 0-7.9 7.9l.9.9L12 21l7.9-7.5.9-.9a5.6 5.6 0 0 0 0-7.9Z" /></svg></span>
             <span class="estate-leftover">11套<br>剩余</span>
           </span>
         </a>
@@ -2618,21 +3448,9 @@
             </div>
           </div>
           <span class="estate-actions" aria-hidden="true">
-            <span class="estate-favorite is-muted">♡</span>
+            <span class="estate-favorite is-muted"><svg viewBox="0 0 24 24"><path d="M20.8 4.7a5.6 5.6 0 0 0-7.9 0L12 5.6l-.9-.9a5.6 5.6 0 0 0-7.9 7.9l.9.9L12 21l7.9-7.5.9-.9a5.6 5.6 0 0 0 0-7.9Z" /></svg></span>
             <span class="estate-leftover">24套<br>剩余</span>
           </span>
-        </a>
-        <a class="estate-card estate-card--home" href="./project-detail.html" aria-label="查看融创·春风十里楼盘详情">
-          <div class="estate-cover estate-cover--green">
-            <span class="estate-view-count"><svg viewBox="0 0 16 10"><path d="M1 5s2.5-4 7-4 7 4 7 4-2.5 4-7 4-7-4-7-4Z" /><circle cx="8" cy="5" r="1.7" /></svg>1543</span>
-          </div>
-          <div class="estate-info">
-            <h2 class="estate-title">融创·春风十里</h2>
-            <div class="estate-price">价格待定</div>
-            <div class="estate-meta">天府新区/建面120~130㎡</div>
-            <div class="estate-tags"><span>安家成都</span><span class="tag-gray">容积率2.3</span></div>
-          </div>
-          <span class="estate-actions" aria-hidden="true"><span class="estate-favorite is-muted">♡</span><span class="estate-leftover">24套<br>剩余</span></span>
         </a>
       </section>
     </section>
@@ -2850,7 +3668,7 @@
 
   <nav class="tabbar" aria-label="底部导航">
     <button class="active" id="tabHome" type="button"><svg viewBox="0 0 24 24"><path d="m4 11 8-7 8 7v8a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1Z" /></svg><span>首页</span></button>
-    <button type="button"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l4-2" /></svg><span>房产资讯</span></button>
+    <button id="tabNews" type="button"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l4-2" /></svg><span>房源资讯</span></button>
     <button class="tabbar__ai" id="tabAi" type="button" aria-label="安安AI助手"><img class="tabbar__ai-icon" src="./assets/home-ai-entry-v4.svg" alt=""><span>安安AI</span></button>
     <button id="tabMessage" type="button" aria-label="消息"><svg viewBox="0 0 24 24"><path d="M4 5h16v12H8l-4 4Z" /><path d="M8 9h8M8 13h5" /></svg><span>消息</span></button>
     <button id="tabMine" type="button"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></svg><span>我的</span></button>
@@ -2933,9 +3751,17 @@
     const appViews = document.querySelectorAll(".app-view");
     const tabbar = document.querySelector(".tabbar");
     const tabHome = document.getElementById("tabHome");
+    const tabNews = document.getElementById("tabNews");
     const tabMine = document.getElementById("tabMine");
     const tabAi = document.getElementById("tabAi");
     const tabMessage = document.getElementById("tabMessage");
+    const cityPickerButton = document.getElementById("cityPickerButton");
+    const cityPickerValue = document.getElementById("cityPickerValue");
+    const cityPickerMenu = document.getElementById("cityPickerMenu");
+    const cityPickerOptions = document.querySelectorAll("[data-city]");
+    const homeSearchInput = document.getElementById("homeSearchInput");
+    const estateList = document.getElementById("estateList");
+    const homeFilters = document.querySelectorAll("#homeView .filters button");
     const couponEntry = document.getElementById("couponEntry");
     const couponDetailTriggers = document.querySelectorAll("[data-coupon-detail]");
     const couponListBack = document.getElementById("couponListBack");
@@ -3040,6 +3866,12 @@
     }
 
     tabHome.addEventListener("click", () => navigateTo("home"));
+    tabNews.addEventListener("click", () => {
+      navigateTo("home");
+      requestAnimationFrame(() => {
+        document.getElementById("propertyNews").scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+    });
     tabMine.addEventListener("click", () => navigateTo("mine"));
     tabAi.addEventListener("click", () => goTopicRoute("?chat=home-ai"));
     tabMessage.addEventListener("click", () => goTopicRoute("?screen=message"));
@@ -3073,6 +3905,42 @@
     });
     window.addEventListener("hashchange", showHashView);
     showHashView();
+
+    cityPickerButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const willOpen = cityPickerMenu.hidden;
+      cityPickerMenu.hidden = !willOpen;
+      cityPickerButton.setAttribute("aria-expanded", String(willOpen));
+    });
+
+    cityPickerOptions.forEach((option) => {
+      option.addEventListener("click", () => {
+        cityPickerOptions.forEach((item) => item.classList.toggle("is-active", item === option));
+        cityPickerValue.textContent = option.dataset.city;
+        cityPickerMenu.hidden = true;
+        cityPickerButton.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!cityPickerMenu.hidden && !cityPickerMenu.contains(event.target)) {
+        cityPickerMenu.hidden = true;
+        cityPickerButton.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    homeSearchInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        estateList.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+
+    homeFilters.forEach((button) => {
+      button.addEventListener("click", () => {
+        button.classList.toggle("is-active");
+      });
+    });
 
     function setQrScannerResult(text) {
       qrScannerResult.textContent = text;
@@ -3165,7 +4033,9 @@
       setQrScannerStep("scanning");
     }
 
-    scanEntry.addEventListener("click", openQrScanner);
+    if (scanEntry) {
+      scanEntry.addEventListener("click", openQrScanner);
+    }
     qrScannerClose.addEventListener("click", closeQrScanner);
     qrScannerMock.addEventListener("click", () => {
       qrScanner.classList.add("is-open");

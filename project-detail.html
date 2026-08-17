@@ -1040,13 +1040,18 @@
 
     .sand-stage {
       position: relative;
-      min-height: 260px;
-      padding: 12px;
-      color: #fff;
-      background:
-        radial-gradient(circle at 78% 18%, rgba(255, 214, 112, 0.34), transparent 22%),
-        linear-gradient(180deg, #9fc5df 0%, #dbeaf2 42%, #b9c4bd 43%, #7c8c82 100%);
+      aspect-ratio: 1029 / 564;
+      min-height: 0;
+      padding: 0;
+      background: #edf8fc;
       overflow: hidden;
+    }
+
+    .sun-plan-image {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
 
     .sun-model-badge,
@@ -1768,29 +1773,11 @@
       <div class="sand-head"><h2 class="section-title">3D日照</h2><span class="more">查看更多 〉</span></div>
       <div class="sand-card">
         <div class="sand-stage">
-          <span class="sun-model-badge">真实楼栋建模 · 冬至15:00</span>
-          <span class="sun-orbit" aria-hidden="true"></span>
-          <span class="sun-time">15:00</span>
-          <span class="sun-ray" aria-hidden="true"></span>
-          <span class="sun-ray sun-ray--two" aria-hidden="true"></span>
-          <span class="sun-ray sun-ray--three" aria-hidden="true"></span>
-          <div class="sun-model-scene" aria-hidden="true">
-            <span class="sun-site"></span>
-            <span class="sun-shadow sun-shadow--one"></span>
-            <span class="sun-shadow sun-shadow--two"></span>
-            <span class="sun-shadow sun-shadow--three"></span>
-            <span class="model-tower model-tower--one" data-label="1# 24F"></span>
-            <span class="model-tower model-tower--two" data-label="3# 25F"></span>
-            <span class="model-tower model-tower--three" data-label="5# 25F"></span>
-            <span class="model-tower model-tower--four" data-label="7# 23F"></span>
-          </div>
-          <div class="sun-labels">
-            <span>1# 24F</span>
-            <span>3# 25F</span>
-            <span>5# 25F</span>
-            <span>7# 23F</span>
-          </div>
-          <div class="sun-model-note">光线投影按楼栋高度与楼间距示意</div>
+          <img
+            class="sun-plan-image"
+            src="./assets/project-detail-sunshine-building-map.png"
+            alt="项目楼栋在售楼层日照示意图"
+          />
         </div>
       </div>
       <div class="sun-grid">
