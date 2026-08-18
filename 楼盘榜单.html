@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>楼盘榜单</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: #eeeae7; }
+    body {
+      display: flex;
+      justify-content: center;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    button, a { color: inherit; font: inherit; -webkit-tap-highlight-color: transparent; }
+    .ranking-page {
+      position: relative;
+      width: min(100vw, 425px);
+      min-height: 100vh;
+      overflow: hidden;
+      background: #1f1614;
+      box-shadow: 0 0 40px rgba(55, 34, 27, 0.16);
+    }
+    .ranking-art {
+      display: block;
+      width: 100%;
+      height: auto;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .ranking-hit {
+      position: absolute;
+      z-index: 3;
+      display: block;
+      padding: 0;
+      border: 0;
+      border-radius: 10px;
+      background: transparent;
+      cursor: pointer;
+    }
+    .ranking-hit:focus-visible {
+      outline: 2px solid #ff8b43;
+      outline-offset: -2px;
+    }
+    .ranking-hit--back { left: 1.6%; top: 5%; width: 11.7%; height: 3.2%; }
+    .ranking-hit--home { left: 13.3%; top: 5%; width: 11.5%; height: 3.2%; }
+    .ranking-hit--tab { top: 21.8%; width: 24%; height: 6%; }
+    .ranking-hit--tab[data-action="成交榜"] { left: 1%; }
+    .ranking-hit--tab[data-action="热搜榜"] { left: 25.5%; }
+    .ranking-hit--tab[data-action="关注榜"] { left: 50.5%; }
+    .ranking-hit--tab[data-action="热门榜"] { left: 75.5%; }
+    .ranking-hit--month { left: 3%; top: 29%; width: 22%; height: 5%; }
+    .ranking-hit--week { left: 27%; top: 29%; width: 20%; height: 5%; }
+    .ranking-hit--date { left: 3%; top: 34%; width: 46%; height: 5%; }
+    .ranking-hit--area { left: 52%; top: 34%; width: 45%; height: 5%; }
+    .ranking-hit--share { right: 2.5%; top: 88%; width: 13%; height: 7%; border-radius: 999px; }
+    .ranking-toast {
+      position: fixed;
+      left: 50%;
+      bottom: 28px;
+      z-index: 10;
+      max-width: calc(min(100vw, 425px) - 40px);
+      padding: 9px 16px;
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(31, 22, 20, 0.88);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+      font-size: 13px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 10px);
+      transition: 0.18s ease;
+      white-space: nowrap;
+    }
+    .ranking-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+    @media (max-width: 425px) {
+      .ranking-page { width: 100vw; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ranking-toast { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="ranking-page" aria-label="安居成都楼盘排行榜">
+    <img class="ranking-art" src="./assets/楼盘榜单.svg" alt="楼盘成交榜、热搜榜、关注榜和热门榜" />
+    <button class="ranking-hit ranking-hit--back" id="rankingBack" type="button" aria-label="返回"></button>
+    <a class="ranking-hit ranking-hit--home" href="./安家成都-首页-扫码.html" aria-label="返回首页"></a>
+    <button class="ranking-hit ranking-hit--tab" type="button" data-action="成交榜" aria-label="查看成交榜"></button>
+    <button class="ranking-hit ranking-hit--tab" type="button" data-action="热搜榜" aria-label="查看热搜榜"></button>
+    <button class="ranking-hit ranking-hit--tab" type="button" data-action="关注榜" aria-label="查看关注榜"></button>
+    <button class="ranking-hit ranking-hit--tab" type="button" data-action="热门榜" aria-label="查看热门榜"></button>
+    <button class="ranking-hit ranking-hit--month" type="button" data-action="月数据" aria-label="查看月数据"></button>
+    <button class="ranking-hit ranking-hit--week" type="button" data-action="周数据" aria-label="查看周数据"></button>
+    <button class="ranking-hit ranking-hit--date" type="button" data-action="选择月份" aria-label="选择月份"></button>
+    <button class="ranking-hit ranking-hit--area" type="button" data-action="选择区域" aria-label="选择区域"></button>
+    <button class="ranking-hit ranking-hit--share" id="rankingShare" type="button" aria-label="分享榜单"></button>
+  </main>
+  <div class="ranking-toast" id="rankingToast" role="status" aria-live="polite"></div>
+  <script>
+    const rankingBack = document.getElementById("rankingBack");
+    const rankingShare = document.getElementById("rankingShare");
+    const rankingToast = document.getElementById("rankingToast");
+    let toastTimer = null;
+
+    function showToast(message) {
+      window.clearTimeout(toastTimer);
+      rankingToast.textContent = message;
+      rankingToast.classList.add("is-visible");
+      toastTimer = window.setTimeout(() => rankingToast.classList.remove("is-visible"), 1500);
+    }
+
+    rankingBack.addEventListener("click", () => {
+      if (window.history.length > 1) window.history.back();
+      else window.location.href = "./安家成都-首页-扫码.html";
+    });
+
+    document.querySelectorAll("[data-action]").forEach((button) => {
+      button.addEventListener("click", () => showToast(`${button.dataset.action}功能演示`));
+    });
+
+    rankingShare.addEventListener("click", async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: "安居成都排行榜", url: window.location.href });
+          return;
+        } catch (error) {
+          if (error.name === "AbortError") return;
+        }
+      }
+      showToast("榜单链接已准备分享");
+    });
+  </script>
+</body>
+</html>

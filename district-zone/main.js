@@ -273,6 +273,16 @@
 
   const LOCATED_DISTRICT_ID = "gaoxin";
 
+  const DISTRICT_CARD_META = {
+    tianfu: { english: "SICHUAN TIANFU NEW AREA", position: "0% 0%" },
+    gaoxin: { english: "CHENGDU HIGH-TECH ZONE", position: "50% 0%" },
+    jinjiang: { english: "JINJIANG DISTRICT", position: "100% 0%" },
+    qingyang: { english: "QINGYANG DISTRICT", position: "0% 50%" },
+    wuhou: { english: "WUHOU DISTRICT", position: "50% 50%" },
+    chenghua: { english: "CHENGHUA DISTRICT", position: "100% 50%" },
+    xindu: { english: "XINDU DISTRICT", position: "0% 100%" }
+  };
+
   const DISTRICT_VIDEO_COVER_PRESETS = {
     gaoxin: [
       { image: commonsFilePath("交子大道.jpg"), alt: "成都交子大道街景" },
@@ -731,46 +741,26 @@
       }
 
       gridEl.innerHTML = filteredDistricts.map(function (district) {
+        const cardMeta = DISTRICT_CARD_META[district.id] || {
+          english: district.name,
+          position: "0% 100%"
+        };
         return '' +
           '<button class="district-card" type="button" data-id="' + district.id + '" aria-haspopup="dialog" style="--district-card-accent:' + district.accent + '">' +
+            '<span class="district-card__art" aria-hidden="true" style="background-position:' + cardMeta.position + '"></span>' +
             '<div class="district-card__head">' +
               '<div class="district-card__name">' + district.name + "</div>" +
-              '<span class="district-card__chevron" aria-hidden="true"></span>' +
             "</div>" +
+            '<div class="district-card__english">' + cardMeta.english + "</div>" +
             '<p class="district-card__intro">' + district.intro + "</p>" +
           "</button>";
       }).join("");
     }
 
     function renderModalMap(district) {
-      if (district.id === "xindu") {
-        return '' +
-          '<div class="district-modal__reference-map" role="img" aria-label="成都区县地图，新都区已高亮">' +
-            '<img src="./district-popup-reference.svg" alt="" aria-hidden="true" />' +
-          "</div>";
-      }
-
-      const active = function (targetId) {
-        return targetId === district.id ? " is-active" : "";
-      };
-
       return '' +
-        '<div class="district-modal__vector-map" style="--marker-x:' + district.map.markerX + ";--marker-y:" + district.map.markerY + '">' +
-          '<svg viewBox="0 0 327 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="成都区县地图，' + district.name + '已高亮">' +
-            '<path class="district-modal__map-outline" d="M89 23 138 12l31 20 41 2 21 29 34 25-8 43 29 29-21 43-49-5-34 28-45-16-49 16-34-33 8-46-26-35 23-35 30-17Z" />' +
-            '<polygon class="city-map__region' + active("qingyang") + '" points="91,75 132,58 151,88 128,119 83,105" />' +
-            '<text class="city-map__label' + active("qingyang") + '" x="99" y="90">青羊区</text>' +
-            '<polygon class="city-map__region' + active("jinjiang") + '" points="152,88 196,70 213,105 179,135 129,119" />' +
-            '<text class="city-map__label' + active("jinjiang") + '" x="155" y="105">锦江区</text>' +
-            '<polygon class="city-map__region' + active("chenghua") + '" points="198,69 239,85 248,129 214,151 179,135 213,105" />' +
-            '<text class="city-map__label' + active("chenghua") + '" x="207" y="112">成华区</text>' +
-            '<polygon class="city-map__region' + active("wuhou") + '" points="67,116 111,116 128,158 91,187 50,151" />' +
-            '<text class="city-map__label' + active("wuhou") + '" x="69" y="151">武侯区</text>' +
-            '<polygon class="city-map__region' + active("gaoxin") + '" points="128,158 180,135 196,181 150,211 91,187" />' +
-            '<text class="city-map__label' + active("gaoxin") + '" x="136" y="173">高新区</text>' +
-            '<polygon class="city-map__region' + active("tianfu") + '" points="196,181 231,167 258,206 211,229 150,211" />' +
-            '<text class="city-map__label' + active("tianfu") + '" x="190" y="204">天府新区</text>' +
-          "</svg>" +
+        '<div class="district-modal__watercolor-map" role="img" aria-label="成都区县水墨地图，当前为' + district.name + '" style="--marker-x:' + district.map.markerX + ";--marker-y:" + district.map.markerY + '">' +
+          '<span class="district-modal__watercolor-marker" aria-hidden="true"></span>' +
           '<span class="district-modal__map-callout">' + district.name + "</span>" +
         "</div>";
     }
