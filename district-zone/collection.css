@@ -259,9 +259,11 @@ body.is-district-modal-open {
 }
 
 .collection-list .district-card__head {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 7px;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  min-height: 30px;
   min-width: 0;
 }
 
@@ -281,14 +283,28 @@ body.is-district-modal-open {
 }
 
 .collection-list .district-card__name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   min-width: 0;
-  overflow: hidden;
+  overflow: visible;
   color: #303133;
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.25;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size: 17px;
+  font-weight: 650;
+  line-height: 24px;
+  letter-spacing: 0.2px;
+  text-overflow: clip;
+  white-space: normal;
+  word-break: keep-all;
+}
+
+.collection-list .district-card__name::before {
+  width: 3px;
+  height: 18px;
+  flex: 0 0 3px;
+  border-radius: 999px;
+  background: var(--district-card-accent, #ff5a00);
+  content: "";
 }
 
 .district-card__chevron {
@@ -304,7 +320,7 @@ body.is-district-modal-open {
 .collection-list .district-card__intro {
   display: -webkit-box;
   min-height: 38px;
-  margin: 13px 0 0;
+  margin: 9px 0 0;
   overflow: hidden;
   color: #9a9da3;
   font-size: 12px;

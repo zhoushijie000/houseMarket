@@ -621,10 +621,7 @@
         return '' +
           '<article class="' + activeClass + '" style="--district-logo-start:' + district.palette.start + ";--district-logo-end:" + district.palette.end + '">' +
             '<div class="district-card__head">' +
-              '<div class="district-logo">' + district.shortName + "</div>" +
-              "<div>" +
-                '<div class="district-card__name">' + district.name + "</div>" +
-              "</div>" +
+              '<div class="district-card__name">' + district.name + "</div>" +
             "</div>" +
             '<p class="district-card__intro">' + district.intro + "</p>" +
           "</article>";
@@ -737,7 +734,6 @@
         return '' +
           '<button class="district-card" type="button" data-id="' + district.id + '" aria-haspopup="dialog" style="--district-card-accent:' + district.accent + '">' +
             '<div class="district-card__head">' +
-              '<div class="district-logo">' + district.shortName + "</div>" +
               '<div class="district-card__name">' + district.name + "</div>" +
               '<span class="district-card__chevron" aria-hidden="true"></span>' +
             "</div>" +

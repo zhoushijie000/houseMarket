@@ -921,8 +921,8 @@
     }
 
     .policy-book-app.policy-app {
-      --book-blue: #397cda;
-      --book-blue-dark: #225da9;
+      --book-blue: #f47716;
+      --book-blue-dark: #c94f00;
       --book-ink: #142441;
       --book-muted: #7b8799;
       --paper: #fffdf9;
@@ -932,8 +932,8 @@
       min-height: 100svh;
       flex: 0 1 425px;
       background:
-        radial-gradient(circle at 82% 10%, rgba(117, 175, 245, 0.22), transparent 29%),
-        linear-gradient(180deg, #f9fcff 0, #eef5fd 212px, #edf3fb 100%);
+        radial-gradient(circle at 82% 10%, rgba(255, 172, 94, 0.2), transparent 29%),
+        linear-gradient(180deg, #fffdf9 0, #fff5e9 212px, #f7f1eb 100%);
     }
 
     .policy-book-app .mini-header {
@@ -1149,17 +1149,17 @@
     }
 
     .bookmark-group + .bookmark-group {
-      margin-top: 9px;
+      margin-top: 4px;
     }
 
     .bookmark-group__label {
       display: flex;
       align-items: center;
-      gap: 5px;
-      margin: 0 7px 5px;
+      gap: 4px;
+      margin: 0 4px 3px;
       color: #969aa4;
-      font-size: 8px;
-      line-height: 13px;
+      font-size: 7px;
+      line-height: 9px;
     }
 
     .bookmark-group__label::before {
@@ -1173,14 +1173,14 @@
       --bookmark-accent: #6b9ce2;
       position: relative;
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 9px;
+      grid-template-columns: minmax(0, 1fr) 7px;
       align-items: center;
       width: 100%;
-      min-height: 40px;
-      margin-bottom: 2px;
-      padding: 0 10px 0 13px;
+      min-height: 29px;
+      margin-bottom: 1px;
+      padding: 0 6px 0 8px;
       color: #39475d;
-      background: linear-gradient(90deg, #fffefb, #f7f4ef);
+      background: rgba(202, 198, 191, 0.9);
       clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 50%, calc(100% - 9px) 100%, 0 100%);
       box-shadow: 0 3px 8px rgba(70, 78, 90, 0.08);
       text-align: left;
@@ -1188,44 +1188,52 @@
 
     .district-bookmark::before {
       position: absolute;
-      inset: 0;
-      border: 1px solid rgba(211, 207, 200, 0.8);
+      inset: 1px;
+      z-index: 0;
+      border: 0;
+      background: linear-gradient(90deg, #fffefb, #f7f4ef);
       content: "";
-      clip-path: inherit;
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%);
       pointer-events: none;
     }
 
+    .district-bookmark__name,
+    .district-bookmark__arrow {
+      position: relative;
+      z-index: 1;
+    }
+
     .district-bookmark__name {
-      overflow: hidden;
-      font-size: 10.5px;
-      line-height: 16px;
+      overflow: visible;
+      font-size: 8.5px;
+      line-height: 11px;
       font-weight: 620;
-      text-overflow: ellipsis;
+      text-overflow: clip;
       white-space: nowrap;
     }
 
     .district-bookmark__arrow {
       color: #aeb5bf;
-      font-size: 15px;
+      font-size: 11px;
       line-height: 1;
     }
 
     .district-bookmark.is-active {
       z-index: 2;
-      min-height: 44px;
-      margin-left: -4px;
-      padding-left: 13px;
+      min-height: 31px;
+      margin-left: -2px;
+      padding-left: 9px;
       color: #ffffff;
-      background: linear-gradient(100deg, #236dd8, #4e9df5 78%);
-      box-shadow: 0 7px 15px rgba(39, 108, 207, 0.3);
+      background: linear-gradient(100deg, #ef6508, #ff9a3d 78%);
+      box-shadow: 0 5px 12px rgba(224, 91, 7, 0.28);
     }
 
     .district-bookmark.is-active::before {
-      left: -5px;
-      width: 7px;
+      inset: 0 auto 0 -3px;
+      width: 5px;
       border: 0;
       border-radius: 2px 0 0 2px;
-      background: #164f9f;
+      background: #c94f00;
       clip-path: none;
     }
 
@@ -1275,8 +1283,8 @@
     .result-filter.is-active {
       border-color: var(--book-blue);
       color: #ffffff;
-      background: linear-gradient(135deg, #2f77df, #4b96f0);
-      box-shadow: 0 4px 10px rgba(52, 120, 229, 0.24);
+      background: linear-gradient(135deg, #ee650a, #ff9637);
+      box-shadow: 0 4px 10px rgba(238, 101, 10, 0.22);
     }
 
     .inline-policy-list {
@@ -1346,10 +1354,10 @@
       display: block;
       margin-top: 13px;
       padding: 9px;
-      border: 1px solid #cfe0f8;
+      border: 1px solid #f6d7bd;
       border-radius: 8px;
       color: #6c7788;
-      background: #f0f7ff;
+      background: #fff7ef;
       font-size: 8.5px;
       line-height: 14px;
     }
@@ -1408,7 +1416,7 @@
       overflow: hidden;
       border: 0;
       border-radius: 0;
-      background: url("./assets/policy-book-background.png") center / 111% auto no-repeat;
+      background: url("./assets/policy-book-background-orange.png") center / 111% auto no-repeat;
       box-shadow: none;
     }
 
@@ -1444,8 +1452,8 @@
     }
 
     .bookmark-nav {
-      width: calc(100% - 12px);
-      margin-left: 8px;
+      width: calc(100% - 17px);
+      margin-left: 13px;
     }
 
     .results-page {
@@ -2207,15 +2215,6 @@
     let bookActiveFilter = "全部";
     let bookToastTimer = null;
 
-    function shortDistrictName(district) {
-      const shortNames = {
-        "四川天府新区": "天府新区",
-        "成都东部新区": "东部新区",
-        "成都高新区": "高新区"
-      };
-      return shortNames[district] || district;
-    }
-
     function renderBookmarks() {
       bookmarkNav.innerHTML = districtGroups.map((group) => {
         const tone = districtTones[group.tone];
@@ -2230,7 +2229,7 @@
                 aria-pressed="${district === bookActiveDistrict}"
                 style="--bookmark-accent:${tone.accent}"
               >
-                <span class="district-bookmark__name">${shortDistrictName(district)}</span>
+                <span class="district-bookmark__name">${district}</span>
                 <span class="district-bookmark__arrow" aria-hidden="true">›</span>
               </button>
             `).join("")}
