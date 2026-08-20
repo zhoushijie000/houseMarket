@@ -9,9 +9,11 @@ body.is-district-modal-open {
 .collection-page {
   min-height: 100vh;
   overflow: hidden;
-  background:
-    radial-gradient(circle at 50% 260px, rgba(255, 221, 185, 0.42), transparent 210px),
-    linear-gradient(180deg, #fffaf4 0, #fff5e9 390px, #f6f3ef 100%);
+  background-color: #f8eadf;
+  background-image: url("./assets/district-page-background.png");
+  background-position: center -46px;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
 }
 
 .collection-page::before {
@@ -158,7 +160,7 @@ body.is-district-modal-open {
   position: relative;
   height: 202px;
   overflow: hidden;
-  background: #fffaf5;
+  background: transparent;
 }
 
 .collection-hero__image {
@@ -172,34 +174,30 @@ body.is-district-modal-open {
 
 .collection-hero__copy {
   position: absolute;
-  top: 47px;
+  top: 27px;
   left: 26px;
   z-index: 2;
 }
 
 .collection-hero__title {
   margin: 0;
-  color: #101010;
-  font-family: "STKaiti", "KaiTi", "FangSong", var(--font-family);
-  font-size: 34px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  line-height: 1.2;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.76);
+  line-height: 0;
 }
 
-.collection-hero__title strong {
-  color: #ff5a00;
-  font-weight: 700;
+.collection-hero__title-image {
+  display: block;
+  width: min(278px, calc(100vw - 52px));
+  height: auto;
 }
 
 .collection-hero__subtitle {
-  margin: 13px 0 0 3px;
+  margin: 4px 0 0 7px;
   color: #39322d;
-  font-family: "STKaiti", "KaiTi", "FangSong", var(--font-family);
-  font-size: 14px;
+  font-family: "STXingkai", "华文行楷", "FZKai-Z03", "STKaiti", "KaiTi", "FangSong", var(--font-family);
+  font-size: 15px;
+  font-weight: 600;
   line-height: 20px;
-  letter-spacing: 3px;
+  letter-spacing: 3.4px;
 }
 
 .collection-search-panel {
@@ -287,6 +285,7 @@ body.is-district-modal-open {
   align-items: center;
   min-height: 25px;
   min-width: 0;
+  transform: translateY(-4px);
 }
 
 .collection-list .district-logo {
@@ -310,23 +309,19 @@ body.is-district-modal-open {
   gap: 8px;
   min-width: 0;
   overflow: visible;
-  color: #303133;
-  font-size: 17px;
-  font-weight: 650;
-  line-height: 24px;
-  letter-spacing: 0.2px;
+  color: #25221f;
+  font-family: "STXingkai", "华文行楷", "FZKai-Z03", "STKaiti", "KaiTi", "FangSong", var(--font-family);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 26px;
+  letter-spacing: 0.4px;
   text-overflow: clip;
   white-space: normal;
   word-break: keep-all;
 }
 
 .collection-list .district-card__name::before {
-  width: 3px;
-  height: 18px;
-  flex: 0 0 3px;
-  border-radius: 999px;
-  background: var(--district-card-accent, #ff5a00);
-  content: "";
+  display: none;
 }
 
 .collection-list .district-card__english {
@@ -346,20 +341,16 @@ body.is-district-modal-open {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background-image: url("./watercolor-district-atlas.png");
+  background-image: var(--district-card-image, url("./watercolor-district-atlas.png"));
+  background-position: var(--district-card-position, center bottom);
   background-repeat: no-repeat;
-  background-size: 300% auto;
-  filter: saturate(0.86) contrast(0.96) brightness(1.04);
-  opacity: 0.92;
+  background-size: var(--district-card-size, auto 100%);
+  filter: none;
+  opacity: 1;
 }
 
 .collection-list .district-card::after {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(180deg, rgba(255, 253, 249, 0.97) 0 38%, rgba(255, 249, 241, 0.7) 58%, rgba(255, 245, 232, 0.06) 100%);
-  content: "";
-  pointer-events: none;
+  display: none;
 }
 
 .district-card__chevron {
@@ -608,7 +599,8 @@ body.is-district-modal-open {
   color: #ff5a00;
   font-size: 14px;
   line-height: 1;
-  transform: translate(-24%, -120%);
+  transform: translate(-50%, -155%);
+  white-space: nowrap;
 }
 
 .district-modal__primary,

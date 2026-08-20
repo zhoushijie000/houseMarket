@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>直播专区标签管理</title>
+  <style>
+    :root {
+      --primary: #3f6fe8;
+      --primary-dark: #315fda;
+      --primary-soft: #edf3ff;
+      --text: #303133;
+      --regular: #606266;
+      --muted: #909399;
+      --placeholder: #c0c4cc;
+      --border: #dcdfe6;
+      --border-light: #ebeef5;
+      --background: #f3f4f6;
+      --surface: #fff;
+      --danger: #f56c6c;
+      --success: #35b58a;
+      --shadow: 0 14px 36px rgba(31, 41, 61, .16);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { margin: 0; min-width: 1160px; min-height: 100%; }
+
+    body {
+      color: var(--text);
+      background: var(--background);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-size: 14px;
+    }
+
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+
+    .app-header {
+      height: 64px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      border: 1px solid var(--border-light);
+    }
+
+    .brand, .brand-copy, .header-nav, .nav-item, .user { display: flex; align-items: center; }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      margin-right: 20px;
+      position: relative;
+      overflow: hidden;
+      background: #406bdd;
+    }
+
+    .brand-logo::before {
+      content: "";
+      position: absolute;
+      inset: 7px 9px;
+      border-left: 5px solid #fff;
+      border-right: 5px solid #fff;
+    }
+
+    .brand-logo::after {
+      content: "";
+      position: absolute;
+      right: 9px;
+      top: 13px;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-right: 10px solid #fff;
+    }
+
+    .brand-title { font-size: 18px; font-weight: 650; color: #111; white-space: nowrap; }
+    .brand-agency { margin-left: 20px; color: var(--regular); white-space: nowrap; }
+    .brand-agency .chevron { margin-left: 24px; color: var(--primary); }
+
+    .header-nav { gap: 34px; margin-left: auto; }
+    .nav-item { gap: 10px; font-size: 15px; color: #262626; white-space: nowrap; }
+    .nav-item.active { color: var(--primary); }
+    .chevron {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-right: 1.5px solid currentColor;
+      border-bottom: 1.5px solid currentColor;
+      transform: rotate(45deg) translateY(-2px);
+    }
+
+    .user { margin-left: 64px; flex-direction: column; height: 56px; justify-content: center; }
+    .avatar {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      position: relative;
+      background: #e4e7ed;
+    }
+    .avatar::before { content: ""; position: absolute; width: 9px; height: 9px; border-radius: 50%; background: #fff; left: 13px; top: 7px; }
+    .avatar::after { content: ""; position: absolute; width: 17px; height: 10px; border-radius: 9px 9px 3px 3px; background: #fff; left: 9px; top: 20px; }
+    .user-name { margin-top: -4px; padding: 1px 7px; border-radius: 4px; background: #85888d; color: #fff; font-size: 12px; }
+
+    .workspace-tabs {
+      height: 54px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #f0f1f3;
+    }
+
+    .workspace-tab {
+      min-width: 96px;
+      height: 34px;
+      padding: 0 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      color: #2f3033;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    .workspace-tab.active { color: var(--primary); border-color: var(--primary); }
+    .workspace-tab .close { font-size: 16px; font-weight: 400; }
+    .more-actions { margin-left: auto; display: flex; align-items: center; gap: 12px; color: var(--regular); }
+
+    .page { padding: 0 12px 14px; }
+
+    .feature-nav {
+      height: 74px;
+      padding: 0 20px;
+      display: flex;
+      align-items: flex-end;
+      gap: 40px;
+      background: #fff;
+    }
+    .feature-tab {
+      height: 52px;
+      padding: 0;
+      color: #1f2329;
+      background: transparent;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .feature-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .feature-line { flex: 1; height: 1px; margin-bottom: 21px; background: var(--border); }
+
+    .content-card {
+      min-height: calc(100vh - 218px);
+      margin-top: 12px;
+      padding: 20px;
+      background: #fff;
+    }
+
+    .type-row { display: flex; align-items: center; min-height: 34px; }
+    .field-label { width: 70px; color: var(--regular); font-size: 15px; flex: 0 0 auto; }
+    .segmented { display: inline-flex; }
+    .segment {
+      height: 34px;
+      padding: 0 18px;
+      color: var(--regular);
+      background: #fff;
+      border: 1px solid var(--border);
+      border-right: 0;
+      font-weight: 600;
+    }
+    .segment:first-child { border-radius: 4px 0 0 4px; }
+    .segment:last-child { border-radius: 0 4px 4px 0; border-right: 1px solid var(--border); }
+    .segment.active { color: #fff; background: var(--primary); border-color: var(--primary); }
+
+    .search-row { display: flex; align-items: center; margin-top: 18px; }
+    .search-input-wrap { width: 300px; height: 34px; position: relative; }
+    .search-input-wrap input {
+      width: 100%;
+      height: 100%;
+      padding: 0 14px;
+      color: var(--text);
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      outline: 0;
+    }
+    input::placeholder { color: var(--placeholder); }
+    input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(63, 111, 232, .1); }
+
+    .button-group { display: flex; gap: 10px; margin-left: 86px; }
+    .btn {
+      height: 34px;
+      padding: 0 18px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--regular);
+      background: #fff;
+    }
+    .btn:hover { color: var(--primary); border-color: #9eb5f2; }
+    .btn-primary { color: #fff; background: var(--primary); border-color: var(--primary); }
+    .btn-primary:hover { color: #fff; background: var(--primary-dark); border-color: var(--primary-dark); }
+    .btn-large { height: 38px; padding: 0 20px; font-weight: 600; }
+
+    .toolbar { margin-top: 18px; display: flex; align-items: center; justify-content: space-between; }
+    .toolbar-tip { color: var(--muted); font-size: 13px; }
+    .toolbar-tip strong { color: var(--regular); font-weight: 500; }
+
+    .table-wrap { margin-top: 18px; border: 1px solid var(--border-light); overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    th, td { height: 58px; padding: 0 12px; text-align: left; border-bottom: 1px solid var(--border-light); color: var(--regular); }
+    th { height: 40px; background: #f3f4f6; color: var(--regular); font-weight: 500; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:hover td { background: #fafcff; }
+    .col-sort { width: 70px; text-align: center; }
+    .col-name { width: 24%; }
+    .col-icon { width: 16%; }
+    .col-time { width: 22%; }
+    .col-action { width: 150px; text-align: center; }
+    .tag-name { color: #4b5563; }
+    .icon-preview { display: inline-flex; align-items: center; gap: 9px; }
+    .icon-box { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 6px; background: #f7f8fa; border: 1px solid #edf0f4; }
+    .icon-box svg { width: 22px; height: 22px; }
+    .icon-state { color: var(--muted); font-size: 12px; }
+    .table-action { padding: 5px 7px; color: var(--primary); background: transparent; border: 0; }
+    .table-action.danger { color: var(--danger); }
+    .empty { height: 180px; color: var(--muted); text-align: center; }
+
+    .pagination { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-top: 16px; color: var(--regular); }
+    .page-btn { min-width: 30px; height: 30px; padding: 0 8px; border: 1px solid var(--border); border-radius: 4px; background: #fff; color: var(--regular); }
+    .page-btn.active { color: #fff; background: var(--primary); border-color: var(--primary); }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(0, 0, 0, .48);
+    }
+    .overlay.show { display: flex; }
+
+    .modal {
+      width: min(760px, calc(100vw - 60px));
+      max-height: calc(100vh - 48px);
+      overflow: hidden;
+      background: #fff;
+      box-shadow: var(--shadow);
+      animation: modal-in .16s ease-out;
+    }
+    @keyframes modal-in { from { opacity: 0; transform: translateY(-8px) scale(.99); } to { opacity: 1; transform: none; } }
+
+    .modal-header { height: 58px; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-light); }
+    .modal-title { font-size: 18px; font-weight: 500; color: #30343a; }
+    .modal-close { width: 32px; height: 32px; padding: 0; display: grid; place-items: center; color: var(--muted); background: transparent; border: 0; }
+    .modal-close svg { width: 18px; height: 18px; }
+
+    .modal-body { max-height: calc(100vh - 180px); padding: 20px 24px 24px; overflow-y: auto; background: #f7f8fa; }
+    .form-panel { padding: 16px 18px 4px; background: #fff; }
+    .form-row { min-height: 50px; display: flex; align-items: flex-start; }
+    .form-row + .form-row { margin-top: 12px; }
+    .form-label { width: 98px; padding-top: 9px; text-align: right; color: var(--regular); flex: 0 0 auto; }
+    .required::before { content: "*"; margin-right: 5px; color: var(--danger); }
+    .control { flex: 1; margin-left: 16px; min-width: 0; }
+    .text-control { position: relative; }
+    .text-control input {
+      width: 100%;
+      height: 38px;
+      padding: 0 58px 0 14px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      outline: 0;
+      color: var(--text);
+      background: #fff;
+    }
+    .text-control input[type="number"] { padding-right: 14px; }
+    .counter { position: absolute; right: 12px; top: 10px; color: var(--muted); font-size: 12px; }
+    .help { min-height: 18px; margin-top: 5px; color: var(--muted); font-size: 12px; line-height: 18px; }
+    .help.error { color: var(--danger); }
+
+    .upload-control { display: flex; align-items: flex-start; gap: 14px; }
+    .upload-card {
+      width: 92px;
+      height: 92px;
+      padding: 0;
+      position: relative;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border: 1px dashed #c9ced8;
+      border-radius: 4px;
+      color: var(--muted);
+      background: #fafbfc;
+    }
+    .upload-card:hover { color: var(--primary); border-color: var(--primary); background: #f7faff; }
+    .upload-card.has-image { border-style: solid; }
+    .upload-card img { width: 100%; height: 100%; object-fit: contain; background: #fff; }
+    .upload-card .default-icon svg { width: 38px; height: 38px; }
+    .upload-card .replace-mask { position: absolute; inset: 0; display: none; place-items: center; color: #fff; background: rgba(0, 0, 0, .45); font-size: 12px; }
+    .upload-card.has-image:hover .replace-mask { display: grid; }
+    .upload-placeholder { display: flex; flex-direction: column; align-items: center; gap: 7px; font-size: 12px; }
+    .upload-placeholder svg { width: 24px; height: 24px; }
+    .upload-copy { padding-top: 2px; color: var(--muted); font-size: 12px; line-height: 22px; }
+    .upload-copy strong { display: block; color: var(--regular); font-size: 13px; font-weight: 500; }
+
+    .modal-footer { height: 62px; padding: 0 20px; display: flex; align-items: center; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--border-light); background: #fff; }
+    .modal-footer .btn { height: 36px; min-width: 68px; }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      top: 26px;
+      z-index: 100;
+      min-width: 230px;
+      padding: 11px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transform: translate(-50%, -16px);
+      opacity: 0;
+      pointer-events: none;
+      color: #2e765f;
+      background: #eefaf5;
+      border: 1px solid #bce9d8;
+      border-radius: 4px;
+      box-shadow: 0 7px 18px rgba(0, 0, 0, .08);
+      transition: .2s ease;
+    }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .toast.error { color: #a84343; background: #fff2f2; border-color: #f4c6c6; }
+
+    @media (max-width: 1400px) {
+      .header-nav { gap: 22px; }
+      .user { margin-left: 34px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-logo" aria-hidden="true"></div>
+      <div class="brand-copy">
+        <div class="brand-title">成都住建线上房产超市管理平台</div>
+        <div class="brand-agency">成都市住房和城乡建设局 <span class="chevron" aria-hidden="true"></span></div>
+      </div>
+    </div>
+    <nav class="header-nav" aria-label="主导航">
+      <div class="nav-item">项目 <span class="chevron"></span></div>
+      <div class="nav-item">申请 <span class="chevron"></span></div>
+      <div class="nav-item">运营 <span class="chevron"></span></div>
+      <div class="nav-item">统计 <span class="chevron"></span></div>
+      <div class="nav-item">政务 <span class="chevron"></span></div>
+      <div class="nav-item">管理 <span class="chevron"></span></div>
+      <div class="nav-item active">系统 <span class="chevron"></span></div>
+    </nav>
+    <div class="user">
+      <div class="avatar"></div>
+      <div class="user-name">周世杰</div>
+    </div>
+  </header>
+
+  <div class="workspace-tabs">
+    <div class="workspace-tab">选择企业</div>
+    <div class="workspace-tab">项目管理</div>
+    <div class="workspace-tab active">小程序管理 <span class="close">×</span></div>
+    <div class="workspace-tab">机构管理</div>
+    <div class="workspace-tab">最新预售</div>
+    <div class="workspace-tab">人员管理</div>
+    <div class="more-actions">更多操作 <span class="chevron"></span></div>
+  </div>
+
+  <main class="page">
+    <nav class="feature-nav" aria-label="小程序管理分类">
+      <button class="feature-tab">图片配置</button>
+      <button class="feature-tab">广告弹窗</button>
+      <button class="feature-tab">企业专场</button>
+      <button class="feature-tab active">标签配置</button>
+      <button class="feature-tab">模块配置</button>
+      <div class="feature-line"></div>
+    </nav>
+
+    <section class="content-card">
+      <div class="type-row">
+        <div class="field-label">图片类型</div>
+        <div class="segmented" id="typeTabs" role="tablist" aria-label="标签类型">
+          <button class="segment" data-type="policy">政策解读</button>
+          <button class="segment" data-type="news">房产资讯</button>
+          <button class="segment" data-type="promotion">企业促销</button>
+          <button class="segment active" data-type="live">直播专区</button>
+        </div>
+      </div>
+
+      <div class="search-row">
+        <label class="field-label" for="searchInput">标签名称</label>
+        <div class="search-input-wrap"><input id="searchInput" type="text" placeholder="请输入标签名称" maxlength="20"></div>
+        <div class="button-group">
+          <button class="btn btn-primary" id="searchButton">查询</button>
+          <button class="btn" id="resetButton">重置</button>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <button class="btn btn-primary btn-large" id="addButton">新增标签</button>
+        <div class="toolbar-tip">共 <strong id="totalCount">4</strong> 条，排序数字越小越靠前</div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead id="tableHead"></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <span>共 <span id="pageTotal">4</span> 条</span>
+        <button class="page-btn" aria-label="上一页">‹</button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn" aria-label="下一页">›</button>
+        <span>10条/页</span>
+      </div>
+    </section>
+  </main>
+
+  <div class="overlay" id="modalOverlay" aria-hidden="true">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <header class="modal-header">
+        <div class="modal-title" id="modalTitle">新增直播专区标签</div>
+        <button class="modal-close" id="closeModal" aria-label="关闭">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5l14 14M19 5L5 19"/></svg>
+        </button>
+      </header>
+
+      <div class="modal-body">
+        <div class="form-panel">
+          <div class="form-row">
+            <label class="form-label required" for="tagName">标签名称</label>
+            <div class="control">
+              <div class="text-control">
+                <input id="tagName" type="text" maxlength="20" placeholder="请输入标签名称">
+                <span class="counter"><span id="nameCount">0</span>/20</span>
+              </div>
+              <div class="help" id="nameHelp">建议使用2–6个汉字，用于小程序直播专区导航</div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-label required">选中图标</div>
+            <div class="control">
+              <div class="upload-control">
+                <button class="upload-card" id="selectedUploadButton" type="button">
+                  <span class="upload-placeholder">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14v5h14v-5"/></svg>
+                    上传图标
+                  </span>
+                  <span class="replace-mask">重新上传</span>
+                </button>
+                <input id="selectedFile" type="file" accept=".png,.jpg,.jpeg,image/png,image/jpeg" hidden>
+                <div class="upload-copy"><strong>选中状态图标</strong>支持 PNG、JPG 格式<br>文件大小不超过 1MB</div>
+              </div>
+              <div class="help" id="selectedHelp"></div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-label required">未选中图标</div>
+            <div class="control">
+              <div class="upload-control">
+                <button class="upload-card" id="unselectedUploadButton" type="button">
+                  <span class="upload-placeholder">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14v5h14v-5"/></svg>
+                    上传图标
+                  </span>
+                  <span class="replace-mask">重新上传</span>
+                </button>
+                <input id="unselectedFile" type="file" accept=".png,.jpg,.jpeg,image/png,image/jpeg" hidden>
+                <div class="upload-copy"><strong>未选中状态图标</strong>支持 PNG、JPG 格式<br>文件大小不超过 1MB</div>
+              </div>
+              <div class="help" id="unselectedHelp"></div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label class="form-label required" for="tagSort">标签排序</label>
+            <div class="control">
+              <div class="text-control"><input id="tagSort" type="number" min="1" max="9999" step="1" placeholder="请输入1–9999的整数"></div>
+              <div class="help" id="sortHelp">排序数字越小，小程序中展示越靠前</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="modal-footer">
+        <button class="btn" id="cancelModal">取消</button>
+        <button class="btn btn-primary" id="saveButton">保存</button>
+      </footer>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const state = {
+      currentType: 'live',
+      editingId: null,
+      selectedIcon: null,
+      unselectedIcon: null,
+      query: '',
+      liveTags: [
+        { id: 1, sort: 1, name: '精选', icon: 'spark', createdAt: '2026-08-15 09:26:18' },
+        { id: 2, sort: 2, name: '新房直播', icon: 'building', createdAt: '2026-08-15 09:31:42' },
+        { id: 3, sort: 3, name: '看房团', icon: 'route', createdAt: '2026-08-15 09:38:07' },
+        { id: 4, sort: 4, name: '住进成都', icon: 'camera', createdAt: '2026-08-15 09:46:23' }
+      ],
+      legacy: {
+        policy: [
+          { id: 11, sort: 1, name: '以旧换新支持', createdAt: '2025-04-25 12:15:58' },
+          { id: 12, sort: 2, name: '购房消费券支持', createdAt: '2025-04-25 12:16:05' },
+          { id: 13, sort: 3, name: '人才购房支持', createdAt: '2025-04-25 13:38:01' }
+        ],
+        news: [
+          { id: 21, sort: 1, name: '市场资讯', createdAt: '2025-05-08 10:30:12' },
+          { id: 22, sort: 2, name: '热点解读', createdAt: '2025-05-08 10:34:25' }
+        ],
+        promotion: [
+          { id: 31, sort: 1, name: '限时优惠', createdAt: '2025-06-18 14:10:03' },
+          { id: 32, sort: 2, name: '特价房源', createdAt: '2025-06-18 14:14:56' }
+        ]
+      }
+    };
+
+    const typeNames = { policy: '政策解读', news: '房产资讯', promotion: '企业促销', live: '直播专区' };
+    const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => [...document.querySelectorAll(selector)];
+
+    function iconSvg(type, selected) {
+      const color = selected ? '#3f6fe8' : '#9aa1ad';
+      const common = `fill="none" stroke="${color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"`;
+      const paths = {
+        spark: `<path d="M12 2.8l1.7 5.5L19.2 10l-5.5 1.7L12 17.2l-1.7-5.5L4.8 10l5.5-1.7L12 2.8z"/><path d="M18.2 15.2l.8 2.3 2.2.8-2.2.7-.8 2.3-.7-2.3-2.3-.7 2.3-.8.7-2.3z"/>`,
+        building: `<path d="M5 21V5.5L12 3v18M12 8h7v13M2.5 21h19"/><path d="M8 8h1M8 11.5h1M8 15h1M15 11h1M15 14h1M15 17h1"/>`,
+        route: `<circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.5 6h3.4c3.8 0 4 5.2.2 5.2H9.9c-3.9 0-4 6.8.2 6.8h5.4"/>`,
+        camera: `<rect x="3" y="6.5" width="14" height="11" rx="2"/><path d="M17 10l4-2v8l-4-2M7 6.5l1.2-2h3.6l1.2 2"/><circle cx="10" cy="12" r="2.5"/>`
+      };
+      return `<svg viewBox="0 0 24 24" ${common}>${paths[type] || paths.spark}</svg>`;
+    }
+
+    function getRows() {
+      const source = state.currentType === 'live' ? state.liveTags : state.legacy[state.currentType];
+      return source
+        .filter(item => item.name.toLowerCase().includes(state.query.toLowerCase()))
+        .sort((a, b) => a.sort - b.sort || a.id - b.id);
+    }
+
+    function renderTable() {
+      const live = state.currentType === 'live';
+      const rows = getRows();
+      $('#tableHead').innerHTML = live
+        ? `<tr><th class="col-sort">排序</th><th class="col-name">标签名称</th><th class="col-icon">选中图标</th><th class="col-icon">未选中图标</th><th class="col-time">创建时间</th><th class="col-action">操作</th></tr>`
+        : `<tr><th class="col-sort">排序</th><th>标签</th><th class="col-time">创建时间</th><th>标签类型</th><th class="col-action">操作</th></tr>`;
+
+      if (!rows.length) {
+        $('#tableBody').innerHTML = `<tr><td class="empty" colspan="${live ? 6 : 5}">暂无符合条件的标签</td></tr>`;
+      } else if (live) {
+        $('#tableBody').innerHTML = rows.map(item => `
+          <tr>
+            <td class="col-sort">${item.sort}</td>
+            <td class="tag-name">${escapeHtml(item.name)}</td>
+            <td><span class="icon-preview"><span class="icon-box">${item.selectedData ? `<img src="${item.selectedData}" alt="" style="width:22px;height:22px;object-fit:contain">` : iconSvg(item.icon, true)}</span><span class="icon-state">选中态</span></span></td>
+            <td><span class="icon-preview"><span class="icon-box">${item.unselectedData ? `<img src="${item.unselectedData}" alt="" style="width:22px;height:22px;object-fit:contain">` : iconSvg(item.icon, false)}</span><span class="icon-state">未选中态</span></span></td>
+            <td>${item.createdAt}</td>
+            <td class="col-action"><button class="table-action" data-edit="${item.id}">编辑</button><button class="table-action danger" data-delete="${item.id}">删除</button></td>
+          </tr>`).join('');
+      } else {
+        $('#tableBody').innerHTML = rows.map(item => `
+          <tr>
+            <td class="col-sort">${item.sort}</td>
+            <td class="tag-name">${escapeHtml(item.name)}</td>
+            <td>${item.createdAt}</td>
+            <td>${typeNames[state.currentType]}</td>
+            <td class="col-action"><button class="table-action" data-legacy-edit="${item.id}">编辑</button><button class="table-action danger" data-legacy-delete="${item.id}">删除</button></td>
+          </tr>`).join('');
+      }
+      $('#totalCount').textContent = rows.length;
+      $('#pageTotal').textContent = rows.length;
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>'"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[ch]);
+    }
+
+    function nowText() {
+      const d = new Date();
+      const two = v => String(v).padStart(2, '0');
+      return `${d.getFullYear()}-${two(d.getMonth() + 1)}-${two(d.getDate())} ${two(d.getHours())}:${two(d.getMinutes())}:${two(d.getSeconds())}`;
+    }
+
+    function setUploadPreview(kind, data, fallbackIcon) {
+      const button = kind === 'selected' ? $('#selectedUploadButton') : $('#unselectedUploadButton');
+      if (data) {
+        button.classList.add('has-image');
+        button.innerHTML = `<img src="${data}" alt="${kind === 'selected' ? '选中图标' : '未选中图标'}"><span class="replace-mask">重新上传</span>`;
+      } else if (fallbackIcon) {
+        button.classList.add('has-image');
+        button.innerHTML = `<span class="default-icon">${iconSvg(fallbackIcon, kind === 'selected')}</span><span class="replace-mask">重新上传</span>`;
+      } else {
+        button.classList.remove('has-image');
+        button.innerHTML = `<span class="upload-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14v5h14v-5"/></svg>上传图标</span><span class="replace-mask">重新上传</span>`;
+      }
+    }
+
+    function resetErrors() {
+      $('#nameHelp').className = 'help';
+      $('#nameHelp').textContent = '建议使用2–6个汉字，用于小程序直播专区导航';
+      $('#selectedHelp').className = 'help';
+      $('#selectedHelp').textContent = '';
+      $('#unselectedHelp').className = 'help';
+      $('#unselectedHelp').textContent = '';
+      $('#sortHelp').className = 'help';
+      $('#sortHelp').textContent = '排序数字越小，小程序中展示越靠前';
+    }
+
+    function openModal(item = null) {
+      state.editingId = item?.id ?? null;
+      state.selectedIcon = item?.selectedData || (item ? `existing:${item.icon}` : null);
+      state.unselectedIcon = item?.unselectedData || (item ? `existing:${item.icon}` : null);
+      $('#modalTitle').textContent = item ? '编辑直播专区标签' : '新增直播专区标签';
+      $('#tagName').value = item?.name || '';
+      $('#nameCount').textContent = $('#tagName').value.length;
+      $('#tagSort').value = item?.sort || '';
+      $('#selectedFile').value = '';
+      $('#unselectedFile').value = '';
+      setUploadPreview('selected', item?.selectedData, item?.icon);
+      setUploadPreview('unselected', item?.unselectedData, item?.icon);
+      resetErrors();
+      $('#modalOverlay').classList.add('show');
+      $('#modalOverlay').setAttribute('aria-hidden', 'false');
+      setTimeout(() => $('#tagName').focus(), 40);
+    }
+
+    function closeModal() {
+      $('#modalOverlay').classList.remove('show');
+      $('#modalOverlay').setAttribute('aria-hidden', 'true');
+    }
+
+    function showToast(message, error = false) {
+      const toast = $('#toast');
+      toast.textContent = message;
+      toast.classList.toggle('error', error);
+      toast.classList.add('show');
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    function readFile(kind, file) {
+      const help = kind === 'selected' ? $('#selectedHelp') : $('#unselectedHelp');
+      const validType = file && (file.type === 'image/png' || file.type === 'image/jpeg' || /\.(png|jpe?g)$/i.test(file.name));
+      if (!validType) {
+        help.className = 'help error';
+        help.textContent = '仅支持 PNG、JPG 格式图片';
+        return;
+      }
+      if (file.size > 1024 * 1024) {
+        help.className = 'help error';
+        help.textContent = '图片大小不能超过1MB，请重新选择';
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = event => {
+        state[`${kind}Icon`] = event.target.result;
+        setUploadPreview(kind, event.target.result);
+        help.className = 'help';
+        help.textContent = `${file.name}（${Math.max(1, Math.round(file.size / 1024))}KB）`;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function validateForm() {
+      resetErrors();
+      let valid = true;
+      const name = $('#tagName').value.trim();
+      const sort = Number($('#tagSort').value);
+      if (!name) {
+        $('#nameHelp').className = 'help error';
+        $('#nameHelp').textContent = '请输入标签名称';
+        valid = false;
+      } else if (state.liveTags.some(item => item.id !== state.editingId && item.name === name)) {
+        $('#nameHelp').className = 'help error';
+        $('#nameHelp').textContent = '标签名称已存在，请更换名称';
+        valid = false;
+      }
+      if (!state.selectedIcon) {
+        $('#selectedHelp').className = 'help error';
+        $('#selectedHelp').textContent = '请上传选中图标';
+        valid = false;
+      }
+      if (!state.unselectedIcon) {
+        $('#unselectedHelp').className = 'help error';
+        $('#unselectedHelp').textContent = '请上传未选中图标';
+        valid = false;
+      }
+      if (!Number.isInteger(sort) || sort < 1 || sort > 9999) {
+        $('#sortHelp').className = 'help error';
+        $('#sortHelp').textContent = '请输入1–9999的整数';
+        valid = false;
+      }
+      return valid;
+    }
+
+    function saveTag() {
+      if (!validateForm()) return;
+      const name = $('#tagName').value.trim();
+      const sort = Number($('#tagSort').value);
+      if (state.editingId) {
+        const item = state.liveTags.find(tag => tag.id === state.editingId);
+        item.name = name;
+        item.sort = sort;
+        if (!String(state.selectedIcon).startsWith('existing:')) item.selectedData = state.selectedIcon;
+        if (!String(state.unselectedIcon).startsWith('existing:')) item.unselectedData = state.unselectedIcon;
+        showToast('标签编辑成功');
+      } else {
+        state.liveTags.push({
+          id: Date.now(), sort, name, icon: 'spark', createdAt: nowText(),
+          selectedData: state.selectedIcon, unselectedData: state.unselectedIcon
+        });
+        showToast('标签新增成功');
+      }
+      closeModal();
+      renderTable();
+    }
+
+    $('#typeTabs').addEventListener('click', event => {
+      const button = event.target.closest('[data-type]');
+      if (!button) return;
+      state.currentType = button.dataset.type;
+      state.query = '';
+      $('#searchInput').value = '';
+      $$('.segment').forEach(item => item.classList.toggle('active', item === button));
+      $('#addButton').textContent = '新增标签';
+      renderTable();
+    });
+
+    $('#searchButton').addEventListener('click', () => { state.query = $('#searchInput').value.trim(); renderTable(); });
+    $('#searchInput').addEventListener('keydown', event => { if (event.key === 'Enter') $('#searchButton').click(); });
+    $('#resetButton').addEventListener('click', () => { $('#searchInput').value = ''; state.query = ''; renderTable(); });
+    $('#addButton').addEventListener('click', () => {
+      if (state.currentType !== 'live') {
+        showToast('原有类型保持现有配置，请切换到“直播专区”体验新功能');
+        return;
+      }
+      openModal();
+    });
+
+    $('#tableBody').addEventListener('click', event => {
+      const editButton = event.target.closest('[data-edit]');
+      const deleteButton = event.target.closest('[data-delete]');
+      if (editButton) {
+        const item = state.liveTags.find(tag => tag.id === Number(editButton.dataset.edit));
+        if (item) openModal(item);
+      }
+      if (deleteButton) {
+        const item = state.liveTags.find(tag => tag.id === Number(deleteButton.dataset.delete));
+        if (item && window.confirm(`确认删除标签“${item.name}”吗？`)) {
+          state.liveTags = state.liveTags.filter(tag => tag.id !== item.id);
+          renderTable();
+          showToast('标签删除成功');
+        }
+      }
+    });
+
+    $('#tagName').addEventListener('input', event => { $('#nameCount').textContent = event.target.value.length; });
+    $('#selectedUploadButton').addEventListener('click', () => $('#selectedFile').click());
+    $('#unselectedUploadButton').addEventListener('click', () => $('#unselectedFile').click());
+    $('#selectedFile').addEventListener('change', event => readFile('selected', event.target.files[0]));
+    $('#unselectedFile').addEventListener('change', event => readFile('unselected', event.target.files[0]));
+    $('#closeModal').addEventListener('click', closeModal);
+    $('#cancelModal').addEventListener('click', closeModal);
+    $('#saveButton').addEventListener('click', saveTag);
+    $('#modalOverlay').addEventListener('mousedown', event => { if (event.target === $('#modalOverlay')) closeModal(); });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape' && $('#modalOverlay').classList.contains('show')) closeModal(); });
+
+    renderTable();
+    if (new URLSearchParams(location.search).get('modal') === '1') openModal();
+  </script>
+</body>
+</html>
