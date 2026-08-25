@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>直播管理</title>
+  <style>
+    :root {
+      --primary: #3f6fe8;
+      --primary-dark: #315fda;
+      --primary-light: #edf3ff;
+      --text: #303133;
+      --regular: #606266;
+      --muted: #909399;
+      --placeholder: #c0c4cc;
+      --border: #dcdfe6;
+      --border-light: #ebeef5;
+      --background: #f3f4f6;
+      --surface: #fff;
+      --success: #32ad7f;
+      --success-bg: #edf9f5;
+      --warning: #d9942b;
+      --warning-bg: #fff7e8;
+      --danger: #f56c6c;
+      --danger-bg: #fff1f1;
+      --info: #6f7c90;
+      --info-bg: #f1f3f6;
+      --shadow: 0 14px 36px rgba(31, 41, 61, .16);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-width: 1180px; min-height: 100%; }
+    body {
+      color: var(--text);
+      background: var(--background);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-size: 14px;
+    }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+
+    /* Header */
+    .app-header {
+      height: 64px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border: 1px solid var(--border-light);
+    }
+    .brand, .brand-copy, .header-nav, .nav-item, .user { display: flex; align-items: center; }
+    .brand-logo { width: 36px; height: 36px; margin-right: 20px; position: relative; overflow: hidden; background: #406bdd; }
+    .brand-logo::before { content: ""; position: absolute; inset: 7px 9px; border-left: 5px solid #fff; border-right: 5px solid #fff; }
+    .brand-logo::after { content: ""; position: absolute; right: 9px; top: 13px; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-right: 10px solid #fff; }
+    .brand-title { color: #111; font-size: 18px; font-weight: 650; white-space: nowrap; }
+    .brand-agency { margin-left: 20px; color: var(--regular); white-space: nowrap; }
+    .brand-agency .chevron { margin-left: 24px; color: var(--primary); }
+    .header-nav { gap: 34px; margin-left: auto; }
+    .nav-item { gap: 10px; color: #262626; font-size: 15px; white-space: nowrap; }
+    .nav-item.active { color: var(--primary); }
+    .chevron { width: 7px; height: 7px; display: inline-block; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translateY(-2px); }
+    .user { height: 56px; margin-left: 64px; flex-direction: column; justify-content: center; }
+    .avatar { width: 35px; height: 35px; border-radius: 50%; position: relative; background: #e4e7ed; }
+    .avatar::before { content: ""; width: 9px; height: 9px; position: absolute; left: 13px; top: 7px; border-radius: 50%; background: #fff; }
+    .avatar::after { content: ""; width: 17px; height: 10px; position: absolute; left: 9px; top: 20px; border-radius: 9px 9px 3px 3px; background: #fff; }
+    .user-name { margin-top: -4px; padding: 1px 7px; border-radius: 4px; color: #fff; background: #85888d; font-size: 12px; }
+
+    .workspace-tabs { height: 54px; padding: 10px 12px; display: flex; align-items: center; gap: 6px; background: #f0f1f3; }
+    .workspace-tab { min-width: 96px; height: 34px; padding: 0 20px; display: inline-flex; align-items: center; justify-content: center; gap: 14px; color: #2f3033; background: #fff; border: 1px solid var(--border); border-radius: 4px; font-weight: 600; }
+    .workspace-tab.active { color: var(--primary); border-color: var(--primary); }
+    .workspace-tab .close { font-size: 16px; font-weight: 400; }
+    .more-actions { margin-left: auto; display: flex; align-items: center; gap: 12px; color: var(--regular); }
+
+    /* Page navigation */
+    .page { padding: 0 12px 14px; }
+    .module-nav { height: 72px; padding: 0 20px; display: flex; align-items: flex-end; gap: 44px; background: #fff; }
+    .module-tab { height: 52px; padding: 0 2px; color: #202328; background: transparent; border: 0; border-bottom: 2px solid transparent; font-size: 15px; font-weight: 600; }
+    .module-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .module-line { height: 1px; margin-bottom: 21px; flex: 1; background: var(--border); }
+
+    /* Filters and table */
+    .filter-card { min-height: 86px; margin-top: 12px; padding: 20px; display: flex; align-items: center; background: #fff; }
+    .filter-fields { display: flex; align-items: center; gap: 26px; }
+    .filter-item { display: flex; align-items: center; gap: 12px; }
+    .filter-label { color: var(--regular); font-size: 15px; white-space: nowrap; }
+    .control-input, .control-select { width: 260px; height: 36px; padding: 0 13px; color: var(--text); background: #fff; border: 1px solid var(--border); border-radius: 4px; outline: none; }
+    .control-select { min-width: 190px; width: 190px; }
+    .control-input::placeholder { color: var(--placeholder); }
+    .control-input:focus, .control-select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(63, 111, 232, .1); }
+    .filter-actions { display: flex; gap: 10px; margin-left: 64px; }
+    .btn { height: 36px; padding: 0 18px; color: var(--regular); background: #fff; border: 1px solid var(--border); border-radius: 4px; }
+    .btn:hover { color: var(--primary); border-color: #9eb5f2; }
+    .btn-primary { color: #fff; background: var(--primary); border-color: var(--primary); }
+    .btn-primary:hover { color: #fff; background: var(--primary-dark); border-color: var(--primary-dark); }
+    .btn-danger { color: var(--danger); border-color: #f3b5b5; }
+    .btn-large { height: 38px; padding: 0 20px; font-weight: 600; }
+
+    .list-card { min-height: calc(100vh - 304px); margin-top: 12px; padding: 20px; background: #fff; }
+    .toolbar { display: flex; align-items: center; justify-content: space-between; }
+    .toolbar-tip { color: var(--muted); font-size: 13px; }
+    .toolbar-tip strong { color: var(--regular); font-weight: 500; }
+    .table-wrap { margin-top: 18px; overflow-x: auto; border: 1px solid var(--border-light); }
+    table { width: 100%; min-width: 1020px; table-layout: fixed; border-collapse: collapse; }
+    th, td { height: 58px; padding: 0 14px; color: var(--regular); text-align: left; border-bottom: 1px solid var(--border-light); }
+    th { height: 40px; color: var(--regular); background: #f3f4f6; font-weight: 500; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:hover td { background: #fafcff; }
+    .col-index { width: 68px; text-align: center; }
+    .col-name { width: 23%; }
+    .col-platform { width: 120px; }
+    .col-id { width: 250px; }
+    .col-count { width: 100px; text-align: center; }
+    .col-time { width: 185px; }
+    .col-status { width: 100px; }
+    .col-action { width: 210px; text-align: center; white-space: nowrap; }
+    .primary-text { color: #414b5b; }
+    .secondary-text { margin-top: 4px; color: var(--muted); font-size: 12px; }
+    .platform-cell { display: inline-flex; align-items: center; gap: 8px; }
+    .platform-list { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+    .platform-icon { width: 25px; height: 25px; display: grid; place-items: center; color: #27ad61; background: #effaf4; border: 1px solid #cfeedd; border-radius: 6px; }
+    .platform-icon svg { width: 17px; height: 17px; }
+    .category-tag { height: 24px; padding: 0 9px; display: inline-flex; align-items: center; color: var(--primary); background: var(--primary-light); border-radius: 3px; font-size: 12px; }
+    .pin-tag { height: 22px; margin-left: 8px; padding: 0 7px; display: inline-flex; align-items: center; color: #d98216; background: #fff7e8; border-radius: 3px; font-size: 12px; vertical-align: middle; }
+    .status { min-width: 58px; height: 24px; padding: 0 8px; display: inline-flex; align-items: center; justify-content: center; border-radius: 3px; font-size: 12px; }
+    .status.live { color: var(--danger); background: var(--danger-bg); }
+    .status.upcoming { color: var(--warning); background: var(--warning-bg); }
+    .status.ended { color: var(--info); background: var(--info-bg); }
+    .status.enabled { color: var(--success); background: var(--success-bg); }
+    .status.disabled { color: var(--info); background: var(--info-bg); }
+    .table-action { padding: 5px 7px; color: var(--primary); background: transparent; border: 0; }
+    .table-action.danger { color: var(--danger); }
+    .empty { height: 180px; color: var(--muted); text-align: center; }
+    .pagination { margin-top: 16px; display: flex; align-items: center; justify-content: flex-end; gap: 8px; color: var(--regular); }
+    .page-btn { min-width: 30px; height: 30px; padding: 0 8px; color: var(--regular); background: #fff; border: 1px solid var(--border); border-radius: 4px; }
+    .page-btn.active { color: #fff; background: var(--primary); border-color: var(--primary); }
+
+    .video-name { display: flex; align-items: center; gap: 10px; }
+    .video-thumb { width: 56px; height: 34px; position: relative; display: grid; place-items: center; flex: 0 0 auto; overflow: hidden; border-radius: 3px; background: linear-gradient(145deg, #324b76, #9db3d6); }
+    .video-thumb::after { content: ""; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 8px solid #fff; transform: translateX(1px); }
+    .session-cover-thumb { width: 78px; height: 44px; display: grid; place-items: center; overflow: hidden; color: rgba(255,255,255,.92); border-radius: 4px; background: linear-gradient(145deg, #3865cf, #8cadfa); }
+    .session-cover-thumb.cover-orange { background: linear-gradient(145deg, #dd7b3f, #f3bd79); }
+    .session-cover-thumb.cover-green { background: linear-gradient(145deg, #268b78, #76c9b9); }
+    .session-cover-thumb.cover-purple { background: linear-gradient(145deg, #6c55b6, #b19ee8); }
+    .session-cover-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .session-cover-thumb svg { width: 24px; height: 24px; }
+
+    /* Modal */
+    .overlay { position: fixed; inset: 0; z-index: 50; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(0, 0, 0, .48); }
+    .overlay.show { display: flex; }
+    .modal { width: min(760px, calc(100vw - 60px)); max-height: calc(100vh - 48px); overflow: hidden; background: #fff; box-shadow: var(--shadow); }
+    .modal.modal-wide { width: min(900px, calc(100vw - 60px)); }
+    .modal-header { height: 58px; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-light); }
+    .modal-title { color: #30343a; font-size: 18px; font-weight: 500; }
+    .modal-close { width: 32px; height: 32px; padding: 0; display: grid; place-items: center; color: var(--muted); background: transparent; border: 0; }
+    .modal-close svg { width: 18px; height: 18px; }
+    .modal-body { max-height: calc(100vh - 180px); padding: 20px 24px 24px; overflow-y: auto; background: #f7f8fa; }
+    .form-panel { padding: 16px 18px 5px; background: #fff; }
+    .form-row { min-height: 50px; display: flex; align-items: flex-start; }
+    .form-row + .form-row { margin-top: 12px; }
+    .form-label { width: 112px; padding-top: 9px; flex: 0 0 auto; color: var(--regular); text-align: right; }
+    .required::before { content: "*"; margin-right: 5px; color: var(--danger); }
+    .form-control { min-width: 0; margin-left: 16px; flex: 1; }
+    .text-wrap { position: relative; }
+    .form-input, .form-select { width: 100%; height: 38px; padding: 0 14px; color: var(--text); background: #fff; border: 1px solid var(--border); border-radius: 4px; outline: 0; }
+    .form-input.with-count { padding-right: 60px; }
+    .form-input:focus, .form-select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(63, 111, 232, .1); }
+    .form-select:disabled, .form-input:disabled { color: var(--placeholder); background: #f5f7fa; cursor: not-allowed; }
+    .platform-checkboxes { min-height: 38px; padding: 7px 12px; display: flex; align-items: center; gap: 24px; background: #fff; border: 1px solid var(--border); border-radius: 4px; }
+    .check-option { display: inline-flex; align-items: center; gap: 7px; color: var(--regular); cursor: pointer; user-select: none; }
+    .check-option input { width: 16px; height: 16px; margin: 0; accent-color: var(--primary); }
+    .platform-pending { color: var(--muted); font-size: 12px; }
+    .counter { position: absolute; right: 12px; top: 10px; color: var(--muted); font-size: 12px; }
+    .help { min-height: 18px; margin-top: 5px; color: var(--muted); font-size: 12px; line-height: 18px; }
+    .help.error { color: var(--danger); }
+    .modal-footer { height: 62px; padding: 0 20px; display: flex; align-items: center; justify-content: flex-end; gap: 10px; background: #fff; border-top: 1px solid var(--border-light); }
+    .modal-footer .btn { min-width: 68px; }
+
+    .upload-dropzone { min-height: 118px; padding: 18px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; color: var(--muted); background: #fafbfc; border: 1px dashed #c9ced8; border-radius: 4px; }
+    .upload-dropzone:hover, .upload-dropzone.dragover { color: var(--primary); background: #f7faff; border-color: var(--primary); }
+    .upload-dropzone svg { width: 30px; height: 30px; }
+    .upload-title { color: var(--regular); }
+    .upload-title strong { color: var(--primary); font-weight: 500; }
+    .upload-tip { font-size: 12px; }
+    .session-cover-upload { width: 192px; height: 108px; padding: 0; position: relative; display: grid; place-items: center; overflow: hidden; color: var(--muted); background: #fafbfc; border: 1px dashed #c9ced8; border-radius: 4px; }
+    .session-cover-upload:hover { color: var(--primary); background: #f7faff; border-color: var(--primary); }
+    .session-cover-upload .session-cover-thumb { width: 100%; height: 100%; border-radius: 0; }
+    .cover-empty { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 7px; font-size: 13px; }
+    .cover-empty svg { width: 28px; height: 28px; }
+    .cover-replace { padding: 5px 9px; position: absolute; right: 6px; bottom: 6px; color: #fff; background: rgba(0,0,0,.58); border-radius: 3px; font-size: 12px; }
+    .pending-list { margin-top: 14px; border: 1px solid var(--border-light); }
+    .pending-head, .pending-row { min-height: 46px; display: grid; grid-template-columns: minmax(150px, 1fr) 190px 230px 46px; align-items: center; gap: 10px; padding: 0 10px; border-bottom: 1px solid var(--border-light); }
+    .pending-head { min-height: 36px; color: var(--regular); background: #f5f6f8; }
+    .pending-row:last-child { border-bottom: 0; }
+    .pending-file { min-width: 0; }
+    .pending-file-name { overflow: hidden; color: #4a5567; text-overflow: ellipsis; white-space: nowrap; }
+    .pending-file-size { color: var(--muted); font-size: 12px; }
+    .pending-select { width: 100%; height: 32px; padding: 0 8px; color: var(--regular); background: #fff; border: 1px solid var(--border); border-radius: 3px; }
+    .remove-file { width: 28px; height: 28px; padding: 0; color: var(--danger); background: transparent; border: 0; }
+    .pending-empty { padding: 14px; color: var(--muted); text-align: center; }
+
+    .toast { min-width: 230px; padding: 11px 16px; position: fixed; left: 50%; top: 26px; z-index: 100; display: flex; align-items: center; justify-content: center; transform: translate(-50%, -16px); opacity: 0; pointer-events: none; color: #2e765f; background: #eefaf5; border: 1px solid #bce9d8; border-radius: 4px; box-shadow: 0 7px 18px rgba(0, 0, 0, .08); transition: .2s ease; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .toast.error { color: #a84343; background: #fff2f2; border-color: #f4c6c6; }
+
+    @media (max-width: 1420px) {
+      .header-nav { gap: 22px; }
+      .user { margin-left: 34px; }
+      .filter-fields { gap: 18px; }
+      .filter-actions { margin-left: 30px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-logo" aria-hidden="true"></div>
+      <div class="brand-copy">
+        <div class="brand-title">成都住建线上房产超市管理平台</div>
+        <div class="brand-agency">成都市住房和城乡建设局 <span class="chevron"></span></div>
+      </div>
+    </div>
+    <nav class="header-nav" aria-label="主导航">
+      <div class="nav-item">项目 <span class="chevron"></span></div>
+      <div class="nav-item">申请 <span class="chevron"></span></div>
+      <div class="nav-item active">运营 <span class="chevron"></span></div>
+      <div class="nav-item">统计 <span class="chevron"></span></div>
+      <div class="nav-item">政务 <span class="chevron"></span></div>
+      <div class="nav-item">管理 <span class="chevron"></span></div>
+      <div class="nav-item">系统 <span class="chevron"></span></div>
+    </nav>
+    <div class="user"><div class="avatar"></div><div class="user-name">周世杰</div></div>
+  </header>
+
+  <div class="workspace-tabs">
+    <div class="workspace-tab">选择企业</div>
+    <div class="workspace-tab">项目管理</div>
+    <div class="workspace-tab">内容管理</div>
+    <div class="workspace-tab active">直播管理 <span class="close">×</span></div>
+    <div class="more-actions">更多操作 <span class="chevron"></span></div>
+  </div>
+
+  <main class="page">
+    <nav class="module-nav" id="moduleTabs" aria-label="直播管理模块">
+      <button class="module-tab active" data-module="rooms">直播间管理</button>
+      <button class="module-tab" data-module="sessions">直播场次管理</button>
+      <button class="module-tab" data-module="videos">直播回放</button>
+      <div class="module-line"></div>
+    </nav>
+
+    <section class="filter-card">
+      <div class="filter-fields" id="filterFields"></div>
+      <div class="filter-actions">
+        <button class="btn btn-primary" id="searchButton">查询</button>
+        <button class="btn" id="resetButton">重置</button>
+      </div>
+    </section>
+
+    <section class="list-card">
+      <div class="toolbar">
+        <button class="btn btn-primary btn-large" id="addButton">新增直播间</button>
+        <div class="toolbar-tip" id="toolbarTip"></div>
+      </div>
+      <div class="table-wrap">
+        <table><thead id="tableHead"></thead><tbody id="tableBody"></tbody></table>
+      </div>
+      <div class="pagination">
+        <span>共 <span id="pageTotal">0</span> 条</span>
+        <button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">›</button><span>10条/页</span>
+      </div>
+    </section>
+  </main>
+
+  <div class="overlay" id="modalOverlay" aria-hidden="true">
+    <section class="modal" id="modalBox" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <header class="modal-header">
+        <div class="modal-title" id="modalTitle"></div>
+        <button class="modal-close" id="closeModal" aria-label="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+      </header>
+      <div class="modal-body" id="modalBody"></div>
+      <footer class="modal-footer"><button class="btn" id="cancelModal">取消</button><button class="btn btn-primary" id="saveButton">保存</button></footer>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const accounts = [
+      { value: 'wxv_live_001', label: '成都住建房产超市（wxv_live_001）' },
+      { value: 'wxv_live_002', label: '安家成都（wxv_live_002）' },
+      { value: 'wxv_live_003', label: '住进成都（wxv_live_003）' }
+    ];
+    const liveCategories = ['精选', '新房直播', '看房团', '住进成都'];
+
+    const state = {
+      module: 'rooms',
+      query: {},
+      modalType: null,
+      editingId: null,
+      pendingFiles: [],
+      sessionCover: null,
+      rooms: [
+        { id: 1, platforms: ['视频号'], accountId: 'wxv_live_001', category: '精选', name: '成都房产超市官方直播间', enabled: true, createdAt: '2026-08-16 10:24:18' },
+        { id: 2, platforms: ['视频号'], accountId: 'wxv_live_002', category: '新房直播', name: '安家成都线上直播间', enabled: true, createdAt: '2026-08-17 14:36:52' },
+        { id: 3, platforms: ['视频号'], accountId: 'wxv_live_003', category: '住进成都', name: '住进成都专题直播间', enabled: false, createdAt: '2026-08-18 09:18:06' }
+      ],
+      sessions: [
+        { id: 101, roomId: 1, name: '成都新房政策专场解读', cover: 'blue', start: '2026-08-18T14:00', end: '2026-08-18T15:30' },
+        { id: 102, roomId: 2, name: '新都区热门楼盘线上看房', cover: 'orange', start: '2026-08-21T14:00', end: '2026-08-21T16:00' },
+        { id: 103, roomId: 1, name: '公积金政策答疑专场', cover: 'green', start: '2026-08-25T10:00', end: '2026-08-25T11:00', pinned: true },
+        { id: 104, roomId: 3, name: '住进成都·幸福新津', cover: 'purple', start: '2026-08-28T15:00', end: '2026-08-28T16:30' }
+      ],
+      videos: [
+        { id: 201, roomId: 1, sessionId: 101, fileName: '成都新房政策专场回放.mp4', size: '186.2 MB', duration: '01:28:36', uploadedAt: '2026-08-18 17:06:24' },
+        { id: 202, roomId: 2, sessionId: 102, fileName: '安家成都直播预告.mp4', size: '92.8 MB', duration: '00:18:42', uploadedAt: '2026-08-19 11:32:08' },
+        { id: 203, roomId: 3, sessionId: 0, fileName: '住进成都往期精选.mov', size: '128.6 MB', duration: '00:56:15', uploadedAt: '2026-08-20 15:45:31' }
+      ]
+    };
+
+    const moduleMeta = {
+      rooms: { add: '新增直播间', tip: '管理直播平台、直播分类与账号绑定' },
+      videos: { add: '上传视频回放', tip: '上传时一次完成直播间和场次关联' },
+      sessions: { add: '新增直播场次', tip: '配置场次名称、直播封面、直播时间及小程序顶部展示' }
+    };
+    const $ = selector => document.querySelector(selector);
+    const $$ = selector => [...document.querySelectorAll(selector)];
+    const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[char]);
+
+    function accountLabel(id) { return accounts.find(item => item.value === id)?.label || id; }
+    function getPlatforms(item) { return Array.isArray(item?.platforms) ? item.platforms : (item?.platform ? [item.platform] : []); }
+    function roomName(id) { return state.rooms.find(item => item.id === Number(id))?.name || '—'; }
+    function sessionName(id) { return state.sessions.find(item => item.id === Number(id))?.name || '未关联场次'; }
+    function dateText(value) { return value ? value.replace('T', ' ') : '—'; }
+    function formatBytes(size) {
+      if (size < 1024 * 1024) return `${Math.max(1, Math.round(size / 1024))} KB`;
+      return `${(size / 1024 / 1024).toFixed(1)} MB`;
+    }
+    function nowText() {
+      const date = new Date();
+      const two = value => String(value).padStart(2, '0');
+      return `${date.getFullYear()}-${two(date.getMonth() + 1)}-${two(date.getDate())} ${two(date.getHours())}:${two(date.getMinutes())}:${two(date.getSeconds())}`;
+    }
+    function sessionStatus(item) {
+      const now = Date.now(), start = new Date(item.start).getTime(), end = new Date(item.end).getTime();
+      if (now < start) return { label: '未开始', className: 'upcoming' };
+      if (now <= end) return { label: '直播中', className: 'live' };
+      return { label: '已结束', className: 'ended' };
+    }
+    function durationText(start, end) {
+      const minutes = Math.max(0, Math.round((new Date(end) - new Date(start)) / 60000));
+      return minutes >= 60 ? `${Math.floor(minutes / 60)}小时${minutes % 60 ? `${minutes % 60}分钟` : ''}` : `${minutes}分钟`;
+    }
+    function showToast(message, error = false) {
+      const toast = $('#toast');
+      toast.textContent = message;
+      toast.classList.toggle('error', error);
+      toast.classList.add('show');
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    function roomOptions(selected = '', placeholder = '全部直播间') {
+      return `<option value="">${placeholder}</option>${state.rooms.map(room => `<option value="${room.id}" ${String(room.id) === String(selected) ? 'selected' : ''}>${escapeHtml(room.name)}</option>`).join('')}`;
+    }
+    function sessionOptions(roomId, selected = '', placeholder = '请选择关联场次') {
+      const list = state.sessions.filter(item => !roomId || item.roomId === Number(roomId));
+      return `<option value="">${placeholder}</option>${list.map(item => `<option value="${item.id}" ${String(item.id) === String(selected) ? 'selected' : ''}>${escapeHtml(item.name)}（${dateText(item.start)}）</option>`).join('')}`;
+    }
+
+    function renderFilters() {
+      const query = state.query[state.module] || {};
+      if (state.module === 'rooms') {
+        $('#filterFields').innerHTML = `
+          <div class="filter-item"><label class="filter-label">直播间名称</label><input class="control-input" id="filterName" value="${escapeHtml(query.name || '')}" placeholder="请输入直播间名称"></div>
+          <div class="filter-item"><label class="filter-label">直播平台</label><select class="control-select" id="filterPlatform"><option value="">全部平台</option><option value="视频号" ${query.platform === '视频号' ? 'selected' : ''}>视频号</option></select></div>`;
+      } else if (state.module === 'videos') {
+        $('#filterFields').innerHTML = `
+          <div class="filter-item"><label class="filter-label">回放名称</label><input class="control-input" id="filterName" value="${escapeHtml(query.name || '')}" placeholder="请输入回放名称"></div>
+          <div class="filter-item"><label class="filter-label">所属直播间</label><select class="control-select" id="filterRoom">${roomOptions(query.roomId)}</select></div>`;
+      } else {
+        $('#filterFields').innerHTML = `
+          <div class="filter-item"><label class="filter-label">直播名称</label><input class="control-input" id="filterName" value="${escapeHtml(query.name || '')}" placeholder="请输入直播名称"></div>
+          <div class="filter-item"><label class="filter-label">所属直播间</label><select class="control-select" id="filterRoom">${roomOptions(query.roomId)}</select></div>
+          <div class="filter-item"><label class="filter-label">场次状态</label><select class="control-select" id="filterStatus"><option value="">全部状态</option><option value="upcoming" ${query.status === 'upcoming' ? 'selected' : ''}>未开始</option><option value="live" ${query.status === 'live' ? 'selected' : ''}>直播中</option><option value="ended" ${query.status === 'ended' ? 'selected' : ''}>已结束</option></select></div>`;
+      }
+    }
+
+    function collectFilters() {
+      const query = { name: $('#filterName')?.value.trim() || '' };
+      if (state.module === 'rooms') query.platform = $('#filterPlatform')?.value || '';
+      else query.roomId = $('#filterRoom')?.value || '';
+      if (state.module === 'sessions') query.status = $('#filterStatus')?.value || '';
+      state.query[state.module] = query;
+    }
+    function filteredRows() {
+      const query = state.query[state.module] || {};
+      if (state.module === 'rooms') return state.rooms.filter(item => (!query.name || item.name.includes(query.name)) && (!query.platform || getPlatforms(item).includes(query.platform)));
+      if (state.module === 'videos') return state.videos.filter(item => (!query.name || item.fileName.includes(query.name)) && (!query.roomId || item.roomId === Number(query.roomId)));
+      return state.sessions.filter(item => (!query.name || item.name.includes(query.name)) && (!query.roomId || item.roomId === Number(query.roomId)) && (!query.status || sessionStatus(item).className === query.status));
+    }
+
+    function renderRooms(rows) {
+      $('#tableHead').innerHTML = `<tr><th class="col-index">序号</th><th class="col-name">直播间名称</th><th class="col-platform">直播平台</th><th style="width:120px">直播分类</th><th class="col-id">视频号 ID</th><th class="col-count">场次数</th><th class="col-time">创建时间</th><th class="col-status">状态</th><th class="col-action">操作</th></tr>`;
+      $('#tableBody').innerHTML = rows.length ? rows.map((item, index) => `
+        <tr><td class="col-index">${index + 1}</td><td class="primary-text">${escapeHtml(item.name)}</td>
+        <td><div class="platform-list">${getPlatforms(item).map(platform => `<span class="platform-cell"><span class="platform-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8.5 7.5a4.8 4.8 0 016.8 0l.7.7a4.8 4.8 0 010 6.8l-.7.7a4.8 4.8 0 01-6.8 0l-.7-.7a4.8 4.8 0 010-6.8l.7-.7z"/><path d="M10 10l4 2-4 2v-4z"/></svg></span>${escapeHtml(platform)}</span>`).join('')}</div></td>
+        <td><span class="category-tag">${escapeHtml(item.category || '未分类')}</span></td>
+        <td><div class="primary-text">${escapeHtml(item.accountId)}</div><div class="secondary-text">${escapeHtml(accountLabel(item.accountId).split('（')[0])}</div></td>
+        <td class="col-count">${state.sessions.filter(session => session.roomId === item.id).length}</td><td>${item.createdAt}</td><td><span class="status ${item.enabled === false ? 'disabled' : 'enabled'}">${item.enabled === false ? '禁用' : '启用'}</span></td>
+        <td class="col-action"><button class="table-action" data-action="edit-room" data-id="${item.id}">编辑</button><button class="table-action" data-action="toggle-room" data-id="${item.id}">${item.enabled === false ? '启用' : '禁用'}</button><button class="table-action danger" data-action="delete-room" data-id="${item.id}">删除</button></td></tr>`).join('') : emptyRow(9);
+    }
+    function renderVideos(rows) {
+      $('#tableHead').innerHTML = `<tr><th class="col-index">序号</th><th style="width:28%">回放视频</th><th style="width:24%">关联直播场次</th><th style="width:19%">所属直播间</th><th style="width:100px">时长</th><th class="col-time">上传时间</th><th class="col-action">操作</th></tr>`;
+      $('#tableBody').innerHTML = rows.length ? rows.map((item, index) => `
+        <tr><td class="col-index">${index + 1}</td><td><div class="video-name"><span class="video-thumb"></span><div><div class="primary-text">${escapeHtml(item.fileName)}</div><div class="secondary-text">${item.size}</div></div></div></td>
+        <td><div class="primary-text">${escapeHtml(sessionName(item.sessionId))}</div>${item.sessionId ? `<div class="secondary-text">${dateText(state.sessions.find(session => session.id === item.sessionId)?.start)}</div>` : ''}</td>
+        <td>${escapeHtml(roomName(item.roomId))}</td><td>${item.duration}</td><td>${item.uploadedAt}</td>
+        <td class="col-action"><button class="table-action danger" data-action="delete-video" data-id="${item.id}">删除</button></td></tr>`).join('') : emptyRow(7);
+    }
+    function sessionCoverMarkup(cover) {
+      if (cover && cover.startsWith('data:')) return `<div class="session-cover-thumb"><img src="${cover}" alt="直播封面"></div>`;
+      const colorClass = cover && cover !== 'blue' ? ` cover-${cover}` : '';
+      return `<div class="session-cover-thumb${colorClass}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 11.5l3 2 4-3 4 4.5M8 9h.01"/></svg></div>`;
+    }
+    function renderSessions(rows) {
+      $('#tableHead').innerHTML = `<tr><th class="col-index">序号</th><th style="width:20%">直播名称</th><th style="width:110px">直播封面</th><th style="width:18%">所属直播间</th><th class="col-time">开始时间</th><th class="col-time">结束时间</th><th style="width:105px">直播时长</th><th class="col-status">状态</th><th class="col-action">操作</th></tr>`;
+      $('#tableBody').innerHTML = rows.length ? rows.sort((a, b) => new Date(b.start) - new Date(a.start)).map((item, index) => {
+        const status = sessionStatus(item);
+        return `<tr><td class="col-index">${index + 1}</td><td class="primary-text">${escapeHtml(item.name)}${item.pinned ? '<span class="pin-tag">小程序置顶</span>' : ''}</td><td>${sessionCoverMarkup(item.cover)}</td><td>${escapeHtml(roomName(item.roomId))}</td><td>${dateText(item.start)}</td><td>${dateText(item.end)}</td><td>${durationText(item.start, item.end)}</td><td><span class="status ${status.className}">${status.label}</span></td><td class="col-action"><button class="table-action" data-action="edit-session" data-id="${item.id}">编辑</button><button class="table-action" data-action="toggle-pin-session" data-id="${item.id}">${item.pinned ? '取消置顶' : '置顶'}</button><button class="table-action danger" data-action="delete-session" data-id="${item.id}">删除</button></td></tr>`;
+      }).join('') : emptyRow(9);
+    }
+    function emptyRow(columns) { return `<tr><td class="empty" colspan="${columns}">暂无符合条件的数据</td></tr>`; }
+
+    function renderPage() {
+      $$('.module-tab').forEach(tab => tab.classList.toggle('active', tab.dataset.module === state.module));
+      renderFilters();
+      $('#addButton').textContent = moduleMeta[state.module].add;
+      const rows = filteredRows();
+      $('#toolbarTip').innerHTML = `${moduleMeta[state.module].tip}，共 <strong>${rows.length}</strong> 条`;
+      $('#pageTotal').textContent = rows.length;
+      if (state.module === 'rooms') renderRooms(rows);
+      else if (state.module === 'videos') renderVideos(rows);
+      else renderSessions(rows);
+    }
+
+    function formHelp(id, text = '') { return `<div class="help" id="${id}">${text}</div>`; }
+    function openRoomModal(item = null) {
+      state.modalType = 'room'; state.editingId = item?.id ?? null;
+      const selectedPlatforms = getPlatforms(item);
+      $('#modalBox').classList.remove('modal-wide');
+      $('#modalTitle').textContent = item ? '编辑直播间' : '新增直播间';
+      $('#modalBody').innerHTML = `<div class="form-panel">
+        <div class="form-row"><label class="form-label required">直播平台</label><div class="form-control"><div class="platform-checkboxes" id="roomPlatforms"><label class="check-option"><input type="checkbox" value="视频号" ${selectedPlatforms.includes('视频号') ? 'checked' : ''}><span>视频号</span></label><span class="platform-pending">更多平台接入后可继续多选</span></div>${formHelp('platformHelp', '支持多选，当前仅开放视频号')}</div></div>
+        <div class="form-row"><label class="form-label required">视频号 ID</label><div class="form-control"><input class="form-input" id="roomAccount" maxlength="64" value="${escapeHtml(item?.accountId || '')}" placeholder="${selectedPlatforms.includes('视频号') ? '请输入视频号 ID' : '请先勾选视频号平台'}" ${selectedPlatforms.includes('视频号') ? '' : 'disabled'}>${formHelp('accountHelp', '勾选视频号平台后，手动输入视频号 ID')}</div></div>
+        <div class="form-row"><label class="form-label required">直播分类</label><div class="form-control"><select class="form-select" id="roomCategory"><option value="">请选择直播分类</option>${liveCategories.map(category => `<option value="${category}" ${item?.category === category ? 'selected' : ''}>${category}</option>`).join('')}</select>${formHelp('categoryHelp', '单选，选项来源于“标签配置 - 直播专区”')}</div></div>
+        <div class="form-row"><label class="form-label required">直播间名称</label><div class="form-control"><div class="text-wrap"><input class="form-input with-count" id="roomName" maxlength="30" value="${escapeHtml(item?.name || '')}" placeholder="请输入直播间名称"><span class="counter"><span id="roomNameCount">${item?.name.length || 0}</span>/30</span></div>${formHelp('roomNameHelp', '用于区分不同的视频号直播间')}</div></div>
+      </div>`;
+      showModal();
+      $$('#roomPlatforms input[type="checkbox"]').forEach(checkbox => checkbox.addEventListener('change', updateAccountInput));
+      $('#roomName').addEventListener('input', event => $('#roomNameCount').textContent = event.target.value.length);
+    }
+    function updateAccountInput() {
+      const hasVideoChannel = getSelectedPlatforms().includes('视频号'), input = $('#roomAccount');
+      input.disabled = !hasVideoChannel;
+      input.placeholder = hasVideoChannel ? '请输入视频号 ID' : '请先勾选视频号平台';
+      if (!hasVideoChannel) input.value = '';
+      if (hasVideoChannel) input.focus();
+    }
+    function getSelectedPlatforms() { return $$('#roomPlatforms input[type="checkbox"]:checked').map(input => input.value); }
+
+    function openSessionModal(item = null) {
+      state.modalType = 'session'; state.editingId = item?.id ?? null;
+      state.sessionCover = item?.cover || null;
+      $('#modalBox').classList.remove('modal-wide');
+      $('#modalTitle').textContent = item ? '编辑直播场次' : '新增直播场次';
+      $('#modalBody').innerHTML = `<div class="form-panel">
+        <div class="form-row"><label class="form-label required">直播名称</label><div class="form-control"><div class="text-wrap"><input class="form-input with-count" id="sessionTitle" maxlength="40" value="${escapeHtml(item?.name || '')}" placeholder="请输入本场直播名称"><span class="counter"><span id="sessionTitleCount">${item?.name.length || 0}</span>/40</span></div>${formHelp('sessionTitleHelp')}</div></div>
+        <div class="form-row"><label class="form-label required">直播封面</label><div class="form-control"><button class="session-cover-upload" id="sessionCoverButton" type="button"><span id="sessionCoverPreview"></span></button><input id="sessionCoverFile" type="file" accept="image/png,image/jpeg,.png,.jpg,.jpeg" hidden>${formHelp('sessionCoverHelp', '支持 PNG、JPG，最大不超过 2MB，建议图片比例 16:9')}</div></div>
+        <div class="form-row"><label class="form-label required">所属直播间</label><div class="form-control"><select class="form-select" id="sessionRoom">${roomOptions(item?.roomId, '请选择直播间')}</select>${formHelp('sessionRoomHelp')}</div></div>
+        <div class="form-row"><label class="form-label required">开始时间</label><div class="form-control"><input class="form-input" id="sessionStart" type="datetime-local" value="${item?.start || ''}">${formHelp('sessionStartHelp')}</div></div>
+        <div class="form-row"><label class="form-label required">结束时间</label><div class="form-control"><input class="form-input" id="sessionEnd" type="datetime-local" value="${item?.end || ''}">${formHelp('sessionEndHelp', '结束时间必须晚于开始时间')}</div></div>
+      </div>`;
+      showModal();
+      $('#sessionTitle').addEventListener('input', event => $('#sessionTitleCount').textContent = event.target.value.length);
+      renderSessionCover();
+      $('#sessionCoverButton').addEventListener('click', () => $('#sessionCoverFile').click());
+      $('#sessionCoverFile').addEventListener('change', event => readSessionCover(event.target.files[0]));
+    }
+
+    function renderSessionCover() {
+      const preview = $('#sessionCoverPreview');
+      if (!preview) return;
+      preview.innerHTML = state.sessionCover ? `${sessionCoverMarkup(state.sessionCover)}<span class="cover-replace">更换封面</span>` : `<span class="cover-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14v5h14v-5"/></svg><span>上传直播封面</span></span>`;
+    }
+
+    function readSessionCover(file) {
+      if (!file) return;
+      if (!['image/png', 'image/jpeg'].includes(file.type) && !/\.(png|jpe?g)$/i.test(file.name)) return setError('sessionCoverHelp', '仅支持 PNG、JPG 格式');
+      if (file.size > 2 * 1024 * 1024) return setError('sessionCoverHelp', '直播封面最大不超过 2MB');
+      const reader = new FileReader();
+      reader.onload = () => { state.sessionCover = reader.result; $('#sessionCoverHelp').className = 'help'; $('#sessionCoverHelp').textContent = '支持 PNG、JPG，最大不超过 2MB，建议图片比例 16:9'; renderSessionCover(); };
+      reader.readAsDataURL(file);
+    }
+
+    function openVideoModal() {
+      state.modalType = 'video'; state.editingId = null; state.pendingFiles = [];
+      $('#modalBox').classList.add('modal-wide');
+      $('#modalTitle').textContent = '上传视频回放';
+      $('#modalBody').innerHTML = `<div class="form-panel">
+        <div class="form-row"><div class="form-label required">视频回放</div><div class="form-control">
+          <button class="upload-dropzone" id="uploadDropzone" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14v5h14v-5"/></svg><div class="upload-title">点击或拖拽视频到此处，<strong>可多选</strong></div><div class="upload-tip">支持 MP4、MOV，单个视频最大不超过 200MB</div></button>
+          <input id="videoFiles" type="file" accept="video/mp4,video/quicktime,.mp4,.mov" multiple hidden>${formHelp('videoFilesHelp', '所属直播间必填，关联直播场次非必填')}
+          <div class="pending-list" id="pendingList"><div class="pending-empty">尚未选择视频文件</div></div>
+        </div></div>
+      </div>`;
+      showModal();
+      const dropzone = $('#uploadDropzone');
+      dropzone.addEventListener('click', () => $('#videoFiles').click());
+      dropzone.addEventListener('dragover', event => { event.preventDefault(); dropzone.classList.add('dragover'); });
+      dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+      dropzone.addEventListener('drop', event => { event.preventDefault(); dropzone.classList.remove('dragover'); addVideoFiles(event.dataTransfer.files); });
+      $('#videoFiles').addEventListener('change', event => addVideoFiles(event.target.files));
+    }
+    function addVideoFiles(fileList) {
+      const files = [...fileList];
+      const invalidFormat = files.filter(file => !/\.(mp4|mov)$/i.test(file.name) && !['video/mp4', 'video/quicktime'].includes(file.type));
+      const oversized = files.filter(file => file.size > 200 * 1024 * 1024);
+      const invalid = [...new Set([...invalidFormat, ...oversized])];
+      if (invalid.length) {
+        $('#videoFilesHelp').className = 'help error';
+        $('#videoFilesHelp').textContent = invalidFormat.length && oversized.length ? '仅支持 MP4、MOV，且单个视频最大不超过 200MB' : (invalidFormat.length ? '仅支持 MP4、MOV 格式' : '单个视频最大不超过 200MB');
+      } else {
+        $('#videoFilesHelp').className = 'help';
+        $('#videoFilesHelp').textContent = '所属直播间必填，关联直播场次非必填';
+      }
+      files.filter(file => !invalid.includes(file)).forEach(file => {
+        if (!state.pendingFiles.some(item => item.name === file.name && item.size === file.size)) state.pendingFiles.push({ name: file.name, size: file.size, roomId: '', sessionId: '' });
+      });
+      renderPendingFiles();
+    }
+    function renderPendingFiles() {
+      const container = $('#pendingList');
+      if (!container) return;
+      container.innerHTML = state.pendingFiles.length ? `<div class="pending-head"><span>视频文件</span><span>所属直播间</span><span>关联直播场次（非必填）</span><span></span></div>${state.pendingFiles.map((file, index) => `<div class="pending-row"><div class="pending-file"><div class="pending-file-name">${escapeHtml(file.name)}</div><div class="pending-file-size">${formatBytes(file.size)}</div></div><select class="pending-select" data-pending-room="${index}">${roomOptions(file.roomId, '请选择直播间')}</select><select class="pending-select" data-pending-session="${index}" ${file.roomId ? '' : 'disabled'}>${sessionOptions(file.roomId, file.sessionId, file.roomId ? '不关联直播场次' : '请先选择直播间')}</select><button class="remove-file" data-remove-file="${index}" title="移除">×</button></div>`).join('')}` : '<div class="pending-empty">尚未选择视频文件</div>';
+      $$('[data-pending-room]').forEach(select => select.addEventListener('change', event => { const file = state.pendingFiles[Number(event.target.dataset.pendingRoom)]; file.roomId = event.target.value; file.sessionId = ''; renderPendingFiles(); }));
+      $$('[data-pending-session]').forEach(select => select.addEventListener('change', event => state.pendingFiles[Number(event.target.dataset.pendingSession)].sessionId = event.target.value));
+      $$('[data-remove-file]').forEach(button => button.addEventListener('click', () => { state.pendingFiles.splice(Number(button.dataset.removeFile), 1); renderPendingFiles(); }));
+    }
+
+    function showModal() {
+      $('#modalOverlay').classList.add('show');
+      $('#modalOverlay').setAttribute('aria-hidden', 'false');
+    }
+    function closeModal() {
+      $('#modalOverlay').classList.remove('show');
+      $('#modalOverlay').setAttribute('aria-hidden', 'true');
+      state.modalType = null; state.editingId = null; state.pendingFiles = []; state.sessionCover = null;
+    }
+    function setError(id, message) { const node = $(`#${id}`); if (node) { node.className = 'help error'; node.textContent = message; } }
+
+    function saveRoom() {
+      const platforms = getSelectedPlatforms(), accountId = $('#roomAccount').value.trim(), category = $('#roomCategory').value, name = $('#roomName').value.trim();
+      let valid = true;
+      if (!platforms.length) { setError('platformHelp', '请至少选择一个直播平台'); valid = false; }
+      if (platforms.includes('视频号') && !accountId) { setError('accountHelp', '请输入视频号 ID'); valid = false; }
+      if (!category) { setError('categoryHelp', '请选择直播分类'); valid = false; }
+      if (!name) { setError('roomNameHelp', '请输入直播间名称'); valid = false; }
+      if (state.rooms.some(item => item.id !== state.editingId && item.name === name)) { setError('roomNameHelp', '直播间名称已存在'); valid = false; }
+      if (accountId && state.rooms.some(item => item.id !== state.editingId && item.accountId === accountId)) { setError('accountHelp', '该视频号 ID 已绑定其他直播间'); valid = false; }
+      if (!valid) return;
+      const editing = Boolean(state.editingId);
+      if (editing) {
+        const room = state.rooms.find(item => item.id === state.editingId);
+        Object.assign(room, { platforms, accountId, category, name });
+        delete room.platform;
+      } else state.rooms.push({ id: Date.now(), platforms, accountId, category, name, enabled: true, createdAt: nowText() });
+      closeModal(); renderPage(); showToast(editing ? '直播间编辑成功' : '直播间新增成功');
+    }
+    function saveSession() {
+      const name = $('#sessionTitle').value.trim(), roomId = Number($('#sessionRoom').value), start = $('#sessionStart').value, end = $('#sessionEnd').value;
+      let valid = true;
+      if (!name) { setError('sessionTitleHelp', '请输入直播名称'); valid = false; }
+      if (!state.sessionCover) { setError('sessionCoverHelp', '请上传直播封面'); valid = false; }
+      if (!roomId) { setError('sessionRoomHelp', '请选择所属直播间'); valid = false; }
+      if (!start) { setError('sessionStartHelp', '请选择开始时间'); valid = false; }
+      if (!end) { setError('sessionEndHelp', '请选择结束时间'); valid = false; }
+      if (start && end && new Date(end) <= new Date(start)) { setError('sessionEndHelp', '结束时间必须晚于开始时间'); valid = false; }
+      const overlap = state.sessions.some(item => item.id !== state.editingId && item.roomId === roomId && new Date(start) < new Date(item.end) && new Date(end) > new Date(item.start));
+      if (start && end && overlap) { setError('sessionEndHelp', '该直播间在所选时间段已有其他场次'); valid = false; }
+      if (!valid) return;
+      const editing = Boolean(state.editingId);
+      if (editing) Object.assign(state.sessions.find(item => item.id === state.editingId), { name, cover: state.sessionCover, roomId, start, end });
+      else state.sessions.push({ id: Date.now(), name, cover: state.sessionCover, roomId, start, end, pinned: false });
+      closeModal(); renderPage(); showToast(editing ? '直播场次编辑成功' : '直播场次新增成功');
+    }
+    function saveVideos() {
+      let valid = true;
+      if (!state.pendingFiles.length) { setError('videoFilesHelp', '请至少选择一个视频回放'); valid = false; }
+      if (state.pendingFiles.some(file => !file.roomId)) { setError('videoFilesHelp', '请为每个视频选择所属直播间'); valid = false; }
+      if (!valid) return;
+      const uploadedAt = nowText();
+      state.pendingFiles.forEach((file, index) => state.videos.push({ id: Date.now() + index, roomId: Number(file.roomId), sessionId: Number(file.sessionId), fileName: file.name, size: formatBytes(file.size), duration: '待识别', uploadedAt }));
+      const count = state.pendingFiles.length; closeModal(); renderPage(); showToast(`已成功上传 ${count} 个视频回放`);
+    }
+    function saveModal() {
+      if (state.modalType === 'room') saveRoom();
+      else if (state.modalType === 'session') saveSession();
+      else saveVideos();
+    }
+
+    $('#moduleTabs').addEventListener('click', event => {
+      const tab = event.target.closest('[data-module]'); if (!tab) return;
+      state.module = tab.dataset.module; renderPage();
+    });
+    $('#searchButton').addEventListener('click', () => { collectFilters(); renderPage(); });
+    $('#resetButton').addEventListener('click', () => { state.query[state.module] = {}; renderPage(); });
+    $('#filterFields').addEventListener('keydown', event => { if (event.key === 'Enter') $('#searchButton').click(); });
+    $('#addButton').addEventListener('click', () => {
+      if (state.module === 'rooms') openRoomModal(); else if (state.module === 'videos') openVideoModal(); else openSessionModal();
+    });
+    $('#tableBody').addEventListener('click', event => {
+      const button = event.target.closest('[data-action]'); if (!button) return;
+      const id = Number(button.dataset.id), action = button.dataset.action;
+      if (action === 'edit-room') openRoomModal(state.rooms.find(item => item.id === id));
+      if (action === 'edit-session') openSessionModal(state.sessions.find(item => item.id === id));
+      if (action === 'toggle-pin-session') {
+        const session = state.sessions.find(item => item.id === id);
+        if (session.pinned) {
+          session.pinned = false;
+          renderPage();
+          showToast('已取消小程序直播顶部展示');
+          return;
+        }
+        const current = state.sessions.find(item => item.pinned);
+        if (current && !confirm(`“${current.name}”当前展示在小程序直播顶部，确认替换吗？`)) return;
+        state.sessions.forEach(item => { item.pinned = item.id === id; });
+        renderPage();
+        showToast('已设为小程序直播顶部');
+      }
+      if (action === 'toggle-room') {
+        const room = state.rooms.find(item => item.id === id);
+        const willEnable = room.enabled === false;
+        if (confirm(`确认${willEnable ? '启用' : '禁用'}该直播间吗？`)) {
+          room.enabled = willEnable;
+          renderPage();
+          showToast(`直播间已${willEnable ? '启用' : '禁用'}`);
+        }
+      }
+      if (action === 'delete-room') {
+        if (state.sessions.some(item => item.roomId === id)) return showToast('该直播间存在关联场次，请先删除场次', true);
+        if (confirm('确认删除该直播间吗？')) { state.rooms = state.rooms.filter(item => item.id !== id); renderPage(); showToast('直播间删除成功'); }
+      }
+      if (action === 'delete-session') {
+        if (state.videos.some(item => item.sessionId === id)) return showToast('该场次已关联视频回放，请先解除关联', true);
+        if (confirm('确认删除该直播场次吗？')) { state.sessions = state.sessions.filter(item => item.id !== id); renderPage(); showToast('直播场次删除成功'); }
+      }
+      if (action === 'delete-video' && confirm('确认删除该视频回放吗？')) { state.videos = state.videos.filter(item => item.id !== id); renderPage(); showToast('视频回放删除成功'); }
+    });
+    $('#closeModal').addEventListener('click', closeModal);
+    $('#cancelModal').addEventListener('click', closeModal);
+    $('#saveButton').addEventListener('click', saveModal);
+    $('#modalOverlay').addEventListener('mousedown', event => { if (event.target === $('#modalOverlay')) closeModal(); });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape' && $('#modalOverlay').classList.contains('show')) closeModal(); });
+
+    const params = new URLSearchParams(location.search);
+    if (['rooms', 'videos', 'sessions'].includes(params.get('tab'))) state.module = params.get('tab');
+    renderPage();
+    if (params.get('modal') === 'room') openRoomModal();
+    if (params.get('modal') === 'video') { state.module = 'videos'; renderPage(); openVideoModal(); if (params.get('demo') === '1') { state.pendingFiles = [{ name: '成都新房政策回放.mp4', size: 186200000, roomId: '1', sessionId: '101' }, { name: '安家成都线上看房.mov', size: 128600000, roomId: '2', sessionId: '' }]; renderPendingFiles(); } }
+    if (params.get('modal') === 'session') { state.module = 'sessions'; renderPage(); openSessionModal(); }
+  </script>
+</body>
+</html>
