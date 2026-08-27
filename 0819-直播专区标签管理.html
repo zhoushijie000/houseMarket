@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>直播专区标签管理</title>
+  <title>小程序管理 - 直播标签配置</title>
   <style>
     :root {
       --primary: #3f6fe8;
@@ -79,9 +79,52 @@
     .brand-agency { margin-left: 20px; color: var(--regular); white-space: nowrap; }
     .brand-agency .chevron { margin-left: 24px; color: var(--primary); }
 
-    .header-nav { gap: 34px; margin-left: auto; }
-    .nav-item { gap: 10px; font-size: 15px; color: #262626; white-space: nowrap; }
-    .nav-item.active { color: var(--primary); }
+    .header-nav { height: 100%; margin-left: auto; }
+    .nav-item { height: 100%; position: relative; color: #262626; white-space: nowrap; }
+    .nav-trigger {
+      height: 100%;
+      padding: 0 17px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: inherit;
+      background: transparent;
+      border: 0;
+      font-size: 15px;
+    }
+    .nav-trigger:hover, .nav-item.open .nav-trigger { background: #f7f9fd; }
+    .nav-item.active .nav-trigger { color: var(--primary); }
+    .nav-item.open .nav-trigger .chevron { transform: rotate(225deg) translate(-1px, -1px); }
+    .nav-menu {
+      width: 212px;
+      padding: 10px 0;
+      position: absolute;
+      top: calc(100% + 1px);
+      left: 50%;
+      z-index: 70;
+      display: none;
+      transform: translateX(-50%);
+      background: #fff;
+      border: 1px solid #edf0f5;
+      border-radius: 4px;
+      box-shadow: 0 8px 24px rgba(31, 41, 61, .14);
+    }
+    .nav-item.open .nav-menu { display: block; }
+    .nav-menu-link {
+      width: 100%;
+      height: 46px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      color: #30343a;
+      background: transparent;
+      border: 0;
+      text-align: left;
+      text-decoration: none;
+      font-size: 15px;
+    }
+    .nav-menu-link:hover { color: var(--primary); background: #f5f8ff; }
+    .nav-menu-link.active { color: var(--primary); background: var(--primary-soft); font-weight: 600; }
     .chevron {
       display: inline-block;
       width: 7px;
@@ -336,7 +379,7 @@
     .toast.error { color: #a84343; background: #fff2f2; border-color: #f4c6c6; }
 
     @media (max-width: 1400px) {
-      .header-nav { gap: 22px; }
+      .nav-trigger { padding: 0 12px; }
       .user { margin-left: 34px; }
     }
   </style>
@@ -350,14 +393,36 @@
         <div class="brand-agency">成都市住房和城乡建设局 <span class="chevron" aria-hidden="true"></span></div>
       </div>
     </div>
-    <nav class="header-nav" aria-label="主导航">
-      <div class="nav-item">项目 <span class="chevron"></span></div>
-      <div class="nav-item">申请 <span class="chevron"></span></div>
-      <div class="nav-item">运营 <span class="chevron"></span></div>
-      <div class="nav-item">统计 <span class="chevron"></span></div>
-      <div class="nav-item">政务 <span class="chevron"></span></div>
-      <div class="nav-item">管理 <span class="chevron"></span></div>
-      <div class="nav-item active">系统 <span class="chevron"></span></div>
+    <nav class="header-nav" id="headerNav" aria-label="主导航">
+      <div class="nav-item"><button class="nav-trigger" type="button" data-placeholder-menu>项目 <span class="chevron"></span></button></div>
+      <div class="nav-item"><button class="nav-trigger" type="button" data-placeholder-menu>申请 <span class="chevron"></span></button></div>
+      <div class="nav-item" data-nav-menu>
+        <button class="nav-trigger" type="button" aria-expanded="false">运营 <span class="chevron"></span></button>
+        <div class="nav-menu" role="menu" aria-label="运营">
+          <button class="nav-menu-link" type="button" data-placeholder-menu>内容管理</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>活动报名审核</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>楼盘管理</button>
+          <a class="nav-menu-link" href="./0821-直播管理.html">直播间管理</a>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>运营配置</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>区县管理</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>最新预售</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>城市专场</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>活动城市</button>
+        </div>
+      </div>
+      <div class="nav-item"><button class="nav-trigger" type="button" data-placeholder-menu>统计 <span class="chevron"></span></button></div>
+      <div class="nav-item"><button class="nav-trigger" type="button" data-placeholder-menu>政务 <span class="chevron"></span></button></div>
+      <div class="nav-item"><button class="nav-trigger" type="button" data-placeholder-menu>管理 <span class="chevron"></span></button></div>
+      <div class="nav-item active" data-nav-menu>
+        <button class="nav-trigger" type="button" aria-expanded="false">系统 <span class="chevron"></span></button>
+        <div class="nav-menu" role="menu" aria-label="系统">
+          <a class="nav-menu-link active" href="./0819-直播专区标签管理.html" aria-current="page">小程序管理</a>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>机构管理</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>人员管理</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>权限管理</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>系统日志</button>
+        </div>
+      </div>
     </nav>
     <div class="user">
       <div class="avatar"></div>
@@ -783,6 +848,33 @@
     $('#saveButton').addEventListener('click', saveTag);
     $('#modalOverlay').addEventListener('mousedown', event => { if (event.target === $('#modalOverlay')) closeModal(); });
     document.addEventListener('keydown', event => { if (event.key === 'Escape' && $('#modalOverlay').classList.contains('show')) closeModal(); });
+
+    function closeHeaderMenus() {
+      $$('[data-nav-menu]').forEach(item => {
+        item.classList.remove('open');
+        item.querySelector('.nav-trigger')?.setAttribute('aria-expanded', 'false');
+      });
+    }
+
+    $('#headerNav').addEventListener('click', event => {
+      const menuTrigger = event.target.closest('[data-nav-menu] > .nav-trigger');
+      if (menuTrigger) {
+        const menu = menuTrigger.parentElement;
+        const willOpen = !menu.classList.contains('open');
+        closeHeaderMenus();
+        menu.classList.toggle('open', willOpen);
+        menuTrigger.setAttribute('aria-expanded', String(willOpen));
+        event.stopPropagation();
+        return;
+      }
+      const placeholder = event.target.closest('[data-placeholder-menu]');
+      if (placeholder) {
+        closeHeaderMenus();
+        showToast(`“${placeholder.textContent.trim()}”未纳入本次原型`);
+      }
+    });
+    document.addEventListener('click', event => { if (!event.target.closest('#headerNav')) closeHeaderMenus(); });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') closeHeaderMenus(); });
 
     renderTable();
     if (new URLSearchParams(location.search).get('modal') === '1') openModal();

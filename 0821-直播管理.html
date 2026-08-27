@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>直播管理</title>
+  <title>运营 - 直播间管理</title>
   <style>
     :root {
       --primary: #3f6fe8;
@@ -55,9 +55,17 @@
     .brand-title { color: #111; font-size: 18px; font-weight: 650; white-space: nowrap; }
     .brand-agency { margin-left: 20px; color: var(--regular); white-space: nowrap; }
     .brand-agency .chevron { margin-left: 24px; color: var(--primary); }
-    .header-nav { gap: 34px; margin-left: auto; }
-    .nav-item { gap: 10px; color: #262626; font-size: 15px; white-space: nowrap; }
-    .nav-item.active { color: var(--primary); }
+    .header-nav { height: 100%; margin-left: auto; }
+    .nav-item { height: 100%; position: relative; color: #262626; white-space: nowrap; }
+    .nav-trigger { height: 100%; padding: 0 17px; display: flex; align-items: center; gap: 10px; color: inherit; background: transparent; border: 0; font-size: 15px; }
+    .nav-trigger:hover, .nav-item.open .nav-trigger { background: #f7f9fd; }
+    .nav-item.active .nav-trigger { color: var(--primary); }
+    .nav-item.open .nav-trigger .chevron { transform: rotate(225deg) translate(-1px, -1px); }
+    .nav-menu { width: 212px; padding: 10px 0; position: absolute; top: calc(100% + 1px); left: 50%; z-index: 70; display: none; transform: translateX(-50%); background: #fff; border: 1px solid #edf0f5; border-radius: 4px; box-shadow: 0 8px 24px rgba(31, 41, 61, .14); }
+    .nav-item.open .nav-menu { display: block; }
+    .nav-menu-link { width: 100%; height: 46px; padding: 0 20px; display: flex; align-items: center; color: #30343a; background: transparent; border: 0; text-align: left; text-decoration: none; font-size: 15px; }
+    .nav-menu-link:hover { color: var(--primary); background: #f5f8ff; }
+    .nav-menu-link.active { color: var(--primary); background: var(--primary-light); font-weight: 600; }
     .chevron { width: 7px; height: 7px; display: inline-block; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translateY(-2px); }
     .user { height: 56px; margin-left: 64px; flex-direction: column; justify-content: center; }
     .avatar { width: 35px; height: 35px; border-radius: 50%; position: relative; background: #e4e7ed; }
@@ -203,7 +211,7 @@
     .toast.error { color: #a84343; background: #fff2f2; border-color: #f4c6c6; }
 
     @media (max-width: 1420px) {
-      .header-nav { gap: 22px; }
+      .nav-trigger { padding: 0 12px; }
       .user { margin-left: 34px; }
       .filter-fields { gap: 18px; }
       .filter-actions { margin-left: 30px; }
@@ -219,14 +227,36 @@
         <div class="brand-agency">成都市住房和城乡建设局 <span class="chevron"></span></div>
       </div>
     </div>
-    <nav class="header-nav" aria-label="主导航">
-      <div class="nav-item">项目 <span class="chevron"></span></div>
-      <div class="nav-item">申请 <span class="chevron"></span></div>
-      <div class="nav-item active">运营 <span class="chevron"></span></div>
-      <div class="nav-item">统计 <span class="chevron"></span></div>
-      <div class="nav-item">政务 <span class="chevron"></span></div>
-      <div class="nav-item">管理 <span class="chevron"></span></div>
-      <div class="nav-item">系统 <span class="chevron"></span></div>
+    <nav class="header-nav" id="headerNav" aria-label="主导航">
+      <div class="nav-item"><button class="nav-trigger" type="button" data-placeholder-menu>项目 <span class="chevron"></span></button></div>
+      <div class="nav-item"><button class="nav-trigger" type="button" data-placeholder-menu>申请 <span class="chevron"></span></button></div>
+      <div class="nav-item active" data-nav-menu>
+        <button class="nav-trigger" type="button" aria-expanded="false">运营 <span class="chevron"></span></button>
+        <div class="nav-menu" role="menu" aria-label="运营">
+          <button class="nav-menu-link" type="button" data-placeholder-menu>内容管理</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>活动报名审核</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>楼盘管理</button>
+          <a class="nav-menu-link active" href="./0821-直播管理.html" aria-current="page">直播间管理</a>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>运营配置</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>区县管理</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>最新预售</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>城市专场</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>活动城市</button>
+        </div>
+      </div>
+      <div class="nav-item"><button class="nav-trigger" type="button" data-placeholder-menu>统计 <span class="chevron"></span></button></div>
+      <div class="nav-item"><button class="nav-trigger" type="button" data-placeholder-menu>政务 <span class="chevron"></span></button></div>
+      <div class="nav-item"><button class="nav-trigger" type="button" data-placeholder-menu>管理 <span class="chevron"></span></button></div>
+      <div class="nav-item" data-nav-menu>
+        <button class="nav-trigger" type="button" aria-expanded="false">系统 <span class="chevron"></span></button>
+        <div class="nav-menu" role="menu" aria-label="系统">
+          <a class="nav-menu-link" href="./0819-直播专区标签管理.html">小程序管理</a>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>机构管理</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>人员管理</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>权限管理</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>系统日志</button>
+        </div>
+      </div>
     </nav>
     <div class="user"><div class="avatar"></div><div class="user-name">周世杰</div></div>
   </header>
@@ -235,7 +265,7 @@
     <div class="workspace-tab">选择企业</div>
     <div class="workspace-tab">项目管理</div>
     <div class="workspace-tab">内容管理</div>
-    <div class="workspace-tab active">直播管理 <span class="close">×</span></div>
+    <div class="workspace-tab active">直播间管理 <span class="close">×</span></div>
     <div class="more-actions">更多操作 <span class="chevron"></span></div>
   </div>
 
@@ -311,7 +341,7 @@
       videos: [
         { id: 201, roomId: 1, sessionId: 101, fileName: '成都新房政策专场回放.mp4', size: '186.2 MB', duration: '01:28:36', uploadedAt: '2026-08-18 17:06:24' },
         { id: 202, roomId: 2, sessionId: 102, fileName: '安家成都直播预告.mp4', size: '92.8 MB', duration: '00:18:42', uploadedAt: '2026-08-19 11:32:08' },
-        { id: 203, roomId: 3, sessionId: 0, fileName: '住进成都往期精选.mov', size: '128.6 MB', duration: '00:56:15', uploadedAt: '2026-08-20 15:45:31' }
+        { id: 203, roomId: 3, sessionId: 104, fileName: '住进成都往期精选.mov', size: '128.6 MB', duration: '00:56:15', uploadedAt: '2026-08-20 15:45:31' }
       ]
     };
 
@@ -450,7 +480,7 @@
       $('#modalBody').innerHTML = `<div class="form-panel">
         <div class="form-row"><label class="form-label required">直播平台</label><div class="form-control"><div class="platform-checkboxes" id="roomPlatforms"><label class="check-option"><input type="checkbox" value="视频号" ${selectedPlatforms.includes('视频号') ? 'checked' : ''}><span>视频号</span></label><span class="platform-pending">更多平台接入后可继续多选</span></div>${formHelp('platformHelp', '支持多选，当前仅开放视频号')}</div></div>
         <div class="form-row"><label class="form-label required">视频号 ID</label><div class="form-control"><input class="form-input" id="roomAccount" maxlength="64" value="${escapeHtml(item?.accountId || '')}" placeholder="${selectedPlatforms.includes('视频号') ? '请输入视频号 ID' : '请先勾选视频号平台'}" ${selectedPlatforms.includes('视频号') ? '' : 'disabled'}>${formHelp('accountHelp', '勾选视频号平台后，手动输入视频号 ID')}</div></div>
-        <div class="form-row"><label class="form-label required">直播分类</label><div class="form-control"><select class="form-select" id="roomCategory"><option value="">请选择直播分类</option>${liveCategories.map(category => `<option value="${category}" ${item?.category === category ? 'selected' : ''}>${category}</option>`).join('')}</select>${formHelp('categoryHelp', '单选，选项来源于“标签配置 - 直播专区”')}</div></div>
+        <div class="form-row"><label class="form-label required">直播分类</label><div class="form-control"><select class="form-select" id="roomCategory"><option value="">请选择直播分类</option>${liveCategories.map(category => `<option value="${category}" ${item?.category === category ? 'selected' : ''}>${category}</option>`).join('')}</select>${formHelp('categoryHelp', '单选，选项来源于“系统 - 小程序管理 - 标签配置 - 直播专区”')}</div></div>
         <div class="form-row"><label class="form-label required">直播间名称</label><div class="form-control"><div class="text-wrap"><input class="form-input with-count" id="roomName" maxlength="30" value="${escapeHtml(item?.name || '')}" placeholder="请输入直播间名称"><span class="counter"><span id="roomNameCount">${item?.name.length || 0}</span>/30</span></div>${formHelp('roomNameHelp', '用于区分不同的视频号直播间')}</div></div>
       </div>`;
       showModal();
@@ -507,7 +537,7 @@
       $('#modalBody').innerHTML = `<div class="form-panel">
         <div class="form-row"><div class="form-label required">视频回放</div><div class="form-control">
           <button class="upload-dropzone" id="uploadDropzone" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14v5h14v-5"/></svg><div class="upload-title">点击或拖拽视频到此处，<strong>可多选</strong></div><div class="upload-tip">支持 MP4、MOV，单个视频最大不超过 200MB</div></button>
-          <input id="videoFiles" type="file" accept="video/mp4,video/quicktime,.mp4,.mov" multiple hidden>${formHelp('videoFilesHelp', '所属直播间必填，关联直播场次非必填')}
+          <input id="videoFiles" type="file" accept="video/mp4,video/quicktime,.mp4,.mov" multiple hidden>${formHelp('videoFilesHelp', '所属直播间、关联直播场次均为必填')}
           <div class="pending-list" id="pendingList"><div class="pending-empty">尚未选择视频文件</div></div>
         </div></div>
       </div>`;
@@ -529,7 +559,7 @@
         $('#videoFilesHelp').textContent = invalidFormat.length && oversized.length ? '仅支持 MP4、MOV，且单个视频最大不超过 200MB' : (invalidFormat.length ? '仅支持 MP4、MOV 格式' : '单个视频最大不超过 200MB');
       } else {
         $('#videoFilesHelp').className = 'help';
-        $('#videoFilesHelp').textContent = '所属直播间必填，关联直播场次非必填';
+        $('#videoFilesHelp').textContent = '所属直播间、关联直播场次均为必填';
       }
       files.filter(file => !invalid.includes(file)).forEach(file => {
         if (!state.pendingFiles.some(item => item.name === file.name && item.size === file.size)) state.pendingFiles.push({ name: file.name, size: file.size, roomId: '', sessionId: '' });
@@ -539,7 +569,7 @@
     function renderPendingFiles() {
       const container = $('#pendingList');
       if (!container) return;
-      container.innerHTML = state.pendingFiles.length ? `<div class="pending-head"><span>视频文件</span><span>所属直播间</span><span>关联直播场次（非必填）</span><span></span></div>${state.pendingFiles.map((file, index) => `<div class="pending-row"><div class="pending-file"><div class="pending-file-name">${escapeHtml(file.name)}</div><div class="pending-file-size">${formatBytes(file.size)}</div></div><select class="pending-select" data-pending-room="${index}">${roomOptions(file.roomId, '请选择直播间')}</select><select class="pending-select" data-pending-session="${index}" ${file.roomId ? '' : 'disabled'}>${sessionOptions(file.roomId, file.sessionId, file.roomId ? '不关联直播场次' : '请先选择直播间')}</select><button class="remove-file" data-remove-file="${index}" title="移除">×</button></div>`).join('')}` : '<div class="pending-empty">尚未选择视频文件</div>';
+      container.innerHTML = state.pendingFiles.length ? `<div class="pending-head"><span>视频文件</span><span class="required">所属直播间</span><span class="required">关联直播场次</span><span></span></div>${state.pendingFiles.map((file, index) => `<div class="pending-row"><div class="pending-file"><div class="pending-file-name">${escapeHtml(file.name)}</div><div class="pending-file-size">${formatBytes(file.size)}</div></div><select class="pending-select" data-pending-room="${index}">${roomOptions(file.roomId, '请选择直播间')}</select><select class="pending-select" data-pending-session="${index}" ${file.roomId ? '' : 'disabled'}>${sessionOptions(file.roomId, file.sessionId, file.roomId ? '请选择直播场次' : '请先选择直播间')}</select><button class="remove-file" data-remove-file="${index}" title="移除">×</button></div>`).join('')}` : '<div class="pending-empty">尚未选择视频文件</div>';
       $$('[data-pending-room]').forEach(select => select.addEventListener('change', event => { const file = state.pendingFiles[Number(event.target.dataset.pendingRoom)]; file.roomId = event.target.value; file.sessionId = ''; renderPendingFiles(); }));
       $$('[data-pending-session]').forEach(select => select.addEventListener('change', event => state.pendingFiles[Number(event.target.dataset.pendingSession)].sessionId = event.target.value));
       $$('[data-remove-file]').forEach(button => button.addEventListener('click', () => { state.pendingFiles.splice(Number(button.dataset.removeFile), 1); renderPendingFiles(); }));
@@ -594,7 +624,8 @@
     function saveVideos() {
       let valid = true;
       if (!state.pendingFiles.length) { setError('videoFilesHelp', '请至少选择一个视频回放'); valid = false; }
-      if (state.pendingFiles.some(file => !file.roomId)) { setError('videoFilesHelp', '请为每个视频选择所属直播间'); valid = false; }
+      else if (state.pendingFiles.some(file => !file.roomId)) { setError('videoFilesHelp', '请为每个视频选择所属直播间'); valid = false; }
+      else if (state.pendingFiles.some(file => !file.sessionId)) { setError('videoFilesHelp', '请为每个视频选择关联直播场次'); valid = false; }
       if (!valid) return;
       const uploadedAt = nowText();
       state.pendingFiles.forEach((file, index) => state.videos.push({ id: Date.now() + index, roomId: Number(file.roomId), sessionId: Number(file.sessionId), fileName: file.name, size: formatBytes(file.size), duration: '待识别', uploadedAt }));
@@ -660,11 +691,38 @@
     $('#modalOverlay').addEventListener('mousedown', event => { if (event.target === $('#modalOverlay')) closeModal(); });
     document.addEventListener('keydown', event => { if (event.key === 'Escape' && $('#modalOverlay').classList.contains('show')) closeModal(); });
 
+    function closeHeaderMenus() {
+      $$('[data-nav-menu]').forEach(item => {
+        item.classList.remove('open');
+        item.querySelector('.nav-trigger')?.setAttribute('aria-expanded', 'false');
+      });
+    }
+
+    $('#headerNav').addEventListener('click', event => {
+      const menuTrigger = event.target.closest('[data-nav-menu] > .nav-trigger');
+      if (menuTrigger) {
+        const menu = menuTrigger.parentElement;
+        const willOpen = !menu.classList.contains('open');
+        closeHeaderMenus();
+        menu.classList.toggle('open', willOpen);
+        menuTrigger.setAttribute('aria-expanded', String(willOpen));
+        event.stopPropagation();
+        return;
+      }
+      const placeholder = event.target.closest('[data-placeholder-menu]');
+      if (placeholder) {
+        closeHeaderMenus();
+        showToast(`“${placeholder.textContent.trim()}”未纳入本次原型`);
+      }
+    });
+    document.addEventListener('click', event => { if (!event.target.closest('#headerNav')) closeHeaderMenus(); });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') closeHeaderMenus(); });
+
     const params = new URLSearchParams(location.search);
     if (['rooms', 'videos', 'sessions'].includes(params.get('tab'))) state.module = params.get('tab');
     renderPage();
     if (params.get('modal') === 'room') openRoomModal();
-    if (params.get('modal') === 'video') { state.module = 'videos'; renderPage(); openVideoModal(); if (params.get('demo') === '1') { state.pendingFiles = [{ name: '成都新房政策回放.mp4', size: 186200000, roomId: '1', sessionId: '101' }, { name: '安家成都线上看房.mov', size: 128600000, roomId: '2', sessionId: '' }]; renderPendingFiles(); } }
+    if (params.get('modal') === 'video') { state.module = 'videos'; renderPage(); openVideoModal(); if (params.get('demo') === '1') { state.pendingFiles = [{ name: '成都新房政策回放.mp4', size: 186200000, roomId: '1', sessionId: '101' }, { name: '安家成都线上看房.mov', size: 128600000, roomId: '2', sessionId: '102' }]; renderPendingFiles(); } }
     if (params.get('modal') === 'session') { state.module = 'sessions'; renderPage(); openSessionModal(); }
   </script>
 </body>
