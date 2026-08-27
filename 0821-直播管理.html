@@ -499,20 +499,40 @@
     function openSessionModal(item = null) {
       state.modalType = 'session'; state.editingId = item?.id ?? null;
       state.sessionCover = item?.cover || null;
+      const selectedSessionPlatforms = item ? (getPlatforms(item).length ? getPlatforms(item) : ['视频号']) : [];
+      const hasSelectedRoom = Boolean(item?.roomId);
       $('#modalBox').classList.remove('modal-wide');
       $('#modalTitle').textContent = item ? '编辑直播场次' : '新增直播场次';
       $('#modalBody').innerHTML = `<div class="form-panel">
         <div class="form-row"><label class="form-label required">直播名称</label><div class="form-control"><div class="text-wrap"><input class="form-input with-count" id="sessionTitle" maxlength="40" value="${escapeHtml(item?.name || '')}" placeholder="请输入本场直播名称"><span class="counter"><span id="sessionTitleCount">${item?.name.length || 0}</span>/40</span></div>${formHelp('sessionTitleHelp')}</div></div>
         <div class="form-row"><label class="form-label required">直播封面</label><div class="form-control"><button class="session-cover-upload" id="sessionCoverButton" type="button"><span id="sessionCoverPreview"></span></button><input id="sessionCoverFile" type="file" accept="image/png,image/jpeg,.png,.jpg,.jpeg" hidden>${formHelp('sessionCoverHelp', '支持 PNG、JPG，最大不超过 2MB，建议图片比例 16:9')}</div></div>
         <div class="form-row"><label class="form-label required">所属直播间</label><div class="form-control"><select class="form-select" id="sessionRoom">${roomOptions(item?.roomId, '请选择直播间')}</select>${formHelp('sessionRoomHelp')}</div></div>
+        <div class="form-row"><label class="form-label required">选择平台</label><div class="form-control"><div class="platform-checkboxes" id="sessionPlatforms"><label class="check-option"><input type="checkbox" value="视频号" ${selectedSessionPlatforms.includes('视频号') ? 'checked' : ''} ${hasSelectedRoom ? '' : 'disabled'}><span>视频号</span></label><span class="platform-pending">更多平台接入后可继续多选</span></div>${formHelp('sessionPlatformHelp', hasSelectedRoom ? '支持多选，当前仅提供视频号' : '请先选择所属直播间')}</div></div>
         <div class="form-row"><label class="form-label required">开始时间</label><div class="form-control"><input class="form-input" id="sessionStart" type="datetime-local" value="${item?.start || ''}">${formHelp('sessionStartHelp')}</div></div>
         <div class="form-row"><label class="form-label required">结束时间</label><div class="form-control"><input class="form-input" id="sessionEnd" type="datetime-local" value="${item?.end || ''}">${formHelp('sessionEndHelp', '结束时间必须晚于开始时间')}</div></div>
       </div>`;
       showModal();
       $('#sessionTitle').addEventListener('input', event => $('#sessionTitleCount').textContent = event.target.value.length);
+      $('#sessionRoom').addEventListener('change', updateSessionPlatformInput);
       renderSessionCover();
       $('#sessionCoverButton').addEventListener('click', () => $('#sessionCoverFile').click());
       $('#sessionCoverFile').addEventListener('change', event => readSessionCover(event.target.files[0]));
+    }
+
+    function updateSessionPlatformInput() {
+      const hasRoom = Boolean($('#sessionRoom').value);
+      const checkboxes = $$('#sessionPlatforms input[type="checkbox"]');
+      checkboxes.forEach(checkbox => {
+        checkbox.disabled = !hasRoom;
+        if (!hasRoom) checkbox.checked = false;
+      });
+      const help = $('#sessionPlatformHelp');
+      help.className = 'help';
+      help.textContent = hasRoom ? '支持多选，当前仅提供视频号' : '请先选择所属直播间';
+    }
+
+    function getSelectedSessionPlatforms() {
+      return $$('#sessionPlatforms input[type="checkbox"]:checked').map(input => input.value);
     }
 
     function renderSessionCover() {
@@ -605,11 +625,12 @@
       closeModal(); renderPage(); showToast(editing ? '直播间编辑成功' : '直播间新增成功');
     }
     function saveSession() {
-      const name = $('#sessionTitle').value.trim(), roomId = Number($('#sessionRoom').value), start = $('#sessionStart').value, end = $('#sessionEnd').value;
+      const name = $('#sessionTitle').value.trim(), roomId = Number($('#sessionRoom').value), platforms = getSelectedSessionPlatforms(), start = $('#sessionStart').value, end = $('#sessionEnd').value;
       let valid = true;
       if (!name) { setError('sessionTitleHelp', '请输入直播名称'); valid = false; }
       if (!state.sessionCover) { setError('sessionCoverHelp', '请上传直播封面'); valid = false; }
       if (!roomId) { setError('sessionRoomHelp', '请选择所属直播间'); valid = false; }
+      if (!platforms.length) { setError('sessionPlatformHelp', roomId ? '请至少选择一个直播平台' : '请先选择所属直播间'); valid = false; }
       if (!start) { setError('sessionStartHelp', '请选择开始时间'); valid = false; }
       if (!end) { setError('sessionEndHelp', '请选择结束时间'); valid = false; }
       if (start && end && new Date(end) <= new Date(start)) { setError('sessionEndHelp', '结束时间必须晚于开始时间'); valid = false; }
@@ -617,8 +638,8 @@
       if (start && end && overlap) { setError('sessionEndHelp', '该直播间在所选时间段已有其他场次'); valid = false; }
       if (!valid) return;
       const editing = Boolean(state.editingId);
-      if (editing) Object.assign(state.sessions.find(item => item.id === state.editingId), { name, cover: state.sessionCover, roomId, start, end });
-      else state.sessions.push({ id: Date.now(), name, cover: state.sessionCover, roomId, start, end, pinned: false });
+      if (editing) Object.assign(state.sessions.find(item => item.id === state.editingId), { name, cover: state.sessionCover, roomId, platforms, start, end });
+      else state.sessions.push({ id: Date.now(), name, cover: state.sessionCover, roomId, platforms, start, end, pinned: false });
       closeModal(); renderPage(); showToast(editing ? '直播场次编辑成功' : '直播场次新增成功');
     }
     function saveVideos() {
