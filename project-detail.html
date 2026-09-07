@@ -960,6 +960,7 @@
     }
 
     .ai-summary-card__detail {
+      margin-left: auto;
       flex: 0 0 auto;
       color: var(--brand);
       font-size: 12px;
@@ -1534,6 +1535,20 @@
       font-weight: 500;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+
+    .location-support-item__title {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 4px 6px;
+      min-width: 0;
+      padding: 6px 0;
+    }
+
+    .location-support-item__title .support-type {
+      flex-shrink: 0;
+      font-style: normal;
     }
 
     .location-support-item small {
@@ -3225,14 +3240,13 @@
       <div class="section-head">
         <h2 class="section-title">楼盘AI分析</h2>
       </div>
-      <article class="ai-summary-card" aria-label="Deepseek一句话总结">
+      <article class="ai-summary-card" aria-label="AI一句话总结">
         <div class="ai-summary-card__head">
-          <strong class="ai-summary-card__label">Deepseek一句话总结</strong>
+          <strong class="ai-summary-card__label">AI一句话总结</strong>
           <span class="ai-summary-card__tag">智能生成</span>
         </div>
         <p class="ai-summary-card__text">项目周边生活与交通基础较成熟，小高层和改善型户型是主要亮点，更适合预算充足、重视主城通勤与居住舒适度的家庭。</p>
         <div class="ai-summary-card__foot">
-          <span class="ai-summary-card__meta">报告更新于 2026-09-02</span>
           <a class="ai-summary-card__detail" href="./0902-楼盘AI分析.html" aria-label="查看招商时代花园一期楼盘AI完整报告">查看详情 〉</a>
         </div>
       </article>
@@ -3377,7 +3391,6 @@
     </div>
     <div class="permit-sheet__summary">
       <strong id="permitSheetName">招商·时代花园一期第1批次商品房预售许可证</strong>
-      <span id="permitSheetScope">取证范围：2栋、3栋</span>
     </div>
     <div class="permit-sheet__body" id="permitSheetBody"></div>
   </section>
@@ -3636,7 +3649,7 @@
       locationSupportList.innerHTML = items.map((item, index) => `
         <button class="location-support-item" type="button" data-support-type="${type}" data-location-support-index="${index}">
           <span class="location-support-item__icon">${locationSupportIcons[type]}</span>
-          <strong>${item.name}</strong>
+          <span class="location-support-item__title"><strong>${item.name}</strong>${item.category ? `<em class="support-type">${item.category}</em>` : ""}</span>
           <small>${item.distance}</small>
           <span class="location-support-item__arrow">›</span>
         </button>
@@ -3748,7 +3761,6 @@
     const permitSheetBody = document.getElementById("permitSheetBody");
     const permitSheetTitle = document.getElementById("permitSheetTitle");
     const permitSheetName = document.getElementById("permitSheetName");
-    const permitSheetScope = document.getElementById("permitSheetScope");
     const permitTitleMap = {
       "price-map": "一房一价",
       available: "剩余房源",
@@ -3807,12 +3819,10 @@
       const controlRows = getSalesControlRows(permit, selectedBuilding);
       return `
         <section class="sales-control" aria-label="一房一价楼栋销控表">
-          <div class="sales-control__dates" role="tablist" aria-label="取证日期">
-            ${Object.entries(permitData).map(([permitId, item]) => `
-              <button class="sales-control__date ${permitId === currentPermitId ? "is-active" : ""}" type="button" role="tab" aria-selected="${permitId === currentPermitId}" data-permit-date-id="${permitId}">
-                <span>取证日期</span><strong>${formatPermitDate(item.date)}</strong>
-              </button>
-            `).join("")}
+          <div class="sales-control__dates" aria-label="当前预售证取证日期">
+            <div class="sales-control__date is-active">
+              <span>取证日期</span><strong>${formatPermitDate(permit.date)}</strong>
+            </div>
           </div>
           <div class="sales-control__units" role="tablist" aria-label="楼栋单元">
             ${unitOptions.map((option) => {
@@ -3897,7 +3907,6 @@
           <div class="permit-detail-row"><span>监管银行</span><strong>${permit.bank}</strong></div>
           <div class="permit-detail-row"><span>监管账户</span><strong>${permit.account}</strong></div>
         </article>
-        <p class="permit-sheet__notice">购房款请按合同约定存入公示的预售资金监管账户，请勿转入个人账户。</p>
       `;
     }
 
@@ -3908,7 +3917,6 @@
       permitSheet.classList.toggle("is-detail", currentPermitAction === "detail");
       permitSheetTitle.textContent = permitTitleMap[currentPermitAction];
       permitSheetName.textContent = permit.name;
-      permitSheetScope.textContent = `取证范围：${permit.scope} · ${permit.number}`;
       if (currentPermitAction === "price-map") permitSheetBody.innerHTML = renderPermitMap(permit);
       if (currentPermitAction === "available") permitSheetBody.innerHTML = renderPermitRooms(permit);
       if (currentPermitAction === "detail") permitSheetBody.innerHTML = renderPermitDetail(permit);
@@ -3955,14 +3963,6 @@
     document.getElementById("openPermitArchiveButton").addEventListener("click", openPermitArchive);
     document.getElementById("closePermitArchiveButton").addEventListener("click", closePermitArchive);
     permitSheetBody.addEventListener("click", (event) => {
-      const dateButton = event.target.closest("[data-permit-date-id]");
-      if (dateButton) {
-        currentPermitId = dateButton.dataset.permitDateId;
-        currentPermitBuilding = getCurrentPermit().buildings[0].name;
-        currentPermitUnit = "1单元";
-        renderPermitSheet();
-        return;
-      }
       const unitButton = event.target.closest("[data-sales-building]");
       if (unitButton) {
         currentPermitBuilding = unitButton.dataset.salesBuilding;
