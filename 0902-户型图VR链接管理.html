@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>项目管理 - 分期信息维护</title>
+  <style>
+    :root {
+      --primary: #3f6fe8;
+      --primary-hover: #315fda;
+      --text: #303133;
+      --regular: #606266;
+      --muted: #909399;
+      --placeholder: #c0c4cc;
+      --border: #dcdfe6;
+      --border-light: #ebeef5;
+      --background: #f1f2f4;
+      --surface: #ffffff;
+      --danger: #f56c6c;
+      --success: #32ad7f;
+      --shadow: 0 16px 42px rgba(31, 41, 61, .18);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { min-width: 1180px; min-height: 100%; margin: 0; }
+    body {
+      color: var(--text);
+      background: var(--background);
+      font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+
+    /* 后台公共头部 */
+    .app-header {
+      height: 64px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .brand, .brand-copy, .header-nav, .nav-item, .user { display: flex; align-items: center; }
+    .brand-logo { width: 36px; height: 36px; margin-right: 20px; position: relative; overflow: hidden; background: #406bdd; }
+    .brand-logo::before { content: ""; position: absolute; inset: 7px 9px; border-left: 5px solid #fff; border-right: 5px solid #fff; }
+    .brand-logo::after { content: ""; position: absolute; right: 9px; top: 13px; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-right: 10px solid #fff; }
+    .brand-title { color: #111; font-size: 18px; font-weight: 650; white-space: nowrap; }
+    .brand-agency { margin-left: 20px; color: var(--regular); white-space: nowrap; }
+    .brand-agency .chevron { margin-left: 24px; color: var(--primary); }
+    .header-nav { height: 100%; margin-left: auto; }
+    .nav-item { height: 100%; position: relative; color: #262626; white-space: nowrap; }
+    .nav-trigger { height: 100%; padding: 0 16px; display: flex; align-items: center; gap: 10px; color: inherit; background: transparent; border: 0; font-size: 15px; }
+    .nav-primary-link { height: 100%; padding: 0 8px 0 16px; display: flex; align-items: center; color: inherit; text-decoration: none; font-size: 15px; }
+    .nav-item:not([data-nav-menu]) .nav-primary-link { padding: 0 16px; }
+    .nav-menu-toggle { width: 30px; padding: 0 12px 0 0; }
+    .nav-primary-link:hover, .nav-trigger:hover, .nav-item.open > .nav-primary-link { color: var(--primary); background: #f7f9fd; }
+    .nav-item.active > .nav-primary-link, .nav-item.active .nav-trigger { color: var(--primary); font-weight: 600; }
+    .nav-item.open .nav-trigger .chevron { transform: rotate(225deg) translate(-1px, -1px); }
+    .nav-menu { width: 212px; padding: 10px 0; position: absolute; top: calc(100% + 1px); left: 50%; z-index: 70; display: none; transform: translateX(-50%); background: #fff; border: 1px solid #edf0f5; border-radius: 4px; box-shadow: 0 8px 24px rgba(31, 41, 61, .14); }
+    .nav-item.open .nav-menu { display: block; }
+    .nav-menu-link { width: 100%; height: 46px; padding: 0 20px; display: flex; align-items: center; color: #30343a; background: transparent; border: 0; text-align: left; text-decoration: none; font-size: 15px; }
+    .nav-menu-link:hover { color: var(--primary); background: #f5f8ff; }
+    .nav-menu-link.active { color: var(--primary); background: #edf3ff; font-weight: 600; }
+    .chevron { width: 7px; height: 7px; display: inline-block; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translateY(-2px); }
+    .user { height: 56px; margin-left: 52px; flex-direction: column; justify-content: center; }
+    .avatar { width: 35px; height: 35px; border-radius: 50%; position: relative; background: #e4e7ed; }
+    .avatar::before { content: ""; width: 9px; height: 9px; position: absolute; left: 13px; top: 7px; border-radius: 50%; background: #fff; }
+    .avatar::after { content: ""; width: 17px; height: 10px; position: absolute; left: 9px; top: 20px; border-radius: 9px 9px 3px 3px; background: #fff; }
+    .user-name { margin-top: -4px; padding: 1px 7px; border-radius: 4px; color: #fff; background: #85888d; font-size: 12px; }
+
+    .workspace-tabs { height: 54px; padding: 10px 12px; display: flex; align-items: center; gap: 6px; background: #f0f1f3; }
+    .workspace-tab { min-width: 96px; height: 34px; padding: 0 20px; display: inline-flex; align-items: center; justify-content: center; gap: 14px; color: #2f3033; background: #fff; border: 1px solid var(--border); border-radius: 4px; font-weight: 600; }
+    .workspace-tab.active { color: var(--primary); border-color: var(--primary); }
+    .workspace-tab .close { color: #6687e9; font-size: 17px; font-weight: 400; }
+    .more-actions { margin-left: auto; display: flex; align-items: center; gap: 12px; color: var(--regular); }
+
+    /* 项目列表路径页 */
+    .project-page { min-height: calc(100vh - 118px); padding: 0 12px 14px; display: grid; grid-template-columns: 312px minmax(780px, 1fr); gap: 12px; }
+    .org-panel { padding: 22px 20px; background: #fff; }
+    .org-title { margin-bottom: 22px; color: #263447; font-size: 16px; }
+    .org-search { height: 36px; padding: 0 12px; display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); border-radius: 4px; color: var(--placeholder); }
+    .org-search svg { width: 16px; height: 16px; }
+    .org-search input { width: 100%; border: 0; outline: 0; color: var(--text); }
+    .org-search input::placeholder { color: var(--placeholder); }
+    .org-tree { margin-top: 22px; padding: 8px 12px; display: flex; align-items: center; gap: 8px; color: var(--primary); background: #f4f7fc; }
+    .folder { width: 15px; height: 12px; position: relative; border: 1.5px solid currentColor; border-radius: 2px; }
+    .folder::before { content: ""; width: 7px; height: 3px; position: absolute; left: 1px; top: -4px; border: 1.5px solid currentColor; border-bottom: 0; border-radius: 2px 2px 0 0; }
+    .project-main { min-width: 0; }
+    .filter-card { height: 86px; padding: 20px; display: flex; align-items: center; background: #fff; }
+    .filter-label { width: 72px; color: var(--regular); font-size: 15px; }
+    .control-input { width: 330px; height: 36px; padding: 0 14px; border: 1px solid var(--border); border-radius: 4px; outline: 0; }
+    .control-input::placeholder { color: var(--placeholder); }
+    .btn { height: 36px; padding: 0 18px; color: var(--regular); background: #fff; border: 1px solid var(--border); border-radius: 4px; }
+    .btn:hover { color: var(--primary); border-color: #9eb5f2; }
+    .btn-primary { color: #fff; background: var(--primary); border-color: var(--primary); }
+    .btn-primary:hover { color: #fff; background: var(--primary-hover); border-color: var(--primary-hover); }
+    .filter-card .btn { margin-left: 68px; }
+    .filter-card .btn + .btn { margin-left: 10px; }
+    .project-card { min-height: calc(100vh - 232px); margin-top: 12px; padding: 20px; background: #fff; }
+    .project-card > .btn { margin-bottom: 20px; }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border-light); }
+    table { width: 100%; min-width: 860px; table-layout: fixed; border-collapse: collapse; }
+    th, td { height: 64px; padding: 0 14px; color: var(--regular); text-align: left; border-right: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); }
+    th:last-child, td:last-child { border-right: 0; }
+    th { height: 42px; background: #f3f4f6; font-weight: 500; }
+    tbody tr:hover td { background: #fafcff; }
+    .project-name { color: #536171; }
+    .row-chevron { width: 7px; height: 7px; margin-right: 10px; display: inline-block; border-right: 1px solid #8993a2; border-bottom: 1px solid #8993a2; transform: rotate(45deg) translateY(-2px); }
+    .action-link { padding: 4px 6px; color: var(--primary); background: transparent; border: 0; white-space: nowrap; }
+    .action-link.danger { color: var(--danger); }
+
+    /* 全屏编辑项目 */
+    .editor-shell { position: fixed; inset: 0; z-index: 50; display: none; flex-direction: column; background: var(--background); }
+    .editor-shell.show { display: flex; }
+    .editor-header { height: 66px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; flex: 0 0 auto; background: #fff; border-bottom: 1px solid var(--border-light); }
+    .editor-title { font-size: 20px; font-weight: 500; }
+    .icon-close { width: 34px; height: 34px; padding: 0; display: grid; place-items: center; color: var(--muted); background: transparent; border: 0; }
+    .icon-close:hover { color: var(--primary); }
+    .icon-close svg { width: 18px; height: 18px; }
+    .editor-tabs { height: 82px; margin: 14px 12px 0; padding: 0 26px; display: flex; align-items: stretch; gap: 28px; flex: 0 0 auto; background: #fff; border-bottom: 1px solid var(--border); }
+    .editor-tab { min-width: 112px; padding: 0 10px; position: relative; color: var(--text); background: transparent; border: 0; font-size: 16px; }
+    .editor-tab.active { color: var(--primary); font-weight: 600; }
+    .editor-tab.active::after { content: ""; height: 2px; position: absolute; right: 0; bottom: -1px; left: 0; background: var(--primary); }
+    .editor-body { min-height: 0; padding: 14px 12px; overflow: auto; flex: 1; }
+    .upload-bar { height: 102px; padding: 25px 26px; background: #fff; }
+    .upload-button { height: 50px; padding: 0 26px; font-size: 16px; font-weight: 600; }
+    .plan-gallery { min-height: 240px; margin-top: 14px; padding: 28px 26px; display: flex; align-items: flex-start; gap: 26px; background: #fff; }
+    .plan-card { width: 184px; }
+    .plan-thumb { width: 166px; height: 150px; overflow: hidden; background: #fff; }
+    .plan-thumb svg, .plan-thumb img { width: 100%; height: 100%; display: block; object-fit: contain; }
+    .plan-bind-stat { min-height: 24px; margin-top: 7px; display: flex; align-items: center; gap: 6px; color: #8a929e; font-size: 12px; }
+    .plan-bind-stat::before { content: ""; width: 6px; height: 6px; flex: 0 0 auto; background: #b9c1cd; border-radius: 50%; }
+    .plan-bind-stat.has-bound { color: #4b6fc8; }
+    .plan-bind-stat.has-bound::before { background: var(--primary); }
+    .plan-actions { margin-top: 8px; display: flex; justify-content: flex-start; white-space: nowrap; }
+    .plan-actions .action-link { padding: 3px 4px; font-size: 15px; }
+    .editor-footer { min-height: 66px; padding: 12px; display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex: 0 0 auto; background: #fff; border-top: 1px solid var(--border-light); }
+
+    /* 分期基础信息编辑页 */
+    .phase-editor { position: fixed; inset: 0; z-index: 60; display: none; flex-direction: column; background: #f3f4f6; }
+    .phase-editor.show { display: flex; }
+    .phase-editor__header { height: 68px; padding: 0 26px; display: flex; align-items: center; justify-content: space-between; flex: 0 0 auto; background: #fff; border-bottom: 1px solid var(--border-light); }
+    .phase-editor__title { color: #30343a; font-size: 20px; font-weight: 500; }
+    .phase-editor__body { min-height: 0; padding: 14px 12px 78px; overflow-y: auto; flex: 1; }
+    .phase-section { min-height: 100%; background: #fff; }
+    .phase-section__title { height: 72px; padding: 0 38px; display: flex; align-items: center; gap: 10px; color: #30343a; border-bottom: 1px solid var(--border-light); font-size: 20px; font-weight: 650; }
+    .phase-section__title::before { content: ""; width: 4px; height: 28px; flex: 0 0 auto; background: var(--primary); }
+    .phase-form { padding: 16px 42px 42px; display: grid; grid-template-columns: minmax(460px, 1fr) minmax(460px, 1fr); column-gap: 74px; row-gap: 0; }
+    .phase-field { min-width: 0; min-height: 72px; display: flex; align-items: center; }
+    .phase-label { width: 170px; padding-right: 16px; flex: 0 0 auto; color: #5d626b; text-align: right; font-size: 16px; }
+    .phase-control { min-width: 0; position: relative; flex: 1; }
+    .phase-input, .phase-select { width: 100%; height: 44px; padding: 0 16px; color: var(--text); background: #fff; border: 1px solid var(--border); border-radius: 4px; outline: 0; font-size: 15px; }
+    .phase-input:focus, .phase-select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(63,111,232,.1); }
+    .phase-input::placeholder { color: var(--placeholder); }
+    .phase-input:disabled { color: #abb1bd; background: #f4f6f9; }
+    .phase-select { appearance: none; padding-right: 42px; background-image: linear-gradient(45deg,transparent 50%,#bec4ce 50%),linear-gradient(135deg,#bec4ce 50%,transparent 50%); background-position: calc(100% - 19px) 18px,calc(100% - 14px) 18px; background-repeat: no-repeat; background-size: 5px 5px,5px 5px; }
+    .phase-control--unit, .address-coordinate { display: flex; }
+    .phase-control--unit .phase-input { border-radius: 4px 0 0 4px; }
+    .phase-unit { min-width: 68px; height: 44px; display: grid; place-items: center; color: #858c98; background: #f4f6f9; border: 1px solid var(--border); border-left: 0; border-radius: 0 4px 4px 0; }
+    .address-coordinate .phase-input { min-width: 0; border-radius: 4px 0 0 4px; }
+    .coordinate-button { width: 56px; height: 44px; padding: 0; display: grid; place-items: center; flex: 0 0 auto; color: var(--primary); background: #f5f7fa; border: 1px solid var(--border); border-left: 0; border-radius: 0 4px 4px 0; }
+    .coordinate-button:hover { background: #edf3ff; }
+    .coordinate-button svg { width: 22px; height: 22px; }
+    .coordinate-value { height: 18px; margin-top: 4px; overflow: hidden; color: #9aa1ad; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+    .coordinate-value.selected { color: #5c78c9; }
+    .checkbox-group { min-height: 44px; display: flex; align-items: center; gap: 32px; }
+    .checkbox-label { display: inline-flex; align-items: center; gap: 9px; color: #555d68; }
+    .checkbox-label input { width: 18px; height: 18px; margin: 0; accent-color: var(--primary); }
+    .phase-editor__footer { height: 66px; padding: 0 14px; position: fixed; right: 0; bottom: 0; left: 0; z-index: 2; display: flex; align-items: center; justify-content: flex-end; gap: 12px; background: #fff; border-top: 1px solid var(--border-light); }
+    .phase-editor__footer .btn { min-width: 74px; }
+
+    /* 坐标选择弹框 */
+    .coordinate-overlay { position: fixed; inset: 0; z-index: 110; display: none; align-items: center; justify-content: center; padding: 32px; background: rgba(0,0,0,.42); }
+    .coordinate-overlay.show { display: flex; }
+    .coordinate-modal { width: min(1230px, calc(100vw - 80px)); max-height: calc(100vh - 64px); display: flex; overflow: hidden; flex-direction: column; background: #fff; box-shadow: 0 10px 30px rgba(27,39,63,.22); }
+    .coordinate-modal__header { height: 88px; padding: 0 26px; display: flex; align-items: center; justify-content: space-between; flex: 0 0 auto; border-bottom: 1px solid var(--border-light); }
+    .coordinate-modal__title { font-size: 20px; font-weight: 500; }
+    .coordinate-modal__body { min-height: 0; padding: 24px 14px 14px; overflow-y: auto; flex: 1; background: #fff; }
+    .coordinate-search { width: 414px; height: 44px; display: flex; }
+    .coordinate-search input { min-width: 0; flex: 1; border-radius: 4px 0 0 4px; }
+    .coordinate-search button { width: 84px; display: grid; place-items: center; color: var(--primary); background: #f5f7fa; border: 1px solid var(--border); border-left: 0; border-radius: 0 4px 4px 0; }
+    .coordinate-search button svg { width: 28px; height: 28px; }
+    .coordinate-tip { height: 52px; padding-top: 12px; color: #555d68; font-size: 16px; }
+    .map-canvas { height: 500px; position: relative; overflow: hidden; background: #f3f6f3; border: 1px solid #edf0ed; cursor: crosshair; user-select: none; }
+    .map-canvas svg { width: 100%; height: 100%; display: block; }
+    .map-marker { width: 30px; height: 38px; position: absolute; left: 58%; top: 54%; z-index: 3; transform: translate(-50%,-100%); filter: drop-shadow(0 3px 3px rgba(46,79,156,.28)); pointer-events: none; }
+    .map-marker svg { width: 100%; height: 100%; }
+    .coordinate-selection { min-height: 38px; padding: 10px 2px 0; color: #727a86; font-size: 13px; }
+    .coordinate-selection strong { margin-right: 8px; color: var(--primary); font-weight: 500; }
+    .coordinate-modal__footer { height: 76px; padding: 0 14px; display: flex; align-items: center; justify-content: flex-end; gap: 12px; flex: 0 0 auto; background: #fff; border-top: 1px solid var(--border-light); }
+    .coordinate-modal__footer .btn { min-width: 88px; height: 44px; font-size: 16px; }
+
+    /* 户型新增/编辑弹窗 */
+    .overlay { position: fixed; inset: 0; z-index: 80; display: none; align-items: center; justify-content: center; padding: 36px; background: rgba(0, 0, 0, .48); }
+    .overlay.show { display: flex; }
+    .plan-modal { width: min(1016px, calc(100vw - 72px)); max-height: calc(100vh - 72px); display: flex; overflow: hidden; flex-direction: column; background: #fff; border-radius: 6px; box-shadow: var(--shadow); animation: modal-in .16s ease-out; }
+    @keyframes modal-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+    .modal-header { height: 64px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; flex: 0 0 auto; border-bottom: 1px solid var(--border-light); }
+    .modal-title { font-size: 20px; font-weight: 500; }
+    .modal-body { min-height: 0; padding: 30px 74px 34px 58px; overflow-y: auto; flex: 1; }
+    .modal-footer { min-height: 64px; padding: 12px 18px; display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex: 0 0 auto; border-top: 1px solid var(--border-light); }
+    .modal-footer .btn { min-width: 68px; }
+    .form-row { width: 650px; max-width: 100%; min-height: 42px; margin-right: auto; margin-left: auto; display: flex; align-items: flex-start; }
+    .form-row + .form-row { margin-top: 18px; }
+    .form-label { width: 92px; padding-top: 9px; flex: 0 0 auto; color: var(--regular); text-align: right; }
+    .required::before { content: "*"; margin-right: 5px; color: var(--danger); }
+    .form-control { min-width: 0; margin-left: 16px; flex: 1; }
+    .form-input, .form-select, .form-textarea { width: 100%; color: var(--text); background: #fff; border: 1px solid var(--border); border-radius: 4px; outline: 0; }
+    .form-input, .form-select { height: 38px; padding: 0 14px; }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(63, 111, 232, .1); }
+    .form-input::placeholder, .form-textarea::placeholder { color: var(--placeholder); }
+    .room-line { display: flex; align-items: center; gap: 10px; }
+    .room-line .form-input { width: 126px; }
+    .unit-text { min-width: 18px; color: var(--regular); }
+    .field-help { min-height: 18px; margin-top: 6px; color: var(--placeholder); font-size: 12px; }
+    .field-help.error { color: var(--danger); }
+    .upload-line { display: flex; align-items: flex-start; gap: 14px; }
+    .upload-preview { width: 126px; height: 112px; margin-top: 12px; overflow: hidden; background: #fff; }
+    .upload-preview svg, .upload-preview img { width: 100%; height: 100%; display: block; object-fit: contain; }
+    .upload-rules { margin-top: 10px; color: var(--regular); line-height: 32px; }
+    .input-with-unit { display: flex; }
+    .input-with-unit .form-input { border-radius: 4px 0 0 4px; }
+    .input-unit { width: 86px; display: grid; place-items: center; color: var(--muted); background: #f5f7fa; border: 1px solid var(--border); border-left: 0; border-radius: 0 4px 4px 0; }
+    .input-with-action { display: flex; }
+    .input-with-action .form-input { padding-right: 12px; border-radius: 4px 0 0 4px; }
+    .link-open { width: 76px; flex: 0 0 auto; color: var(--primary); background: #f5f8ff; border: 1px solid var(--border); border-left: 0; border-radius: 0 4px 4px 0; }
+    .link-open:disabled { color: var(--placeholder); background: #f5f7fa; cursor: not-allowed; }
+    .textarea-wrap { position: relative; }
+    .form-textarea { height: 82px; padding: 10px 52px 10px 14px; resize: none; }
+    .counter { position: absolute; right: 12px; bottom: 9px; color: var(--muted); font-size: 12px; }
+
+    /* 户型图绑定房源弹窗 */
+    .binding-overlay { z-index: 100; }
+    .binding-modal { width: min(1180px, calc(100vw - 72px)); height: min(820px, calc(100vh - 48px)); display: flex; overflow: hidden; flex-direction: column; background: #fff; border-radius: 6px; box-shadow: var(--shadow); animation: modal-in .16s ease-out; }
+    .binding-body { min-height: 0; padding: 20px 24px 14px; overflow-y: auto; flex: 1; background: #fff; }
+    .binding-plan-summary { min-height: 88px; padding: 12px 16px; display: flex; align-items: center; background: #f7f9fd; border: 1px solid #e7ecf7; border-radius: 4px; }
+    .binding-plan-thumb { width: 70px; height: 64px; display: grid; place-items: center; flex: 0 0 auto; overflow: hidden; background: #fff; border: 1px solid #e7eaf0; }
+    .binding-plan-thumb svg, .binding-plan-thumb img { width: 100%; height: 100%; object-fit: contain; }
+    .binding-plan-copy { min-width: 0; margin-left: 14px; flex: 1; }
+    .binding-plan-name { color: #333943; font-size: 16px; font-weight: 600; }
+    .binding-plan-meta { margin-top: 5px; color: #7f8793; font-size: 13px; }
+    .binding-count-box { min-width: 120px; padding-left: 24px; border-left: 1px solid #dfe5f1; color: #7b8491; text-align: center; }
+    .binding-count-box strong { display: block; color: var(--primary); font-size: 23px; font-weight: 600; line-height: 1.15; }
+    .binding-count-box span { display: block; margin-top: 4px; font-size: 12px; }
+    .source-strip { min-height: 50px; margin-top: 14px; padding: 8px 12px; display: flex; align-items: center; gap: 10px; color: #637086; background: #f6f8fb; border: 1px solid #e8ebf1; }
+    .source-strip svg { width: 18px; height: 18px; flex: 0 0 auto; color: var(--primary); }
+    .source-copy { min-width: 0; flex: 1; }
+    .source-copy strong { color: #414a58; font-weight: 500; }
+    .source-time { margin-left: 10px; color: #9aa2ae; font-size: 12px; }
+    .sync-button { height: 32px; padding: 0 12px; display: inline-flex; align-items: center; gap: 6px; color: var(--primary); background: #fff; border: 1px solid #9eb5f2; border-radius: 4px; }
+    .sync-button:hover { background: #edf3ff; }
+    .sync-button:disabled { color: #a8b2c4; border-color: #d8dee9; cursor: wait; }
+    .sync-button svg { width: 15px; height: 15px; }
+    .sync-button.syncing svg { animation: spin .8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .binding-filters { margin-top: 14px; padding: 14px 16px; display: grid; grid-template-columns: minmax(220px, 1.5fr) repeat(3, minmax(122px, .75fr)) auto; gap: 12px; align-items: center; background: #fff; border: 1px solid var(--border-light); }
+    .binding-input, .binding-select { width: 100%; height: 36px; padding: 0 12px; color: var(--text); background: #fff; border: 1px solid var(--border); border-radius: 4px; outline: none; }
+    .binding-input:focus, .binding-select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(63,111,232,.1); }
+    .binding-filter-actions { display: flex; gap: 8px; }
+    .binding-filter-actions .btn { padding: 0 14px; }
+    .binding-only { grid-column: 1 / -1; display: inline-flex; align-items: center; gap: 7px; justify-self: start; color: #6d7580; font-size: 13px; }
+    .binding-only input, .house-check { width: 16px; height: 16px; margin: 0; accent-color: var(--primary); }
+    .binding-table-wrap { margin-top: 14px; overflow: auto; border: 1px solid var(--border-light); }
+    .binding-table { min-width: 960px; }
+    .binding-table th, .binding-table td { height: 46px; padding: 0 11px; }
+    .binding-table th { height: 40px; }
+    .binding-table .check-column { width: 46px; text-align: center; }
+    .binding-table .house-check { vertical-align: middle; }
+    .binding-table tr.is-disabled td { color: #a5acb6; background: #fafafa; }
+    .binding-table tr.is-selected td { background: #f5f8ff; }
+    .house-status, .bind-status { padding: 3px 8px; display: inline-flex; align-items: center; border-radius: 999px; font-size: 12px; line-height: 1.35; white-space: nowrap; }
+    .house-status.available { color: #278765; background: #eaf8f2; }
+    .house-status.locked { color: #b17918; background: #fff6df; }
+    .house-status.sold { color: #858d99; background: #f0f1f3; }
+    .bind-status.unbound { color: #7f8792; background: #f1f3f6; }
+    .bind-status.current, .bind-status.pending { color: #3f6fe8; background: #edf3ff; }
+    .bind-status.occupied { color: #9b7048; background: #fff4e9; }
+    .binding-table-empty { height: 156px !important; color: #9aa2ae !important; text-align: center; }
+    .binding-list-footer { min-height: 50px; padding: 10px 0 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; color: #7a828e; }
+    .binding-result strong { margin: 0 3px; color: var(--primary); font-weight: 600; }
+    .binding-pagination { display: flex; align-items: center; gap: 7px; }
+    .page-button { min-width: 30px; height: 30px; padding: 0 8px; color: #66707e; background: #fff; border: 1px solid var(--border); border-radius: 3px; }
+    .page-button.active { color: #fff; background: var(--primary); border-color: var(--primary); }
+    .page-button:disabled { color: #c2c7cf; background: #f7f8fa; cursor: not-allowed; }
+    .binding-modal .modal-footer { justify-content: space-between; }
+    .binding-selection { color: #737c89; }
+    .binding-selection strong { margin: 0 3px; color: var(--primary); }
+
+    .toast { min-width: 230px; padding: 11px 16px; position: fixed; top: 26px; left: 50%; z-index: 120; opacity: 0; transform: translate(-50%, -14px); pointer-events: none; color: #2e765f; background: #eefaf5; border: 1px solid #bce9d8; border-radius: 4px; box-shadow: 0 7px 18px rgba(0,0,0,.08); transition: .2s ease; text-align: center; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .toast.error { color: #a84343; background: #fff2f2; border-color: #f4c6c6; }
+
+    @media (max-width: 1420px) {
+      .nav-trigger { padding: 0 11px; }
+      .user { margin-left: 28px; }
+      .project-page { grid-template-columns: 280px minmax(780px, 1fr); }
+      .phase-form { padding-right: 22px; padding-left: 22px; column-gap: 28px; }
+      .phase-label { width: 136px; font-size: 14px; }
+      .map-canvas { height: 410px; }
+      .binding-filters { grid-template-columns: minmax(210px, 1.4fr) repeat(3, minmax(108px, .7fr)); }
+      .binding-filter-actions { grid-column: 1 / -1; }
+      .binding-only { grid-column: 1 / -1; }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-logo" aria-hidden="true"></div>
+      <div class="brand-copy">
+        <div class="brand-title">成都住建线上房产超市管理平台</div>
+        <div class="brand-agency">成都市住房和城乡建设局 <span class="chevron"></span></div>
+      </div>
+    </div>
+    <nav class="header-nav" id="headerNav" aria-label="主导航">
+      <div class="nav-item active" data-nav-menu><a class="nav-primary-link" href="./0902-户型图VR链接管理.html">项目</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开项目菜单" aria-expanded="false"><span class="chevron"></span></button><div class="nav-menu" role="menu" aria-label="项目"><a class="nav-menu-link" href="./0715-房源展示价格管理.html">房源管理</a><a class="nav-menu-link active" href="./0902-户型图VR链接管理.html" aria-current="page">项目管理</a></div></div>
+      <div class="nav-item"><a class="nav-primary-link" href="./registration-workbench/admin.html">申请</a></div>
+      <div class="nav-item" data-nav-menu><a class="nav-primary-link" href="./0821-直播管理.html">运营</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开运营菜单" aria-expanded="false"><span class="chevron"></span></button><div class="nav-menu" role="menu" aria-label="运营"><button class="nav-menu-link" type="button">内容管理</button><a class="nav-menu-link" href="./0902-项目报告管理.html" style="padding-left:32px">项目报告</a><a class="nav-menu-link" href="./0821-直播管理.html">直播间管理</a><a class="nav-menu-link" href="./0828-专题管理.html">专题管理</a><a class="nav-menu-link" href="./0831-区县管理.html">区县管理</a></div></div>
+      <div class="nav-item"><a class="nav-primary-link" href="./网签成交.html">统计</a></div>
+      <div class="nav-item" data-nav-menu><a class="nav-primary-link" href="./0831-客户管理.html">客户</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开客户菜单" aria-expanded="false"><span class="chevron"></span></button><div class="nav-menu" role="menu" aria-label="客户"><a class="nav-menu-link" href="./0831-客户管理.html">客户管理</a></div></div>
+      <div class="nav-item"><a class="nav-primary-link" href="./购房政策.html">政务</a></div>
+      <div class="nav-item"><a class="nav-primary-link" href="./0831-区县管理.html">管理</a></div>
+      <div class="nav-item" data-nav-menu><a class="nav-primary-link" href="./0819-直播专区标签管理.html">系统</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开系统菜单" aria-expanded="false"><span class="chevron"></span></button><div class="nav-menu" role="menu" aria-label="系统"><a class="nav-menu-link" href="./0819-直播专区标签管理.html">小程序管理</a></div></div>
+    </nav>
+    <div class="user"><div class="avatar"></div><div class="user-name">周世杰</div></div>
+  </header>
+
+  <div class="workspace-tabs">
+    <div class="workspace-tab">选择企业</div>
+    <div class="workspace-tab active">项目管理 <span class="close">×</span></div>
+    <div class="more-actions">更多操作 <span class="chevron"></span></div>
+  </div>
+
+  <main class="project-page">
+    <aside class="org-panel">
+      <div class="org-title">机构列表</div>
+      <label class="org-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"></circle><path d="m16.2 16.2 4 4"></path></svg>
+        <input placeholder="请输入关键词">
+      </label>
+      <div class="org-tree"><span class="chevron" style="color:#b6beca;transform:rotate(-45deg)"></span><span class="folder"></span>成都市住房和城乡建设局</div>
+    </aside>
+
+    <section class="project-main">
+      <div class="filter-card">
+        <span class="filter-label">项目名</span>
+        <input class="control-input" placeholder="请输入项目名称">
+        <button class="btn btn-primary" type="button" id="searchProject">查询</button>
+        <button class="btn" type="button" id="resetProject">重置</button>
+      </div>
+      <div class="project-card">
+        <button class="btn btn-primary" type="button" id="newProject">新增项目</button>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th style="width:22%">项目/分期名称</th><th style="width:26%">所属公司</th><th style="width:23%">项目地址</th><th style="width:29%">操作</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="project-name"><span class="row-chevron"></span>星河七栖里</td>
+                <td>成都九联颐善置业有限公司</td>
+                <td>四川省成都市温江区涌泉街道览云一街</td>
+                <td><button class="action-link">编辑</button><button class="action-link">添加分期</button><button class="action-link">总平图</button><button class="action-link">相册管理</button><button class="action-link open-editor">户型图</button><button class="action-link">视频</button><button class="action-link">删除</button></td>
+              </tr>
+              <tr>
+                <td class="project-name" style="padding-left:48px">星河七栖里一期</td>
+                <td>成都九联颐善置业有限公司</td>
+                <td>四川省成都市温江区涌泉街道造欣路8号</td>
+                <td><button class="action-link manage-phase" type="button">管理</button><button class="action-link">删除</button></td>
+              </tr>
+              <tr>
+                <td class="project-name"><span class="row-chevron"></span>绿城桂语兰庭</td>
+                <td>成都兴厦乐业置业有限公司</td>
+                <td>四川省成都市温江区万春镇科锦路</td>
+                <td><button class="action-link">编辑</button><button class="action-link">添加分期</button><button class="action-link">总平图</button><button class="action-link">相册管理</button><button class="action-link open-editor">户型图</button><button class="action-link">视频</button><button class="action-link">删除</button></td>
+              </tr>
+              <tr>
+                <td class="project-name"><span class="row-chevron"></span>光华名邸</td>
+                <td>成都武新盈商置业有限公司</td>
+                <td>四川省成都市武侯区机投桥街道九架车街</td>
+                <td><button class="action-link">编辑</button><button class="action-link">添加分期</button><button class="action-link">总平图</button><button class="action-link">相册管理</button><button class="action-link open-editor">户型图</button><button class="action-link">视频</button><button class="action-link">删除</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section class="phase-editor" id="phaseEditor" aria-label="编辑分期">
+    <header class="phase-editor__header">
+      <div class="phase-editor__title">编辑分期</div>
+      <button class="icon-close" id="closePhaseEditor" type="button" aria-label="关闭编辑分期"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5l14 14M19 5 5 19"></path></svg></button>
+    </header>
+    <div class="phase-editor__body">
+      <section class="phase-section">
+        <div class="phase-section__title">项目基础信息</div>
+        <form class="phase-form" id="phaseForm" novalidate>
+          <div class="phase-field"><label class="phase-label required" for="developer">所属开发商</label><div class="phase-control"><select class="phase-select" id="developer" required><option>成都九联颐善置业有限公司</option><option>成都兴厦乐业置业有限公司</option></select></div></div>
+          <div class="phase-field"><label class="phase-label required" for="belongProject">所属项目</label><div class="phase-control"><input class="phase-input" id="belongProject" value="星河七栖里" disabled></div></div>
+          <div class="phase-field"><label class="phase-label required" for="phaseName">分期名（推广名）</label><div class="phase-control"><div class="textarea-wrap"><input class="phase-input" id="phaseName" maxlength="50" value="星河七栖里" required style="padding-right:58px"><span class="counter" style="bottom:12px"><span id="phaseNameCount">5</span>/50</span></div></div></div>
+          <div class="phase-field"><label class="phase-label" for="phaseAlias">分期别名</label><div class="phase-control"><div class="textarea-wrap"><input class="phase-input" id="phaseAlias" maxlength="50" placeholder="请输入分期别名" style="padding-right:58px"><span class="counter" style="bottom:12px"><span id="phaseAliasCount">0</span>/50</span></div></div></div>
+          <div class="phase-field"><label class="phase-label" for="phaseNumber">项目期数</label><div class="phase-control phase-control--unit"><input class="phase-input" id="phaseNumber" type="number" min="1" value="1"><span class="phase-unit">期</span></div></div>
+          <div class="phase-field"><label class="phase-label" for="investor">投资商</label><div class="phase-control"><select class="phase-select" id="investor"><option value="">请输入关键字查询</option><option>成都轨道城市投资集团有限公司</option><option>成都城投置地（集团）有限公司</option></select></div></div>
+          <div class="phase-field"><span class="phase-label">项目区域</span><div class="phase-control" style="display:grid;grid-template-columns:1fr 1fr;gap:30px"><select class="phase-select" aria-label="项目所属区县"><option>温江区</option><option>武侯区</option><option>成华区</option></select><select class="phase-select" aria-label="项目所属街道"><option>柳林</option><option>涌泉街道</option><option>万春镇</option></select></div></div>
+          <div class="phase-field"><label class="phase-label required" for="projectAddress">项目地址</label><div class="phase-control"><div class="address-coordinate"><input class="phase-input" id="projectAddress" value="四川省成都市温江区涌泉街道造欣路8号" required><button class="coordinate-button" type="button" data-coordinate-target="project" aria-label="选择项目坐标" title="选择项目坐标"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z"/></svg></button></div><div class="coordinate-value selected" id="projectCoordinateText">项目坐标：103.825734，30.688564</div></div></div>
+          <div class="phase-field"><label class="phase-label" for="ringRoad">环线</label><div class="phase-control"><select class="phase-select" id="ringRoad"><option>不限</option><option>一环以内</option><option>一至二环</option><option>二至三环</option><option>三环以外</option></select></div></div>
+          <div class="phase-field"><label class="phase-label required" for="salesStatus">销售状态</label><div class="phase-control"><select class="phase-select" id="salesStatus" required><option>在售</option><option>待售</option><option>售罄</option></select></div></div>
+          <div class="phase-field"><label class="phase-label" for="buildingArea">总建筑面积</label><div class="phase-control phase-control--unit"><input class="phase-input" id="buildingArea" type="number" min="0" placeholder="请输入总建筑面积"><span class="phase-unit">平米</span></div></div>
+          <div class="phase-field"><label class="phase-label" for="landArea">总占地面积</label><div class="phase-control phase-control--unit"><input class="phase-input" id="landArea" type="number" min="0" placeholder="请输入总占地面积"><span class="phase-unit">平米</span></div></div>
+          <div class="phase-field"><label class="phase-label" for="plotRatio">容积率</label><div class="phase-control"><input class="phase-input" id="plotRatio" type="number" min="0" step="0.01" placeholder="请输入容积率"></div></div>
+          <div class="phase-field"><label class="phase-label" for="greenRatio">绿化率</label><div class="phase-control"><input class="phase-input" id="greenRatio" type="number" min="0" max="100" step="0.01" placeholder="请输入绿化率"></div></div>
+          <div class="phase-field"><label class="phase-label" for="parkingCount">车位数</label><div class="phase-control phase-control--unit"><input class="phase-input" id="parkingCount" type="number" min="0" placeholder="请输入车位数"><span class="phase-unit">个</span></div></div>
+          <div class="phase-field"><label class="phase-label" for="salesOfficeAddress">售楼部地址</label><div class="phase-control"><div class="address-coordinate"><input class="phase-input" id="salesOfficeAddress" maxlength="100" placeholder="请输入售楼部地址"><button class="coordinate-button" type="button" data-coordinate-target="sales" aria-label="选择售楼部坐标" title="选择售楼部坐标"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z"/></svg></button></div><div class="coordinate-value" id="salesCoordinateText">售楼部坐标：暂未选择</div></div></div>
+          <div class="phase-field"><label class="phase-label" for="salesPhone">售楼部电话</label><div class="phase-control"><input class="phase-input" id="salesPhone" placeholder="请输入售楼部电话"></div></div>
+          <div class="phase-field"><label class="phase-label" for="streetViewId">街景id</label><div class="phase-control"><input class="phase-input" id="streetViewId" placeholder="请输入街景id"></div></div>
+          <div class="phase-field"><label class="phase-label" for="isAffordable">是否保障性住宅</label><div class="phase-control"><select class="phase-select" id="isAffordable"><option>否</option><option>是</option></select></div></div>
+          <div class="phase-field"><label class="phase-label" for="supportsFund">是否支持公积金</label><div class="phase-control"><select class="phase-select" id="supportsFund"><option>否</option><option>是</option></select></div></div>
+          <div class="phase-field"><label class="phase-label" for="orientation">方位</label><div class="phase-control"><select class="phase-select" id="orientation"><option>不限</option><option>东</option><option>南</option><option>西</option><option>北</option></select></div></div>
+          <div class="phase-field" aria-hidden="true"></div>
+          <div class="phase-field"><span class="phase-label">分期标签</span><div class="phase-control checkbox-group"><label class="checkbox-label"><input type="checkbox">精装</label><label class="checkbox-label"><input type="checkbox">商业</label></div></div>
+        </form>
+      </section>
+    </div>
+    <footer class="phase-editor__footer"><button class="btn" id="cancelPhaseEditor" type="button">取消</button><button class="btn btn-primary" id="savePhaseEditor" type="button">确定</button></footer>
+  </section>
+
+  <div class="coordinate-overlay" id="coordinateOverlay" aria-hidden="true">
+    <section class="coordinate-modal" role="dialog" aria-modal="true" aria-labelledby="coordinateModalTitle">
+      <header class="coordinate-modal__header"><div class="coordinate-modal__title" id="coordinateModalTitle">项目坐标</div><button class="icon-close" id="closeCoordinateModal" type="button" aria-label="关闭坐标选择"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5l14 14M19 5 5 19"></path></svg></button></header>
+      <div class="coordinate-modal__body">
+        <div class="coordinate-search"><input class="phase-input" id="coordinateSearchInput" placeholder="请输入位置查询"><button id="coordinateSearchButton" type="button" aria-label="查询位置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"></circle><path d="m16.2 16.2 4 4"></path></svg></button></div>
+        <div class="coordinate-tip">请搜索或点击地图，选择位置。</div>
+        <div class="map-canvas" id="mapCanvas" role="application" aria-label="成都地图坐标选择区域">
+          <svg viewBox="0 0 1200 500" preserveAspectRatio="none" aria-hidden="true">
+            <rect width="1200" height="500" fill="#f7f8f5"/>
+            <path d="M0 416C118 366 212 386 314 358S506 294 612 330 808 404 936 370s180-58 264-40v170H0Z" fill="#dff3ff"/>
+            <path d="M-30 238C126 216 190 228 318 202s226-66 348-24 238 18 344-22 160-48 236-32" fill="none" stroke="#ffb266" stroke-width="16"/>
+            <path d="M70 26c62 88 110 142 174 228s74 158 126 246M456-30c-18 130 6 232 38 322s22 150 8 226M780-30c-16 96-8 180 36 258s64 180 54 292M1074-20c-62 118-70 222-34 332s22 152 12 210" fill="none" stroke="#ffba6f" stroke-width="13"/>
+            <g fill="none" stroke="#ffd66e" stroke-width="7">
+              <path d="M0 92c154 52 274 66 402 36s248-38 404 22 278 42 416 8"/>
+              <path d="M0 322c152-32 256-14 388 24s302 36 424 0 236-40 410 10"/>
+              <path d="M120-20c24 106 84 176 162 228s130 130 146 312"/>
+              <path d="M638-10c-34 94-26 168 14 246s54 174 24 284"/>
+              <path d="M950-10c-22 110 8 200 58 270s66 146 48 260"/>
+            </g>
+            <g fill="none" stroke="#f1d3c5" stroke-width="3">
+              <path d="M0 164c116 28 212 16 304-14s212-22 300 20 210 38 306 2 186-28 290 2"/>
+              <path d="M0 278c128-22 226-10 318 28s204 24 306-10 210-38 308-6 172 32 268 4"/>
+              <path d="M164 0c-8 108 30 188 84 256s70 146 68 244M350 0c-22 116 18 202 72 270s76 130 78 230M590 0c-20 108 12 196 60 260s70 148 60 240M902 0c-28 112-4 198 44 270s64 142 48 230"/>
+            </g>
+            <g fill="#e7f4dc"><path d="M748 58c46-28 88-22 118 12s10 76-22 94-98 8-118-32 0-60 22-74Z"/><path d="M226 318c34-28 80-20 102 14s4 74-30 92-82 6-98-26 0-60 26-80Z"/><path d="M984 348c46-28 96-12 112 26s-12 80-52 88-90-24-86-58 4-44 26-56Z"/></g>
+            <g fill="#4e5969" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="18"><text x="554" y="266" font-size="24" font-weight="600">成都市</text><text x="454" y="190">金牛区</text><text x="578" y="202">青羊区</text><text x="662" y="238">成华区</text><text x="548" y="318">武侯区</text><text x="386" y="274">温江区</text><text x="244" y="380">双流区</text><text x="925" y="410">龙泉驿区</text></g>
+            <g fill="#fff" stroke="#e4e8ef"><rect x="790" y="94" width="104" height="28" rx="4"/><rect x="318" y="222" width="104" height="28" rx="4"/><rect x="620" y="354" width="104" height="28" rx="4"/></g>
+            <g fill="#6f7885" font-size="13" font-family="PingFang SC,Microsoft YaHei,sans-serif"><text x="804" y="113">熊猫基地</text><text x="332" y="241">成都西站</text><text x="634" y="373">成都南站</text></g>
+          </svg>
+          <div class="map-marker" id="mapMarker"><svg viewBox="0 0 30 38" aria-hidden="true"><path d="M15 1C7.8 1 2 6.8 2 14c0 9.6 13 23 13 23s13-13.4 13-23C28 6.8 22.2 1 15 1Z" fill="#3f6fe8" stroke="#fff" stroke-width="2"/><circle cx="15" cy="14" r="5" fill="#fff"/></svg></div>
+        </div>
+        <div class="coordinate-selection" id="coordinateSelection"><strong>已选位置</strong>四川省成都市温江区涌泉街道造欣路8号　103.825734，30.688564</div>
+      </div>
+      <footer class="coordinate-modal__footer"><button class="btn" id="cancelCoordinateModal" type="button">取消</button><button class="btn btn-primary" id="confirmCoordinate" type="button">确定</button></footer>
+    </section>
+  </div>
+
+  <section class="editor-shell" id="editorShell" aria-label="编辑项目">
+    <header class="editor-header">
+      <div class="editor-title">编辑项目</div>
+      <button class="icon-close" id="closeEditor" type="button" aria-label="关闭编辑项目"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5l14 14M19 5 5 19"></path></svg></button>
+    </header>
+    <nav class="editor-tabs" aria-label="项目编辑栏目">
+      <button class="editor-tab" type="button">项目信息</button>
+      <button class="editor-tab" type="button">总平图</button>
+      <button class="editor-tab" type="button">相册管理</button>
+      <button class="editor-tab active" type="button">户型管理</button>
+    </nav>
+    <div class="editor-body">
+      <div class="upload-bar"><button class="btn btn-primary upload-button" id="addPlan" type="button">上传图片</button></div>
+      <div class="plan-gallery" id="planGallery"></div>
+    </div>
+    <footer class="editor-footer"><button class="btn" id="cancelEditor" type="button">取消</button><button class="btn btn-primary" id="saveEditor" type="button">确定</button></footer>
+  </section>
+
+  <div class="overlay" id="planOverlay" aria-hidden="true">
+    <section class="plan-modal" role="dialog" aria-modal="true" aria-labelledby="planModalTitle">
+      <header class="modal-header">
+        <div class="modal-title" id="planModalTitle">编辑户型图</div>
+        <button class="icon-close" id="closePlanModal" type="button" aria-label="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5l14 14M19 5 5 19"></path></svg></button>
+      </header>
+      <div class="modal-body">
+        <div class="form-row">
+          <label class="form-label" for="planType">类型</label>
+          <div class="form-control"><select class="form-select" id="planType"><option>普通住宅</option><option>公寓</option><option>叠拼</option><option>联排</option></select></div>
+        </div>
+        <div class="form-row">
+          <div class="form-label required">户型</div>
+          <div class="form-control">
+            <div class="room-line"><input class="form-input" id="roomCount" type="number" min="0" max="20" value="4"><span class="unit-text">室</span><input class="form-input" id="hallCount" type="number" min="0" max="20" value="2"><span class="unit-text">厅</span><input class="form-input" id="bathCount" type="number" min="0" max="20" value="2"><span class="unit-text">卫</span></div>
+            <div class="field-help" id="roomError">无对应户型可填0</div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-label required">上传图片</div>
+          <div class="form-control">
+            <div class="upload-line"><button class="btn btn-primary" id="chooseImage" type="button">点击上传</button><input id="imageInput" type="file" accept="image/png,image/jpeg" hidden></div>
+            <div class="upload-preview" id="uploadPreview"></div>
+            <div class="upload-rules">仅支持上传jpg/png格式文件，单个文件不能超过5MB<br>严禁在本互联网非涉密平台处理、传输国家秘密，请确认扫描、传输的<br>文件不涉及国家秘密</div>
+            <div class="field-help" id="imageError"></div>
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="form-label" for="planName">户型名称</label>
+          <div class="form-control"><div class="textarea-wrap"><input class="form-input" id="planName" maxlength="50" placeholder="请输入户型名称" style="padding-right:62px"><span class="counter" style="bottom:10px"><span id="nameCount">0</span>/50</span></div></div>
+        </div>
+        <div class="form-row">
+          <label class="form-label" for="planArea">建筑面积</label>
+          <div class="form-control"><div class="input-with-unit"><input class="form-input" id="planArea" type="number" min="0" step="0.01" placeholder="请输入建筑面积"><span class="input-unit">平米</span></div><div class="field-help" id="areaError"></div></div>
+        </div>
+        <div class="form-row">
+          <label class="form-label" for="vrUrl">VR链接</label>
+          <div class="form-control">
+            <div class="input-with-action"><input class="form-input" id="vrUrl" type="url" maxlength="500" placeholder="请输入VR链接，如：https://vr.example.com/house/001"><button class="link-open" id="openVr" type="button">查看</button></div>
+            <div class="field-help" id="vrError">非必填，请填写以 http:// 或 https:// 开头的完整链接</div>
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="form-label" for="planDescription">图片简介</label>
+          <div class="form-control"><div class="textarea-wrap"><textarea class="form-textarea" id="planDescription" maxlength="100" placeholder="请输入图片简介"></textarea><span class="counter"><span id="descriptionCount">0</span>/100</span></div></div>
+        </div>
+      </div>
+      <footer class="modal-footer"><button class="btn" id="cancelPlanModal" type="button">取消</button><button class="btn btn-primary" id="savePlan" type="button">确定</button></footer>
+    </section>
+  </div>
+
+  <div class="overlay binding-overlay" id="bindingOverlay" aria-hidden="true">
+    <section class="binding-modal" role="dialog" aria-modal="true" aria-labelledby="bindingModalTitle">
+      <header class="modal-header">
+        <div class="modal-title" id="bindingModalTitle">绑定房源</div>
+        <button class="icon-close" id="closeBindingModal" type="button" aria-label="关闭绑定房源弹窗"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5l14 14M19 5 5 19"></path></svg></button>
+      </header>
+      <div class="binding-body">
+        <div class="binding-plan-summary">
+          <div class="binding-plan-thumb" id="bindingPlanThumb" aria-hidden="true"></div>
+          <div class="binding-plan-copy">
+            <div class="binding-plan-name" id="bindingPlanName">—</div>
+            <div class="binding-plan-meta" id="bindingPlanMeta">—</div>
+          </div>
+          <div class="binding-count-box"><strong id="currentBoundCount">0</strong><span>当前已绑定房源</span></div>
+        </div>
+
+        <div class="source-strip">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M6 7V4h12v3M5 7v12h14V7M9 11h6M9 15h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="source-copy"><strong>数据来源：房源管理</strong><span class="source-time" id="sourceTime">最近同步：2026-09-04 09:30</span></div>
+          <button class="sync-button" id="syncExistingHouses" type="button"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5M18.5 9A7 7 0 0 0 6.8 6.6L4 12m16 0-2.8 5.4A7 7 0 0 1 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>导入现有房源</span></button>
+        </div>
+
+        <div class="binding-filters">
+          <input class="binding-input" id="houseKeyword" placeholder="输入房屋唯一号或房号" aria-label="输入房屋唯一号或房号">
+          <select class="binding-select" id="buildingFilter" aria-label="筛选楼栋"><option value="">全部楼栋</option></select>
+          <select class="binding-select" id="unitFilter" aria-label="筛选单元"><option value="">全部单元</option></select>
+          <select class="binding-select" id="houseStatusFilter" aria-label="筛选房源状态"><option value="">全部状态</option><option value="可售">可售</option><option value="已认购">已认购</option><option value="已签约">已签约</option></select>
+          <div class="binding-filter-actions"><button class="btn btn-primary" id="searchHouses" type="button">查询</button><button class="btn" id="resetHouseFilters" type="button">重置</button></div>
+          <label class="binding-only"><input id="onlyBoundHouses" type="checkbox">仅看当前户型已选房源</label>
+        </div>
+
+        <div class="binding-table-wrap">
+          <table class="binding-table">
+            <thead><tr><th class="check-column"><input class="house-check" id="selectPageHouses" type="checkbox" aria-label="全选本页可绑定房源"></th><th>楼栋</th><th>单元</th><th>楼层</th><th>房号</th><th style="width:150px">房屋唯一号</th><th>建筑面积/㎡</th><th style="width:130px">房源户型</th><th>房源状态</th><th style="width:160px">关联状态</th></tr></thead>
+            <tbody id="bindingHouseRows"></tbody>
+          </table>
+        </div>
+        <div class="binding-list-footer">
+          <div class="binding-result">共 <strong id="filteredHouseCount">0</strong> 套房源，已绑定其他户型的房源不可重复选择</div>
+          <div class="binding-pagination" id="bindingPagination"></div>
+        </div>
+      </div>
+      <footer class="modal-footer">
+        <div class="binding-selection">已选择 <strong id="selectedHouseCount">0</strong> 套房源</div>
+        <div><button class="btn" id="cancelBindingModal" type="button">取消</button><button class="btn btn-primary" id="confirmBinding" type="button">确认绑定</button></div>
+      </footer>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const floorPlanSvg = (area, accent = '#8f2a22') => `
+      <svg viewBox="0 0 166 150" xmlns="http://www.w3.org/2000/svg" aria-label="${area}平方米户型图">
+        <rect width="166" height="150" fill="#fff"/>
+        <text x="3" y="18" fill="${accent}" font-size="13" font-weight="700">实得${area}㎡</text>
+        <text x="3" y="34" fill="#242424" font-size="6">四大空间 · 通风采光</text>
+        <text x="3" y="44" fill="#242424" font-size="6">宽境横厅 · 奢阔主卧</text>
+        <g transform="translate(66,7)">
+          <path d="M4 20H88V111H4z" fill="#fbfaf7" stroke="#7d766c" stroke-width="1"/>
+          <path d="M4 52H36V20M36 20v32h26V20M62 20v32h30M4 52h26v31H4m26-31h32v59M62 52h30v30H62M4 83h58m0 0h30v28" fill="none" stroke="#9c958a" stroke-width="1"/>
+          <path d="M10 26h19v18H10zM68 26h17v18H68zM10 59h14v18H10zM68 58h17v17H68z" fill="#e8e3dc"/>
+          <path d="M34 60h20v15H34zM34 85h20v18H34zM68 87h17v17H68z" fill="#d8d3cb"/>
+          <circle cx="44" cy="68" r="5" fill="#fff" stroke="#aaa39a"/>
+          <path d="M24 111v14h48v-14M12 111v10M84 111v10" fill="none" stroke="#b34436" stroke-width="1.2"/>
+          <text x="30" y="136" fill="#8f2a22" font-size="6">约${area}㎡ 臻藏户型</text>
+        </g>
+        <rect x="3" y="86" width="54" height="31" fill="#ddddd9"/>
+        <path d="M3 113c15-15 33-21 54-14v18H3z" fill="#a49a8d"/>
+        <rect x="3" y="122" width="25" height="18" fill="#f3f0ec" stroke="#d6d0c9"/>
+        <rect x="32" y="122" width="25" height="18" fill="#f3f0ec" stroke="#d6d0c9"/>
+      </svg>`;
+
+    const plans = [
+      { type: '普通住宅', rooms: 4, halls: 2, baths: 2, name: '119㎡户型', area: '119', vr: 'https://vr.example.com/house/119', description: '约119㎡宽境四房，南北通透。', accent: '#8f2a22' },
+      { type: '普通住宅', rooms: 4, halls: 2, baths: 2, name: '135㎡户型', area: '135', vr: '', description: '约135㎡改善四房，全明格局。', accent: '#81342b' }
+    ];
+
+    const houses = [
+      { id: '510115202601011201', building: '1栋', unit: '1单元', floor: 12, room: '1201', area: 119.32, layout: '4室2厅2卫', status: '可售', planIndex: 0 },
+      { id: '510115202601011202', building: '1栋', unit: '1单元', floor: 12, room: '1202', area: 119.18, layout: '4室2厅2卫', status: '已认购', planIndex: 0 },
+      { id: '510115202601011301', building: '1栋', unit: '1单元', floor: 13, room: '1301', area: 119.32, layout: '4室2厅2卫', status: '可售', planIndex: null },
+      { id: '510115202601011302', building: '1栋', unit: '1单元', floor: 13, room: '1302', area: 119.18, layout: '4室2厅2卫', status: '可售', planIndex: null },
+      { id: '510115202601021601', building: '1栋', unit: '2单元', floor: 16, room: '1601', area: 135.46, layout: '4室2厅2卫', status: '可售', planIndex: 1 },
+      { id: '510115202601021602', building: '1栋', unit: '2单元', floor: 16, room: '1602', area: 135.22, layout: '4室2厅2卫', status: '已签约', planIndex: 1 },
+      { id: '510115202602010801', building: '2栋', unit: '1单元', floor: 8, room: '801', area: 119.32, layout: '4室2厅2卫', status: '可售', planIndex: null },
+      { id: '510115202602010802', building: '2栋', unit: '1单元', floor: 8, room: '802', area: 119.18, layout: '4室2厅2卫', status: '已认购', planIndex: null },
+      { id: '510115202602010901', building: '2栋', unit: '1单元', floor: 9, room: '901', area: 119.32, layout: '4室2厅2卫', status: '可售', planIndex: null },
+      { id: '510115202602010902', building: '2栋', unit: '1单元', floor: 9, room: '902', area: 119.18, layout: '4室2厅2卫', status: '可售', planIndex: null },
+      { id: '510115202603011001', building: '3栋', unit: '1单元', floor: 10, room: '1001', area: 135.46, layout: '4室2厅2卫', status: '可售', planIndex: null },
+      { id: '510115202603011002', building: '3栋', unit: '1单元', floor: 10, room: '1002', area: 135.22, layout: '4室2厅2卫', status: '可售', planIndex: null },
+      { id: '510115202603021101', building: '3栋', unit: '2单元', floor: 11, room: '1101', area: 101.08, layout: '3室2厅2卫', status: '可售', planIndex: null },
+      { id: '510115202603021102', building: '3栋', unit: '2单元', floor: 11, room: '1102', area: 101.08, layout: '3室2厅2卫', status: '已签约', planIndex: null }
+    ];
+
+    const editorShell = document.getElementById('editorShell');
+    const planOverlay = document.getElementById('planOverlay');
+    const planGallery = document.getElementById('planGallery');
+    const planModalTitle = document.getElementById('planModalTitle');
+    const planType = document.getElementById('planType');
+    const roomCount = document.getElementById('roomCount');
+    const hallCount = document.getElementById('hallCount');
+    const bathCount = document.getElementById('bathCount');
+    const planName = document.getElementById('planName');
+    const planArea = document.getElementById('planArea');
+    const vrUrl = document.getElementById('vrUrl');
+    const planDescription = document.getElementById('planDescription');
+    const uploadPreview = document.getElementById('uploadPreview');
+    const imageInput = document.getElementById('imageInput');
+    const openVr = document.getElementById('openVr');
+    const toast = document.getElementById('toast');
+    const phaseEditor = document.getElementById('phaseEditor');
+    const coordinateOverlay = document.getElementById('coordinateOverlay');
+    const coordinateModalTitle = document.getElementById('coordinateModalTitle');
+    const coordinateSearchInput = document.getElementById('coordinateSearchInput');
+    const coordinateSelection = document.getElementById('coordinateSelection');
+    const mapCanvas = document.getElementById('mapCanvas');
+    const mapMarker = document.getElementById('mapMarker');
+    const bindingOverlay = document.getElementById('bindingOverlay');
+    const bindingHouseRows = document.getElementById('bindingHouseRows');
+    const houseKeyword = document.getElementById('houseKeyword');
+    const buildingFilter = document.getElementById('buildingFilter');
+    const unitFilter = document.getElementById('unitFilter');
+    const houseStatusFilter = document.getElementById('houseStatusFilter');
+    const onlyBoundHouses = document.getElementById('onlyBoundHouses');
+    const selectPageHouses = document.getElementById('selectPageHouses');
+    const addressInputs = {
+      project: document.getElementById('projectAddress'),
+      sales: document.getElementById('salesOfficeAddress')
+    };
+    const coordinateTexts = {
+      project: document.getElementById('projectCoordinateText'),
+      sales: document.getElementById('salesCoordinateText')
+    };
+    const coordinates = {
+      project: { address: '四川省成都市温江区涌泉街道造欣路8号', lng: 103.825734, lat: 30.688564, x: 58, y: 54 },
+      sales: null
+    };
+    let editingIndex = null;
+    let customImage = '';
+    let toastTimer;
+    let activeCoordinateTarget = 'project';
+    let pendingCoordinate = { ...coordinates.project };
+    let activeBindingPlanIndex = null;
+    let pendingHouseIds = new Set();
+    let bindingPage = 1;
+    const bindingPageSize = 6;
+
+    function notify(message, isError = false) {
+      clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.className = `toast show${isError ? ' error' : ''}`;
+      toastTimer = setTimeout(() => toast.className = 'toast', 2100);
+    }
+
+    function renderPlans() {
+      planGallery.innerHTML = plans.map((plan, index) => `
+        <article class="plan-card">
+          <div class="plan-thumb">${plan.image ? `<img src="${plan.image}" alt="${plan.name}">` : floorPlanSvg(plan.area || '—', plan.accent)}</div>
+          <div class="plan-bind-stat ${houses.some(house => house.planIndex === index) ? 'has-bound' : ''}">${houses.filter(house => house.planIndex === index).length ? `已绑定 ${houses.filter(house => house.planIndex === index).length} 套房源` : '暂未绑定房源'}</div>
+          <div class="plan-actions"><button class="action-link" type="button" data-edit-plan="${index}">编辑</button><button class="action-link" type="button" data-assign-plan="${index}">绑定房源</button><button class="action-link danger" type="button" data-delete-plan="${index}">删除</button></div>
+        </article>`).join('');
+    }
+
+    function initializeBindingFilters() {
+      const buildings = [...new Set(houses.map(house => house.building))];
+      const units = [...new Set(houses.map(house => house.unit))];
+      buildingFilter.innerHTML = '<option value="">全部楼栋</option>' + buildings.map(value => `<option value="${value}">${value}</option>`).join('');
+      unitFilter.innerHTML = '<option value="">全部单元</option>' + units.map(value => `<option value="${value}">${value}</option>`).join('');
+    }
+
+    function resetBindingFilters(shouldRender = true) {
+      houseKeyword.value = '';
+      buildingFilter.value = '';
+      unitFilter.value = '';
+      houseStatusFilter.value = '';
+      onlyBoundHouses.checked = false;
+      bindingPage = 1;
+      if (shouldRender) renderBindingRows();
+    }
+
+    function getFilteredHouses() {
+      const keyword = houseKeyword.value.trim().toLowerCase();
+      return houses.filter(house => {
+        const matchesKeyword = !keyword || house.id.toLowerCase().includes(keyword) || house.room.toLowerCase().includes(keyword);
+        const matchesBuilding = !buildingFilter.value || house.building === buildingFilter.value;
+        const matchesUnit = !unitFilter.value || house.unit === unitFilter.value;
+        const matchesStatus = !houseStatusFilter.value || house.status === houseStatusFilter.value;
+        const matchesBound = !onlyBoundHouses.checked || pendingHouseIds.has(house.id);
+        return matchesKeyword && matchesBuilding && matchesUnit && matchesStatus && matchesBound;
+      });
+    }
+
+    function houseStatusClass(status) {
+      if (status === '可售') return 'available';
+      if (status === '已认购') return 'locked';
+      return 'sold';
+    }
+
+    function bindingState(house) {
+      if (pendingHouseIds.has(house.id)) {
+        return house.planIndex === activeBindingPlanIndex
+          ? { className: 'current', text: '已绑定当前户型' }
+          : { className: 'pending', text: '本次新增' };
+      }
+      if (house.planIndex !== null) return { className: 'occupied', text: `已绑定${plans[house.planIndex]?.name || '其他户型'}` };
+      return { className: 'unbound', text: '未绑定' };
+    }
+
+    function getBindingPageRows() {
+      const filtered = getFilteredHouses();
+      const pageCount = Math.max(1, Math.ceil(filtered.length / bindingPageSize));
+      bindingPage = Math.min(bindingPage, pageCount);
+      return {
+        filtered,
+        pageCount,
+        rows: filtered.slice((bindingPage - 1) * bindingPageSize, bindingPage * bindingPageSize)
+      };
+    }
+
+    function renderBindingRows() {
+      if (activeBindingPlanIndex === null) return;
+      const { filtered, pageCount, rows } = getBindingPageRows();
+      document.getElementById('filteredHouseCount').textContent = filtered.length;
+      document.getElementById('selectedHouseCount').textContent = pendingHouseIds.size;
+
+      bindingHouseRows.innerHTML = rows.length ? rows.map(house => {
+        const occupied = house.planIndex !== null && house.planIndex !== activeBindingPlanIndex;
+        const checked = pendingHouseIds.has(house.id);
+        const state = bindingState(house);
+        return `<tr class="${occupied ? 'is-disabled' : ''} ${checked ? 'is-selected' : ''}">
+          <td class="check-column"><input class="house-check" type="checkbox" data-house-id="${house.id}" ${checked ? 'checked' : ''} ${occupied ? 'disabled' : ''} aria-label="选择${house.building}${house.unit}${house.room}房源"></td>
+          <td>${house.building}</td><td>${house.unit}</td><td>${house.floor}层</td><td>${house.room}</td><td>${house.id}</td><td>${house.area.toFixed(2)}</td><td>${house.layout}</td>
+          <td><span class="house-status ${houseStatusClass(house.status)}">${house.status}</span></td><td><span class="bind-status ${state.className}">${state.text}</span></td>
+        </tr>`;
+      }).join('') : '<tr><td class="binding-table-empty" colspan="10">暂无符合条件的房源</td></tr>';
+
+      const eligibleRows = rows.filter(house => house.planIndex === null || house.planIndex === activeBindingPlanIndex);
+      selectPageHouses.disabled = !eligibleRows.length;
+      selectPageHouses.checked = Boolean(eligibleRows.length) && eligibleRows.every(house => pendingHouseIds.has(house.id));
+      selectPageHouses.indeterminate = eligibleRows.some(house => pendingHouseIds.has(house.id)) && !selectPageHouses.checked;
+
+      const pagination = document.getElementById('bindingPagination');
+      const pageButtons = Array.from({ length: pageCount }, (_, index) => index + 1).map(page => `<button class="page-button ${page === bindingPage ? 'active' : ''}" type="button" data-binding-page="${page}">${page}</button>`).join('');
+      pagination.innerHTML = `<span>共 ${filtered.length} 条</span><button class="page-button" type="button" data-binding-page="${bindingPage - 1}" ${bindingPage === 1 ? 'disabled' : ''}>‹</button>${pageButtons}<button class="page-button" type="button" data-binding-page="${bindingPage + 1}" ${bindingPage === pageCount ? 'disabled' : ''}>›</button>`;
+    }
+
+    function openBindingModal(index) {
+      activeBindingPlanIndex = index;
+      const plan = plans[index];
+      pendingHouseIds = new Set(houses.filter(house => house.planIndex === index).map(house => house.id));
+      resetBindingFilters(false);
+      document.getElementById('bindingPlanThumb').innerHTML = plan.image ? `<img src="${plan.image}" alt="">` : floorPlanSvg(plan.area || '—', plan.accent);
+      document.getElementById('bindingPlanName').textContent = plan.name;
+      document.getElementById('bindingPlanMeta').textContent = `${plan.type} · ${plan.rooms}室${plan.halls}厅${plan.baths}卫 · 建筑面积 ${plan.area || '—'}㎡`;
+      document.getElementById('currentBoundCount').textContent = pendingHouseIds.size;
+      renderBindingRows();
+      bindingOverlay.classList.add('show');
+      bindingOverlay.setAttribute('aria-hidden', 'false');
+      setTimeout(() => houseKeyword.focus(), 40);
+    }
+
+    function closeBindingModal() {
+      bindingOverlay.classList.remove('show');
+      bindingOverlay.setAttribute('aria-hidden', 'true');
+      activeBindingPlanIndex = null;
+    }
+
+    function confirmBinding() {
+      if (activeBindingPlanIndex === null) return;
+      const before = houses.filter(house => house.planIndex === activeBindingPlanIndex).map(house => house.id);
+      houses.forEach(house => {
+        if (house.planIndex === activeBindingPlanIndex && !pendingHouseIds.has(house.id)) house.planIndex = null;
+        if (house.planIndex === null && pendingHouseIds.has(house.id)) house.planIndex = activeBindingPlanIndex;
+      });
+      const afterCount = houses.filter(house => house.planIndex === activeBindingPlanIndex).length;
+      const added = [...pendingHouseIds].filter(id => !before.includes(id)).length;
+      const removed = before.filter(id => !pendingHouseIds.has(id)).length;
+      closeBindingModal();
+      renderPlans();
+      const detail = [added ? `新增 ${added} 套` : '', removed ? `解绑 ${removed} 套` : ''].filter(Boolean).join('，');
+      notify(detail ? `房源绑定已更新：${detail}` : `已保留当前 ${afterCount} 套绑定房源`);
+    }
+
+    function setPreview(plan) {
+      uploadPreview.innerHTML = plan && plan.image ? `<img src="${plan.image}" alt="户型图预览">` : floorPlanSvg(plan?.area || '119', plan?.accent || '#8f2a22');
+    }
+
+    function clearErrors() {
+      document.getElementById('roomError').className = 'field-help';
+      document.getElementById('roomError').textContent = '无对应户型可填0';
+      document.getElementById('imageError').className = 'field-help';
+      document.getElementById('imageError').textContent = '';
+      document.getElementById('areaError').className = 'field-help';
+      document.getElementById('areaError').textContent = '';
+      document.getElementById('vrError').className = 'field-help';
+      document.getElementById('vrError').textContent = '非必填，请填写以 http:// 或 https:// 开头的完整链接';
+    }
+
+    function updateCounters() {
+      document.getElementById('nameCount').textContent = planName.value.length;
+      document.getElementById('descriptionCount').textContent = planDescription.value.length;
+    }
+
+    function updateVrButton() {
+      openVr.disabled = !isValidUrl(vrUrl.value.trim());
+    }
+
+    function openPlanModal(index = null) {
+      editingIndex = index;
+      const plan = index === null ? null : plans[index];
+      planModalTitle.textContent = plan ? '编辑户型图' : '上传户型图';
+      planType.value = plan?.type || '普通住宅';
+      roomCount.value = plan?.rooms ?? 0;
+      hallCount.value = plan?.halls ?? 0;
+      bathCount.value = plan?.baths ?? 0;
+      planName.value = plan?.name || '';
+      planArea.value = plan?.area || '';
+      vrUrl.value = plan?.vr || '';
+      planDescription.value = plan?.description || '';
+      customImage = plan?.image || '';
+      imageInput.value = '';
+      setPreview(plan);
+      clearErrors();
+      updateCounters();
+      updateVrButton();
+      planOverlay.classList.add('show');
+      planOverlay.setAttribute('aria-hidden', 'false');
+    }
+
+    function closePlanModal() {
+      planOverlay.classList.remove('show');
+      planOverlay.setAttribute('aria-hidden', 'true');
+    }
+
+    function isValidUrl(value) {
+      if (!value) return false;
+      try {
+        const url = new URL(value);
+        return url.protocol === 'http:' || url.protocol === 'https:';
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function validateForm() {
+      clearErrors();
+      let valid = true;
+      const roomValues = [roomCount.value, hallCount.value, bathCount.value].map(Number);
+      if (roomValues.some(value => !Number.isInteger(value) || value < 0 || value > 20)) {
+        const error = document.getElementById('roomError');
+        error.className = 'field-help error';
+        error.textContent = '室、厅、卫请输入0至20之间的整数';
+        valid = false;
+      }
+      if (planArea.value && Number(planArea.value) <= 0) {
+        const error = document.getElementById('areaError');
+        error.className = 'field-help error';
+        error.textContent = '建筑面积需大于0';
+        valid = false;
+      }
+      const link = vrUrl.value.trim();
+      if (link && !isValidUrl(link)) {
+        const error = document.getElementById('vrError');
+        error.className = 'field-help error';
+        error.textContent = '请输入以 http:// 或 https:// 开头的完整VR链接';
+        valid = false;
+      }
+      return valid;
+    }
+
+    function savePlan() {
+      if (!validateForm()) {
+        notify('请检查户型图信息', true);
+        return;
+      }
+      const nextPlan = {
+        type: planType.value,
+        rooms: Number(roomCount.value),
+        halls: Number(hallCount.value),
+        baths: Number(bathCount.value),
+        name: planName.value.trim() || `${planArea.value || '未命名'}㎡户型`,
+        area: planArea.value.trim(),
+        vr: vrUrl.value.trim(),
+        description: planDescription.value.trim(),
+        image: customImage,
+        accent: editingIndex === null ? '#8f2a22' : plans[editingIndex].accent
+      };
+      if (editingIndex === null) plans.push(nextPlan); else plans[editingIndex] = nextPlan;
+      renderPlans();
+      closePlanModal();
+      notify(nextPlan.vr ? '户型图及VR链接已保存' : '户型图已保存');
+    }
+
+    function setMapSelection(selection) {
+      pendingCoordinate = { ...selection };
+      mapMarker.style.left = `${selection.x}%`;
+      mapMarker.style.top = `${selection.y}%`;
+      coordinateSelection.innerHTML = '<strong>已选位置</strong>';
+      coordinateSelection.append(document.createTextNode(`${selection.address || '地图选点'}　${selection.lng.toFixed(6)}，${selection.lat.toFixed(6)}`));
+    }
+
+    function openCoordinatePicker(target) {
+      activeCoordinateTarget = target;
+      const isProject = target === 'project';
+      const fallback = isProject
+        ? coordinates.project
+        : { address: addressInputs.sales.value.trim() || '四川省成都市温江区', lng: 103.854219, lat: 30.675381, x: 61, y: 57 };
+      coordinateModalTitle.textContent = isProject ? '项目坐标' : '售楼部坐标';
+      coordinateSearchInput.value = addressInputs[target].value.trim();
+      setMapSelection(coordinates[target] || fallback);
+      coordinateOverlay.classList.add('show');
+      coordinateOverlay.setAttribute('aria-hidden', 'false');
+      setTimeout(() => coordinateSearchInput.focus(), 40);
+    }
+
+    function closeCoordinatePicker() {
+      coordinateOverlay.classList.remove('show');
+      coordinateOverlay.setAttribute('aria-hidden', 'true');
+    }
+
+    function searchCoordinate() {
+      const query = coordinateSearchInput.value.trim();
+      if (!query) {
+        notify('请输入需要查询的位置', true);
+        coordinateSearchInput.focus();
+        return;
+      }
+      const seed = Array.from(query).reduce((total, char) => total + char.charCodeAt(0), 0);
+      const x = 39 + (seed % 33);
+      const y = 34 + (seed % 28);
+      const lng = 103.55 + x / 100 * 1.15;
+      const lat = 31.03 - y / 100 * .72;
+      setMapSelection({ address: query, lng, lat, x, y });
+      notify('已定位到查询位置，请确认地图选点');
+    }
+
+    function savePhaseInformation() {
+      const phaseName = document.getElementById('phaseName');
+      const projectAddress = addressInputs.project;
+      if (!phaseName.value.trim() || !projectAddress.value.trim() || !coordinates.project) {
+        notify('请完善分期名、项目地址及项目坐标', true);
+        (!phaseName.value.trim() ? phaseName : projectAddress).focus();
+        return;
+      }
+      const phaseRow = document.querySelector('.manage-phase')?.closest('tr');
+      if (phaseRow) {
+        phaseRow.children[0].textContent = phaseName.value.trim();
+        phaseRow.children[2].textContent = projectAddress.value.trim();
+      }
+      notify('分期基础信息已保存');
+      phaseEditor.classList.remove('show');
+    }
+
+    function closeHeaderMenus() {
+      document.querySelectorAll('[data-nav-menu]').forEach(item => {
+        item.classList.remove('open');
+        item.querySelector('.nav-trigger')?.setAttribute('aria-expanded', 'false');
+      });
+    }
+    document.getElementById('headerNav').addEventListener('click', event => {
+      const trigger = event.target.closest('[data-nav-menu] > .nav-trigger');
+      if (!trigger) return;
+      const item = trigger.parentElement;
+      const willOpen = !item.classList.contains('open');
+      closeHeaderMenus();
+      item.classList.toggle('open', willOpen);
+      trigger.setAttribute('aria-expanded', String(willOpen));
+      event.stopPropagation();
+    });
+    document.addEventListener('click', event => { if (!event.target.closest('#headerNav')) closeHeaderMenus(); });
+
+    document.querySelectorAll('.open-editor').forEach(button => button.addEventListener('click', () => editorShell.classList.add('show')));
+    document.querySelectorAll('.manage-phase').forEach(button => button.addEventListener('click', () => {
+      phaseEditor.classList.add('show');
+      phaseEditor.querySelector('.phase-editor__body').scrollTop = 0;
+    }));
+    document.getElementById('closePhaseEditor').addEventListener('click', () => phaseEditor.classList.remove('show'));
+    document.getElementById('cancelPhaseEditor').addEventListener('click', () => phaseEditor.classList.remove('show'));
+    document.getElementById('savePhaseEditor').addEventListener('click', savePhaseInformation);
+    document.getElementById('phaseName').addEventListener('input', event => document.getElementById('phaseNameCount').textContent = event.target.value.length);
+    document.getElementById('phaseAlias').addEventListener('input', event => document.getElementById('phaseAliasCount').textContent = event.target.value.length);
+    document.querySelectorAll('[data-coordinate-target]').forEach(button => button.addEventListener('click', () => openCoordinatePicker(button.dataset.coordinateTarget)));
+    document.getElementById('closeCoordinateModal').addEventListener('click', closeCoordinatePicker);
+    document.getElementById('cancelCoordinateModal').addEventListener('click', closeCoordinatePicker);
+    document.getElementById('coordinateSearchButton').addEventListener('click', searchCoordinate);
+    coordinateSearchInput.addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); searchCoordinate(); } });
+    mapCanvas.addEventListener('click', event => {
+      const bounds = mapCanvas.getBoundingClientRect();
+      const x = Math.max(1, Math.min(99, (event.clientX - bounds.left) / bounds.width * 100));
+      const y = Math.max(3, Math.min(97, (event.clientY - bounds.top) / bounds.height * 100));
+      const address = coordinateSearchInput.value.trim() || addressInputs[activeCoordinateTarget].value.trim() || '地图选点位置';
+      setMapSelection({ address, lng: 103.55 + x / 100 * 1.15, lat: 31.03 - y / 100 * .72, x, y });
+    });
+    document.getElementById('confirmCoordinate').addEventListener('click', () => {
+      coordinates[activeCoordinateTarget] = { ...pendingCoordinate };
+      if (!addressInputs[activeCoordinateTarget].value.trim() && pendingCoordinate.address !== '地图选点位置') {
+        addressInputs[activeCoordinateTarget].value = pendingCoordinate.address;
+      }
+      const prefix = activeCoordinateTarget === 'project' ? '项目坐标' : '售楼部坐标';
+      coordinateTexts[activeCoordinateTarget].textContent = `${prefix}：${pendingCoordinate.lng.toFixed(6)}，${pendingCoordinate.lat.toFixed(6)}`;
+      coordinateTexts[activeCoordinateTarget].classList.add('selected');
+      closeCoordinatePicker();
+      notify(`${prefix}已选择`);
+    });
+    coordinateOverlay.addEventListener('click', event => { if (event.target === coordinateOverlay) closeCoordinatePicker(); });
+    document.getElementById('closeEditor').addEventListener('click', () => editorShell.classList.remove('show'));
+    document.getElementById('cancelEditor').addEventListener('click', () => editorShell.classList.remove('show'));
+    document.getElementById('saveEditor').addEventListener('click', () => { notify('项目户型信息已保存'); editorShell.classList.remove('show'); });
+    document.getElementById('addPlan').addEventListener('click', () => openPlanModal());
+    document.getElementById('closePlanModal').addEventListener('click', closePlanModal);
+    document.getElementById('cancelPlanModal').addEventListener('click', closePlanModal);
+    document.getElementById('savePlan').addEventListener('click', savePlan);
+    document.getElementById('closeBindingModal').addEventListener('click', closeBindingModal);
+    document.getElementById('cancelBindingModal').addEventListener('click', closeBindingModal);
+    document.getElementById('confirmBinding').addEventListener('click', confirmBinding);
+    document.getElementById('searchHouses').addEventListener('click', () => { bindingPage = 1; renderBindingRows(); });
+    document.getElementById('resetHouseFilters').addEventListener('click', () => resetBindingFilters());
+    houseKeyword.addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); bindingPage = 1; renderBindingRows(); } });
+    [buildingFilter, unitFilter, houseStatusFilter, onlyBoundHouses].forEach(control => control.addEventListener('change', () => { bindingPage = 1; renderBindingRows(); }));
+
+    bindingHouseRows.addEventListener('change', event => {
+      const checkbox = event.target.closest('[data-house-id]');
+      if (!checkbox) return;
+      if (checkbox.checked) pendingHouseIds.add(checkbox.dataset.houseId); else pendingHouseIds.delete(checkbox.dataset.houseId);
+      renderBindingRows();
+    });
+    selectPageHouses.addEventListener('change', () => {
+      const { rows } = getBindingPageRows();
+      rows.filter(house => house.planIndex === null || house.planIndex === activeBindingPlanIndex).forEach(house => {
+        if (selectPageHouses.checked) pendingHouseIds.add(house.id); else pendingHouseIds.delete(house.id);
+      });
+      renderBindingRows();
+    });
+    document.getElementById('bindingPagination').addEventListener('click', event => {
+      const button = event.target.closest('[data-binding-page]');
+      if (!button || button.disabled) return;
+      bindingPage = Number(button.dataset.bindingPage);
+      renderBindingRows();
+    });
+    document.getElementById('syncExistingHouses').addEventListener('click', event => {
+      const button = event.currentTarget;
+      const label = button.querySelector('span');
+      button.disabled = true;
+      button.classList.add('syncing');
+      label.textContent = '正在导入';
+      setTimeout(() => {
+        const now = new Date();
+        const stamp = now.toLocaleString('zh-CN', { hour12: false }).replaceAll('/', '-');
+        document.getElementById('sourceTime').textContent = `最近同步：${stamp}`;
+        button.disabled = false;
+        button.classList.remove('syncing');
+        label.textContent = '导入现有房源';
+        initializeBindingFilters();
+        renderBindingRows();
+        notify(`已从房源管理导入 ${houses.length} 套现有房源`);
+      }, 650);
+    });
+    bindingOverlay.addEventListener('click', event => { if (event.target === bindingOverlay) closeBindingModal(); });
+
+    planGallery.addEventListener('click', event => {
+      const editButton = event.target.closest('[data-edit-plan]');
+      const assignButton = event.target.closest('[data-assign-plan]');
+      const deleteButton = event.target.closest('[data-delete-plan]');
+      if (editButton) openPlanModal(Number(editButton.dataset.editPlan));
+      if (assignButton) openBindingModal(Number(assignButton.dataset.assignPlan));
+      if (deleteButton) {
+        const index = Number(deleteButton.dataset.deletePlan);
+        if (confirm(`确认删除“${plans[index].name}”吗？`)) {
+          houses.forEach(house => {
+            if (house.planIndex === index) house.planIndex = null;
+            else if (house.planIndex !== null && house.planIndex > index) house.planIndex -= 1;
+          });
+          plans.splice(index, 1);
+          renderPlans();
+          notify('户型图已删除');
+        }
+      }
+    });
+
+    document.querySelectorAll('.editor-tab:not(.active)').forEach(tab => tab.addEventListener('click', () => notify(`${tab.textContent.trim()}页面沿用原有项目管理流程`)));
+    document.querySelectorAll('.project-card .action-link:not(.open-editor):not(.manage-phase)').forEach(button => button.addEventListener('click', () => notify(`${button.textContent.trim()}为原有功能入口`)));
+    document.getElementById('newProject').addEventListener('click', () => notify('新增项目为原有功能入口'));
+    document.getElementById('searchProject').addEventListener('click', () => notify('已查询项目'));
+    document.getElementById('resetProject').addEventListener('click', event => { event.currentTarget.parentElement.querySelector('input').value = ''; notify('筛选条件已重置'); });
+
+    document.getElementById('chooseImage').addEventListener('click', () => imageInput.click());
+    imageInput.addEventListener('change', () => {
+      const file = imageInput.files[0];
+      if (!file) return;
+      const error = document.getElementById('imageError');
+      if (!['image/jpeg', 'image/png'].includes(file.type) || file.size > 5 * 1024 * 1024) {
+        error.className = 'field-help error';
+        error.textContent = '请选择不超过5MB的JPG或PNG图片';
+        imageInput.value = '';
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        customImage = reader.result;
+        uploadPreview.innerHTML = `<img src="${customImage}" alt="户型图预览">`;
+        error.className = 'field-help';
+        error.textContent = '';
+      };
+      reader.readAsDataURL(file);
+    });
+
+    planName.addEventListener('input', updateCounters);
+    planDescription.addEventListener('input', updateCounters);
+    planArea.addEventListener('input', () => { if (!customImage) setPreview({ area: planArea.value || '—' }); });
+    vrUrl.addEventListener('input', () => {
+      const error = document.getElementById('vrError');
+      error.className = 'field-help';
+      error.textContent = '非必填，请填写以 http:// 或 https:// 开头的完整链接';
+      updateVrButton();
+    });
+    vrUrl.addEventListener('blur', () => {
+      if (vrUrl.value.trim() && !isValidUrl(vrUrl.value.trim())) {
+        const error = document.getElementById('vrError');
+        error.className = 'field-help error';
+        error.textContent = '请输入以 http:// 或 https:// 开头的完整VR链接';
+      }
+    });
+    openVr.addEventListener('click', () => {
+      const link = vrUrl.value.trim();
+      if (isValidUrl(link)) window.open(link, '_blank', 'noopener,noreferrer');
+    });
+    planOverlay.addEventListener('click', event => { if (event.target === planOverlay) closePlanModal(); });
+    document.addEventListener('keydown', event => {
+      if (event.key !== 'Escape') return;
+      if (bindingOverlay.classList.contains('show')) closeBindingModal();
+      else if (coordinateOverlay.classList.contains('show')) closeCoordinatePicker();
+      else if (planOverlay.classList.contains('show')) closePlanModal();
+      else if (phaseEditor.classList.contains('show')) phaseEditor.classList.remove('show');
+      else if (editorShell.classList.contains('show')) editorShell.classList.remove('show');
+    });
+
+    initializeBindingFilters();
+    renderPlans();
+    const previewState = new URLSearchParams(window.location.search).get('preview');
+    if (previewState === 'phase' || previewState === 'coordinate') phaseEditor.classList.add('show');
+    if (previewState === 'coordinate') setTimeout(() => openCoordinatePicker('project'), 0);
+    if (previewState === 'bind') {
+      editorShell.classList.add('show');
+      setTimeout(() => openBindingModal(0), 0);
+    }
+  </script>
+</body>
+</html>

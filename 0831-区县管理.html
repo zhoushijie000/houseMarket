@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>运营 - 区县管理</title>
+  <style>
+    :root {
+      --primary: #3f6fe8;
+      --primary-dark: #315fda;
+      --primary-light: #edf3ff;
+      --text: #303133;
+      --regular: #606266;
+      --muted: #909399;
+      --placeholder: #c0c4cc;
+      --border: #dcdfe6;
+      --border-light: #ebeef5;
+      --background: #f3f4f6;
+      --surface: #fff;
+      --danger: #f56c6c;
+      --shadow: 0 14px 36px rgba(31, 41, 61, .16);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-width: 1180px; min-height: 100%; }
+    body { color: var(--text); background: var(--background); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; font-size: 14px; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+
+    /* Header */
+    .app-header { height: 64px; padding: 0 20px; display: flex; align-items: center; background: #fff; border: 1px solid var(--border-light); }
+    .brand, .brand-copy, .header-nav, .nav-item, .user { display: flex; align-items: center; }
+    .brand-logo { width: 36px; height: 36px; margin-right: 20px; position: relative; overflow: hidden; background: #406bdd; }
+    .brand-logo::before { content: ""; position: absolute; inset: 7px 9px; border-left: 5px solid #fff; border-right: 5px solid #fff; }
+    .brand-logo::after { content: ""; position: absolute; right: 9px; top: 13px; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-right: 10px solid #fff; }
+    .brand-title { color: #111; font-size: 18px; font-weight: 650; white-space: nowrap; }
+    .brand-agency { margin-left: 20px; color: var(--regular); white-space: nowrap; }
+    .brand-agency .chevron { margin-left: 24px; color: var(--primary); }
+    .header-nav { height: 100%; margin-left: auto; }
+    .nav-item { height: 100%; position: relative; color: #262626; white-space: nowrap; }
+    .nav-trigger { height: 100%; padding: 0 15px; display: flex; align-items: center; gap: 10px; color: inherit; background: transparent; border: 0; font-size: 15px; }
+    .nav-primary-link { height: 100%; padding: 0 8px 0 15px; display: flex; align-items: center; color: inherit; text-decoration: none; font-size: 15px; }
+    .nav-item:not([data-nav-menu]) .nav-primary-link { padding: 0 15px; }
+    .nav-menu-toggle { width: 28px; padding: 0 10px 0 0; }
+    .nav-primary-link:hover, .nav-item.open > .nav-primary-link { color: var(--primary); background: #f7f9fd; }
+    .nav-item.active > .nav-primary-link { color: var(--primary); font-weight: 600; }
+    .nav-trigger:hover, .nav-item.open .nav-trigger { background: #f7f9fd; }
+    .nav-item.active .nav-trigger { color: var(--primary); }
+    .nav-item.open .nav-trigger .chevron { transform: rotate(225deg) translate(-1px, -1px); }
+    .nav-menu { width: 212px; padding: 10px 0; position: absolute; top: calc(100% + 1px); left: 50%; z-index: 70; display: none; transform: translateX(-50%); background: #fff; border: 1px solid #edf0f5; border-radius: 4px; box-shadow: 0 8px 24px rgba(31, 41, 61, .14); }
+    .nav-item.open .nav-menu { display: block; }
+    .nav-menu-link { width: 100%; height: 46px; padding: 0 20px; display: flex; align-items: center; color: #30343a; background: transparent; border: 0; text-align: left; text-decoration: none; font-size: 15px; }
+    .nav-menu-link:hover { color: var(--primary); background: #f5f8ff; }
+    .nav-menu-link.active { color: var(--primary); background: var(--primary-light); font-weight: 600; }
+    .chevron { width: 7px; height: 7px; display: inline-block; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translateY(-2px); }
+    .user { height: 56px; margin-left: 34px; flex-direction: column; justify-content: center; }
+    .avatar { width: 35px; height: 35px; border-radius: 50%; position: relative; background: #e4e7ed; }
+    .avatar::before { content: ""; width: 9px; height: 9px; position: absolute; left: 13px; top: 7px; border-radius: 50%; background: #fff; }
+    .avatar::after { content: ""; width: 17px; height: 10px; position: absolute; left: 9px; top: 20px; border-radius: 9px 9px 3px 3px; background: #fff; }
+    .user-name { margin-top: -4px; padding: 1px 7px; border-radius: 4px; color: #fff; background: #85888d; font-size: 12px; }
+    .workspace-tabs { height: 54px; padding: 10px 12px; display: flex; align-items: center; gap: 6px; background: #f0f1f3; }
+    .workspace-tab { min-width: 96px; height: 34px; padding: 0 20px; display: inline-flex; align-items: center; justify-content: center; gap: 14px; color: #2f3033; background: #fff; border: 1px solid var(--border); border-radius: 4px; font-weight: 600; }
+    .workspace-tab.active { color: var(--primary); border-color: var(--primary); }
+    .workspace-tab .close { font-size: 16px; font-weight: 400; }
+    .more-actions { margin-left: auto; display: flex; align-items: center; gap: 12px; color: var(--regular); }
+
+    /* List */
+    .page { padding: 0 12px 14px; }
+    .filter-card { min-height: 92px; padding: 20px; display: flex; align-items: center; background: #fff; }
+    .filter-item { display: flex; align-items: center; gap: 14px; }
+    .filter-label { color: var(--regular); font-size: 15px; }
+    .control-input, .control-select, .control-textarea { width: 280px; height: 38px; padding: 0 13px; color: var(--text); background: #fff; border: 1px solid var(--border); border-radius: 4px; outline: none; }
+    .control-input::placeholder, .control-textarea::placeholder { color: var(--placeholder); }
+    .control-input:focus, .control-select:focus, .control-textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(63, 111, 232, .1); }
+    .filter-actions { display: flex; gap: 10px; margin-left: 64px; }
+    .btn { height: 36px; padding: 0 18px; color: var(--regular); background: #fff; border: 1px solid var(--border); border-radius: 4px; }
+    .btn:hover { color: var(--primary); border-color: #9eb5f2; }
+    .btn-primary { color: #fff; background: var(--primary); border-color: var(--primary); }
+    .btn-primary:hover { color: #fff; background: var(--primary-dark); border-color: var(--primary-dark); }
+    .list-card { min-height: calc(100vh - 230px); margin-top: 12px; padding: 20px; background: #fff; }
+    .toolbar { display: flex; align-items: center; }
+    .table-wrap { margin-top: 18px; overflow-x: auto; border: 1px solid var(--border-light); }
+    table { width: 100%; min-width: 840px; table-layout: fixed; border-collapse: collapse; }
+    th, td { height: 54px; padding: 0 14px; color: var(--regular); text-align: left; border-right: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); }
+    th { height: 42px; background: #f3f4f6; font-weight: 500; }
+    th:last-child, td:last-child { border-right: 0; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:hover td { background: #fafcff; }
+    .col-district { width: 18%; }
+    .col-intro { width: 27%; }
+    .col-sort { width: 12%; text-align: center; }
+    .col-type { width: 18%; }
+    .col-action { width: 25%; text-align: center; }
+    .table-action { padding: 6px 8px; color: var(--primary); background: transparent; border: 0; }
+    .table-action.danger { color: var(--danger); }
+    .empty { height: 180px; color: var(--muted); text-align: center; }
+
+    /* Full-screen editor */
+    .editor-overlay { position: fixed; inset: 0; z-index: 100; display: none; flex-direction: column; background: var(--background); }
+    .editor-overlay.show { display: flex; }
+    .editor-header { height: 64px; padding: 0 22px; display: flex; align-items: center; flex: 0 0 auto; background: #fff; border-bottom: 1px solid var(--border-light); }
+    .editor-title { color: #24272c; font-size: 20px; font-weight: 500; }
+    .editor-close { width: 36px; height: 36px; margin-left: auto; color: var(--muted); background: transparent; border: 0; font-size: 26px; line-height: 1; }
+    .editor-scroll { padding: 14px 12px 82px; overflow-y: auto; }
+    .form-card { margin-bottom: 14px; background: #fff; box-shadow: 0 4px 16px rgba(31, 41, 61, .06); }
+    .section-title { height: 64px; padding: 0 28px; display: flex; align-items: center; gap: 8px; color: #25282e; border-bottom: 1px solid var(--border-light); font-size: 18px; font-weight: 650; }
+    .section-title::before { content: ""; width: 3px; height: 22px; background: var(--primary); }
+    .form-body { padding: 12px 0 34px; }
+    .form-row { min-height: 64px; display: flex; align-items: flex-start; }
+    .form-label { width: 220px; padding: 11px 16px 0 0; flex: 0 0 auto; color: var(--regular); text-align: right; font-size: 15px; }
+    .required::before { content: "*"; margin-right: 6px; color: var(--danger); }
+    .form-control { width: 660px; min-width: 0; }
+    .form-control .control-input, .form-control .control-select { width: 360px; }
+    .intro-wrap { width: 660px; position: relative; }
+    .intro-wrap .control-input { width: 100%; padding-right: 58px; }
+    .count { position: absolute; right: 14px; top: 10px; color: var(--muted); font-size: 12px; }
+    .upload-button { height: 38px; padding: 0 18px; color: #fff; background: var(--primary); border: 1px solid var(--primary); border-radius: 4px; font-weight: 600; }
+    .hidden-file { display: none; }
+    .upload-preview { margin-top: 12px; position: relative; overflow: hidden; background: #f4f6fa; border: 1px solid var(--border-light); }
+    .upload-preview.empty { display: none; }
+    .upload-preview img { width: 100%; height: 100%; display: block; object-fit: cover; }
+    .icon-preview { width: 100px; height: 100px; }
+    .cover-preview { width: 320px; height: 144px; }
+    .preview-remove { width: 26px; height: 26px; position: absolute; top: 6px; right: 6px; display: flex; align-items: center; justify-content: center; color: #fff; background: rgba(36, 42, 54, .72); border: 0; border-radius: 50%; font-size: 18px; }
+    .help { margin-top: 12px; color: var(--regular); line-height: 1.7; }
+    .help.error { color: var(--danger); }
+    .security-tip { margin-top: 20px; color: var(--regular); }
+    .radio-group { height: 38px; display: flex; align-items: center; gap: 34px; }
+    .radio-label { display: inline-flex; align-items: center; gap: 8px; color: var(--regular); }
+    .radio-label input { width: 16px; height: 16px; accent-color: var(--primary); }
+    .video-file { margin-top: 12px; display: flex; align-items: center; gap: 18px; color: #3f4754; }
+    .video-remove { color: var(--danger); background: transparent; border: 0; font-size: 20px; }
+    .link-row { display: none; }
+    .link-row.show { display: flex; }
+    .editor-footer { height: 68px; padding: 0 20px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 110; display: none; align-items: center; justify-content: flex-end; gap: 10px; background: #fff; border-top: 1px solid var(--border-light); }
+    .editor-overlay.show + .editor-footer { display: flex; }
+    .toast { min-width: 180px; padding: 12px 18px; position: fixed; left: 50%; top: 82px; z-index: 150; opacity: 0; pointer-events: none; transform: translate(-50%, -10px); color: #fff; background: rgba(40, 47, 59, .92); border-radius: 4px; text-align: center; transition: .2s ease; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width: 1320px) {
+      .nav-trigger { padding: 0 11px; }
+      .user { margin-left: 18px; }
+      .brand-agency { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand"><div class="brand-logo" aria-hidden="true"></div><div class="brand-copy"><div class="brand-title">成都住建线上房产超市管理平台</div><div class="brand-agency">成都市住房和城乡建设局 <span class="chevron"></span></div></div></div>
+    <nav class="header-nav" id="headerNav" aria-label="主导航">
+      <div class="nav-item" data-nav-menu><a class="nav-primary-link" href="./0715-房源展示价格管理.html">项目</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开项目菜单" aria-expanded="false"><span class="chevron"></span></button><div class="nav-menu" role="menu" aria-label="项目"><a class="nav-menu-link" href="./0715-房源展示价格管理.html">房源管理</a><a class="nav-menu-link" href="./0902-户型图VR链接管理.html">项目管理</a></div></div>
+      <div class="nav-item"><a class="nav-primary-link" href="./registration-workbench/admin.html">申请</a></div>
+      <div class="nav-item active" data-nav-menu>
+        <a class="nav-primary-link" href="./0821-直播管理.html">运营</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开运营菜单" aria-expanded="false"><span class="chevron"></span></button>
+        <div class="nav-menu" role="menu" aria-label="运营">
+          <button class="nav-menu-link" type="button" data-placeholder-menu>内容管理</button>
+          <a class="nav-menu-link" href="./0902-项目报告管理.html" style="padding-left:32px">项目报告</a>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>活动报名审核</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>楼盘管理</button>
+          <a class="nav-menu-link" href="./0821-直播管理.html">直播间管理</a>
+          <a class="nav-menu-link" href="./0828-专题管理.html">专题管理</a>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>运营配置</button>
+          <a class="nav-menu-link active" href="./0831-区县管理.html" aria-current="page">区县管理</a>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>最新预售</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>城市专场</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>活动城市</button>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-primary-link" href="./网签成交.html">统计</a></div>
+      <div class="nav-item" data-nav-menu><a class="nav-primary-link" href="./0831-客户管理.html">客户</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开客户菜单" aria-expanded="false"><span class="chevron"></span></button><div class="nav-menu" role="menu" aria-label="客户"><button class="nav-menu-link" type="button" data-customer-menu="客户消息">客户消息</button><a class="nav-menu-link" href="./0831-客户管理.html">客户管理</a></div></div>
+      <div class="nav-item"><a class="nav-primary-link" href="./购房政策.html">政务</a></div>
+      <div class="nav-item"><a class="nav-primary-link" href="./0831-区县管理.html">管理</a></div>
+      <div class="nav-item" data-nav-menu><a class="nav-primary-link" href="./0819-直播专区标签管理.html">系统</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开系统菜单" aria-expanded="false"><span class="chevron"></span></button><div class="nav-menu" role="menu" aria-label="系统"><a class="nav-menu-link" href="./0819-直播专区标签管理.html">小程序管理</a><button class="nav-menu-link" type="button" data-placeholder-menu>机构管理</button><button class="nav-menu-link" type="button" data-placeholder-menu>人员管理</button><button class="nav-menu-link" type="button" data-placeholder-menu>权限管理</button><button class="nav-menu-link" type="button" data-placeholder-menu>系统日志</button></div></div>
+    </nav>
+    <div class="user"><div class="avatar"></div><div class="user-name">周世杰</div></div>
+  </header>
+
+  <div class="workspace-tabs"><div class="workspace-tab">选择企业</div><div class="workspace-tab">项目管理</div><div class="workspace-tab active">区县管理 <span class="close">×</span></div><div class="more-actions">更多操作 <span class="chevron"></span></div></div>
+
+  <main class="page">
+    <section class="filter-card"><label class="filter-item"><span class="filter-label">区县名称</span><input class="control-input" id="districtFilter" placeholder="请输入区县"></label><div class="filter-actions"><button class="btn btn-primary" id="searchButton" type="button">查询</button><button class="btn" id="resetButton" type="button">重置</button></div></section>
+    <section class="list-card">
+      <div class="toolbar"><button class="btn btn-primary" id="addDistrictButton" type="button">新增专区</button></div>
+      <div class="table-wrap"><table><thead><tr><th class="col-district">区县</th><th class="col-intro">区县简介</th><th class="col-sort">区县排序</th><th class="col-type">专区类型</th><th class="col-action">操作</th></tr></thead><tbody id="districtTableBody"></tbody></table></div>
+    </section>
+  </main>
+
+  <div class="editor-overlay" id="editorOverlay" aria-hidden="true">
+    <header class="editor-header"><div class="editor-title" id="editorTitle">编辑专区</div><button class="editor-close" id="closeEditor" type="button" aria-label="关闭">×</button></header>
+    <div class="editor-scroll">
+      <section class="form-card">
+        <div class="section-title">基本信息</div>
+        <div class="form-body">
+          <div class="form-row"><label class="form-label required" for="districtSelect" id="districtLabel">新增区县</label><div class="form-control"><select class="control-select" id="districtSelect"><option value="">请选择区县</option><option>新都区</option><option>新津区</option><option>金牛区</option><option>都江堰市</option><option>青白江区</option><option>崇州市</option><option>天府新区</option><option>高新区</option><option>武侯区</option><option>彭州市</option><option>大邑县</option><option>蒲江县</option></select></div></div>
+          <div class="form-row"><label class="form-label required" for="introInput">区县简介</label><div class="intro-wrap"><input class="control-input" id="introInput" maxlength="20" placeholder="请输入区县简介"><span class="count"><span id="introCount">0</span>/20</span></div></div>
+          <div class="form-row"><label class="form-label required" for="sortInput">区县排序</label><div class="form-control"><input class="control-input" id="sortInput" type="number" min="0" step="1" placeholder="请输入排序数字"><div class="help">仅支持非负整数，数值越小展示越靠前</div></div></div>
+          <div class="form-row"><div class="form-label required">区县 icon</div><div class="form-control"><button class="upload-button" id="iconUploadButton" type="button">点击上传</button><input class="hidden-file" id="iconInput" type="file" accept="image/png,image/jpeg"><div class="upload-preview icon-preview empty" id="iconPreview"><img alt="区县 icon 预览"><button class="preview-remove" type="button" data-remove-upload="icon" aria-label="移除区县 icon">×</button></div><div class="help" id="iconHelp">仅支持上传 PNG/JPG 格式文件，单个文件不能超过 500KB</div></div></div>
+          <div class="form-row"><div class="form-label required">封面图</div><div class="form-control"><button class="upload-button" id="coverUploadButton" type="button">点击上传</button><input class="hidden-file" id="coverInput" type="file" accept="image/png,image/jpeg"><div class="upload-preview cover-preview empty" id="coverPreview"><img alt="区县封面图预览"><button class="preview-remove" type="button" data-remove-upload="cover" aria-label="移除封面图">×</button></div><div class="help" id="coverHelp">仅支持上传 PNG/JPG 格式图片</div><div class="security-tip">严禁在互联网非涉密平台处理、传输国家秘密，请确认扫描、传输的文件不涉及国家秘密</div></div></div>
+        </div>
+      </section>
+      <section class="form-card">
+        <div class="section-title">专区详情</div>
+        <div class="form-body">
+          <div class="form-row"><div class="form-label required">专区类型</div><div class="form-control"><div class="radio-group"><label class="radio-label"><input type="radio" name="zoneType" value="default" checked> 默认页面</label><label class="radio-label"><input type="radio" name="zoneType" value="link"> 链接</label></div></div></div>
+          <div class="form-row link-row" id="linkRow"><label class="form-label required" for="linkInput">专区链接</label><div class="form-control"><input class="control-input" id="linkInput" placeholder="请输入专区链接"></div></div>
+          <div class="form-row" id="videoRow"><div class="form-label">视频</div><div class="form-control"><button class="upload-button" id="videoUploadButton" type="button">点击上传</button><input class="hidden-file" id="videoInput" type="file" accept="video/mp4,video/3gpp"><div class="video-file" id="videoFile"></div><div class="help">请上传 MP4/3GP 格式的文件，单个视频最大 500MB</div><div class="security-tip">严禁在互联网非涉密平台处理、传输国家秘密，请确认扫描、传输的文件不涉及国家秘密</div></div></div>
+        </div>
+      </section>
+    </div>
+  </div>
+  <footer class="editor-footer"><button class="btn" id="cancelEditor" type="button">取消</button><button class="btn btn-primary" id="saveDistrict" type="button">保存</button></footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const $ = selector => document.querySelector(selector);
+    const $$ = selector => [...document.querySelectorAll(selector)];
+    const districts = [
+      { id: 1, name: '新都区', intro: '安家成都·住享新都', sort: 10, type: '默认', icon: './assets/区县-新都区.jpg', cover: './assets/区县-新都区.jpg', video: '2022122601277616129.mp4' },
+      { id: 2, name: '新津区', intro: '安家成都 幸福新津', sort: 20, type: '默认', icon: './assets/区县-新津区.jpg', cover: './assets/区县-新津区.jpg', video: '' },
+      { id: 3, name: '金牛区', intro: '安家成都·住享金牛', sort: 30, type: '默认', icon: './assets/区县-金牛区.jpg', cover: './assets/区县-金牛区.jpg', video: '' },
+      { id: 4, name: '都江堰市', intro: '珍水万世堰·幸福安逸城', sort: 40, type: '默认', icon: './assets/区县-都江堰市.jpg', cover: './assets/区县-都江堰市.jpg', video: '' },
+      { id: 5, name: '青白江区', intro: '安家成都·悦居青白江', sort: 50, type: '默认', icon: './assets/区县-青白江区.jpg', cover: './assets/区县-青白江区.jpg', video: '' },
+      { id: 6, name: '崇州市', intro: '安家成都，奔赴“新”崇州', sort: 60, type: '默认', icon: './assets/区县-崇州市.jpg', cover: './assets/区县-崇州市.jpg', video: '' },
+      { id: 7, name: '天府新区', intro: '公园城市天府样板·把家安在风景里', sort: 70, type: '默认', icon: './assets/区县-四川天府新区.jpg', cover: './assets/区县-四川天府新区.jpg', video: '' },
+      { id: 8, name: '高新区', intro: '产城相融筑高地，安居乐业在高新', sort: 80, type: '默认', icon: './assets/区县-成都高新区.jpg', cover: './assets/区县-成都高新区.jpg', video: '' },
+      { id: 9, name: '武侯区', intro: '筑梦成都，乐居武侯', sort: 90, type: '默认', icon: './assets/区县-武侯区.jpg', cover: './assets/区县-武侯区.jpg', video: '' },
+      { id: 10, name: '彭州市', intro: '“千亿城·百万人”邀您安居山水彭州', sort: 100, type: '默认', icon: './assets/区县-彭州市.jpg', cover: './assets/区县-彭州市.jpg', video: '' },
+      { id: 11, name: '大邑县', intro: '雪山小城 大美大邑 享受生活宜居地', sort: 110, type: '默认', icon: './assets/区县-大邑县.jpg', cover: './assets/区县-大邑县.jpg', video: '' },
+      { id: 12, name: '蒲江县', intro: '生态福地 大美小城', sort: 120, type: '默认', icon: './assets/区县-蒲江县.jpg', cover: './assets/区县-蒲江县.jpg', video: '' }
+    ];
+    const editorState = { editingId: null, icon: '', cover: '', video: '', query: '' };
+    let toastTimer;
+
+    function escapeHTML(value) { return String(value).replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char])); }
+    function showToast(message) { clearTimeout(toastTimer); $('#toast').textContent = message; $('#toast').classList.add('show'); toastTimer = setTimeout(() => $('#toast').classList.remove('show'), 1800); }
+
+    function renderTable() {
+      const rows = districts.filter(item => !editorState.query || item.name.includes(editorState.query)).sort((a, b) => Number(a.sort) - Number(b.sort) || a.id - b.id);
+      $('#districtTableBody').innerHTML = rows.length ? rows.map(item => `<tr><td>${escapeHTML(item.name)}</td><td>${escapeHTML(item.intro)}</td><td class="col-sort">${escapeHTML(item.sort)}</td><td>${escapeHTML(item.type)}</td><td class="col-action"><button class="table-action" type="button" data-edit="${item.id}">编辑</button><button class="table-action danger" type="button" data-delete="${item.id}">删除</button></td></tr>`).join('') : '<tr><td class="empty" colspan="5">暂无符合条件的区县</td></tr>';
+    }
+
+    function setPreview(type, src) {
+      const preview = type === 'icon' ? $('#iconPreview') : $('#coverPreview');
+      const image = preview.querySelector('img');
+      if (src) { image.src = src; preview.classList.remove('empty'); } else { image.removeAttribute('src'); preview.classList.add('empty'); }
+    }
+
+    function setHelp(type, message = '', isError = false) {
+      const help = type === 'icon' ? $('#iconHelp') : $('#coverHelp');
+      const fallback = type === 'icon' ? '仅支持上传 PNG/JPG 格式文件，单个文件不能超过 500KB' : '仅支持上传 PNG/JPG 格式图片';
+      help.textContent = message || fallback;
+      help.classList.toggle('error', isError);
+    }
+
+    function resetEditor() {
+      editorState.editingId = null; editorState.icon = ''; editorState.cover = ''; editorState.video = '';
+      $('#districtSelect').value = ''; $('#districtSelect').disabled = false; $('#introInput').value = ''; $('#introCount').textContent = '0'; $('#sortInput').value = '';
+      $('input[name="zoneType"][value="default"]').checked = true; $('#linkInput').value = ''; $('#videoFile').innerHTML = '';
+      setPreview('icon', ''); setPreview('cover', ''); setHelp('icon'); setHelp('cover'); updateZoneType();
+    }
+
+    function openEditor(district = null) {
+      resetEditor();
+      if (district) {
+        editorState.editingId = district.id; editorState.icon = district.icon; editorState.cover = district.cover; editorState.video = district.video;
+        $('#editorTitle').textContent = '编辑专区'; $('#districtLabel').textContent = '编辑区县'; $('#districtSelect').value = district.name; $('#districtSelect').disabled = true;
+        $('#introInput').value = district.intro; $('#introCount').textContent = district.intro.length; $('#sortInput').value = district.sort;
+        setPreview('icon', district.icon); setPreview('cover', district.cover);
+        if (district.video) $('#videoFile').innerHTML = `<span>${escapeHTML(district.video)}</span><button class="video-remove" type="button" aria-label="移除视频">×</button>`;
+      } else {
+        $('#editorTitle').textContent = '新增专区'; $('#districtLabel').textContent = '新增区县';
+      }
+      $('#editorOverlay').classList.add('show'); $('#editorOverlay').setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden';
+    }
+
+    function closeEditor() { $('#editorOverlay').classList.remove('show'); $('#editorOverlay').setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; }
+
+    function handleImage(file, type) {
+      setHelp(type);
+      if (!file) return;
+      if (!['image/png', 'image/jpeg'].includes(file.type)) { setHelp(type, '仅支持上传 PNG/JPG 格式图片', true); return; }
+      if (type === 'icon' && file.size > 500 * 1024) { setHelp(type, '区县 icon 单个文件不能超过 500KB', true); return; }
+      const reader = new FileReader();
+      reader.onload = () => { editorState[type] = reader.result; setPreview(type, reader.result); };
+      reader.readAsDataURL(file);
+    }
+
+    function updateZoneType() {
+      const isLink = $('input[name="zoneType"]:checked').value === 'link';
+      $('#linkRow').classList.toggle('show', isLink); $('#videoRow').style.display = isLink ? 'none' : 'flex';
+    }
+
+    function saveDistrict() {
+      const name = $('#districtSelect').value; const intro = $('#introInput').value.trim(); const sortValue = $('#sortInput').value.trim(); const sort = Number(sortValue); const isLink = $('input[name="zoneType"]:checked').value === 'link';
+      setHelp('icon'); setHelp('cover');
+      if (!name) return showToast('请选择区县');
+      if (!intro) return showToast('请输入区县简介');
+      if (sortValue === '' || !Number.isInteger(sort) || sort < 0) return showToast('区县排序请输入非负整数');
+      if (!editorState.icon) { setHelp('icon', '请上传区县 icon', true); return showToast('请完善必填信息'); }
+      if (!editorState.cover) { setHelp('cover', '请上传封面图（PNG/JPG）', true); return showToast('请完善必填信息'); }
+      if (isLink && !$('#linkInput').value.trim()) return showToast('请输入专区链接');
+      const data = { name, intro, sort, type: isLink ? '链接' : '默认', icon: editorState.icon, cover: editorState.cover, video: editorState.video };
+      if (editorState.editingId) Object.assign(districts.find(item => item.id === editorState.editingId), data);
+      else districts.push({ id: Date.now(), ...data });
+      renderTable(); closeEditor(); showToast(editorState.editingId ? '专区编辑成功' : '专区新增成功');
+    }
+
+    function closeHeaderMenus() { $$('[data-nav-menu]').forEach(item => { item.classList.remove('open'); item.querySelector('.nav-trigger')?.setAttribute('aria-expanded', 'false'); }); }
+
+    $('#searchButton').addEventListener('click', () => { editorState.query = $('#districtFilter').value.trim(); renderTable(); });
+    $('#resetButton').addEventListener('click', () => { $('#districtFilter').value = ''; editorState.query = ''; renderTable(); });
+    $('#addDistrictButton').addEventListener('click', () => openEditor());
+    $('#districtTableBody').addEventListener('click', event => {
+      const edit = event.target.closest('[data-edit]'); const remove = event.target.closest('[data-delete]');
+      if (edit) openEditor(districts.find(item => item.id === Number(edit.dataset.edit)));
+      if (remove) { const district = districts.find(item => item.id === Number(remove.dataset.delete)); if (district && confirm(`确定删除“${district.name}”专区吗？`)) { districts.splice(districts.indexOf(district), 1); renderTable(); showToast('专区已删除'); } }
+    });
+    $('#introInput').addEventListener('input', event => { $('#introCount').textContent = event.target.value.length; });
+    $('#iconUploadButton').addEventListener('click', () => $('#iconInput').click());
+    $('#coverUploadButton').addEventListener('click', () => $('#coverInput').click());
+    $('#iconInput').addEventListener('change', event => handleImage(event.target.files[0], 'icon'));
+    $('#coverInput').addEventListener('change', event => handleImage(event.target.files[0], 'cover'));
+    $$('[data-remove-upload]').forEach(button => button.addEventListener('click', () => { const type = button.dataset.removeUpload; editorState[type] = ''; setPreview(type, ''); setHelp(type); }));
+    $$('input[name="zoneType"]').forEach(input => input.addEventListener('change', updateZoneType));
+    $('#videoUploadButton').addEventListener('click', () => $('#videoInput').click());
+    $('#videoInput').addEventListener('change', event => { const file = event.target.files[0]; if (!file) return; editorState.video = file.name; $('#videoFile').innerHTML = `<span>${escapeHTML(file.name)}</span><button class="video-remove" type="button" aria-label="移除视频">×</button>`; });
+    $('#videoFile').addEventListener('click', event => { if (event.target.closest('.video-remove')) { editorState.video = ''; $('#videoFile').innerHTML = ''; } });
+    $('#closeEditor').addEventListener('click', closeEditor); $('#cancelEditor').addEventListener('click', closeEditor); $('#saveDistrict').addEventListener('click', saveDistrict);
+    $('#headerNav').addEventListener('click', event => {
+      const trigger = event.target.closest('[data-nav-menu] > .nav-trigger');
+      if (trigger) { const menu = trigger.parentElement; const willOpen = !menu.classList.contains('open'); closeHeaderMenus(); menu.classList.toggle('open', willOpen); trigger.setAttribute('aria-expanded', String(willOpen)); event.stopPropagation(); return; }
+      const customerMenu = event.target.closest('[data-customer-menu]'); if (customerMenu) { closeHeaderMenus(); showToast(`已选择${customerMenu.dataset.customerMenu}`); return; }
+      const placeholder = event.target.closest('[data-placeholder-menu]'); if (placeholder) { closeHeaderMenus(); showToast(`“${placeholder.textContent.trim()}”未纳入本次原型`); }
+    });
+    document.addEventListener('click', event => { if (!event.target.closest('#headerNav')) closeHeaderMenus(); });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') { if ($('#editorOverlay').classList.contains('show')) closeEditor(); else closeHeaderMenus(); } });
+
+    renderTable();
+    const params = new URLSearchParams(location.search);
+    if (params.get('modal') === 'add') openEditor();
+    if (params.get('modal') === 'edit') openEditor(districts[0]);
+  </script>
+</body>
+</html>

@@ -2026,7 +2026,11 @@
     }
 
     .chat-message--bot .chat-bubble {
-      background: rgba(49, 93, 117, 0.1);
+      width: calc(100% - 44px);
+      max-width: calc(100% - 44px);
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
       color: #294859;
     }
 
@@ -2055,6 +2059,43 @@
       background: rgba(255, 255, 255, 0.72);
     }
 
+    .chat-project-card__detail {
+      display: grid;
+      gap: 5px;
+      color: inherit !important;
+      text-decoration: none !important;
+    }
+
+    .chat-project-card__head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 18px;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chat-project-card__arrow {
+      display: grid;
+      place-items: center;
+      color: #c0c4cc !important;
+    }
+
+    .chat-project-card__arrow svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .chat-project-list__label {
+      margin: 14px 0 2px;
+      color: #303133;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
     .chat-project-card strong {
       color: #183746;
       font-size: 14px;
@@ -2067,22 +2108,119 @@
       line-height: 1.45;
     }
 
-    .chat-project-card a {
-      justify-self: start;
-      display: inline-flex;
+    .chat-project-advisor {
+      display: grid;
+      grid-template-columns: 32px minmax(0, 1fr) auto;
       align-items: center;
-      justify-content: center;
-      min-height: 28px;
-      margin-top: 2px;
-      padding: 0 12px;
-      border: none;
-      border-radius: 999px;
-      color: #ffffff !important;
-      background: #ff6728;
-      font-size: 12px;
+      gap: 8px;
+      margin-top: 4px;
+      padding-top: 9px;
+      border-top: 1px solid rgba(228, 231, 237, 0.86);
+    }
+
+    .chat-project-advisor__avatar {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff !important;
+      background: linear-gradient(135deg, #ff8f2e, #fd5d00);
+      font-size: 13px !important;
       font-weight: 700;
+    }
+
+    .chat-project-advisor__info {
+      min-width: 0;
+      display: grid;
+      gap: 1px;
+    }
+
+    .chat-project-advisor__info strong {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 12px;
+    }
+
+    .chat-project-advisor__info span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 10px;
+    }
+
+    .chat-project-advisor__contact {
+      min-height: 30px;
+      padding: 0 10px;
+      border: 0;
+      border-radius: 999px;
+      color: #fff;
+      background: #fd5d00;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
       cursor: pointer;
-      text-decoration: none;
+    }
+
+    .chat-inline-followups {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .chat-inline-followups__title {
+      margin-bottom: 2px;
+      color: #303133 !important;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .chat-inline-followup {
+      width: 100%;
+      min-height: 44px;
+      display: grid;
+      grid-template-columns: 24px minmax(0, 1fr) 16px;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border: 1px solid rgba(228, 231, 237, 0.78);
+      border-radius: 10px;
+      color: #303133;
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(17, 24, 39, 0.04);
+      text-align: left;
+      font-size: 12px;
+      line-height: 1.4;
+      cursor: pointer;
+    }
+
+    .chat-inline-followup__icon {
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: #2cc7b7;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .chat-inline-followup__arrow {
+      display: grid;
+      place-items: center;
+      color: #c0c4cc;
+    }
+
+    .chat-inline-followup__arrow svg {
+      width: 15px;
+      height: 15px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     .chat-avatar {
@@ -2459,7 +2597,7 @@
     }
 
     #homeScreen .page-content {
-      padding: 0 0 calc(34px + env(safe-area-inset-bottom, 0px));
+      padding: 0 0 calc(126px + env(safe-area-inset-bottom, 0px));
     }
 
     #homeScreen.home-screen--supermarket {
@@ -3300,11 +3438,23 @@
       z-index: 10;
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
-      height: calc(56px + env(safe-area-inset-bottom, 0px));
-      padding: 5px 4px env(safe-area-inset-bottom, 0px);
-      border-top: 1px solid #edf0f4;
-      background: rgba(255, 255, 255, 0.98);
-      box-shadow: 0 -6px 18px rgba(17, 24, 39, 0.05);
+      height: calc(80px + env(safe-area-inset-bottom, 0px));
+      padding: 8px 4px calc(20px + env(safe-area-inset-bottom, 0px));
+      border-top: 1px solid #f0f0f0;
+      background: #fff;
+      box-shadow: 0 -8px 22px rgba(72, 49, 31, 0.05);
+    }
+
+    .bottom-tabbar::after {
+      position: absolute;
+      left: 50%;
+      bottom: calc(6px + env(safe-area-inset-bottom, 0px));
+      width: 134px;
+      height: 4px;
+      border-radius: 3px;
+      background: #000;
+      content: "";
+      transform: translateX(-50%);
     }
 
     .bottom-tabbar__item {
@@ -3343,45 +3493,43 @@
     .bottom-tabbar__item--ai {
       position: relative;
       z-index: 1;
-      align-content: start;
-      gap: 2px;
-      color: #fff;
-      transform: translateY(-15px);
+      overflow: visible;
+      color: #909399;
     }
 
-    .bottom-tabbar__item--ai::before {
-      content: "";
+    .bottom-tabbar__ai-icon {
       position: absolute;
       left: 50%;
-      top: -6px;
-      z-index: -1;
-      width: 58px;
-      height: 58px;
-      border: 3px solid #fff;
-      border-radius: 22px;
-      background: linear-gradient(135deg, #ff7b2b 0%, #ffb449 42%, #2f91ff 100%);
-      box-shadow: 0 10px 24px rgba(255, 103, 40, 0.28);
+      top: -28px;
+      width: 46px;
+      height: 46px;
       transform: translateX(-50%);
     }
 
-    .bottom-tabbar__item--ai .bottom-tabbar__icon {
-      width: 28px;
-      height: 28px;
-      margin-top: 4px;
-    }
-
-    .bottom-tabbar__item--ai .bottom-tabbar__icon svg {
-      width: 28px;
-      height: 28px;
-      color: #fff;
-      stroke-width: 2.2;
-    }
-
     .bottom-tabbar__item--ai span:last-child {
-      color: #fff;
-      font-size: 12px;
-      font-weight: 900;
-      transform: translateY(7px);
+      position: absolute;
+      left: 50%;
+      top: 22px;
+      color: #909399;
+      font-size: 13px;
+      line-height: 14px;
+      font-weight: 400;
+      white-space: nowrap;
+      transform: translateX(-50%);
+    }
+
+    .bottom-tabbar__item--message {
+      position: relative;
+    }
+
+    .bottom-tabbar__dot {
+      position: absolute;
+      top: 1px;
+      right: calc(50% - 15px);
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #ff4d4f;
     }
 
     .qr-scanner {
@@ -3498,7 +3646,7 @@
     }
 
     #messageScreen .page-content {
-      padding: 0 0 calc(92px + env(safe-area-inset-bottom, 0px));
+      padding: 0 0 calc(126px + env(safe-area-inset-bottom, 0px));
     }
 
     #messageScreen .message-page {
@@ -3958,6 +4106,547 @@
     #liveScreen {
       background: #f5f5f5;
       color: #303133;
+    }
+
+    /* 顾问端“我的”与客户管理 */
+    #mineScreen,
+    #customerListScreen,
+    #customerDetailScreen {
+      background: #f4f5f7;
+    }
+
+    #mineScreen .page-content {
+      padding: 0 16px 126px;
+      background: #f4f5f7;
+    }
+
+    #customerListScreen .page-content,
+    #customerDetailScreen .page-content {
+      padding: 0 16px 96px;
+      background: #f4f5f7;
+    }
+
+    .mine-profile {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-height: 174px;
+      margin: 0 -16px;
+      padding: 28px 24px 54px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #ff6428 0%, #ff8a4d 100%);
+      color: #fff;
+    }
+
+    .mine-profile::after {
+      content: "";
+      position: absolute;
+      right: -20px;
+      bottom: -42px;
+      width: 210px;
+      height: 150px;
+      opacity: .2;
+      transform: skewY(-25deg);
+      background: linear-gradient(90deg, transparent 0 12%, #fff 12% 23%, transparent 23% 40%, #fff 40% 55%, transparent 55% 72%, #fff 72% 84%, transparent 84%);
+    }
+
+    .mine-profile__avatar {
+      position: relative;
+      z-index: 1;
+      width: 72px;
+      height: 72px;
+      overflow: hidden;
+      flex: 0 0 auto;
+      border: 3px solid rgba(255,255,255,.5);
+      border-radius: 50%;
+      background: #fff2e8;
+    }
+
+    .mine-profile__avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .mine-profile__copy {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+    }
+
+    .mine-profile__phone {
+      display: block;
+      font-size: 25px;
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: .02em;
+    }
+
+    .mine-profile__role {
+      display: inline-flex;
+      margin-top: 9px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.2);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .mine-card {
+      position: relative;
+      z-index: 2;
+      margin-top: -32px;
+      padding: 18px 10px 4px;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 12px 30px rgba(48,49,51,.08);
+    }
+
+    .mine-card + .mine-card {
+      margin-top: 14px;
+    }
+
+    .mine-card__title {
+      margin: 0 12px 10px;
+      color: #20242a;
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .mine-menu-item {
+      width: 100%;
+      min-height: 58px;
+      display: grid;
+      grid-template-columns: 36px minmax(0,1fr) auto;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+      border: 0;
+      border-top: 1px solid #eef0f3;
+      background: transparent;
+      color: #30343a;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .mine-menu-item:first-of-type {
+      border-top: 0;
+    }
+
+    .mine-menu-item__icon {
+      width: 26px;
+      height: 26px;
+      color: #16191d;
+    }
+
+    .mine-menu-item__icon svg {
+      width: 100%;
+      height: 100%;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .mine-menu-item__name {
+      font-size: 15px;
+    }
+
+    .mine-menu-item__meta {
+      color: #9aa0a8;
+      font-size: 12px;
+    }
+
+    .mine-menu-item__arrow {
+      color: #b9bec5;
+      font-size: 22px;
+    }
+
+    .mine-menu-item--customer .mine-menu-item__icon,
+    .mine-menu-item--customer .mine-menu-item__meta {
+      color: #fd5d00;
+    }
+
+    [data-advisor-only][hidden] {
+      display: none !important;
+    }
+
+    .customer-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 6px;
+      margin-top: 16px;
+      padding: 5px;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 8px 18px rgba(48,49,51,.05);
+    }
+
+    .customer-tab {
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      border: 0;
+      border-radius: 10px;
+      background: transparent;
+      color: #727982;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .customer-tab__count {
+      min-width: 20px;
+      height: 20px;
+      display: inline-grid;
+      place-items: center;
+      padding: 0 5px;
+      border-radius: 999px;
+      background: #f0f2f5;
+      color: #7b828c;
+      font-size: 11px;
+      line-height: 1;
+    }
+
+    .customer-tab.is-active {
+      background: #fff0e7;
+      color: #fd5d00;
+    }
+
+    .customer-tab.is-active .customer-tab__count {
+      background: #fd5d00;
+      color: #fff;
+    }
+
+    .customer-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 14px 2px 10px;
+    }
+
+    .customer-toolbar__result {
+      color: #7c838d;
+      font-size: 12px;
+    }
+
+    .priority-toggle {
+      min-height: 30px;
+      padding: 0 11px;
+      border: 1px solid #ffd1b7;
+      border-radius: 999px;
+      background: #fff;
+      color: #e75500;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .priority-toggle.is-active {
+      border-color: #fd5d00;
+      background: #fd5d00;
+      color: #fff;
+    }
+
+    .customer-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .customer-card {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #eef0f3;
+      border-radius: 16px;
+      background: #fff;
+      text-align: left;
+      box-shadow: 0 8px 20px rgba(48,49,51,.05);
+      cursor: pointer;
+    }
+
+    .customer-card.is-priority {
+      border-color: #ffc39f;
+      background: linear-gradient(135deg, #fff 0%, #fff8f3 100%);
+    }
+
+    .customer-card__head,
+    .customer-detail__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .customer-card__identity {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .customer-avatar {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: #fff0e7;
+      color: #fd5d00;
+      font-weight: 700;
+    }
+
+    .customer-card__name {
+      display: block;
+      color: #24282e;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .customer-card__phone {
+      display: block;
+      margin-top: 4px;
+      color: #9097a1;
+      font-size: 12px;
+    }
+
+    .customer-tag {
+      flex: 0 0 auto;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: #fff0e7;
+      color: #e75500;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .customer-status {
+      flex: 0 0 auto;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: #eef8f3;
+      color: #27936b;
+      font-size: 11px;
+    }
+
+    .customer-status.is-uncontacted {
+      background: #fff4e8;
+      color: #e67618;
+    }
+
+    .customer-card__estate,
+    .customer-card__reason {
+      margin-top: 11px;
+      color: #5f6670;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .customer-card__reason {
+      display: block;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: rgba(253,93,0,.06);
+      color: #bd4b0d;
+    }
+
+    .customer-empty {
+      padding: 44px 16px;
+      border-radius: 16px;
+      background: #fff;
+      color: #9aa0a8;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .customer-detail-card,
+    .customer-dynamics {
+      margin-top: 16px;
+      padding: 18px;
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 8px 22px rgba(48,49,51,.06);
+    }
+
+    .customer-detail__name {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .customer-detail__phone {
+      margin: 6px 0 0;
+      color: #858c96;
+      font-size: 13px;
+    }
+
+    .customer-info-grid {
+      display: grid;
+      grid-template-columns: 82px minmax(0,1fr);
+      gap: 11px 12px;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid #eef0f3;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .customer-info-grid dt {
+      color: #969da6;
+    }
+
+    .customer-info-grid dd {
+      margin: 0;
+      color: #353a41;
+    }
+
+    .customer-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .customer-action {
+      min-height: 44px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 12px;
+      background: #fff0e7;
+      color: #e75500;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .customer-action--primary {
+      background: linear-gradient(135deg, #fd5d00, #ff8f2e);
+      color: #fff;
+    }
+
+    .customer-dynamics h2 {
+      margin: 0 0 16px;
+      font-size: 17px;
+    }
+
+    .customer-timeline {
+      position: relative;
+      display: grid;
+      gap: 18px;
+      padding-left: 18px;
+    }
+
+    .customer-timeline::before {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 5px;
+      bottom: 7px;
+      width: 1px;
+      background: #e5e8ec;
+    }
+
+    .customer-timeline__item {
+      position: relative;
+    }
+
+    .customer-timeline__item::before {
+      content: "";
+      position: absolute;
+      left: -17px;
+      top: 5px;
+      width: 9px;
+      height: 9px;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      background: #fd5d00;
+      box-shadow: 0 0 0 1px #ffbd94;
+    }
+
+    .customer-timeline__time {
+      color: #a0a6ae;
+      font-size: 11px;
+    }
+
+    .customer-timeline__text {
+      margin-top: 4px;
+      color: #4a5058;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .customer-toast {
+      position: fixed;
+      z-index: 50;
+      left: 50%;
+      bottom: 88px;
+      max-width: 300px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(30,33,37,.9);
+      color: #fff;
+      font-size: 12px;
+      transform: translateX(-50%);
+      box-shadow: 0 10px 24px rgba(0,0,0,.18);
+    }
+
+    #mineScreen .message-tabbar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 8;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0,1fr));
+      min-height: calc(58px + env(safe-area-inset-bottom, 0px));
+      padding: 5px 4px env(safe-area-inset-bottom, 0px);
+      border-top: 1px solid #e9ebee;
+      background: rgba(255,255,255,.98);
+      box-shadow: 0 -8px 22px rgba(17,24,39,.05);
+    }
+
+    #mineScreen .message-tabbar__item {
+      display: grid;
+      justify-items: center;
+      align-content: center;
+      gap: 3px;
+      min-height: 54px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: #9da4ae;
+      cursor: pointer;
+    }
+
+    #mineScreen .message-tabbar__item.is-active {
+      color: #fd5d00;
+    }
+
+    #mineScreen .message-tabbar__icon {
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+    }
+
+    #mineScreen .message-tabbar__icon svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    #mineScreen .message-tabbar__label {
+      font-size: 12px;
+      font-weight: 600;
     }
 
     #liveScreen .topbar--ios {
@@ -7240,23 +7929,23 @@
         </div>
 
         <nav class="bottom-tabbar" aria-label="底部导航">
-          <button class="bottom-tabbar__item is-active" type="button" aria-label="首页">
+          <button class="bottom-tabbar__item is-active" id="homeTabHome" type="button" aria-label="首页">
             <span class="bottom-tabbar__icon"><svg viewBox="0 0 24 24"><path d="m4 11 8-7 8 7v8a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1Z" /></svg></span>
             <span>首页</span>
           </button>
-          <button class="bottom-tabbar__item" type="button" aria-label="房产资讯">
+          <button class="bottom-tabbar__item" id="homeTabNews" type="button" aria-label="房产资讯">
             <span class="bottom-tabbar__icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l4-2" /></svg></span>
             <span>房产资讯</span>
           </button>
           <button class="bottom-tabbar__item bottom-tabbar__item--ai" id="homeAiButton" type="button" aria-label="安安AI分析">
-            <span class="bottom-tabbar__icon"><svg viewBox="0 0 24 24"><path d="M8 8.5h8a4 4 0 0 1 4 4v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3a4 4 0 0 1 4-4Z" /><path d="M12 8.5V5.5" /><path d="M9 5.5h6" /><path d="M9 14h.01M15 14h.01" /><path d="M10 17h4" /></svg></span>
+            <img class="bottom-tabbar__ai-icon" src="./assets/home-ai-entry-v4.svg" alt="">
             <span>安安AI</span>
           </button>
-          <button class="bottom-tabbar__item" id="homeMessageButton" type="button" aria-label="消息">
+          <button class="bottom-tabbar__item bottom-tabbar__item--message" id="homeMessageButton" type="button" aria-label="消息">
             <span class="bottom-tabbar__icon"><svg viewBox="0 0 24 24"><path d="M4 5h16v12H8l-4 4Z" /><path d="M8 9h8M8 13h5" /></svg></span>
             <span>消息</span>
           </button>
-          <button class="bottom-tabbar__item" type="button" aria-label="我的">
+          <button class="bottom-tabbar__item" id="homeTabMine" type="button" aria-label="我的">
             <span class="bottom-tabbar__icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></svg></span>
             <span>我的</span>
           </button>
@@ -7465,58 +8154,27 @@
             <div class="message-list" id="messageList"></div>
           </section>
         </div>
-        <nav class="message-tabbar" aria-label="底部导航">
-          <button class="message-tabbar__item" id="messageTabHome" type="button" aria-label="首页">
-            <span class="message-tabbar__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path d="M4 10.5 12 4l8 6.5"></path>
-                <path d="M6.5 9.5V20h11V9.5"></path>
-              </svg>
-            </span>
-            <span class="message-tabbar__label">首页</span>
+        <nav class="bottom-tabbar" aria-label="底部导航">
+          <button class="bottom-tabbar__item" id="messageTabHome" type="button" aria-label="首页">
+            <span class="bottom-tabbar__icon"><svg viewBox="0 0 24 24"><path d="m4 11 8-7 8 7v8a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1Z" /></svg></span>
+            <span>首页</span>
           </button>
-          <button class="message-tabbar__item" id="messageTabNews" type="button" aria-label="房产资讯">
-            <span class="message-tabbar__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <rect x="5" y="4.5" width="12" height="15" rx="2"></rect>
-                <path d="M8 8h6"></path>
-                <path d="M8 11.5h6"></path>
-                <path d="M8 15h4"></path>
-                <path d="M17 7.5h2a1.5 1.5 0 0 1 1.5 1.5V18a2 2 0 0 1-2 2H9"></path>
-              </svg>
-            </span>
-            <span class="message-tabbar__label">房产资讯</span>
+          <button class="bottom-tabbar__item" id="messageTabNews" type="button" aria-label="房产资讯">
+            <span class="bottom-tabbar__icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l4-2" /></svg></span>
+            <span>房产资讯</span>
           </button>
-          <button class="message-tabbar__item message-tabbar__item--ai" id="messageTabBrand" type="button" aria-label="安安AI助手">
-            <span class="message-tabbar__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path d="M8 8.5h8a4 4 0 0 1 4 4v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3a4 4 0 0 1 4-4Z"></path>
-                <path d="M12 8.5V5.5"></path>
-                <path d="M9 5.5h6"></path>
-                <path d="M9 14h.01"></path>
-                <path d="M15 14h.01"></path>
-                <path d="M10 17h4"></path>
-              </svg>
-            </span>
-            <span class="message-tabbar__label">安安AI</span>
+          <button class="bottom-tabbar__item bottom-tabbar__item--ai" id="messageTabBrand" type="button" aria-label="安安AI助手">
+            <img class="bottom-tabbar__ai-icon" src="./assets/home-ai-entry-v4.svg" alt="">
+            <span>安安AI</span>
           </button>
-          <button class="message-tabbar__item is-active" id="messageTabMessages" type="button" aria-label="消息">
-            <span class="message-tabbar__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path d="M6 6.5h12a2.5 2.5 0 0 1 2.5 2.5v6A2.5 2.5 0 0 1 18 17.5h-6l-4.5 3v-3H6A2.5 2.5 0 0 1 3.5 15V9A2.5 2.5 0 0 1 6 6.5Z"></path>
-              </svg>
-              <span class="message-tabbar__dot"></span>
-            </span>
-            <span class="message-tabbar__label">消息</span>
+          <button class="bottom-tabbar__item bottom-tabbar__item--message is-active" id="messageTabMessages" type="button" aria-label="消息">
+            <span class="bottom-tabbar__icon"><svg viewBox="0 0 24 24"><path d="M4 5h16v12H8l-4 4Z" /><path d="M8 9h8M8 13h5" /></svg></span>
+            <span class="bottom-tabbar__dot" aria-hidden="true"></span>
+            <span>消息</span>
           </button>
-          <button class="message-tabbar__item" id="messageTabMine" type="button" aria-label="我的">
-            <span class="message-tabbar__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <circle cx="12" cy="8" r="3.5"></circle>
-                <path d="M5.5 19a6.5 6.5 0 0 1 13 0"></path>
-              </svg>
-            </span>
-            <span class="message-tabbar__label">我的</span>
+          <button class="bottom-tabbar__item" id="messageTabMine" type="button" aria-label="我的">
+            <span class="bottom-tabbar__icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></svg></span>
+            <span>我的</span>
           </button>
         </nav>
       </section>
@@ -7578,6 +8236,74 @@
             </div>
           </section>
         </div>
+      </section>
+
+      <section class="screen" id="mineScreen" aria-label="我的">
+        <header class="topbar topbar--ios">
+          <div class="topbar__meta">
+            <div class="topbar-pill">
+              <button class="topbar-pill__button" id="backMineButton" type="button" aria-label="返回上一页"><span class="topbar-pill__icon topbar-pill__icon--back">‹</span></button>
+              <button class="topbar-pill__button" id="mineHomeShortcutButton" type="button" aria-label="返回首页"><span class="topbar-pill__icon topbar-pill__icon--home">⌂</span></button>
+            </div>
+            <span class="topbar__title">我的</span>
+            <div class="topbar-pill topbar-pill--trailing">
+              <button class="topbar-pill__button" type="button" aria-label="更多操作"><span class="topbar-pill__icon topbar-pill__icon--more">•••</span></button>
+              <button class="topbar-pill__button" type="button" aria-label="个人中心"><span class="topbar-pill__icon topbar-pill__icon--target">◎</span></button>
+            </div>
+          </div>
+        </header>
+        <div class="page-content">
+          <section class="mine-profile">
+            <span class="mine-profile__avatar"><img src="./assets/advisor-avatar.png" alt="置业顾问头像"></span>
+            <span class="mine-profile__copy">
+              <strong class="mine-profile__phone">房产超市用户</strong>
+              <span class="mine-profile__role" id="mineRoleLabel">置业顾问 · 招商·时代花园</span>
+            </span>
+          </section>
+          <section class="mine-card">
+            <h2 class="mine-card__title">常用功能</h2>
+            <button class="mine-menu-item mine-menu-item--customer" id="openCustomerManagement" type="button" data-advisor-only hidden>
+              <span class="mine-menu-item__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"></circle><path d="M3.5 19a5.5 5.5 0 0 1 11 0M16 10.5a2.5 2.5 0 1 0 0-5M16.5 13.5a4.5 4.5 0 0 1 4 4.5"></path></svg></span>
+              <span><span class="mine-menu-item__name">客户管理</span><span class="mine-menu-item__meta">重点客户与沟通动态</span></span>
+              <span class="mine-menu-item__arrow">›</span>
+            </button>
+            <button class="mine-menu-item" type="button" data-mine-placeholder="我的关注">
+              <span class="mine-menu-item__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.2-7-10a4 4 0 0 1 7-2.8A4 4 0 0 1 19 10c0 5.8-7 10-7 10Z"></path></svg></span><span class="mine-menu-item__name">我的关注</span><span class="mine-menu-item__arrow">›</span>
+            </button>
+            <button class="mine-menu-item" type="button" data-mine-placeholder="我的二维码">
+              <span class="mine-menu-item__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6"></rect><rect x="14" y="4" width="6" height="6"></rect><rect x="4" y="14" width="6" height="6"></rect><path d="M14 14h2v2h-2zM18 14h2v6h-4v-2h-2"></path></svg></span><span class="mine-menu-item__name">我的二维码</span><span class="mine-menu-item__arrow">›</span>
+            </button>
+            <button class="mine-menu-item" type="button" data-mine-placeholder="看房足迹">
+              <span class="mine-menu-item__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 20c-2.4 0-4-1.3-4-3.2 0-2.2 2.1-3.8 4.6-3.8 2.2 0 3.4 1.3 3.4 3.2C13 18.5 11.2 20 9 20ZM16 12c-1.7 0-3-1.1-3-2.8C13 7.4 14.4 6 16.2 6 18 6 19 7.1 19 8.8 19 10.7 17.8 12 16 12Z"></path></svg></span><span class="mine-menu-item__name">看房足迹</span><span class="mine-menu-item__arrow">›</span>
+            </button>
+          </section>
+          <section class="mine-card">
+            <button class="mine-menu-item" type="button" data-mine-placeholder="平台咨询">
+              <span class="mine-menu-item__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 14v-3a7 7 0 0 1 14 0v3M5 14H3v4h4v-4H5ZM19 14h2v4h-4v-4h2ZM17 18c0 2-1.5 3-4 3"></path></svg></span><span class="mine-menu-item__name">平台咨询</span><span class="mine-menu-item__meta">cdzjfccs@163.com</span>
+            </button>
+          </section>
+        </div>
+        <nav class="bottom-tabbar" aria-label="底部导航">
+          <button class="bottom-tabbar__item" id="mineTabHome" type="button" aria-label="首页"><span class="bottom-tabbar__icon"><svg viewBox="0 0 24 24"><path d="m4 11 8-7 8 7v8a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1Z" /></svg></span><span>首页</span></button>
+          <button class="bottom-tabbar__item" id="mineTabNews" type="button" aria-label="房产资讯"><span class="bottom-tabbar__icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l4-2" /></svg></span><span>房产资讯</span></button>
+          <button class="bottom-tabbar__item bottom-tabbar__item--ai" id="mineTabBrand" type="button" aria-label="安安AI助手"><img class="bottom-tabbar__ai-icon" src="./assets/home-ai-entry-v4.svg" alt=""><span>安安AI</span></button>
+          <button class="bottom-tabbar__item bottom-tabbar__item--message" id="mineTabMessages" type="button" aria-label="消息"><span class="bottom-tabbar__icon"><svg viewBox="0 0 24 24"><path d="M4 5h16v12H8l-4 4Z" /><path d="M8 9h8M8 13h5" /></svg></span><span>消息</span></button>
+          <button class="bottom-tabbar__item is-active" type="button" aria-label="我的"><span class="bottom-tabbar__icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></svg></span><span>我的</span></button>
+        </nav>
+      </section>
+
+      <section class="screen" id="customerListScreen" aria-label="客户管理">
+        <header class="topbar topbar--ios"><div class="topbar__meta"><div class="topbar-pill"><button class="topbar-pill__button" id="backCustomerListButton" type="button" aria-label="返回我的"><span class="topbar-pill__icon topbar-pill__icon--back">‹</span></button><button class="topbar-pill__button" id="customerListHomeButton" type="button" aria-label="返回首页"><span class="topbar-pill__icon topbar-pill__icon--home">⌂</span></button></div><span class="topbar__title">客户管理</span><div class="topbar-pill topbar-pill--trailing"><button class="topbar-pill__button" type="button" aria-label="更多操作"><span class="topbar-pill__icon topbar-pill__icon--more">•••</span></button><button class="topbar-pill__button" type="button" aria-label="客户管理"><span class="topbar-pill__icon topbar-pill__icon--target">◎</span></button></div></div></header>
+        <div class="page-content">
+          <div class="customer-tabs" id="customerTabs"><button class="customer-tab is-active" type="button" data-customer-filter="all"><span>全部客户</span><b class="customer-tab__count">0</b></button><button class="customer-tab" type="button" data-customer-filter="uncontacted"><span>未沟通客户</span><b class="customer-tab__count">0</b></button><button class="customer-tab" type="button" data-customer-filter="contacted"><span>已沟通客户</span><b class="customer-tab__count">0</b></button></div>
+          <div class="customer-toolbar"><span class="customer-toolbar__result" id="customerResultText">共 0 位</span><button class="priority-toggle" id="priorityCustomerToggle" type="button">只看重点客户</button></div>
+          <div class="customer-list" id="customerList"></div>
+        </div>
+      </section>
+
+      <section class="screen" id="customerDetailScreen" aria-label="客户信息">
+        <header class="topbar topbar--ios"><div class="topbar__meta"><div class="topbar-pill"><button class="topbar-pill__button" id="backCustomerDetailButton" type="button" aria-label="返回客户列表"><span class="topbar-pill__icon topbar-pill__icon--back">‹</span></button><button class="topbar-pill__button" id="customerDetailHomeButton" type="button" aria-label="返回首页"><span class="topbar-pill__icon topbar-pill__icon--home">⌂</span></button></div><span class="topbar__title">客户信息</span><div class="topbar-pill topbar-pill--trailing"><button class="topbar-pill__button" type="button" aria-label="更多操作"><span class="topbar-pill__icon topbar-pill__icon--more">•••</span></button><button class="topbar-pill__button" type="button" aria-label="客户信息"><span class="topbar-pill__icon topbar-pill__icon--target">◎</span></button></div></div></header>
+        <div class="page-content" id="customerDetailContent"></div>
       </section>
 
       <section class="screen" id="activityDetailScreen" aria-label="活动详情">
@@ -7792,7 +8518,8 @@
   </div>
 
 <script src="./registration-workbench/shared.js"></script>
-<script>
+<script src="./assets/profile-binding.js"></script>
+  <script>
     const cityActivities = [
       {
         city: "西安",
@@ -7932,6 +8659,94 @@
         activityCity: "上海",
         activityTitle: "上海春季成都好房展",
         activityCover: "./assets/activity-detail-hero-shanghai.svg"
+      }
+    ];
+    const advisorCustomers = [
+      {
+        id: "customer-001",
+        name: "张女士",
+        phone: "138****1745",
+        privacyNumber: "95013801245",
+        status: "uncontacted",
+        priority: true,
+        priorityReason: "已关注置业顾问所在楼盘“招商·时代花园”",
+        estate: "招商·时代花园",
+        intent: "123㎡ 三房 · 预算 320-380 万",
+        source: "楼盘详情在线咨询",
+        lastActive: "10分钟前",
+        dialog: [
+          { role: "bot", text: "我想了解招商·时代花园 123㎡ 三房，中高楼层还有吗？" }
+        ],
+        dynamics: [
+          { time: "今天 14:32", text: "138****1745 关注了招商·时代花园" },
+          { time: "今天 14:18", text: "138****1745 浏览招商·时代花园一房一价 3 次" },
+          { time: "昨天 20:06", text: "138****1745 查看了 123㎡ 三房户型详情" }
+        ]
+      },
+      {
+        id: "customer-002",
+        name: "李先生",
+        phone: "186****0921",
+        privacyNumber: "95013801246",
+        status: "uncontacted",
+        priority: true,
+        priorityReason: "近 3 天内 6 次浏览置业顾问所在楼盘",
+        estate: "招商·时代花园",
+        intent: "改善四房 · 预算 450 万左右",
+        source: "首页楼盘推荐",
+        lastActive: "1小时前",
+        dialog: [
+          { role: "bot", text: "近期一直在比较 143㎡ 四房，希望了解周末看房时间。" }
+        ],
+        dynamics: [
+          { time: "今天 13:10", text: "186****0921 第 6 次浏览招商·时代花园" },
+          { time: "昨天 21:44", text: "186****0921 查看项目周边配套" },
+          { time: "前天 18:20", text: "186****0921 浏览 143㎡ 四房户型" }
+        ]
+      },
+      {
+        id: "customer-003",
+        name: "王女士",
+        phone: "159****6638",
+        privacyNumber: "95013801247",
+        status: "contacted",
+        priority: false,
+        priorityReason: "",
+        estate: "招商·时代花园",
+        intent: "首套三房 · 关注购房资格",
+        source: "政策咨询转入",
+        lastActive: "昨天",
+        dialog: [
+          { role: "bot", text: "谢谢您的资格说明，我准备好资料后再联系。" },
+          { role: "user", text: "好的，资料清单已经发送，有问题随时在线沟通。" }
+        ],
+        dynamics: [
+          { time: "昨天 16:40", text: "置业顾问通过隐私号联系 159****6638，沟通 4 分 26 秒" },
+          { time: "昨天 16:28", text: "159****6638 咨询成都购房资格" },
+          { time: "3天前", text: "159****6638 首次浏览招商·时代花园" }
+        ]
+      },
+      {
+        id: "customer-004",
+        name: "赵先生",
+        phone: "177****5310",
+        privacyNumber: "95013801248",
+        status: "contacted",
+        priority: true,
+        priorityReason: "已关注置业顾问所在楼盘并预约周末看房",
+        estate: "招商·时代花园",
+        intent: "中高楼层三房 · 周末到访",
+        source: "置业顾问二维码",
+        lastActive: "2天前",
+        dialog: [
+          { role: "bot", text: "周六下午两点可以到访，麻烦帮我预留时间。" },
+          { role: "user", text: "已登记周六 14:00，到访前我会再提醒您。" }
+        ],
+        dynamics: [
+          { time: "2天前 11:05", text: "177****5310 预约周六 14:00 到访" },
+          { time: "2天前 10:42", text: "置业顾问向 177****5310 在线发送一房一价资料" },
+          { time: "4天前", text: "177****5310 关注招商·时代花园" }
+        ]
       }
     ];
     const talentPolicyEntries = [
@@ -8113,18 +8928,58 @@
       }
     ];
 
+    const aiProjectAdvisors = [
+      { name: "李晓雨", role: "高级置业顾问", wechat: "AJCD-LXY2026" },
+      { name: "周可欣", role: "楼盘咨询顾问", wechat: "AJCD-ZKX2026" },
+      { name: "陈子航", role: "新房置业顾问", wechat: "AJCD-CZH2026" },
+      { name: "王嘉宁", role: "改善置业顾问", wechat: "AJCD-WJN2026" }
+    ];
+
+    const highBudgetAiSuggestions = [
+      "青羊区高端楼盘",
+      "青羊区3000万以上楼盘",
+      "锦江区5000万级楼盘",
+      "成都5000万级豪宅"
+    ];
+
+    const highBudgetEstateGroups = {
+      "青羊区高端楼盘": [
+        { title: "浣花锦著", meta: "青羊区 · 建面 260-380㎡", price: "3680", keyword: "浣花溪低密大平层 · 精装交付" },
+        { title: "金沙云璟", meta: "青羊区 · 建面 235-320㎡", price: "3150", keyword: "金沙改善住区 · 城西成熟配套" }
+      ],
+      "青羊区3000万以上楼盘": [
+        { title: "金沙壹号院", meta: "青羊区 · 建面 280-410㎡", price: "3280", keyword: "大尺度改善产品 · 私属会所" },
+        { title: "浣花境", meta: "青羊区 · 建面 245-360㎡", price: "3060", keyword: "浣花溪板块 · 低密景观住区" }
+      ],
+      "锦江区5000万级楼盘": [
+        { title: "攀成钢壹号", meta: "锦江区 · 建面 320-480㎡", price: "4860", keyword: "攀成钢核心区 · 城市大平层" },
+        { title: "锦江天玺", meta: "锦江区 · 建面 350-520㎡", price: "5280", keyword: "金融城东 · 高端精装住区" }
+      ],
+      "成都5000万级豪宅": [
+        { title: "金融城云端", meta: "高新区 · 建面 360-560㎡", price: "5100", keyword: "金融城核心区 · 天际大平层" },
+        { title: "麓湖隐溪", meta: "天府新区 · 建面 420-680㎡", price: "4980", keyword: "湖区低密产品 · 私密景观资源" },
+        { title: "浣花御府", meta: "青羊区 · 建面 330-450㎡", price: "4680", keyword: "浣花溪人文板块 · 改善大宅" }
+      ]
+    };
+
     const phoneShell = document.querySelector(".phone-shell");
     const screens = {
       home: document.getElementById("homeScreen"),
       live: document.getElementById("liveScreen"),
       message: document.getElementById("messageScreen"),
       messageDetail: document.getElementById("messageDetailScreen"),
+      mine: document.getElementById("mineScreen"),
+      customerList: document.getElementById("customerListScreen"),
+      customerDetail: document.getElementById("customerDetailScreen"),
       activity: document.getElementById("activityDetailScreen"),
       registration: document.getElementById("registrationScreen"),
       report: document.getElementById("reportDetailScreen")
     };
 
     const cityFilters = document.getElementById("cityFilters");
+    const homeTabHome = document.getElementById("homeTabHome");
+    const homeTabNews = document.getElementById("homeTabNews");
+    const homeTabMine = document.getElementById("homeTabMine");
     const homeLiveButton = document.getElementById("homeLiveButton");
     const homeAiButton = document.getElementById("homeAiButton");
     const homeMessageButton = document.getElementById("homeMessageButton");
@@ -8155,6 +9010,23 @@
     const messageOnlineQuick = document.getElementById("messageOnlineQuick");
     const messageReplyForm = document.getElementById("messageReplyForm");
     const messageReplyInput = document.getElementById("messageReplyInput");
+    const backMineButton = document.getElementById("backMineButton");
+    const mineHomeShortcutButton = document.getElementById("mineHomeShortcutButton");
+    const mineRoleLabel = document.getElementById("mineRoleLabel");
+    const openCustomerManagement = document.getElementById("openCustomerManagement");
+    const mineTabHome = document.getElementById("mineTabHome");
+    const mineTabNews = document.getElementById("mineTabNews");
+    const mineTabBrand = document.getElementById("mineTabBrand");
+    const mineTabMessages = document.getElementById("mineTabMessages");
+    const backCustomerListButton = document.getElementById("backCustomerListButton");
+    const customerListHomeButton = document.getElementById("customerListHomeButton");
+    const customerTabs = document.getElementById("customerTabs");
+    const customerResultText = document.getElementById("customerResultText");
+    const priorityCustomerToggle = document.getElementById("priorityCustomerToggle");
+    const customerList = document.getElementById("customerList");
+    const backCustomerDetailButton = document.getElementById("backCustomerDetailButton");
+    const customerDetailHomeButton = document.getElementById("customerDetailHomeButton");
+    const customerDetailContent = document.getElementById("customerDetailContent");
     const activityDetailHero = document.getElementById("activityDetailHero");
     const activityStatus = document.getElementById("activityStatus");
     const activityEntryBarDesc = document.getElementById("activityEntryBarDesc");
@@ -8200,6 +9072,13 @@ let selectedDistrict = "";
 let currentMessageNotification = null;
 let currentScreenName = "home";
 let previousScreenName = "home";
+const initialRouteParams = new URLSearchParams(window.location.search);
+const currentUserRole = initialRouteParams.get("role") || "advisor";
+const isAdvisorRole = currentUserRole === "advisor";
+let currentCustomerFilter = "all";
+let priorityCustomersOnly = false;
+let currentCustomerId = null;
+let messageDetailReturnTarget = "message";
 const ACTIVITY_SIGNUP_FORM_ID = "form-city-activity-signup";
 const ACTIVITY_SIGNUP_CONFIRM_TEXT = "报名参加本次活动，即表示您同意我们获取并使用您的相关用户信息。";
 const ACTIVITY_SIGNUP_IDLE_TEXT = "";
@@ -8376,6 +9255,143 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
     function showPreviousScreen(fallback = "home") {
       const target = previousScreenName && screens[previousScreenName] ? previousScreenName : fallback;
       showScreen(target);
+    }
+
+    function showCustomerToast(text) {
+      document.querySelector(".customer-toast")?.remove();
+      const toast = document.createElement("div");
+      toast.className = "customer-toast";
+      toast.textContent = text;
+      phoneShell.appendChild(toast);
+      window.setTimeout(() => toast.remove(), 1800);
+    }
+
+    function openMineScreen() {
+      document.querySelectorAll("[data-advisor-only]").forEach((element) => {
+        element.hidden = !isAdvisorRole;
+      });
+      if (mineRoleLabel) {
+        mineRoleLabel.textContent = isAdvisorRole ? "置业顾问 · 招商·时代花园" : "个人用户";
+      }
+      showScreen("mine");
+    }
+
+    function getCustomerById(customerId) {
+      return advisorCustomers.find((customer) => customer.id === customerId) || null;
+    }
+
+    function getCustomerStatusLabel(status) {
+      return status === "contacted" ? "已沟通" : "未沟通";
+    }
+
+    function renderCustomerList() {
+      if (!customerList) {
+        return;
+      }
+      let customers = advisorCustomers.filter((customer) => currentCustomerFilter === "all" || customer.status === currentCustomerFilter);
+      if (currentCustomerFilter === "all" && priorityCustomersOnly) {
+        customers = customers.filter((customer) => customer.priority);
+      }
+      if (customerTabs) {
+        const counts = {
+          all: advisorCustomers.length,
+          uncontacted: advisorCustomers.filter((customer) => customer.status === "uncontacted").length,
+          contacted: advisorCustomers.filter((customer) => customer.status === "contacted").length
+        };
+        customerTabs.querySelectorAll("[data-customer-filter]").forEach((tab) => {
+          const count = tab.querySelector(".customer-tab__count");
+          if (count) {
+            count.textContent = counts[tab.dataset.customerFilter];
+          }
+        });
+      }
+      if (customerResultText) {
+        customerResultText.textContent = `当前展示 ${customers.length} 位`;
+      }
+      if (priorityCustomerToggle) {
+        priorityCustomerToggle.hidden = currentCustomerFilter !== "all";
+        priorityCustomerToggle.classList.toggle("is-active", priorityCustomersOnly);
+        priorityCustomerToggle.textContent = priorityCustomersOnly ? "查看全部客户" : "只看重点客户";
+      }
+      customerList.innerHTML = customers.length
+        ? customers.map((customer) => `
+          <button class="customer-card${customer.priority ? " is-priority" : ""}" type="button" data-open-customer="${customer.id}">
+            <span class="customer-card__head">
+              <span class="customer-card__identity"><span class="customer-avatar">${escapeHtml(customer.name.slice(0, 1))}</span><span><strong class="customer-card__name">${escapeHtml(customer.name)}</strong><span class="customer-card__phone">${escapeHtml(customer.phone)} · ${escapeHtml(customer.lastActive)}</span></span></span>
+              ${customer.priority ? '<span class="customer-tag">重点客户</span>' : `<span class="customer-status${customer.status === "uncontacted" ? " is-uncontacted" : ""}">${getCustomerStatusLabel(customer.status)}</span>`}
+            </span>
+            <span class="customer-card__estate">意向楼盘：${escapeHtml(customer.estate)}<br>${escapeHtml(customer.intent)}</span>
+            ${customer.priority ? `<span class="customer-card__reason">${escapeHtml(customer.priorityReason)}</span>` : ""}
+          </button>
+        `).join("")
+        : '<div class="customer-empty">当前分类暂无客户</div>';
+    }
+
+    function openCustomerListScreen() {
+      if (!isAdvisorRole) {
+        showCustomerToast("客户管理仅置业顾问可见");
+        return;
+      }
+      renderCustomerList();
+      showScreen("customerList");
+    }
+
+    function renderCustomerDetail(customerId) {
+      const customer = getCustomerById(customerId);
+      if (!customer || !customerDetailContent) {
+        return;
+      }
+      currentCustomerId = customer.id;
+      customerDetailContent.innerHTML = `
+        <section class="customer-detail-card">
+          <div class="customer-detail__head">
+            <div><h1 class="customer-detail__name">${escapeHtml(customer.name)}</h1><p class="customer-detail__phone">${escapeHtml(customer.phone)}</p></div>
+            ${customer.priority ? '<span class="customer-tag">重点客户</span>' : `<span class="customer-status${customer.status === "uncontacted" ? " is-uncontacted" : ""}">${getCustomerStatusLabel(customer.status)}</span>`}
+          </div>
+          <dl class="customer-info-grid">
+            <dt>沟通状态</dt><dd>${getCustomerStatusLabel(customer.status)}</dd>
+            <dt>意向楼盘</dt><dd>${escapeHtml(customer.estate)}</dd>
+            <dt>购房意向</dt><dd>${escapeHtml(customer.intent)}</dd>
+            <dt>客户来源</dt><dd>${escapeHtml(customer.source)}</dd>
+            ${customer.priority ? `<dt>重点原因</dt><dd>${escapeHtml(customer.priorityReason)}</dd>` : ""}
+            <dt>隐私号</dt><dd>95013 转 ${escapeHtml(customer.privacyNumber.slice(-6))}</dd>
+          </dl>
+          <div class="customer-actions">
+            <a class="customer-action" href="tel:${customer.privacyNumber}" data-privacy-call="${customer.id}">隐私号拨打</a>
+            <button class="customer-action customer-action--primary" type="button" data-customer-message="${customer.id}">在线发送消息</button>
+          </div>
+        </section>
+        <section class="customer-dynamics">
+          <h2>客户动态</h2>
+          <div class="customer-timeline">${customer.dynamics.map((item) => `<div class="customer-timeline__item"><div class="customer-timeline__time">${escapeHtml(item.time)}</div><div class="customer-timeline__text">${escapeHtml(item.text)}</div></div>`).join("")}</div>
+        </section>
+      `;
+    }
+
+    function openCustomerDetailScreen(customerId) {
+      renderCustomerDetail(customerId);
+      showScreen("customerDetail");
+    }
+
+    function markCustomerContacted(customer, actionText) {
+      customer.status = "contacted";
+      customer.lastActive = "刚刚";
+      customer.dynamics.unshift({
+        time: "刚刚",
+        text: `置业顾问${actionText} ${customer.phone}`
+      });
+    }
+
+    function openCustomerMessage(customerId) {
+      const customer = getCustomerById(customerId);
+      if (!customer) {
+        return;
+      }
+      markCustomerContacted(customer, "在线发送消息给");
+      openMessageDetailScreen("message-consult-001", null, {
+        returnTarget: "customerDetail",
+        customerRoute: customer
+      });
     }
 
     function getOrderedCityGroups() {
@@ -9462,19 +10478,35 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         .join("");
     }
 
-    function renderMessageDetail(messageId, advisorRoute = null) {
+    function renderMessageDetail(messageId, advisorRoute = null, customerRoute = null) {
       const baseMessageItem = getMessageNotificationById(messageId) || messageNotifications[0] || null;
-      const messageItem = advisorRoute && baseMessageItem
-        ? {
-            ...baseMessageItem,
-            sender: `${advisorRoute.name}置业顾问`,
-            avatarText: advisorRoute.initial || advisorRoute.name.slice(0, 1),
-            avatarImage: advisorRoute.name === "李晓雨" ? "./assets/advisor-avatar.png" : "",
-            content: `您好，我是招商·时代花园${advisorRoute.name}，${advisorRoute.role || "置业顾问"}。可以直接咨询看房预约、一房一价、购房资格或线上签约流程。`,
-            advisorName: advisorRoute.name,
-            advisorWechat: advisorRoute.wechat || ""
-          }
-        : baseMessageItem;
+      let messageItem = baseMessageItem;
+      if (customerRoute && baseMessageItem) {
+        messageItem = {
+          ...baseMessageItem,
+          sender: customerRoute.name,
+          avatarText: customerRoute.name.slice(0, 1),
+          avatarImage: "",
+          content: `${customerRoute.phone} · ${getCustomerStatusLabel(customerRoute.status)} · 意向楼盘：${customerRoute.estate}`,
+          timeLabel: customerRoute.lastActive,
+          dialog: customerRoute.dialog || [],
+          activityCity: "",
+          activityTitle: "",
+          activityCover: "",
+          customerName: customerRoute.name,
+          customerId: customerRoute.id
+        };
+      } else if (advisorRoute && baseMessageItem) {
+        messageItem = {
+          ...baseMessageItem,
+          sender: `${advisorRoute.name}置业顾问`,
+          avatarText: advisorRoute.initial || advisorRoute.name.slice(0, 1),
+          avatarImage: advisorRoute.name === "李晓雨" ? "./assets/advisor-avatar.png" : "",
+          content: `您好，我是${advisorRoute.estate || "招商·时代花园"}${advisorRoute.name}，${advisorRoute.role || "置业顾问"}。可以直接咨询看房预约、一房一价、购房资格或线上签约流程。`,
+          advisorName: advisorRoute.name,
+          advisorWechat: advisorRoute.wechat || ""
+        };
+      }
       if (!messageItem) {
         return;
       }
@@ -9515,6 +10547,11 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       if (messageOnlinePanel) {
         messageOnlinePanel.hidden = messageItem.kind !== "chat";
       }
+      if (messageOnlineQuick) {
+        messageOnlineQuick.innerHTML = customerRoute
+          ? '<button type="button" data-message-reply="发送楼盘资料">发送楼盘资料</button><button type="button" data-message-reply="预约电话沟通">预约电话沟通</button>'
+          : '<button type="button" data-message-reply="获取置业顾问微信号">获取置业顾问微信号</button><button type="button" data-message-reply="咨询对应房源">咨询对应房源</button>';
+      }
       if (messageReplyInput) {
         messageReplyInput.value = "";
       }
@@ -9525,8 +10562,10 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       showScreen("message");
     }
 
-    function openMessageDetailScreen(messageId, advisorRoute = null) {
-      renderMessageDetail(messageId, advisorRoute);
+    function openMessageDetailScreen(messageId, advisorRoute = null, options = {}) {
+      if (!options.customerRoute && (advisorRoute || messageId === "message-consult-001") && !window.houseMarketRequirePhone("在线联系置业顾问前，需要先获取您的手机号。")) return;
+      messageDetailReturnTarget = options.returnTarget || "message";
+      renderMessageDetail(messageId, advisorRoute, options.customerRoute || null);
       showScreen("messageDetail");
     }
 
@@ -9546,6 +10585,15 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
     }
 
     function getOnlineReply(text) {
+      if (currentMessageNotification?.customerName) {
+        if (text.includes("电话") || text.includes("预约")) {
+          return `已向${currentMessageNotification.customerName}发送电话沟通邀请，客户确认后会通过隐私号提醒您联系。`;
+        }
+        if (text.includes("资料") || text.includes("楼盘")) {
+          return `已向${currentMessageNotification.customerName}发送招商·时代花园楼盘资料，可继续补充户型、一房一价或看房时间。`;
+        }
+        return `消息已在线发送给${currentMessageNotification.customerName}，客户回复后会同步到消息列表。`;
+      }
       if (text.includes("微信")) {
         const advisorName = currentMessageNotification?.advisorName || "李晓雨";
         const advisorWechat = currentMessageNotification?.advisorWechat || "AJCD-LXY2026";
@@ -9821,27 +10869,94 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       chatInput.placeholder = defaultChatPlaceholder;
     }
 
-    function getAiProjectListReply() {
-      const cards = estateTemplates.map((estate) => `
+    function renderAiEstateCards(estates) {
+      const advisorPool = [...aiProjectAdvisors].sort(() => Math.random() - 0.5);
+      const cards = estates.map((estate, index) => {
+        const advisor = advisorPool[index % advisorPool.length];
+        return `
         <div class="chat-project-card">
-          <strong>${estate.title}</strong>
-          <span>${formatEstateMeta(estate.meta)} · 总价 ${estate.price}万起</span>
-          <span>${estate.keyword}</span>
-          <a href="./project-detail.html">查看楼盘</a>
+          <a class="chat-project-card__detail" href="./project-detail.html?project=${encodeURIComponent(estate.title)}&source=home-ai" aria-label="进入${estate.title}楼盘详情">
+            <span class="chat-project-card__head">
+              <strong>${estate.title}</strong>
+              <span class="chat-project-card__arrow"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5"></path></svg></span>
+            </span>
+            <span>${formatEstateMeta(estate.meta)} · 总价 ${estate.price}万起</span>
+            <span>${estate.keyword}</span>
+          </a>
+          <div class="chat-project-advisor">
+            <span class="chat-project-advisor__avatar">${advisor.name.slice(0, 1)}</span>
+            <span class="chat-project-advisor__info"><strong>${advisor.name}</strong><span>${advisor.role}</span></span>
+            <button class="chat-project-advisor__contact" type="button" data-chat-advisor-name="${advisor.name}" data-chat-advisor-role="${advisor.role}" data-chat-advisor-wechat="${advisor.wechat}" data-chat-advisor-estate="${estate.title}">在线联系</button>
+          </div>
         </div>
-      `).join("");
+      `;
+      }).join("");
+
+      return `<div class="chat-project-list">${cards}</div>`;
+    }
+
+    function getAiProjectListReply() {
 
       return `
         <strong>安安ai为你筛选了现有楼盘列表</strong><br>
-        你提到青羊区和 400 万预算，当前原型先从页面已有楼盘库里给你展示可选项目，点击可进入楼盘详情：
-        <div class="chat-project-list">${cards}</div>
+        你提到青羊区和 400 万预算，当前先从楼盘库里展示可选项目，并为每个项目匹配一位置业顾问：
+        ${renderAiEstateCards(estateTemplates)}
       `;
+    }
+
+    function isQingyangFiveThousandQuery(text) {
+      return text.includes("青羊区") && (text.includes("5000万") || text.includes("5000 万") || text.includes("五千万"));
+    }
+
+    function getHighBudgetAiSuggestionsMarkup(activeQuestion = "") {
+      const questions = highBudgetAiSuggestions.filter((suggestion) => suggestion !== activeQuestion);
+      return `
+        <div class="chat-inline-followups">
+          <strong class="chat-inline-followups__title">猜你想问</strong>
+          ${questions.map((question) => `
+            <button class="chat-inline-followup" type="button" data-chat-inline-question="${question}">
+              <span class="chat-inline-followup__icon">?</span>
+              <span>${question}</span>
+              <span class="chat-inline-followup__arrow"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6"></path></svg></span>
+            </button>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function withHighBudgetFollowups(content, activeQuestion = "") {
+      return `${content}${getHighBudgetAiSuggestionsMarkup(activeQuestion)}`;
+    }
+
+    function getHighBudgetProjectListMarkup(question) {
+      const estates = highBudgetEstateGroups[question] || highBudgetEstateGroups["成都5000万级豪宅"];
+      return `<div class="chat-project-list__label">为你匹配的楼盘</div>${renderAiEstateCards(estates)}`;
     }
 
     function getBotReply(question) {
       const text = question.trim();
       if (!text) {
         return "可以直接问我成都购房资格、公积金、税费或异地看房流程。";
+      }
+
+      if (text.includes("青羊区高端楼盘")) {
+        return `<strong>青羊区高端新房以稀缺改善产品为主。</strong><br>建议重点比较浣花溪、金沙及外金沙板块的大平层与低密产品，同时核对实际在售状态、取证总价和交付标准。${getHighBudgetProjectListMarkup(text)}`;
+      }
+
+      if (text.includes("青羊区3000万以上楼盘")) {
+        return `<strong>可以把总价下探到 3000 万以上继续筛选。</strong><br>这一档在青羊区更可能覆盖核心板块的大平层、叠拼或少量低密产品。建议优先确认建面 250㎡以上、实际可售楼层和装修配置，再联系顾问核验实时房源。${getHighBudgetProjectListMarkup(text)}`;
+      }
+
+      if (text.includes("锦江区5000万级楼盘")) {
+        return `<strong>锦江区 5000 万级需求可重点关注金融城东、攀成钢与东大路沿线。</strong><br>这类产品更看重城市界面、景观资源和大平层尺度。${getHighBudgetProjectListMarkup(text)}`;
+      }
+
+      if (text.includes("成都5000万级豪宅")) {
+        return `<strong>成都 5000 万级豪宅建议扩大到全城比较。</strong><br>除青羊、锦江外，还可关注高新区金融城、天府新区核心区及稀缺低密项目。${getHighBudgetProjectListMarkup(text)}`;
+      }
+
+      if (isQingyangFiveThousandQuery(text)) {
+        return withHighBudgetFollowups("<strong>暂未找到完全符合条件的在售新房。</strong><br>青羊区目前 5000 万元左右的新房产品较少，我可以保持你的高端改善需求，帮你换个条件继续找。");
       }
 
       if (text.includes("青羊区") && (text.includes("400万") || text.includes("400 万") || text.includes("400w") || text.includes("400W") || text.includes("四百万"))) {
@@ -9944,10 +11059,45 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       ], true);
     }
 
+    const HOME_AI_CONVERSATION_KEY = "home-ai-conversation-state";
+
+    function saveHomeAiConversationState() {
+      try {
+        sessionStorage.setItem(HOME_AI_CONVERSATION_KEY, JSON.stringify({
+          messagesHtml: chatMessages.innerHTML,
+          quickHtml: chatQuickList.innerHTML,
+          quickGrid: chatQuickList.classList.contains("chat-quick-list--grid"),
+          scrollTop: chatMessages.scrollTop
+        }));
+      } catch (error) {
+        console.warn("AI conversation state could not be saved", error);
+      }
+    }
+
+    function restoreHomeAiConversationState() {
+      try {
+        const savedState = JSON.parse(sessionStorage.getItem(HOME_AI_CONVERSATION_KEY) || "null");
+        if (!savedState || !savedState.messagesHtml) {
+          return false;
+        }
+        chatMessages.innerHTML = savedState.messagesHtml;
+        chatQuickList.innerHTML = savedState.quickHtml || "";
+        chatQuickList.classList.toggle("chat-quick-list--grid", Boolean(savedState.quickGrid));
+        requestAnimationFrame(() => {
+          chatMessages.scrollTop = Number.isFinite(savedState.scrollTop) ? savedState.scrollTop : chatMessages.scrollHeight;
+        });
+        return true;
+      } catch (error) {
+        console.warn("AI conversation state could not be restored", error);
+        return false;
+      }
+    }
+
     function applyInitialRoute() {
       const params = new URLSearchParams(window.location.search);
       const screen = params.get("screen");
       const messageId = params.get("messageId");
+      const source = params.get("source");
       const advisorName = params.get("advisorName");
       const advisorRoute = advisorName ? {
         name: advisorName,
@@ -9960,6 +11110,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       const districtName = params.get("districtName");
       const chatMode = params.get("chat");
       const chatQuestion = params.get("question");
+      const restoreChat = params.get("restore") === "1";
 
       if (!screen && !chatMode) {
         window.location.replace("./安家成都-首页-扫码.html");
@@ -9967,10 +11118,24 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       }
 
       if (chatMode === "home-ai") {
+        if (restoreChat && restoreHomeAiConversationState()) {
+          returnHomeOnChatClose = true;
+          activeChatFlow = null;
+          suspendedTalentAssessment = null;
+          chatDrawer.classList.add("is-visible");
+          chatInput.value = "";
+          chatInput.placeholder = "例如：我想要青羊区楼盘，400万预算";
+          chatInput.focus();
+          return;
+        }
         openHomeAiAnalysis({ returnHomeOnClose: true });
         if (chatQuestion) {
           addChatMessage("user", chatQuestion);
           addChatMessage("bot", getBotReply(chatQuestion));
+          if (isQingyangFiveThousandQuery(chatQuestion) || highBudgetAiSuggestions.includes(chatQuestion)) {
+            chatQuickList.innerHTML = "";
+            chatQuickList.classList.remove("chat-quick-list--grid");
+          }
           chatInput.value = "";
         }
         return;
@@ -9978,6 +11143,11 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
 
       if (screen === "message") {
         openMessageListScreen();
+        return;
+      }
+
+      if (screen === "mine") {
+        openMineScreen();
         return;
       }
 
@@ -9993,7 +11163,9 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       }
 
       if (screen === "message-detail") {
-        openMessageDetailScreen(messageId || (messageNotifications[0] ? messageNotifications[0].id : ""), advisorRoute);
+        openMessageDetailScreen(messageId || (messageNotifications[0] ? messageNotifications[0].id : ""), advisorRoute, {
+          returnTarget: source === "project-detail" ? "projectDetail" : "message"
+        });
         return;
       }
 
@@ -10031,6 +11203,18 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
     document.getElementById("backPreviousButton").addEventListener("click", () => goBackOrFallback());
     function goMainHome() {
       window.location.href = "./安家成都-首页-扫码.html";
+    }
+    function goMainNews() {
+      window.location.href = "./安家成都-首页-扫码.html#news";
+    }
+    if (homeTabHome) {
+      homeTabHome.addEventListener("click", goMainHome);
+    }
+    if (homeTabNews) {
+      homeTabNews.addEventListener("click", goMainNews);
+    }
+    if (homeTabMine) {
+      homeTabMine.addEventListener("click", openMineScreen);
     }
     if (homeLiveButton) {
       homeLiveButton.addEventListener("click", () => {
@@ -10200,10 +11384,16 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         goMainHome();
       });
     }
+    if (messageTabNews) {
+      messageTabNews.addEventListener("click", goMainNews);
+    }
     if (messageTabMessages) {
       messageTabMessages.addEventListener("click", () => {
         openMessageListScreen();
       });
+    }
+    if (messageTabMine) {
+      messageTabMine.addEventListener("click", openMineScreen);
     }
     if (messageTabBrand) {
       messageTabBrand.addEventListener("click", () => {
@@ -10221,7 +11411,95 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
     }
     if (backMessageDetailButton) {
       backMessageDetailButton.addEventListener("click", () => {
+        if (messageDetailReturnTarget === "projectDetail") {
+          window.location.href = "./project-detail.html";
+          return;
+        }
+        if (messageDetailReturnTarget === "customerDetail" && currentCustomerId) {
+          renderCustomerDetail(currentCustomerId);
+          showScreen("customerDetail");
+          return;
+        }
         openMessageListScreen();
+      });
+    }
+    if (backMineButton) {
+      backMineButton.addEventListener("click", () => showPreviousScreen("message"));
+    }
+    if (mineHomeShortcutButton) {
+      mineHomeShortcutButton.addEventListener("click", goMainHome);
+    }
+    if (openCustomerManagement) {
+      openCustomerManagement.addEventListener("click", openCustomerListScreen);
+    }
+    if (mineTabHome) {
+      mineTabHome.addEventListener("click", goMainHome);
+    }
+    if (mineTabMessages) {
+      mineTabMessages.addEventListener("click", openMessageListScreen);
+    }
+    if (mineTabBrand) {
+      mineTabBrand.addEventListener("click", () => openHomeAiAnalysis());
+    }
+    if (mineTabNews) {
+      mineTabNews.addEventListener("click", goMainNews);
+    }
+    document.querySelectorAll("[data-mine-placeholder]").forEach((button) => {
+      button.addEventListener("click", () => showCustomerToast(`${button.dataset.minePlaceholder}功能已保留`));
+    });
+    if (backCustomerListButton) {
+      backCustomerListButton.addEventListener("click", openMineScreen);
+    }
+    if (customerListHomeButton) {
+      customerListHomeButton.addEventListener("click", goMainHome);
+    }
+    if (customerTabs) {
+      customerTabs.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-customer-filter]");
+        if (!button) {
+          return;
+        }
+        currentCustomerFilter = button.dataset.customerFilter;
+        priorityCustomersOnly = false;
+        customerTabs.querySelectorAll("[data-customer-filter]").forEach((tab) => tab.classList.toggle("is-active", tab === button));
+        renderCustomerList();
+      });
+    }
+    if (priorityCustomerToggle) {
+      priorityCustomerToggle.addEventListener("click", () => {
+        priorityCustomersOnly = !priorityCustomersOnly;
+        renderCustomerList();
+      });
+    }
+    if (customerList) {
+      customerList.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-open-customer]");
+        if (button) {
+          openCustomerDetailScreen(button.dataset.openCustomer);
+        }
+      });
+    }
+    if (backCustomerDetailButton) {
+      backCustomerDetailButton.addEventListener("click", openCustomerListScreen);
+    }
+    if (customerDetailHomeButton) {
+      customerDetailHomeButton.addEventListener("click", goMainHome);
+    }
+    if (customerDetailContent) {
+      customerDetailContent.addEventListener("click", (event) => {
+        const messageButton = event.target.closest("[data-customer-message]");
+        if (messageButton) {
+          openCustomerMessage(messageButton.dataset.customerMessage);
+          return;
+        }
+        const callButton = event.target.closest("[data-privacy-call]");
+        if (callButton) {
+          const customer = getCustomerById(callButton.dataset.privacyCall);
+          if (customer) {
+            markCustomerContacted(customer, "通过隐私号联系");
+            showCustomerToast(`正在通过隐私号联系 ${customer.phone}`);
+          }
+        }
       });
     }
     if (messageDetailHomeShortcutButton) {
@@ -10411,6 +11689,10 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         const question = button.dataset.value;
         addChatMessage("user", question);
         addChatMessage("bot", getBotReply(question));
+        if (isQingyangFiveThousandQuery(question)) {
+          chatQuickList.innerHTML = "";
+          chatQuickList.classList.remove("chat-quick-list--grid");
+        }
         return;
       }
 
@@ -10468,6 +11750,40 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       }
     });
 
+    chatMessages.addEventListener("click", (event) => {
+      const inlineQuestionButton = event.target.closest("[data-chat-inline-question]");
+      if (inlineQuestionButton) {
+        const question = inlineQuestionButton.dataset.chatInlineQuestion;
+        addChatMessage("user", question);
+        addChatMessage("bot", getBotReply(question));
+        chatQuickList.innerHTML = "";
+        chatQuickList.classList.remove("chat-quick-list--grid");
+        return;
+      }
+
+      const projectDetailLink = event.target.closest(".chat-project-card__detail");
+      if (projectDetailLink) {
+        saveHomeAiConversationState();
+        return;
+      }
+
+      const contactButton = event.target.closest("[data-chat-advisor-name]");
+      if (!contactButton) {
+        return;
+      }
+      const advisorName = contactButton.dataset.chatAdvisorName;
+      returnHomeOnChatClose = false;
+      chatDrawer.classList.remove("is-visible");
+      resetChatQuickQuestions();
+      openMessageDetailScreen("message-consult-001", {
+        name: advisorName,
+        role: contactButton.dataset.chatAdvisorRole || "置业顾问",
+        initial: advisorName.slice(0, 1),
+        wechat: contactButton.dataset.chatAdvisorWechat || "",
+        estate: contactButton.dataset.chatAdvisorEstate || ""
+      });
+    });
+
     document.getElementById("chatForm").addEventListener("submit", (event) => {
       event.preventDefault();
       const question = chatInput.value.trim();
@@ -10481,6 +11797,10 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         return;
       }
       addChatMessage("bot", getBotReply(question));
+      if (isQingyangFiveThousandQuery(question) || highBudgetAiSuggestions.includes(question)) {
+        chatQuickList.innerHTML = "";
+        chatQuickList.classList.remove("chat-quick-list--grid");
+      }
       chatInput.value = "";
     });
 

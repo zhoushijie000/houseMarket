@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>运营 - 专题管理</title>
+  <style>
+    :root {
+      --primary: #3f6fe8;
+      --primary-dark: #315fda;
+      --primary-light: #edf3ff;
+      --text: #303133;
+      --regular: #606266;
+      --muted: #909399;
+      --placeholder: #c0c4cc;
+      --border: #dcdfe6;
+      --border-light: #ebeef5;
+      --background: #f3f4f6;
+      --surface: #fff;
+      --success: #32ad7f;
+      --success-bg: #edf9f5;
+      --danger: #f56c6c;
+      --danger-bg: #fff1f1;
+      --info: #6f7c90;
+      --info-bg: #f1f3f6;
+      --shadow: 0 14px 36px rgba(31, 41, 61, .16);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-width: 1180px; min-height: 100%; }
+    body {
+      color: var(--text);
+      background: var(--background);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-size: 14px;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+
+    /* Existing admin header */
+    .app-header {
+      height: 64px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border: 1px solid var(--border-light);
+    }
+    .brand, .brand-copy, .header-nav, .nav-item, .user { display: flex; align-items: center; }
+    .brand-logo { width: 36px; height: 36px; margin-right: 20px; position: relative; overflow: hidden; background: #406bdd; }
+    .brand-logo::before { content: ""; position: absolute; inset: 7px 9px; border-left: 5px solid #fff; border-right: 5px solid #fff; }
+    .brand-logo::after { content: ""; position: absolute; right: 9px; top: 13px; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-right: 10px solid #fff; }
+    .brand-title { color: #111; font-size: 18px; font-weight: 650; white-space: nowrap; }
+    .brand-agency { margin-left: 20px; color: var(--regular); white-space: nowrap; }
+    .brand-agency .chevron { margin-left: 24px; color: var(--primary); }
+    .header-nav { height: 100%; margin-left: auto; }
+    .nav-item { height: 100%; position: relative; color: #262626; white-space: nowrap; }
+    .nav-trigger { height: 100%; padding: 0 17px; display: flex; align-items: center; gap: 10px; color: inherit; background: transparent; border: 0; font-size: 15px; }
+    .nav-primary-link { height: 100%; padding: 0 8px 0 17px; display: flex; align-items: center; color: inherit; text-decoration: none; font-size: 15px; }
+    .nav-item:not([data-nav-menu]) .nav-primary-link { padding: 0 17px; }
+    .nav-menu-toggle { width: 30px; padding: 0 12px 0 0; }
+    .nav-primary-link:hover, .nav-item.open > .nav-primary-link { color: var(--primary); background: #f7f9fd; }
+    .nav-item.active > .nav-primary-link { color: var(--primary); font-weight: 600; }
+    .nav-trigger:hover, .nav-item.open .nav-trigger { background: #f7f9fd; }
+    .nav-item.active .nav-trigger { color: var(--primary); }
+    .nav-item.open .nav-trigger .chevron { transform: rotate(225deg) translate(-1px, -1px); }
+    .nav-menu { width: 212px; padding: 10px 0; position: absolute; top: calc(100% + 1px); left: 50%; z-index: 70; display: none; transform: translateX(-50%); background: #fff; border: 1px solid #edf0f5; border-radius: 4px; box-shadow: 0 8px 24px rgba(31, 41, 61, .14); }
+    .nav-item.open .nav-menu { display: block; }
+    .nav-menu-link { width: 100%; height: 46px; padding: 0 20px; display: flex; align-items: center; color: #30343a; background: transparent; border: 0; text-align: left; text-decoration: none; font-size: 15px; }
+    .nav-menu-link:hover { color: var(--primary); background: #f5f8ff; }
+    .nav-menu-link.active { color: var(--primary); background: var(--primary-light); font-weight: 600; }
+    .chevron { width: 7px; height: 7px; display: inline-block; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translateY(-2px); }
+    .user { height: 56px; margin-left: 64px; flex-direction: column; justify-content: center; }
+    .avatar { width: 35px; height: 35px; border-radius: 50%; position: relative; background: #e4e7ed; }
+    .avatar::before { content: ""; width: 9px; height: 9px; position: absolute; left: 13px; top: 7px; border-radius: 50%; background: #fff; }
+    .avatar::after { content: ""; width: 17px; height: 10px; position: absolute; left: 9px; top: 20px; border-radius: 9px 9px 3px 3px; background: #fff; }
+    .user-name { margin-top: -4px; padding: 1px 7px; border-radius: 4px; color: #fff; background: #85888d; font-size: 12px; }
+
+    .workspace-tabs { height: 54px; padding: 10px 12px; display: flex; align-items: center; gap: 6px; background: #f0f1f3; }
+    .workspace-tab { min-width: 96px; height: 34px; padding: 0 20px; display: inline-flex; align-items: center; justify-content: center; gap: 14px; color: #2f3033; background: #fff; border: 1px solid var(--border); border-radius: 4px; font-weight: 600; }
+    .workspace-tab.active { color: var(--primary); border-color: var(--primary); }
+    .workspace-tab .close { font-size: 16px; font-weight: 400; }
+    .more-actions { margin-left: auto; display: flex; align-items: center; gap: 12px; color: var(--regular); }
+
+    /* List page */
+    .page { padding: 0 12px 14px; }
+    .page-title { height: 72px; padding: 0 20px; display: flex; align-items: center; background: #fff; border-bottom: 1px solid var(--border); color: #202328; font-size: 16px; font-weight: 600; }
+    .page-title::after { content: ""; width: 36px; height: 2px; align-self: flex-end; position: absolute; background: var(--primary); }
+    .filter-card { min-height: 86px; margin-top: 12px; padding: 20px; display: flex; align-items: center; background: #fff; }
+    .filter-fields { display: flex; align-items: center; gap: 26px; }
+    .filter-item { display: flex; align-items: center; gap: 12px; }
+    .filter-label { color: var(--regular); font-size: 15px; white-space: nowrap; }
+    .control-input, .control-select { width: 260px; height: 36px; padding: 0 13px; color: var(--text); background: #fff; border: 1px solid var(--border); border-radius: 4px; outline: none; }
+    .control-select { width: 190px; }
+    .control-input::placeholder { color: var(--placeholder); }
+    .control-input:focus, .control-select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(63, 111, 232, .1); }
+    .filter-actions { display: flex; gap: 10px; margin-left: 64px; }
+    .btn { height: 36px; padding: 0 18px; color: var(--regular); background: #fff; border: 1px solid var(--border); border-radius: 4px; }
+    .btn:hover { color: var(--primary); border-color: #9eb5f2; }
+    .btn-primary { color: #fff; background: var(--primary); border-color: var(--primary); }
+    .btn-primary:hover { color: #fff; background: var(--primary-dark); border-color: var(--primary-dark); }
+    .btn-large { height: 38px; padding: 0 20px; font-weight: 600; }
+    .btn-small { height: 32px; padding: 0 14px; }
+    .list-card { min-height: calc(100vh - 304px); margin-top: 12px; padding: 20px; background: #fff; }
+    .toolbar { display: flex; align-items: center; justify-content: space-between; }
+    .toolbar-tip { color: var(--muted); font-size: 13px; }
+    .table-wrap { margin-top: 18px; overflow-x: auto; border: 1px solid var(--border-light); }
+    table { width: 100%; min-width: 760px; table-layout: fixed; border-collapse: collapse; }
+    th, td { height: 64px; padding: 0 14px; color: var(--regular); text-align: left; border-bottom: 1px solid var(--border-light); }
+    th { height: 40px; background: #f3f4f6; font-weight: 500; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:hover td { background: #fafcff; }
+    .col-index { width: 64px; text-align: center; }
+    .col-name { width: auto; }
+    .col-time { width: 210px; }
+    .col-status { width: 120px; }
+    .col-action { width: 260px; text-align: center; white-space: nowrap; }
+    .primary-text { color: #414b5b; }
+    .secondary-text { margin-top: 4px; overflow: hidden; color: var(--muted); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+    .status { min-width: 50px; height: 24px; padding: 0 8px; display: inline-flex; align-items: center; justify-content: center; border-radius: 3px; font-size: 12px; }
+    .status.enabled { color: var(--success); background: var(--success-bg); }
+    .status.disabled { color: var(--info); background: var(--info-bg); }
+    .table-action { padding: 5px 7px; color: var(--primary); background: transparent; border: 0; }
+    .table-action.danger { color: var(--danger); }
+    .empty { height: 180px; color: var(--muted); text-align: center; }
+    .pagination { margin-top: 16px; display: flex; align-items: center; justify-content: flex-end; gap: 8px; color: var(--regular); }
+    .page-btn { min-width: 30px; height: 30px; padding: 0 8px; color: var(--regular); background: #fff; border: 1px solid var(--border); border-radius: 4px; }
+    .page-btn.active { color: #fff; background: var(--primary); border-color: var(--primary); }
+
+    /* Topic form */
+    .overlay { position: fixed; inset: 0; z-index: 80; display: none; align-items: center; justify-content: center; padding: 18px; background: rgba(0, 0, 0, .48); }
+    .overlay.show { display: flex; }
+    .modal { width: min(1180px, calc(100vw - 36px)); max-height: calc(100vh - 36px); display: flex; overflow: hidden; flex-direction: column; background: #fff; box-shadow: var(--shadow); animation: modal-in .16s ease-out; }
+    .topic-modal { width: calc(100vw - 24px); height: calc(100vh - 24px); max-height: none; }
+    @keyframes modal-in { from { opacity: 0; transform: translateY(-7px); } to { opacity: 1; transform: none; } }
+    .modal-header { height: 64px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; flex: 0 0 auto; border-bottom: 1px solid var(--border-light); }
+    .modal-title { color: #30343a; font-size: 20px; font-weight: 500; }
+    .modal-close { width: 32px; height: 32px; padding: 0; display: grid; place-items: center; color: var(--muted); background: transparent; border: 0; }
+    .modal-close:hover { color: var(--primary); }
+    .modal-close svg { width: 18px; height: 18px; }
+    .modal-body { padding: 22px 26px 28px; overflow-y: auto; flex: 1; background: #f7f8fa; }
+    .modal-footer { min-height: 62px; padding: 12px 22px; display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex: 0 0 auto; background: #fff; border-top: 1px solid var(--border-light); }
+    .modal-footer .btn { min-width: 72px; }
+    .form-panel { padding: 22px 24px 24px; background: #fff; }
+    .form-row { min-height: 48px; display: flex; align-items: flex-start; }
+    .form-row + .form-row { margin-top: 18px; }
+    .form-label { width: 116px; padding-top: 9px; flex: 0 0 auto; color: var(--regular); text-align: right; }
+    .required::before { content: "*"; margin-right: 5px; color: var(--danger); }
+    .form-control { min-width: 0; margin-left: 16px; flex: 1; }
+    .text-wrap { position: relative; }
+    .form-input, .form-textarea { width: 100%; color: var(--text); background: #fff; border: 1px solid var(--border); border-radius: 4px; outline: 0; }
+    .form-input { height: 38px; padding: 0 68px 0 14px; }
+    .form-textarea { min-height: 68px; padding: 10px 52px 10px 12px; resize: vertical; line-height: 20px; }
+    .form-input:focus, .form-textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(63, 111, 232, .1); }
+    .counter { position: absolute; right: 12px; top: 10px; color: var(--muted); font-size: 12px; }
+    .help { min-height: 18px; margin-top: 6px; color: var(--muted); font-size: 12px; line-height: 18px; }
+    .help.error { color: var(--danger); }
+    .upload-grid { display: flex; align-items: flex-start; gap: 34px; }
+    .upload-card { width: 236px; }
+    .upload-card.icon-card { width: 150px; }
+    .upload-trigger { width: 236px; height: 118px; padding: 0; position: relative; display: grid; place-items: center; overflow: hidden; color: var(--muted); background: #fafbfc; border: 1px dashed #c9ced8; border-radius: 4px; }
+    .upload-trigger.icon-upload { width: 118px; height: 118px; }
+    .upload-trigger:hover { color: var(--primary); background: #f7faff; border-color: var(--primary); }
+    .upload-trigger img { width: 100%; height: 100%; object-fit: cover; }
+    .upload-empty { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; }
+    .upload-empty svg { width: 28px; height: 28px; }
+    .upload-empty strong { color: var(--primary); font-weight: 500; }
+    .replace-label { padding: 5px 9px; position: absolute; right: 6px; bottom: 6px; color: #fff; background: rgba(0,0,0,.58); border-radius: 3px; font-size: 12px; }
+    .section-heading { margin: 28px 0 14px; padding-left: 10px; border-left: 4px solid var(--primary); color: #24272c; font-size: 17px; font-weight: 600; line-height: 22px; }
+    .section-tools { margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+    .selected-count { color: var(--muted); font-size: 13px; }
+    .estate-edit-wrap { overflow-x: auto; border: 1px solid var(--border-light); }
+    .estate-edit-table { min-width: 1030px; }
+    .estate-edit-table th, .estate-edit-table td { padding: 10px 12px; vertical-align: top; }
+    .estate-edit-table th { height: 42px; }
+    .estate-edit-table td { height: 88px; }
+    .estate-edit-table .description-cell { width: 33%; }
+    .estate-edit-table .description-wrap { position: relative; }
+    .estate-edit-table textarea { width: 100%; min-height: 64px; padding: 8px 42px 8px 10px; color: var(--text); border: 1px solid var(--border); border-radius: 4px; outline: 0; resize: vertical; line-height: 20px; }
+    .estate-edit-table textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(63,111,232,.1); }
+    .estate-edit-table .counter { top: auto; right: 8px; bottom: 7px; }
+    .sort-input { width: 70px; height: 34px; padding: 0 9px; border: 1px solid var(--border); border-radius: 4px; outline: 0; }
+    .estate-empty { height: 116px !important; color: var(--muted); text-align: center; vertical-align: middle !important; }
+
+    /* Estate selector from the second reference */
+    .estate-overlay { z-index: 100; padding: 14px; background: rgba(0, 0, 0, .38); }
+    .estate-modal { width: min(1260px, calc(100vw - 28px)); height: min(840px, calc(100vh - 28px)); }
+    .estate-modal .modal-header { height: 66px; }
+    .estate-modal .modal-title { font-size: 22px; }
+    .estate-modal .modal-body { padding: 0; display: flex; flex-direction: column; background: #fff; }
+    .estate-filters { min-height: 92px; padding: 22px 28px; display: flex; align-items: center; gap: 28px; background: #f7f8fa; }
+    .estate-filters .filter-item { flex: 1; }
+    .estate-filters .control-input { width: auto; min-width: 0; flex: 1; }
+    .estate-table-shell { min-height: 0; padding: 0 16px; overflow: auto; flex: 1; }
+    .estate-table-shell .table-wrap { margin-top: 0; }
+    .estate-select-table { min-width: 980px; }
+    .estate-select-table th, .estate-select-table td { height: 54px; padding: 0 14px; }
+    .estate-select-table .check-col { width: 66px; text-align: center; }
+    .estate-select-table .phase-col { width: 24%; }
+    .estate-select-table .project-col { width: 29%; }
+    .estate-select-table .developer-col { width: 31%; }
+    .estate-select-table .district-col { width: 16%; }
+    .row-check { width: 17px; height: 17px; margin: 0; accent-color: var(--primary); }
+    .estate-pagination { min-height: 68px; padding: 10px 28px; display: flex; align-items: center; justify-content: center; gap: 10px; flex: 0 0 auto; color: var(--regular); background: #f7f8fa; }
+    .estate-pagination .size-select, .jump-input { height: 34px; padding: 0 10px; color: var(--regular); background: #fff; border: 1px solid var(--border); border-radius: 4px; }
+    .estate-pagination .size-select { width: 120px; margin-right: 8px; }
+    .estate-pagination .page-btn { border-color: transparent; background: #fff; }
+    .estate-pagination .page-btn.active { background: var(--primary); }
+    .estate-pagination .page-btn:disabled { color: #c9ccd2; background: #f0f1f3; cursor: not-allowed; }
+    .jump-label { margin-left: 22px; display: flex; align-items: center; gap: 8px; }
+    .jump-input { width: 58px; text-align: center; }
+
+    .toast { min-width: 230px; padding: 11px 16px; position: fixed; left: 50%; top: 26px; z-index: 130; display: flex; align-items: center; justify-content: center; transform: translate(-50%, -16px); opacity: 0; pointer-events: none; color: #2e765f; background: #eefaf5; border: 1px solid #bce9d8; border-radius: 4px; box-shadow: 0 7px 18px rgba(0, 0, 0, .08); transition: .2s ease; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .toast.error { color: #a84343; background: #fff2f2; border-color: #f4c6c6; }
+
+    @media (max-width: 1420px) {
+      .nav-trigger { padding: 0 12px; }
+      .user { margin-left: 34px; }
+      .filter-fields { gap: 18px; }
+      .filter-actions { margin-left: 30px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-logo" aria-hidden="true"></div>
+      <div class="brand-copy">
+        <div class="brand-title">成都住建线上房产超市管理平台</div>
+        <div class="brand-agency">成都市住房和城乡建设局 <span class="chevron"></span></div>
+      </div>
+    </div>
+    <nav class="header-nav" id="headerNav" aria-label="主导航">
+      <div class="nav-item" data-nav-menu>
+        <a class="nav-primary-link" href="./0715-房源展示价格管理.html">项目</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开项目菜单" aria-expanded="false"><span class="chevron"></span></button>
+        <div class="nav-menu" role="menu" aria-label="项目">
+          <a class="nav-menu-link" href="./0715-房源展示价格管理.html">房源管理</a>
+          <a class="nav-menu-link" href="./0902-户型图VR链接管理.html">项目管理</a>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-primary-link" href="./registration-workbench/admin.html">申请</a></div>
+      <div class="nav-item active" data-nav-menu>
+        <a class="nav-primary-link" href="./0821-直播管理.html">运营</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开运营菜单" aria-expanded="false"><span class="chevron"></span></button>
+        <div class="nav-menu" role="menu" aria-label="运营">
+          <button class="nav-menu-link" type="button" data-placeholder-menu>内容管理</button>
+          <a class="nav-menu-link" href="./0902-项目报告管理.html" style="padding-left:32px">项目报告</a>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>活动报名审核</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>楼盘管理</button>
+          <a class="nav-menu-link" href="./0821-直播管理.html">直播间管理</a>
+          <a class="nav-menu-link active" href="./0828-专题管理.html" aria-current="page">专题管理</a>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>运营配置</button>
+          <a class="nav-menu-link" href="./0831-区县管理.html">区县管理</a>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>最新预售</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>城市专场</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>活动城市</button>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-primary-link" href="./网签成交.html">统计</a></div>
+      <div class="nav-item" data-nav-menu>
+        <a class="nav-primary-link" href="./0831-客户管理.html">客户</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开客户菜单" aria-expanded="false"><span class="chevron"></span></button>
+        <div class="nav-menu" role="menu" aria-label="客户">
+          <button class="nav-menu-link" type="button" data-customer-menu="客户消息">客户消息</button>
+          <a class="nav-menu-link" href="./0831-客户管理.html">客户管理</a>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-primary-link" href="./购房政策.html">政务</a></div>
+      <div class="nav-item"><a class="nav-primary-link" href="./0831-区县管理.html">管理</a></div>
+      <div class="nav-item" data-nav-menu>
+        <a class="nav-primary-link" href="./0819-直播专区标签管理.html">系统</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开系统菜单" aria-expanded="false"><span class="chevron"></span></button>
+        <div class="nav-menu" role="menu" aria-label="系统">
+          <a class="nav-menu-link" href="./0819-直播专区标签管理.html">小程序管理</a>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>机构管理</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>人员管理</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>权限管理</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>系统日志</button>
+        </div>
+      </div>
+    </nav>
+    <div class="user"><div class="avatar"></div><div class="user-name">周世杰</div></div>
+  </header>
+
+  <div class="workspace-tabs">
+    <div class="workspace-tab">选择企业</div>
+    <div class="workspace-tab">项目管理</div>
+    <div class="workspace-tab">内容管理</div>
+    <div class="workspace-tab active">专题管理 <span class="close">×</span></div>
+    <div class="more-actions">更多操作 <span class="chevron"></span></div>
+  </div>
+
+  <main class="page">
+    <div class="page-title">专题管理</div>
+    <section class="filter-card">
+      <div class="filter-fields">
+        <label class="filter-item"><span class="filter-label">专题名称</span><input class="control-input" id="nameFilter" maxlength="30" placeholder="请输入专题名称"></label>
+        <label class="filter-item"><span class="filter-label">专题状态</span><select class="control-select" id="statusFilter"><option value="">全部</option><option value="enabled">启用</option><option value="disabled">禁用</option></select></label>
+      </div>
+      <div class="filter-actions"><button class="btn btn-primary" id="searchButton">查询</button><button class="btn" id="resetButton">重置</button></div>
+    </section>
+
+    <section class="list-card">
+      <div class="toolbar">
+        <button class="btn btn-primary btn-large" id="addButton">新增专题</button>
+        <div class="toolbar-tip">专题将在小程序专题入口按排序展示</div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th class="col-index">序号</th><th class="col-name">专题名称</th><th class="col-time">更新时间</th><th class="col-status">状态</th><th class="col-action">操作</th></tr></thead>
+          <tbody id="topicTableBody"></tbody>
+        </table>
+      </div>
+      <div class="pagination"><span>共 <span id="topicTotal">0</span> 条</span><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">›</button><span>10条/页</span></div>
+    </section>
+  </main>
+
+  <div class="overlay" id="topicOverlay" aria-hidden="true">
+    <section class="modal topic-modal" role="dialog" aria-modal="true" aria-labelledby="topicModalTitle">
+      <header class="modal-header">
+        <div class="modal-title" id="topicModalTitle">新增专题</div>
+        <button class="modal-close" id="closeTopicModal" aria-label="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+      </header>
+      <div class="modal-body">
+        <div class="form-panel">
+          <div class="form-row">
+            <div class="form-label required">专题图片</div>
+            <div class="form-control">
+              <div class="upload-grid">
+                <div class="upload-card"><button class="upload-trigger" id="topicPictureTrigger" type="button"></button><div class="help">仅支持PNG/JPG格式，单个文件不超过1MB</div></div>
+              </div>
+              <input id="topicPictureInput" type="file" accept="image/png,image/jpeg" hidden>
+              <div class="help" id="topicPictureError"></div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-label required">专题icon</div>
+            <div class="form-control">
+              <div class="upload-grid">
+                <div class="upload-card icon-card"><button class="upload-trigger icon-upload" id="topicIconTrigger" type="button"></button><div class="help">仅支持PNG/JPG格式，单个文件不超过1MB</div></div>
+              </div>
+              <input id="topicIconInput" type="file" accept="image/png,image/jpeg" hidden>
+              <div class="help" id="topicIconError"></div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-label required">专题名称</div>
+            <div class="form-control">
+              <div class="text-wrap"><input class="form-input" id="topicNameInput" maxlength="30" placeholder="请输入专题名称"><span class="counter"><span id="topicNameCount">0</span>/30</span></div>
+              <div class="help" id="topicNameError"></div>
+            </div>
+          </div>
+
+          <div class="section-heading">专题楼盘</div>
+          <div class="section-tools"><button class="btn btn-primary btn-small" id="addEstateButton" type="button">新增楼盘</button><span class="selected-count">已添加 <strong id="selectedEstateCount">0</strong> 个楼盘，添加后请填写每个楼盘的专题描述</span></div>
+          <div class="estate-edit-wrap">
+            <table class="estate-edit-table">
+              <thead><tr><th style="width:17%">分期名称</th><th style="width:15%">项目名称</th><th style="width:18%">开发企业</th><th style="width:9%">区域</th><th class="description-cell"><span class="required">专题描述</span></th><th style="width:7%">排序</th><th style="width:8%;text-align:center">操作</th></tr></thead>
+              <tbody id="selectedEstateBody"></tbody>
+            </table>
+          </div>
+          <div class="help" id="estateError"></div>
+        </div>
+      </div>
+      <footer class="modal-footer"><button class="btn" id="cancelTopicModal">取消</button><button class="btn btn-primary" id="saveTopicButton">确定</button></footer>
+    </section>
+  </div>
+
+  <div class="overlay estate-overlay" id="estateOverlay" aria-hidden="true">
+    <section class="modal estate-modal" role="dialog" aria-modal="true" aria-labelledby="estateModalTitle">
+      <header class="modal-header">
+        <div class="modal-title" id="estateModalTitle">添加楼盘</div>
+        <button class="modal-close" id="closeEstateModal" aria-label="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+      </header>
+      <div class="modal-body">
+        <div class="estate-filters">
+          <label class="filter-item"><span class="filter-label">项目名称</span><input class="control-input" id="estateNameFilter" maxlength="30" placeholder="请输入项目名称"></label>
+          <label class="filter-item"><span class="filter-label">开发企业</span><input class="control-input" id="developerFilter" maxlength="30" placeholder="请输入开发企业"></label>
+          <button class="btn btn-primary" id="estateSearchButton">查询</button>
+          <button class="btn" id="estateResetButton">重置</button>
+        </div>
+        <div class="estate-table-shell">
+          <div class="table-wrap">
+            <table class="estate-select-table">
+              <thead><tr><th class="check-col"><input class="row-check" id="checkAllEstates" type="checkbox" aria-label="全选"></th><th class="phase-col">分期名称</th><th class="project-col">项目名称</th><th class="developer-col">开发企业</th><th class="district-col">区域</th></tr></thead>
+              <tbody id="estateTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="estate-pagination">
+          <span>共 <span id="estateTotal">0</span> 条</span>
+          <select class="size-select" aria-label="每页条数"><option>10条/页</option></select>
+          <button class="page-btn" disabled>‹</button><button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">3</button><button class="page-btn">4</button><button class="page-btn">5</button><button class="page-btn">6</button><span>•••</span><button class="page-btn">47</button><button class="page-btn">›</button>
+          <label class="jump-label">前往 <input class="jump-input" value="1" aria-label="页码"> 页</label>
+        </div>
+      </div>
+      <footer class="modal-footer"><span style="margin-right:auto;color:var(--muted)">已选择 <strong id="pendingEstateCount">0</strong> 个楼盘</span><button class="btn" id="cancelEstateModal">取消</button><button class="btn btn-primary" id="confirmEstateButton">确定</button></footer>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const uploadIcon = `<span class="upload-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 16V5M8 9l4-4 4 4"/><path d="M5 14v4a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-4"/></svg><strong>点击上传</strong></span>`;
+    const estates = [
+      { id: 1, phase: '绿城桂语兰庭', project: '绿城桂语兰庭', developer: '成都兴厦乐业置业有限公司', district: '温江区' },
+      { id: 2, phase: '润百合园', project: '润百合园', developer: '成都丽景房地产开发有限公司', district: '成华区' },
+      { id: 3, phase: '润百合轩', project: '润百合轩', developer: '成都丽景房地产开发有限公司', district: '成华区' },
+      { id: 4, phase: '公园九号1期', project: '公园九号', developer: '成都九联科海健康科技有限公司', district: '温江区' },
+      { id: 5, phase: '空港兴城·锦怡上院', project: '空港兴城·锦怡上院', developer: '成都荣浮置业有限公司', district: '双流区' },
+      { id: 6, phase: '空港兴城·宸和府', project: '空港兴城·宸和府', developer: '成都棠楠置业有限公司', district: '双流区' },
+      { id: 7, phase: '天投天成璞院', project: '天投天成璞院', developer: '成都朗瑜置业有限公司', district: '天府新区' },
+      { id: 8, phase: '双楠樾院（备案名：铂悦楠园）', project: '双楠樾院（备案名：铂悦楠园）', developer: '成都瑞浩置业有限公司', district: '双流区' },
+      { id: 9, phase: '富国上邦2期', project: '富国上邦', developer: '成都富强房地产开发有限公司', district: '武侯区' },
+      { id: 10, phase: '天投·鑫辰', project: '天投·鑫辰', developer: '成都天投地产开发有限公司', district: '天府新区' },
+      { id: 11, phase: '人居越秀和樾林语', project: '和樾林语', developer: '成都人居兴青置业有限公司', district: '青白江区' },
+      { id: 12, phase: '龙湖焕城', project: '龙湖焕城', developer: '成都辰禧置业有限公司', district: '龙泉驿区' }
+    ];
+
+    const topics = [
+      { id: 1, name: '成都改善好房', pictureClass: '', estates: [1, 7, 10], status: 'enabled', updatedAt: '2026-08-26 15:32', picture: null, icon: null },
+      { id: 2, name: '公园宜居楼盘', pictureClass: 'green', estates: [4, 5, 6], status: 'enabled', updatedAt: '2026-08-25 10:18', picture: null, icon: null },
+      { id: 3, name: '主城品质新盘', pictureClass: 'orange', estates: [2, 3, 9], status: 'disabled', updatedAt: '2026-08-22 09:46', picture: null, icon: null }
+    ];
+
+    const state = {
+      editingId: null,
+      topicPicture: null,
+      topicIcon: null,
+      selectedEstates: [],
+      pendingEstateIds: new Set(),
+      topicQuery: { name: '', status: '' },
+      estateQuery: { name: '', developer: '' }
+    };
+
+    const $ = selector => document.querySelector(selector);
+    const $$ = selector => [...document.querySelectorAll(selector)];
+    const escapeHTML = value => String(value ?? '').replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char]));
+
+    function showToast(message, isError = false) {
+      const toast = $('#toast');
+      toast.textContent = message;
+      toast.classList.toggle('error', isError);
+      toast.classList.add('show');
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove('show'), 2100);
+    }
+
+    function renderTopics() {
+      const name = state.topicQuery.name.trim().toLowerCase();
+      const rows = topics.filter(item => (!name || item.name.toLowerCase().includes(name)) && (!state.topicQuery.status || item.status === state.topicQuery.status));
+      $('#topicTotal').textContent = rows.length;
+      $('#topicTableBody').innerHTML = rows.length ? rows.map((topic, index) => {
+        return `<tr>
+          <td class="col-index">${index + 1}</td>
+          <td><div class="primary-text">${escapeHTML(topic.name)}</div></td>
+          <td>${topic.updatedAt}</td><td><span class="status ${topic.status}">${topic.status === 'enabled' ? '启用' : '禁用'}</span></td>
+          <td class="col-action"><button class="table-action" data-edit-topic="${topic.id}">编辑</button><button class="table-action" data-toggle-topic="${topic.id}">${topic.status === 'enabled' ? '禁用' : '启用'}</button><button class="table-action danger" data-delete-topic="${topic.id}">删除</button></td>
+        </tr>`;
+      }).join('') : '<tr><td class="empty" colspan="5">暂无符合条件的专题</td></tr>';
+    }
+
+    function renderUpload(trigger, dataUrl, type) {
+      if (dataUrl) trigger.innerHTML = `<img src="${dataUrl}" alt="${type === 'picture' ? '专题图片' : '专题icon'}预览"><span class="replace-label">重新上传</span>`;
+      else trigger.innerHTML = uploadIcon;
+    }
+
+    function renderSelectedEstates() {
+      $('#selectedEstateCount').textContent = state.selectedEstates.length;
+      $('#selectedEstateBody').innerHTML = state.selectedEstates.length ? state.selectedEstates.map((row, index) => {
+        const estate = estates.find(item => item.id === row.id);
+        if (!estate) return '';
+        return `<tr data-selected-row="${row.id}">
+          <td>${escapeHTML(estate.phase)}</td><td>${escapeHTML(estate.project)}</td><td>${escapeHTML(estate.developer)}</td><td>${escapeHTML(estate.district)}</td>
+          <td class="description-cell"><div class="description-wrap"><textarea maxlength="200" data-description="${row.id}" placeholder="请输入该楼盘的专题描述">${escapeHTML(row.description)}</textarea><span class="counter"><span>${row.description.length}</span>/200</span></div></td>
+          <td><input class="sort-input" type="number" min="1" max="999" value="${row.sort || index + 1}" data-sort="${row.id}"></td>
+          <td style="text-align:center"><button class="table-action danger" data-remove-estate="${row.id}" type="button">删除</button></td>
+        </tr>`;
+      }).join('') : '<tr><td class="estate-empty" colspan="7">暂无楼盘，请点击“新增楼盘”添加</td></tr>';
+    }
+
+    function openTopicModal(topic = null) {
+      state.editingId = topic?.id ?? null;
+      state.topicPicture = topic?.picture ?? null;
+      state.topicIcon = topic?.icon ?? null;
+      state.selectedEstates = topic ? (topic.estateEntries?.map(item => ({ ...item })) || topic.estates.map((id, index) => ({ id, description: `${estates.find(item => item.id === id)?.phase || '该楼盘'}兼具区位、配套与居住品质，适合专题重点推荐。`, sort: index + 1 }))) : [];
+      $('#topicModalTitle').textContent = topic ? '编辑专题' : '新增专题';
+      $('#topicNameInput').value = topic?.name ?? '';
+      $('#topicNameCount').textContent = $('#topicNameInput').value.length;
+      $('#topicPictureError').textContent = '';
+      $('#topicIconError').textContent = '';
+      $('#topicNameError').textContent = '';
+      $('#estateError').textContent = '';
+      renderUpload($('#topicPictureTrigger'), state.topicPicture, 'picture');
+      renderUpload($('#topicIconTrigger'), state.topicIcon, 'icon');
+      renderSelectedEstates();
+      $('#topicOverlay').classList.add('show');
+      $('#topicOverlay').setAttribute('aria-hidden', 'false');
+      setTimeout(() => $('#topicNameInput').focus(), 80);
+    }
+
+    function closeTopicModal() {
+      $('#topicOverlay').classList.remove('show');
+      $('#topicOverlay').setAttribute('aria-hidden', 'true');
+      state.editingId = null;
+    }
+
+    function filteredEstates() {
+      const name = state.estateQuery.name.trim().toLowerCase();
+      const developer = state.estateQuery.developer.trim().toLowerCase();
+      return estates.filter(item => (!name || item.project.toLowerCase().includes(name) || item.phase.toLowerCase().includes(name)) && (!developer || item.developer.toLowerCase().includes(developer)));
+    }
+
+    function renderEstatePicker() {
+      const rows = filteredEstates();
+      $('#estateTotal').textContent = rows.length ? 467 : 0;
+      $('#estateTableBody').innerHTML = rows.length ? rows.map(estate => `<tr>
+        <td class="check-col"><input class="row-check" type="checkbox" data-estate-check="${estate.id}" ${state.pendingEstateIds.has(estate.id) ? 'checked' : ''}></td>
+        <td>${escapeHTML(estate.phase)}</td><td>${escapeHTML(estate.project)}</td><td>${escapeHTML(estate.developer)}</td><td>${escapeHTML(estate.district)}</td>
+      </tr>`).join('') : '<tr><td class="empty" colspan="5">暂无符合条件的楼盘</td></tr>';
+      const visibleIds = rows.map(item => item.id);
+      $('#checkAllEstates').checked = visibleIds.length > 0 && visibleIds.every(id => state.pendingEstateIds.has(id));
+      $('#checkAllEstates').indeterminate = visibleIds.some(id => state.pendingEstateIds.has(id)) && !$('#checkAllEstates').checked;
+      $('#pendingEstateCount').textContent = state.pendingEstateIds.size;
+    }
+
+    function openEstateModal() {
+      state.pendingEstateIds = new Set(state.selectedEstates.map(item => item.id));
+      state.estateQuery = { name: '', developer: '' };
+      $('#estateNameFilter').value = '';
+      $('#developerFilter').value = '';
+      renderEstatePicker();
+      $('#estateOverlay').classList.add('show');
+      $('#estateOverlay').setAttribute('aria-hidden', 'false');
+    }
+
+    function closeEstateModal() {
+      $('#estateOverlay').classList.remove('show');
+      $('#estateOverlay').setAttribute('aria-hidden', 'true');
+    }
+
+    function confirmEstates() {
+      const previous = new Map(state.selectedEstates.map(item => [item.id, item]));
+      state.selectedEstates = [...state.pendingEstateIds].map((id, index) => previous.get(id) || ({ id, description: '', sort: index + 1 }));
+      renderSelectedEstates();
+      closeEstateModal();
+      showToast(`已添加 ${state.selectedEstates.length} 个楼盘，请填写专题描述`);
+    }
+
+    function handleImage(file, type) {
+      const error = type === 'picture' ? $('#topicPictureError') : $('#topicIconError');
+      error.className = 'help';
+      error.textContent = '';
+      if (!file) return;
+      if (!['image/png', 'image/jpeg'].includes(file.type)) {
+        error.className = 'help error'; error.textContent = '仅支持PNG/JPG格式图片'; return;
+      }
+      if (file.size > 1024 * 1024) {
+        error.className = 'help error'; error.textContent = '单个文件不能超过1MB'; return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (type === 'picture') { state.topicPicture = reader.result; renderUpload($('#topicPictureTrigger'), reader.result, type); }
+        else { state.topicIcon = reader.result; renderUpload($('#topicIconTrigger'), reader.result, type); }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function saveTopic() {
+      const name = $('#topicNameInput').value.trim();
+      let valid = true;
+      $('#topicNameError').className = 'help';
+      $('#estateError').className = 'help';
+      if (!name) { $('#topicNameError').className = 'help error'; $('#topicNameError').textContent = '请输入专题名称'; valid = false; }
+      else $('#topicNameError').textContent = '';
+      if (!state.topicPicture && !state.editingId) { $('#topicPictureError').className = 'help error'; $('#topicPictureError').textContent = '请上传专题图片'; valid = false; }
+      if (!state.topicIcon && !state.editingId) { $('#topicIconError').className = 'help error'; $('#topicIconError').textContent = '请上传专题icon'; valid = false; }
+      if (!state.selectedEstates.length) { $('#estateError').className = 'help error'; $('#estateError').textContent = '请至少添加一个专题楼盘'; valid = false; }
+      const missingDescription = state.selectedEstates.find(item => !item.description.trim());
+      if (missingDescription) { $('#estateError').className = 'help error'; $('#estateError').textContent = `请填写“${estates.find(item => item.id === missingDescription.id)?.phase}”的专题描述`; valid = false; }
+      if (!valid) return showToast('请完善必填信息', true);
+      const estateEntries = [...state.selectedEstates].sort((a, b) => Number(a.sort) - Number(b.sort)).map(item => ({ id: item.id, description: item.description.trim(), sort: Number(item.sort) || 1 }));
+      const ids = estateEntries.map(item => item.id);
+      if (state.editingId) {
+        const topic = topics.find(item => item.id === state.editingId);
+        Object.assign(topic, { name, estates: ids, estateEntries, picture: state.topicPicture, icon: state.topicIcon, updatedAt: '2026-08-28 14:30' });
+        showToast('专题保存成功');
+      } else {
+        topics.unshift({ id: Date.now(), name, estates: ids, estateEntries, picture: state.topicPicture, icon: state.topicIcon, pictureClass: '', status: 'enabled', updatedAt: '2026-08-28 14:30' });
+        showToast('专题新增成功');
+      }
+      renderTopics();
+      closeTopicModal();
+    }
+
+    $('#topicNameInput').addEventListener('input', event => { $('#topicNameCount').textContent = event.target.value.length; });
+    $('#topicPictureTrigger').addEventListener('click', () => $('#topicPictureInput').click());
+    $('#topicIconTrigger').addEventListener('click', () => $('#topicIconInput').click());
+    $('#topicPictureInput').addEventListener('change', event => handleImage(event.target.files[0], 'picture'));
+    $('#topicIconInput').addEventListener('change', event => handleImage(event.target.files[0], 'icon'));
+    $('#addButton').addEventListener('click', () => openTopicModal());
+    $('#closeTopicModal').addEventListener('click', closeTopicModal);
+    $('#cancelTopicModal').addEventListener('click', closeTopicModal);
+    $('#saveTopicButton').addEventListener('click', saveTopic);
+    $('#addEstateButton').addEventListener('click', openEstateModal);
+    $('#closeEstateModal').addEventListener('click', closeEstateModal);
+    $('#cancelEstateModal').addEventListener('click', closeEstateModal);
+    $('#confirmEstateButton').addEventListener('click', confirmEstates);
+
+    $('#selectedEstateBody').addEventListener('input', event => {
+      const id = Number(event.target.dataset.description || event.target.dataset.sort);
+      const row = state.selectedEstates.find(item => item.id === id);
+      if (!row) return;
+      if (event.target.matches('[data-description]')) {
+        row.description = event.target.value;
+        event.target.nextElementSibling.querySelector('span').textContent = event.target.value.length;
+      } else if (event.target.matches('[data-sort]')) row.sort = event.target.value;
+    });
+    $('#selectedEstateBody').addEventListener('click', event => {
+      const button = event.target.closest('[data-remove-estate]');
+      if (!button) return;
+      state.selectedEstates = state.selectedEstates.filter(item => item.id !== Number(button.dataset.removeEstate));
+      renderSelectedEstates();
+    });
+
+    $('#estateTableBody').addEventListener('change', event => {
+      if (!event.target.matches('[data-estate-check]')) return;
+      const id = Number(event.target.dataset.estateCheck);
+      if (event.target.checked) state.pendingEstateIds.add(id); else state.pendingEstateIds.delete(id);
+      renderEstatePicker();
+    });
+    $('#checkAllEstates').addEventListener('change', event => {
+      filteredEstates().forEach(item => event.target.checked ? state.pendingEstateIds.add(item.id) : state.pendingEstateIds.delete(item.id));
+      renderEstatePicker();
+    });
+    $('#estateSearchButton').addEventListener('click', () => {
+      state.estateQuery = { name: $('#estateNameFilter').value, developer: $('#developerFilter').value };
+      renderEstatePicker();
+    });
+    $('#estateResetButton').addEventListener('click', () => {
+      $('#estateNameFilter').value = ''; $('#developerFilter').value = ''; state.estateQuery = { name: '', developer: '' }; renderEstatePicker();
+    });
+
+    $('#searchButton').addEventListener('click', () => {
+      state.topicQuery = { name: $('#nameFilter').value, status: $('#statusFilter').value };
+      renderTopics();
+    });
+    $('#resetButton').addEventListener('click', () => {
+      $('#nameFilter').value = ''; $('#statusFilter').value = ''; state.topicQuery = { name: '', status: '' }; renderTopics();
+    });
+    $('#topicTableBody').addEventListener('click', event => {
+      const edit = event.target.closest('[data-edit-topic]');
+      const toggle = event.target.closest('[data-toggle-topic]');
+      const remove = event.target.closest('[data-delete-topic]');
+      if (edit) openTopicModal(topics.find(item => item.id === Number(edit.dataset.editTopic)));
+      if (toggle) {
+        const topic = topics.find(item => item.id === Number(toggle.dataset.toggleTopic));
+        topic.status = topic.status === 'enabled' ? 'disabled' : 'enabled';
+        renderTopics(); showToast(`专题已${topic.status === 'enabled' ? '启用' : '禁用'}`);
+      }
+      if (remove) {
+        const index = topics.findIndex(item => item.id === Number(remove.dataset.deleteTopic));
+        if (index > -1 && confirm(`确定删除专题“${topics[index].name}”吗？`)) { topics.splice(index, 1); renderTopics(); showToast('专题已删除'); }
+      }
+    });
+
+    $('#topicOverlay').addEventListener('mousedown', event => { if (event.target === $('#topicOverlay')) closeTopicModal(); });
+    $('#estateOverlay').addEventListener('mousedown', event => { if (event.target === $('#estateOverlay')) closeEstateModal(); });
+    document.addEventListener('keydown', event => {
+      if (event.key !== 'Escape') return;
+      if ($('#estateOverlay').classList.contains('show')) closeEstateModal();
+      else if ($('#topicOverlay').classList.contains('show')) closeTopicModal();
+      else closeHeaderMenus();
+    });
+
+    function closeHeaderMenus() {
+      $$('[data-nav-menu]').forEach(item => {
+        item.classList.remove('open');
+        item.querySelector('.nav-trigger')?.setAttribute('aria-expanded', 'false');
+      });
+    }
+
+    $('#headerNav').addEventListener('click', event => {
+      const menuTrigger = event.target.closest('[data-nav-menu] > .nav-trigger');
+      if (menuTrigger) {
+        const menu = menuTrigger.parentElement;
+        const willOpen = !menu.classList.contains('open');
+        closeHeaderMenus();
+        menu.classList.toggle('open', willOpen);
+        menuTrigger.setAttribute('aria-expanded', String(willOpen));
+        return;
+      }
+      const customerMenu = event.target.closest('[data-customer-menu]');
+      if (customerMenu) {
+        showToast(`已选择${customerMenu.dataset.customerMenu}`);
+        closeHeaderMenus();
+        return;
+      }
+      if (event.target.closest('[data-placeholder-menu]')) showToast('该菜单为原管理后台占位入口');
+    });
+    document.addEventListener('click', event => {
+      if (!event.target.closest('#headerNav')) closeHeaderMenus();
+    });
+
+    renderTopics();
+    renderUpload($('#topicPictureTrigger'), null, 'picture');
+    renderUpload($('#topicIconTrigger'), null, 'icon');
+    const params = new URLSearchParams(location.search);
+    if (params.get('modal') === 'topic') openTopicModal();
+    if (params.get('modal') === 'estate') { openTopicModal(); openEstateModal(); }
+  </script>
+</body>
+</html>

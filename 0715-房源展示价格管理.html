@@ -58,10 +58,32 @@
     .brand-title { font-size: 22px; font-weight: 700; color: #1e2228; letter-spacing: .5px; }
     .org-name { margin-left: 24px; color: #6f7680; font-size: 15px; }
     .org-name svg { width: 14px; margin-left: 16px; vertical-align: -2px; color: var(--primary); }
-    .main-nav { flex: 1; display: flex; justify-content: flex-end; gap: 32px; }
-    .nav-item { display: flex; align-items: center; gap: 8px; color: #343840; font-size: 16px; white-space: nowrap; }
+    .main-nav { align-self: stretch; flex: 1; display: flex; justify-content: flex-end; gap: 10px; }
+    .nav-item { position: relative; display: flex; align-items: center; color: #343840; font-size: 16px; white-space: nowrap; }
+    .nav-primary-link, .nav-placeholder {
+      height: 100%; padding: 0 7px 0 12px; display: flex; align-items: center;
+      color: inherit; background: transparent; border: 0; text-decoration: none;
+    }
+    .nav-menu-toggle {
+      width: 24px; height: 100%; padding: 0; display: grid; place-items: center;
+      color: inherit; background: transparent; border: 0;
+    }
+    .nav-primary-link:hover, .nav-placeholder:hover, .nav-menu-toggle:hover, .nav-item.open { color: var(--primary); background: #f7f9fd; }
     .nav-item.active { color: var(--primary); font-weight: 600; }
-    .nav-item svg { width: 14px; height: 14px; }
+    .nav-chevron { width: 14px; height: 14px; transition: transform .18s ease; }
+    .nav-item.open .nav-chevron { transform: rotate(180deg); }
+    .nav-menu {
+      width: 212px; padding: 10px 0; position: absolute; top: calc(100% + 1px); left: 50%; z-index: 70;
+      display: none; transform: translateX(-50%); background: #fff; border: 1px solid #edf0f5;
+      border-radius: 4px; box-shadow: 0 8px 24px rgba(31, 41, 61, .14);
+    }
+    .nav-item.open .nav-menu { display: block; }
+    .nav-menu-link {
+      width: 100%; height: 46px; padding: 0 20px; display: flex; align-items: center;
+      color: #30343a; background: transparent; border: 0; text-align: left; text-decoration: none; font-size: 15px;
+    }
+    .nav-menu-link:hover { color: var(--primary); background: #f5f8ff; }
+    .nav-menu-link.active { color: var(--primary); background: var(--primary-light); font-weight: 600; }
     .profile { width: 68px; margin-left: 42px; text-align: center; position: relative; }
     .avatar { width: 40px; height: 40px; margin: 0 auto; border-radius: 50%; background: #e6e9ed; display: grid; place-items: center; }
     .avatar svg { width: 25px; height: 25px; color: white; }
@@ -138,16 +160,12 @@
     .col-no { width: 104px; }
     .col-area { width: 100px; }
     .col-type { width: 110px; }
+    .col-permit { min-width: 180px; }
     .col-price { width: 112px; }
     .col-display-total { width: 150px; }
     .col-display-unit { width: 122px; }
     .col-status { width: 108px; }
     .col-actions { width: 120px; }
-    .price-input-wrap { width: 128px; height: 36px; margin: 0 auto; display: flex; align-items: center; border: 1px solid #d5dce7; background: white; border-radius: 4px; transition: .2s; }
-    .price-input-wrap:focus-within { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(71,117,231,.09); }
-    .price-input { min-width: 0; width: 100%; border: 0; outline: 0; padding: 0 5px 0 9px; color: #404753; background: transparent; text-align: right; }
-    .price-input::placeholder { color: #b9c0ca; }
-    .input-unit { color: #8f97a2; padding-right: 8px; white-space: nowrap; }
     .computed-price { color: #404753; font-variant-numeric: tabular-nums; }
     .computed-price.empty { color: #b8bec7; }
     .status-tag { display: inline-block; border-radius: 5px; padding: 5px 10px; color: #30a97e; background: #ebf8f3; border: 1px solid #d5f0e6; white-space: nowrap; }
@@ -208,7 +226,7 @@
 
     @media (max-width: 1280px) {
       .brand { min-width: 480px; }
-      .main-nav { gap: 18px; }
+      .main-nav { gap: 2px; }
       .workspace { grid-template-columns: 270px minmax(0, 1fr); }
       .sidebar { margin-left: 8px; }
     }
@@ -225,14 +243,40 @@
         <svg viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2"/></svg>
       </div>
     </div>
-    <nav class="main-nav">
-      <div class="nav-item active">项目 <svg viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2"/></svg></div>
-      <div class="nav-item">申请 <svg viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2"/></svg></div>
-      <div class="nav-item">运营 <svg viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2"/></svg></div>
-      <div class="nav-item">统计 <svg viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2"/></svg></div>
-      <div class="nav-item">政务 <svg viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2"/></svg></div>
-      <div class="nav-item">管理 <svg viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2"/></svg></div>
-      <div class="nav-item">系统 <svg viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2"/></svg></div>
+    <nav class="main-nav" aria-label="后台一级菜单">
+      <div class="nav-item active" data-nav-menu>
+        <a class="nav-primary-link" href="./0715-房源展示价格管理.html" aria-current="page">项目</a>
+        <button class="nav-menu-toggle" type="button" aria-label="展开项目菜单" aria-expanded="false" data-nav-toggle><svg class="nav-chevron" viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2"/></svg></button>
+        <div class="nav-menu" role="menu" aria-label="项目">
+          <a class="nav-menu-link active" href="./0715-房源展示价格管理.html" aria-current="page">房源管理</a>
+          <a class="nav-menu-link" href="./0902-户型图VR链接管理.html">项目管理</a>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-placeholder" href="./registration-workbench/admin.html">申请</a></div>
+      <div class="nav-item" data-nav-menu>
+        <a class="nav-primary-link" href="./0821-直播管理.html">运营</a>
+        <button class="nav-menu-toggle" type="button" aria-label="展开运营菜单" aria-expanded="false" data-nav-toggle><svg class="nav-chevron" viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2"/></svg></button>
+        <div class="nav-menu" role="menu" aria-label="运营">
+          <button class="nav-menu-link" type="button">内容管理</button>
+          <a class="nav-menu-link" href="./0902-项目报告管理.html" style="padding-left:32px">项目报告</a>
+          <a class="nav-menu-link" href="./0821-直播管理.html">直播间管理</a>
+          <a class="nav-menu-link" href="./0828-专题管理.html">专题管理</a>
+          <a class="nav-menu-link" href="./0831-区县管理.html">区县管理</a>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-placeholder" href="./网签成交.html">统计</a></div>
+      <div class="nav-item" data-nav-menu>
+        <a class="nav-primary-link" href="./0831-客户管理.html">客户</a>
+        <button class="nav-menu-toggle" type="button" aria-label="展开客户菜单" aria-expanded="false" data-nav-toggle><svg class="nav-chevron" viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2"/></svg></button>
+        <div class="nav-menu" role="menu" aria-label="客户"><a class="nav-menu-link" href="./0831-客户管理.html">客户管理</a></div>
+      </div>
+      <div class="nav-item"><a class="nav-placeholder" href="./购房政策.html">政务</a></div>
+      <div class="nav-item"><a class="nav-placeholder" href="./0831-区县管理.html">管理</a></div>
+      <div class="nav-item" data-nav-menu>
+        <a class="nav-primary-link" href="./0819-直播专区标签管理.html">系统</a>
+        <button class="nav-menu-toggle" type="button" aria-label="展开系统菜单" aria-expanded="false" data-nav-toggle><svg class="nav-chevron" viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2"/></svg></button>
+        <div class="nav-menu" role="menu" aria-label="系统"><a class="nav-menu-link" href="./0819-直播专区标签管理.html">小程序管理</a></div>
+      </div>
     </nav>
     <div class="profile">
       <div class="avatar"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0z"/></svg></div>
@@ -291,7 +335,7 @@
               <tr>
                 <th class="col-project">所属项目/分期</th><th class="col-sm">楼栋</th><th class="col-sm">单元号</th><th class="col-sm">楼层</th><th class="col-sm">房号</th>
                 <th class="col-no">房屋唯一号</th><th class="col-area">建筑面积/㎡</th><th class="col-type">户型</th>
-                <th class="col-price">挂牌单价/元</th><th class="col-price">挂牌总价/元</th>
+                <th class="col-permit">预售证</th><th class="col-price">挂牌单价/元</th><th class="col-price">挂牌总价/元</th>
                 <th class="col-display-total">展示总价/万元</th><th class="col-display-unit">展示单价/元</th>
                 <th class="col-status">公示状态</th><th class="col-status">房源状态</th><th class="col-actions">操作</th>
               </tr>
@@ -311,10 +355,10 @@
       <div class="modal-body">
         <div class="tip-strip">
           <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 11v6m0-10v1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          <div>请先下载模板，按模板填写房屋唯一号和对外展示总价。导入后系统将依据建筑面积自动计算展示单价。</div>
+          <div>请先下载模板，核对分期名、楼栋、单元、层、房号、面积，填写预售证和对外展示总价。系统按分期名、楼栋、单元、层、房号匹配房源，并依据建筑面积自动计算展示单价。</div>
         </div>
         <div class="template-row">
-          <div><div class="template-title">对外展示价格导入模板</div><div class="template-desc">模板字段：房屋唯一号、对外展示总价（万元）</div></div>
+          <div><div class="template-title">对外展示价格导入模板</div><div class="template-desc">模板字段：分期名、楼栋、单元、层、房号、面积（㎡）、预售证、对外展示总价（万元）</div></div>
           <button class="download-link" id="downloadTemplate"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v3h16v-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>下载模板</button>
         </div>
         <div class="upload-box" id="dropzone">
@@ -362,6 +406,12 @@
       {building:3, unit:1, floor:22, room:'2203', id:'10598275', area:138.29, type:'4室2厅3卫2阳台', listingUnit:33990.92, listingTotal:4700604, displayTotal:null, status:'可售'}
     ];
 
+    function randomPermit() {
+      return String(Math.floor(Math.random() * 9) + 1) + Array.from({length: 15}, () => Math.floor(Math.random() * 10)).join('');
+    }
+    houses.forEach(h => { h.phase = '中铁艺术城先锋园'; h.permit = randomPermit(); });
+    function escapeHtml(value) { return String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
     const icons = {
       folder: '<svg class="folder-icon" viewBox="0 0 24 24" fill="none"><path d="M3 6.5h6l2 2h10v10H3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>',
       file: '<svg class="file-icon" viewBox="0 0 24 24" fill="none"><path d="M6 3h8l4 4v14H6z" stroke="currentColor" stroke-width="1.7"/><path d="M14 3v5h5" stroke="currentColor" stroke-width="1.7"/></svg>'
@@ -386,26 +436,12 @@
         const unitPrice = displayUnit(h);
         return `<tr data-id="${h.id}">
           <td>中铁艺术城先锋园</td><td>${h.building}</td><td>${h.unit}</td><td>${h.floor}</td><td>${h.room}</td><td>${h.id}</td>
-          <td>${h.area.toFixed(2)}</td><td>${h.type}</td><td>${money(h.listingUnit)}</td><td>${money(h.listingTotal)}</td>
-          <td><label class="price-input-wrap"><input class="price-input" type="number" min="0" step="0.01" value="${h.displayTotal == null ? '' : h.displayTotal.toFixed(2)}" placeholder="请输入"><span class="input-unit">万</span></label></td>
+          <td>${h.area.toFixed(2)}</td><td>${h.type}</td><td>${escapeHtml(h.permit || '--')}</td><td>${money(h.listingUnit)}</td><td>${money(h.listingTotal)}</td>
+          <td class="computed-price ${h.displayTotal == null ? 'empty' : ''}">${h.displayTotal == null ? '--' : money(h.displayTotal)}</td>
           <td class="computed-price ${unitPrice == null ? 'empty' : ''}">${unitPrice == null ? '--' : money(unitPrice)}</td>
           <td><span class="status-tag ${h.status !== '可售' ? 'locked' : ''}">${h.status}</span></td><td></td>
           <td><a href="#" class="action-link">编辑</a><a href="#" class="action-link">删除</a></td></tr>`;
       }).join('');
-      document.querySelectorAll('.price-input').forEach(input => {
-        input.addEventListener('input', event => {
-          const row = event.target.closest('tr');
-          const house = houses.find(h => h.id === row.dataset.id);
-          const value = event.target.value;
-          house.displayTotal = value === '' ? null : Math.max(0, Number(value));
-          const cell = row.querySelector('.computed-price');
-          const calculated = displayUnit(house);
-          cell.textContent = calculated == null ? '--' : money(calculated);
-          cell.classList.toggle('empty', calculated == null);
-          document.getElementById('pricedCount').textContent = houses.filter(h => h.displayTotal != null).length;
-        });
-        input.addEventListener('change', () => showToast('展示价格已更新', 'success'));
-      });
       document.querySelectorAll('.action-link').forEach(link => link.addEventListener('click', e => e.preventDefault()));
     }
 
@@ -421,6 +457,31 @@
       toast.textContent = text; toast.className = `toast ${type} show`;
       clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
     }
+
+    // 顶部一级菜单：点击文字直接进入对应后台，点击箭头展开同类页面。
+    function closeHeaderMenus(except = null) {
+      document.querySelectorAll('[data-nav-menu]').forEach(item => {
+        if (item === except) return;
+        item.classList.remove('open');
+        item.querySelector('[data-nav-toggle]')?.setAttribute('aria-expanded', 'false');
+      });
+    }
+    document.querySelectorAll('[data-nav-toggle]').forEach(toggle => {
+      toggle.addEventListener('click', event => {
+        const menu = toggle.closest('[data-nav-menu]');
+        const willOpen = !menu.classList.contains('open');
+        closeHeaderMenus(menu);
+        menu.classList.toggle('open', willOpen);
+        toggle.setAttribute('aria-expanded', String(willOpen));
+        event.stopPropagation();
+      });
+    });
+    document.addEventListener('click', event => {
+      if (!event.target.closest('[data-nav-menu]')) closeHeaderMenus();
+      const placeholder = event.target.closest('[data-placeholder-menu]');
+      if (placeholder) showToast(`“${placeholder.textContent.trim()}”暂无可跳转的原型页面`, 'error');
+    });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') closeHeaderMenus(); });
 
     document.getElementById('treeSearch').addEventListener('input', e => renderTree(e.target.value));
     document.getElementById('searchBtn').addEventListener('click', () => renderRows(document.getElementById('uniqueSearch').value));
@@ -458,8 +519,8 @@
     fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
 
     document.getElementById('downloadTemplate').addEventListener('click', () => {
-      const sampleRows = houses.slice(0, 3).map(h => `<tr><td>${h.id}</td><td></td></tr>`).join('');
-      const excel = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="UTF-8"></head><body><table><tr><th>房屋唯一号</th><th>对外展示总价（万元）</th></tr>${sampleRows}</table></body></html>`;
+      const sampleRows = houses.slice(0, 3).map(h => `<tr><td>${escapeHtml(h.phase)}</td><td>${h.building}</td><td>${h.unit}</td><td>${h.floor}</td><td>${h.room}</td><td>${h.area.toFixed(2)}</td><td>${escapeHtml(h.permit)}</td><td></td></tr>`).join('');
+      const excel = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="UTF-8"></head><body><table><tr><th>分期名</th><th>楼栋</th><th>单元</th><th>层</th><th>房号</th><th>面积（㎡）</th><th>预售证</th><th>对外展示总价（万元）</th></tr>${sampleRows}</table></body></html>`;
       const blob = new Blob(['\ufeff', excel], {type:'application/vnd.ms-excel;charset=utf-8'});
       const url = URL.createObjectURL(blob); const a = document.createElement('a');
       a.href = url; a.download = '对外展示价格导入模板.xls'; a.click(); URL.revokeObjectURL(url);
@@ -467,6 +528,9 @@
     });
 
     async function handleFile(file) {
+      importedRows = [];
+      document.getElementById('confirmImport').disabled = true;
+      document.getElementById('fileCard').classList.remove('show');
       const ext = file.name.split('.').pop().toLowerCase();
       if (!['xls','xlsx','csv'].includes(ext)) { showToast('请上传 xls、xlsx 或 csv 文件', 'error'); return; }
       importedRows = [];
@@ -475,13 +539,13 @@
           const text = await file.text();
           const plain = text.replace(/<\/tr>/gi, '\n').replace(/<\/t[dh]>/gi, ',').replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ');
           plain.split(/\r?\n/).forEach(line => {
-            const cols = line.split(/[,\t，]/).map(s => s.trim()).filter(Boolean);
-            if (/^\d{8,}$/.test(cols[0] || '') && Number(cols[1]) > 0) importedRows.push({id:cols[0], total:Number(cols[1])});
+            const cols = line.split(/[,\t，]/).map(s => s.trim());
+            const matches = houses.filter(h => h.phase === cols[0] && String(h.building) === cols[1] && String(h.unit) === cols[2] && String(h.floor) === cols[3] && h.room === cols[4]);
+            if (matches.length === 1 && Number.isFinite(Number(cols[7])) && Number(cols[7]) > 0 && Number(cols[5]) === matches[0].area) importedRows.push({id:matches[0].id, permit:cols[6], total:Number(cols[7])});
           });
         } catch (_) { importedRows = []; }
       }
-      // 原型支持真实读取 xls/csv；二进制 xlsx 用校验通过后的示例数据模拟导入。
-      if (!importedRows.length) importedRows = houses.slice(0, 6).map((h, i) => ({id:h.id, total:Number((h.listingTotal / 10000 * (0.92 + i * .005)).toFixed(2))}));
+      if (!importedRows.length) { showToast(ext === 'xlsx' ? '当前原型请使用下载的模板或 CSV 文件导入' : '未匹配到有效房源，请核对房源信息、面积及最后一列展示总价', 'error'); return; }
       document.getElementById('fileName').textContent = file.name;
       document.getElementById('fileResult').textContent = `文件校验通过，可匹配 ${importedRows.length} 套房源`;
       document.getElementById('fileCard').classList.add('show');
@@ -493,7 +557,7 @@
     });
     document.getElementById('confirmImport').addEventListener('click', () => {
       let matched = 0;
-      importedRows.forEach(row => { const house = houses.find(h => h.id === row.id); if (house) { house.displayTotal = row.total; matched++; } });
+      importedRows.forEach(row => { const house = houses.find(h => h.id === row.id); if (house) { house.displayTotal = row.total; house.permit = row.permit || house.permit; matched++; } });
       renderRows(document.getElementById('uniqueSearch').value); closeModal('importModal');
       showToast(`导入成功，已更新 ${matched} 套房源展示价格`, 'success');
       importedRows = []; fileInput.value = ''; document.getElementById('fileCard').classList.remove('show'); document.getElementById('confirmImport').disabled = true;

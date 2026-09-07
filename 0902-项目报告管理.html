@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>项目报告管理</title>
+  <style>
+    :root {
+      --primary: #3f6fe8;
+      --primary-hover: #315fda;
+      --text: #303133;
+      --regular: #606266;
+      --muted: #909399;
+      --placeholder: #c0c4cc;
+      --border: #dcdfe6;
+      --border-light: #ebeef5;
+      --background: #f1f2f4;
+      --surface: #fff;
+      --danger: #f56c6c;
+      --success: #32ad7f;
+      --warning: #d98216;
+      --shadow: 0 16px 42px rgba(31, 41, 61, .18);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { min-width: 1180px; min-height: 100%; margin: 0; }
+    body { color: var(--text); background: var(--background); font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+
+    /* 后台公共头部 */
+    .app-header { height: 64px; padding: 0 20px; display: flex; align-items: center; background: #fff; border-bottom: 1px solid var(--border-light); }
+    .brand, .brand-copy, .header-nav, .nav-item, .user { display: flex; align-items: center; }
+    .brand-logo { width: 36px; height: 36px; margin-right: 20px; position: relative; overflow: hidden; background: #406bdd; }
+    .brand-logo::before { content: ""; position: absolute; inset: 7px 9px; border-left: 5px solid #fff; border-right: 5px solid #fff; }
+    .brand-logo::after { content: ""; position: absolute; right: 9px; top: 13px; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-right: 10px solid #fff; }
+    .brand-title { color: #111; font-size: 18px; font-weight: 650; white-space: nowrap; }
+    .brand-agency { margin-left: 20px; color: var(--regular); white-space: nowrap; }
+    .brand-agency .chevron { margin-left: 24px; color: var(--primary); }
+    .header-nav { height: 100%; margin-left: auto; }
+    .nav-item { height: 100%; position: relative; color: #262626; white-space: nowrap; }
+    .nav-primary-link { height: 100%; padding: 0 8px 0 16px; display: flex; align-items: center; color: inherit; text-decoration: none; font-size: 15px; }
+    .nav-item:not([data-nav-menu]) .nav-primary-link { padding: 0 16px; }
+    .nav-trigger { height: 100%; padding: 0 12px 0 0; display: flex; align-items: center; color: inherit; background: transparent; border: 0; }
+    .nav-menu-toggle { width: 30px; }
+    .nav-primary-link:hover, .nav-trigger:hover, .nav-item.open > .nav-primary-link { color: var(--primary); background: #f7f9fd; }
+    .nav-item.active > .nav-primary-link, .nav-item.active .nav-trigger { color: var(--primary); font-weight: 600; }
+    .nav-item.open .nav-trigger .chevron { transform: rotate(225deg) translate(-1px, -1px); }
+    .nav-menu { width: 212px; padding: 10px 0; position: absolute; top: calc(100% + 1px); left: 50%; z-index: 70; display: none; transform: translateX(-50%); background: #fff; border: 1px solid #edf0f5; border-radius: 4px; box-shadow: 0 8px 24px rgba(31, 41, 61, .14); }
+    .nav-item.open .nav-menu { display: block; }
+    .nav-menu-link { width: 100%; height: 46px; padding: 0 20px; display: flex; align-items: center; color: #30343a; text-decoration: none; font-size: 15px; }
+    .nav-menu-link:hover { color: var(--primary); background: #f5f8ff; }
+    .nav-menu-link.active { color: var(--primary); background: #edf3ff; font-weight: 600; }
+    .chevron { width: 7px; height: 7px; display: inline-block; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translateY(-2px); }
+    .user { height: 56px; margin-left: 52px; flex-direction: column; justify-content: center; }
+    .avatar { width: 35px; height: 35px; border-radius: 50%; position: relative; background: #e4e7ed; }
+    .avatar::before { content: ""; width: 9px; height: 9px; position: absolute; left: 13px; top: 7px; border-radius: 50%; background: #fff; }
+    .avatar::after { content: ""; width: 17px; height: 10px; position: absolute; left: 9px; top: 20px; border-radius: 9px 9px 3px 3px; background: #fff; }
+    .user-name { margin-top: -4px; padding: 1px 7px; border-radius: 4px; color: #fff; background: #85888d; font-size: 12px; }
+
+    .workspace-tabs { height: 54px; padding: 10px 12px; display: flex; align-items: center; gap: 6px; background: #f0f1f3; }
+    .workspace-tab { min-width: 96px; height: 34px; padding: 0 20px; display: inline-flex; align-items: center; justify-content: center; gap: 14px; color: #2f3033; background: #fff; border: 1px solid var(--border); border-radius: 4px; font-weight: 600; }
+    .workspace-tab.active { color: var(--primary); border-color: var(--primary); }
+    .workspace-tab .close { color: #6687e9; font-size: 17px; font-weight: 400; }
+    .more-actions { margin-left: auto; display: flex; align-items: center; gap: 12px; color: var(--regular); }
+
+    /* 报告列表 */
+    .report-page { min-height: calc(100vh - 118px); padding: 0 12px 14px; display: grid; grid-template-columns: 312px minmax(780px, 1fr); gap: 12px; }
+    .org-panel { padding: 22px 20px; background: #fff; }
+    .org-title { margin-bottom: 22px; color: #263447; font-size: 16px; }
+    .org-search { height: 36px; padding: 0 12px; display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); border-radius: 4px; color: var(--placeholder); }
+    .org-search svg { width: 16px; height: 16px; }
+    .org-search input { width: 100%; border: 0; outline: 0; color: var(--text); }
+    .org-search input::placeholder { color: var(--placeholder); }
+    .org-tree { margin-top: 22px; padding: 8px 12px; display: flex; align-items: center; gap: 8px; color: var(--primary); background: #f4f7fc; }
+    .folder { width: 15px; height: 12px; position: relative; border: 1.5px solid currentColor; border-radius: 2px; }
+    .folder::before { content: ""; width: 7px; height: 3px; position: absolute; left: 1px; top: -4px; border: 1.5px solid currentColor; border-bottom: 0; border-radius: 2px 2px 0 0; }
+    .report-main { min-width: 0; }
+    .filter-card { min-height: 86px; padding: 20px; display: flex; align-items: center; gap: 12px; background: #fff; }
+    .filter-group { display: flex; align-items: center; gap: 12px; }
+    .filter-label { min-width: 72px; color: var(--regular); font-size: 15px; }
+    .control-input, .control-select { width: 290px; height: 36px; padding: 0 14px; color: var(--text); background: #fff; border: 1px solid var(--border); border-radius: 4px; outline: 0; }
+    .control-select { width: 150px; }
+    .control-input::placeholder { color: var(--placeholder); }
+    .btn { height: 36px; padding: 0 18px; color: var(--regular); background: #fff; border: 1px solid var(--border); border-radius: 4px; }
+    .btn:hover { color: var(--primary); border-color: #9eb5f2; }
+    .btn-primary { color: #fff; background: var(--primary); border-color: var(--primary); }
+    .btn-primary:hover { color: #fff; background: var(--primary-hover); border-color: var(--primary-hover); }
+    .report-card { min-height: calc(100vh - 232px); margin-top: 12px; padding: 20px; background: #fff; }
+    .report-toolbar { margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; }
+    .toolbar-note { color: var(--muted); font-size: 13px; }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border-light); }
+    table { width: 100%; min-width: 900px; table-layout: fixed; border-collapse: collapse; }
+    th, td { height: 64px; padding: 0 14px; color: var(--regular); text-align: left; border-right: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); }
+    th:last-child, td:last-child { border-right: 0; }
+    th { height: 42px; background: #f3f4f6; font-weight: 500; }
+    tbody tr:hover td { background: #fafcff; }
+    .report-name { color: #465468; }
+    .summary-cell { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .status { padding: 4px 9px; display: inline-flex; border-radius: 10px; font-size: 12px; }
+    .status-published { color: #218762; background: #eaf8f2; }
+    .action-link { padding: 4px 6px; color: var(--primary); background: transparent; border: 0; white-space: nowrap; }
+    .action-link.danger { color: var(--danger); }
+
+    /* 全屏录入页 */
+    .editor-shell { position: fixed; inset: 0; z-index: 80; display: none; flex-direction: column; background: var(--background); }
+    .editor-shell.show { display: flex; }
+    .editor-header { height: 66px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; flex: 0 0 auto; background: #fff; border-bottom: 1px solid var(--border-light); }
+    .editor-title { font-size: 20px; font-weight: 500; }
+    .icon-close { width: 34px; height: 34px; padding: 0; display: grid; place-items: center; color: var(--muted); background: transparent; border: 0; }
+    .icon-close:hover { color: var(--primary); }
+    .icon-close svg { width: 18px; height: 18px; }
+    .editor-body { min-height: 0; padding: 18px 20px 28px; overflow-y: auto; flex: 1; }
+    .form-card { width: min(1040px, calc(100vw - 80px)); margin: 0 auto; padding: 0 42px 34px; background: #fff; }
+    .form-section-title { margin: 0 -42px 28px; padding: 19px 26px; color: #263447; border-bottom: 1px solid var(--border-light); font-size: 16px; font-weight: 600; }
+    .form-row { display: flex; align-items: flex-start; }
+    .form-row + .form-row { margin-top: 22px; }
+    .form-label { width: 148px; padding-top: 9px; flex: 0 0 auto; color: var(--regular); text-align: right; }
+    .required::before { content: "*"; margin-right: 5px; color: var(--danger); }
+    .form-control { min-width: 0; margin-left: 18px; flex: 1; }
+    .form-input, .form-textarea { width: 100%; color: var(--text); background: #fff; border: 1px solid var(--border); border-radius: 4px; outline: 0; }
+    .form-input { height: 38px; padding: 0 14px; }
+    .form-input:focus, .form-textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(63, 111, 232, .1); }
+    .form-input::placeholder, .form-textarea::placeholder { color: var(--placeholder); }
+    .select-project { display: flex; }
+    .select-project .form-input { border-radius: 4px 0 0 4px; background: #fafafa; cursor: pointer; }
+    .select-project .btn { width: 88px; height: 38px; flex: 0 0 88px; white-space: nowrap; border-left: 0; border-radius: 0 4px 4px 0; }
+    .textarea-wrap { position: relative; }
+    .form-textarea { height: 132px; padding: 10px 16px 28px; resize: vertical; line-height: 1.7; }
+    .form-textarea.summary { height: 92px; }
+    .counter { position: absolute; right: 12px; bottom: 8px; color: var(--muted); font-size: 12px; }
+    .field-help { min-height: 18px; margin-top: 6px; color: var(--muted); font-size: 12px; }
+    .field-help.error { color: var(--danger); }
+    .editor-footer { min-height: 66px; padding: 12px 26px; display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex: 0 0 auto; background: #fff; border-top: 1px solid var(--border-light); }
+
+    /* 分期选择弹窗 */
+    .overlay { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; padding: 36px; background: rgba(0,0,0,.48); }
+    .overlay.show { display: flex; }
+    .phase-modal { width: min(920px, calc(100vw - 72px)); max-height: calc(100vh - 72px); display: flex; overflow: hidden; flex-direction: column; background: #fff; border-radius: 6px; box-shadow: var(--shadow); }
+    .modal-header { height: 64px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; flex: 0 0 auto; border-bottom: 1px solid var(--border-light); }
+    .modal-title { font-size: 20px; font-weight: 500; }
+    .modal-body { min-height: 0; padding: 22px 24px; overflow-y: auto; flex: 1; }
+    .modal-filter { margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+    .modal-filter .control-input { width: 320px; }
+    .phase-table { min-width: 0; }
+    .phase-table th, .phase-table td { height: 54px; }
+    .phase-table tbody tr { cursor: pointer; }
+    .phase-table tbody tr.selected td { background: #f1f5ff; }
+    .phase-radio { accent-color: var(--primary); }
+    .modal-footer { min-height: 64px; padding: 12px 18px; display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex: 0 0 auto; border-top: 1px solid var(--border-light); }
+    .modal-footer .btn { min-width: 68px; }
+
+    .toast { min-width: 230px; padding: 11px 16px; position: fixed; top: 26px; left: 50%; z-index: 140; opacity: 0; transform: translate(-50%, -14px); pointer-events: none; color: #2e765f; background: #eefaf5; border: 1px solid #bce9d8; border-radius: 4px; box-shadow: 0 7px 18px rgba(0,0,0,.08); transition: .2s ease; text-align: center; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .toast.error { color: #a84343; background: #fff2f2; border-color: #f4c6c6; }
+
+    @media (max-width: 1420px) {
+      .nav-primary-link { padding-left: 11px; }
+      .nav-item:not([data-nav-menu]) .nav-primary-link { padding: 0 11px; }
+      .user { margin-left: 28px; }
+      .report-page { grid-template-columns: 280px minmax(780px, 1fr); }
+      .filter-card { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand"><div class="brand-logo" aria-hidden="true"></div><div class="brand-copy"><div class="brand-title">成都住建线上房产超市管理平台</div><div class="brand-agency">成都市住房和城乡建设局 <span class="chevron"></span></div></div></div>
+    <nav class="header-nav" id="headerNav" aria-label="主导航">
+      <div class="nav-item" data-nav-menu><a class="nav-primary-link" href="./0715-房源展示价格管理.html">项目</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开项目菜单" aria-expanded="false"><span class="chevron"></span></button><div class="nav-menu" role="menu" aria-label="项目"><a class="nav-menu-link" href="./0715-房源展示价格管理.html">房源管理</a><a class="nav-menu-link" href="./0902-户型图VR链接管理.html">项目管理</a></div></div>
+      <div class="nav-item"><a class="nav-primary-link" href="./registration-workbench/admin.html">申请</a></div>
+      <div class="nav-item active" data-nav-menu><a class="nav-primary-link" href="./0821-直播管理.html">运营</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开运营菜单" aria-expanded="false"><span class="chevron"></span></button><div class="nav-menu" role="menu" aria-label="运营"><button class="nav-menu-link" type="button">内容管理</button><a class="nav-menu-link active" href="./0902-项目报告管理.html" aria-current="page" style="padding-left:32px">项目报告</a><a class="nav-menu-link" href="./0821-直播管理.html">直播间管理</a><a class="nav-menu-link" href="./0828-专题管理.html">专题管理</a><a class="nav-menu-link" href="./0831-区县管理.html">区县管理</a></div></div>
+      <div class="nav-item"><a class="nav-primary-link" href="./网签成交.html">统计</a></div>
+      <div class="nav-item" data-nav-menu><a class="nav-primary-link" href="./0831-客户管理.html">客户</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开客户菜单" aria-expanded="false"><span class="chevron"></span></button><div class="nav-menu" role="menu" aria-label="客户"><a class="nav-menu-link" href="./0831-客户管理.html">客户管理</a></div></div>
+      <div class="nav-item"><a class="nav-primary-link" href="./购房政策.html">政务</a></div>
+      <div class="nav-item"><a class="nav-primary-link" href="./0831-区县管理.html">管理</a></div>
+      <div class="nav-item" data-nav-menu><a class="nav-primary-link" href="./0819-直播专区标签管理.html">系统</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开系统菜单" aria-expanded="false"><span class="chevron"></span></button><div class="nav-menu" role="menu" aria-label="系统"><a class="nav-menu-link" href="./0819-直播专区标签管理.html">小程序管理</a></div></div>
+    </nav>
+    <div class="user"><div class="avatar"></div><div class="user-name">周世杰</div></div>
+  </header>
+
+  <div class="workspace-tabs"><div class="workspace-tab">选择企业</div><div class="workspace-tab">内容管理</div><div class="workspace-tab active">项目报告 <span class="close">×</span></div><div class="more-actions">更多操作 <span class="chevron"></span></div></div>
+
+  <main class="report-page">
+    <aside class="org-panel">
+      <div class="org-title">机构列表</div>
+      <label class="org-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"></circle><path d="m16.2 16.2 4 4"></path></svg><input placeholder="请输入关键词"></label>
+      <div class="org-tree"><span class="chevron" style="color:#b6beca;transform:rotate(-45deg)"></span><span class="folder"></span>成都市住房和城乡建设局</div>
+    </aside>
+
+    <section class="report-main">
+      <div class="filter-card">
+        <div class="filter-group"><span class="filter-label">项目/分期</span><input class="control-input" id="filterKeyword" placeholder="请输入项目或分期名称"></div>
+        <div class="filter-group"><span class="filter-label" style="min-width:42px">状态</span><select class="control-select" id="filterStatus"><option value="">全部</option><option value="已发布">已发布</option></select></div>
+        <button class="btn btn-primary" id="searchReport" type="button">查询</button><button class="btn" id="resetReport" type="button">重置</button>
+      </div>
+      <div class="report-card">
+        <div class="report-toolbar"><button class="btn btn-primary" id="newReport" type="button">新增项目报告</button><span class="toolbar-note">报告按项目分期维护，同一分期保留一份当前报告</span></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th style="width:22%">项目/分期名称</th><th style="width:34%">一句话总结</th><th style="width:15%">更新时间</th><th style="width:9%">状态</th><th style="width:20%">操作</th></tr></thead>
+            <tbody id="reportTableBody">
+              <tr data-name="招商时代花园一期" data-status="已发布"><td class="report-name">招商时代花园一期</td><td class="summary-cell">项目周边生活与交通基础较成熟，小高层和改善型户型是主要亮点。</td><td>2026-09-02 11:20</td><td><span class="status status-published">已发布</span></td><td><button class="action-link edit-report" type="button">编辑</button><button class="action-link preview-report" type="button">预览</button><button class="action-link danger delete-report" type="button">删除</button></td></tr>
+              <tr data-name="星河七栖里一期" data-status="已发布"><td class="report-name">星河七栖里一期</td><td class="summary-cell">板块生活基础成熟，产品定位偏向主城刚改家庭。</td><td>2026-09-01 16:42</td><td><span class="status status-published">已发布</span></td><td><button class="action-link edit-report" type="button">编辑</button><button class="action-link preview-report" type="button">预览</button><button class="action-link danger delete-report" type="button">删除</button></td></tr>
+              <tr data-name="绿城桂语兰庭一期" data-status="已发布"><td class="report-name">绿城桂语兰庭一期</td><td class="summary-cell">低密度基础与生活半径是项目的主要居住价值。</td><td>2026-08-30 09:18</td><td><span class="status status-published">已发布</span></td><td><button class="action-link edit-report" type="button">编辑</button><button class="action-link preview-report" type="button">预览</button><button class="action-link danger delete-report" type="button">删除</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section class="editor-shell" id="editorShell" aria-label="新增项目报告">
+    <header class="editor-header"><div class="editor-title" id="editorTitle">新增项目报告</div><button class="icon-close" id="closeEditor" type="button" aria-label="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5l14 14M19 5 5 19"></path></svg></button></header>
+    <div class="editor-body">
+      <form class="form-card" id="reportForm" novalidate>
+        <div class="form-section-title">报告内容</div>
+        <div class="form-row"><label class="form-label required" for="phaseInput">分析项目</label><div class="form-control"><div class="select-project"><input class="form-input" id="phaseInput" readonly placeholder="请选择项目分期"><button class="btn" id="openPhasePicker" type="button">选择分期</button></div><div class="field-help" id="phaseError">请选择需要分析的具体项目分期</div></div></div>
+        <div class="form-row"><label class="form-label required" for="summaryInput">Deepseek一句话总结</label><div class="form-control"><div class="textarea-wrap"><textarea class="form-textarea summary counted" id="summaryInput" maxlength="200" data-counter="summaryCount" placeholder="请输入一句话总结，概括项目整体定位与适合人群"></textarea><span class="counter"><span id="summaryCount">0</span>/200</span></div><div class="field-help">建议控制在40～80字，面向用户自然表达</div></div></div>
+        <div class="form-row"><label class="form-label required" for="blockInput">板块价值分析</label><div class="form-control"><div class="textarea-wrap"><textarea class="form-textarea counted" id="blockInput" maxlength="2000" data-counter="blockCount" placeholder="请输入板块定位、发展成熟度、产业基础、人口导入及城市规划等分析"></textarea><span class="counter"><span id="blockCount">0</span>/2000</span></div></div></div>
+        <div class="form-row"><label class="form-label required" for="trafficInput">区位交通分析</label><div class="form-control"><div class="textarea-wrap"><textarea class="form-textarea counted" id="trafficInput" maxlength="2000" data-counter="trafficCount" placeholder="请输入轨道交通、主干道、核心商圈及实际通勤便利性分析"></textarea><span class="counter"><span id="trafficCount">0</span>/2000</span></div></div></div>
+        <div class="form-row"><label class="form-label required" for="facilityInput">周边配套分析</label><div class="form-control"><div class="textarea-wrap"><textarea class="form-textarea counted" id="facilityInput" maxlength="2000" data-counter="facilityCount" placeholder="请输入商业、教育、医疗、公园及生活服务配套分析，并区分已建成和规划中"></textarea><span class="counter"><span id="facilityCount">0</span>/2000</span></div></div></div>
+        <div class="form-row"><label class="form-label required" for="productInput">项目产品分析</label><div class="form-control"><div class="textarea-wrap"><textarea class="form-textarea counted" id="productInput" maxlength="2000" data-counter="productCount" placeholder="请输入容积率、绿化率、楼栋布局、建筑形态、园林、公区及精装标准等分析"></textarea><span class="counter"><span id="productCount">0</span>/2000</span></div></div></div>
+      </form>
+    </div>
+    <footer class="editor-footer"><button class="btn" id="cancelEditor" type="button">取消</button><button class="btn btn-primary" id="publishReport" type="button">确定</button></footer>
+  </section>
+
+  <div class="overlay" id="phaseOverlay" aria-hidden="true">
+    <section class="phase-modal" role="dialog" aria-modal="true" aria-labelledby="phaseModalTitle">
+      <header class="modal-header"><div class="modal-title" id="phaseModalTitle">选择项目分期</div><button class="icon-close" id="closePhasePicker" type="button" aria-label="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5l14 14M19 5 5 19"></path></svg></button></header>
+      <div class="modal-body">
+        <div class="modal-filter"><input class="control-input" id="phaseKeyword" placeholder="请输入项目或分期名称"><button class="btn btn-primary" id="searchPhase" type="button">查询</button><button class="btn" id="resetPhase" type="button">重置</button></div>
+        <div class="table-wrap"><table class="phase-table"><thead><tr><th style="width:9%">选择</th><th style="width:27%">项目名称</th><th style="width:28%">分期名称</th><th style="width:36%">所属公司</th></tr></thead><tbody id="phaseTableBody">
+          <tr data-value="招商时代花园一期"><td><input class="phase-radio" type="radio" name="phase"></td><td>招商时代花园</td><td>一期</td><td>成都招商龙城房地产开发有限公司</td></tr>
+          <tr data-value="星河七栖里一期"><td><input class="phase-radio" type="radio" name="phase"></td><td>星河七栖里</td><td>一期</td><td>成都九联颐善置业有限公司</td></tr>
+          <tr data-value="绿城桂语兰庭一期"><td><input class="phase-radio" type="radio" name="phase"></td><td>绿城桂语兰庭</td><td>一期</td><td>成都兴厦乐业置业有限公司</td></tr>
+          <tr data-value="光华名邸二期"><td><input class="phase-radio" type="radio" name="phase"></td><td>光华名邸</td><td>二期</td><td>成都武新盈商置业有限公司</td></tr>
+        </tbody></table></div>
+      </div>
+      <footer class="modal-footer"><button class="btn" id="cancelPhase" type="button">取消</button><button class="btn btn-primary" id="confirmPhase" type="button">确定</button></footer>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const editorShell = document.getElementById('editorShell');
+    const editorTitle = document.getElementById('editorTitle');
+    const phaseOverlay = document.getElementById('phaseOverlay');
+    const phaseInput = document.getElementById('phaseInput');
+    const summaryInput = document.getElementById('summaryInput');
+    const textFields = ['summaryInput', 'blockInput', 'trafficInput', 'facilityInput', 'productInput'].map(id => document.getElementById(id));
+    const toast = document.getElementById('toast');
+    let toastTimer;
+    let editingRow = null;
+
+    const sampleContent = {
+      blockInput: '项目所在区域生活基础相对成熟，价值逻辑更偏“城市更新 + 居住改善”，而非依赖单一远期规划。从现有信息看，板块公共空间、商业能级和交通效率仍有继续提升空间。',
+      trafficInput: '轨道交通可作为日常通勤主力，但项目并非出门即地铁，真实体验取决于步行接驳和换乘次数。建议在早晚高峰实测一次完整路线。',
+      facilityInput: '日常生活型配套基本够用，品质商业和高等级医疗仍需要扩大半径。教育资源应分别核验学校建设状态、当年划片和入学政策。',
+      productInput: '小高层形态与改善型梯户配置构成项目产品基础。实际产品力还需结合楼栋排布、景观资源、归家动线、公区耐久性和精装交付清单综合判断。'
+    };
+
+    function notify(message, error = false) {
+      clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.toggle('error', error);
+      toast.classList.add('show');
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 1900);
+    }
+
+    function updateCounter(field) {
+      const counter = document.getElementById(field.dataset.counter);
+      if (counter) counter.textContent = field.value.length;
+    }
+
+    function clearForm() {
+      phaseInput.value = '';
+      textFields.forEach(field => { field.value = ''; field.style.borderColor = ''; updateCounter(field); });
+      document.querySelectorAll('.field-help.error').forEach(item => item.classList.remove('error'));
+    }
+
+    function escapeHtml(value) {
+      return value.replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[character]);
+    }
+
+    function currentTime() {
+      const date = new Date();
+      const pad = value => String(value).padStart(2, '0');
+      return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+    }
+
+    function openEditor(row = null) {
+      editingRow = row;
+      clearForm();
+      editorTitle.textContent = row ? '编辑项目报告' : '新增项目报告';
+      if (row) {
+        phaseInput.value = row.dataset.name;
+        summaryInput.value = row.querySelector('.summary-cell').textContent.trim();
+        Object.entries(sampleContent).forEach(([id, value]) => { document.getElementById(id).value = value; });
+        textFields.forEach(updateCounter);
+      }
+      editorShell.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeEditor() {
+      editorShell.classList.remove('show');
+      phaseOverlay.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+
+    function openPhasePicker() {
+      phaseOverlay.classList.add('show');
+      phaseOverlay.setAttribute('aria-hidden', 'false');
+      document.getElementById('phaseKeyword').focus();
+    }
+
+    function closePhasePicker() {
+      phaseOverlay.classList.remove('show');
+      phaseOverlay.setAttribute('aria-hidden', 'true');
+    }
+
+    function validateForm(requireAll) {
+      let valid = true;
+      const phaseError = document.getElementById('phaseError');
+      phaseError.classList.toggle('error', !phaseInput.value);
+      if (!phaseInput.value) valid = false;
+      if (requireAll) {
+        textFields.forEach(field => {
+          const empty = !field.value.trim();
+          field.style.borderColor = empty ? 'var(--danger)' : '';
+          if (empty) valid = false;
+        });
+      }
+      return valid;
+    }
+
+    function submitReport() {
+      const status = '已发布';
+      if (!validateForm(true)) { notify('请完整填写项目分期和五项报告内容', true); return; }
+      if (editingRow) {
+        editingRow.dataset.name = phaseInput.value;
+        editingRow.dataset.status = status;
+        editingRow.querySelector('.report-name').textContent = phaseInput.value;
+        editingRow.querySelector('.summary-cell').textContent = summaryInput.value.trim() || '暂未填写一句话总结';
+        editingRow.children[2].textContent = currentTime();
+        const statusCell = editingRow.children[3];
+        statusCell.innerHTML = '<span class="status status-published">已发布</span>';
+      } else {
+        const row = document.createElement('tr');
+        const reportSummary = summaryInput.value.trim() || '暂未填写一句话总结';
+        row.dataset.name = phaseInput.value;
+        row.dataset.status = status;
+        row.innerHTML = `<td class="report-name">${escapeHtml(phaseInput.value)}</td><td class="summary-cell">${escapeHtml(reportSummary)}</td><td>${currentTime()}</td><td><span class="status status-published">已发布</span></td><td><button class="action-link edit-report" type="button">编辑</button><button class="action-link preview-report" type="button">预览</button><button class="action-link danger delete-report" type="button">删除</button></td>`;
+        document.getElementById('reportTableBody').prepend(row);
+        bindRowActions();
+      }
+      notify('项目报告已保存并发布');
+      closeEditor();
+    }
+
+    document.querySelectorAll('.nav-menu-toggle').forEach(button => button.addEventListener('click', event => {
+      event.stopPropagation();
+      const item = button.closest('.nav-item');
+      document.querySelectorAll('.nav-item.open').forEach(other => { if (other !== item) { other.classList.remove('open'); other.querySelector('.nav-menu-toggle')?.setAttribute('aria-expanded', 'false'); } });
+      item.classList.toggle('open');
+      button.setAttribute('aria-expanded', item.classList.contains('open') ? 'true' : 'false');
+    }));
+    document.addEventListener('click', () => document.querySelectorAll('.nav-item.open').forEach(item => { item.classList.remove('open'); item.querySelector('.nav-menu-toggle')?.setAttribute('aria-expanded', 'false'); }));
+
+    document.getElementById('newReport').addEventListener('click', () => openEditor());
+    document.getElementById('closeEditor').addEventListener('click', closeEditor);
+    document.getElementById('cancelEditor').addEventListener('click', closeEditor);
+    document.getElementById('publishReport').addEventListener('click', submitReport);
+    document.getElementById('openPhasePicker').addEventListener('click', openPhasePicker);
+    phaseInput.addEventListener('click', openPhasePicker);
+    document.getElementById('closePhasePicker').addEventListener('click', closePhasePicker);
+    document.getElementById('cancelPhase').addEventListener('click', closePhasePicker);
+    phaseOverlay.addEventListener('click', event => { if (event.target === phaseOverlay) closePhasePicker(); });
+
+    document.querySelectorAll('.counted').forEach(field => field.addEventListener('input', () => { updateCounter(field); field.style.borderColor = ''; }));
+    document.querySelectorAll('#phaseTableBody tr').forEach(row => row.addEventListener('click', () => {
+      document.querySelectorAll('#phaseTableBody tr').forEach(item => item.classList.toggle('selected', item === row));
+      row.querySelector('input').checked = true;
+    }));
+    document.getElementById('confirmPhase').addEventListener('click', () => {
+      const selected = document.querySelector('#phaseTableBody input:checked')?.closest('tr');
+      if (!selected) { notify('请选择一个项目分期', true); return; }
+      phaseInput.value = selected.dataset.value;
+      document.getElementById('phaseError').classList.remove('error');
+      closePhasePicker();
+    });
+
+    function filterPhase() {
+      const keyword = document.getElementById('phaseKeyword').value.trim().toLowerCase();
+      document.querySelectorAll('#phaseTableBody tr').forEach(row => { row.hidden = Boolean(keyword) && !row.textContent.toLowerCase().includes(keyword); });
+    }
+    document.getElementById('searchPhase').addEventListener('click', filterPhase);
+    document.getElementById('resetPhase').addEventListener('click', () => { document.getElementById('phaseKeyword').value = ''; filterPhase(); });
+
+    function bindRowActions() {
+      document.querySelectorAll('.edit-report').forEach(button => button.onclick = () => openEditor(button.closest('tr')));
+      document.querySelectorAll('.preview-report').forEach(button => button.onclick = () => window.open('./0902-楼盘AI分析.html', '_blank'));
+      document.querySelectorAll('.delete-report').forEach(button => button.onclick = () => { if (confirm('确定删除该项目报告吗？')) { button.closest('tr').remove(); notify('项目报告已删除'); } });
+    }
+    bindRowActions();
+
+    function filterReports() {
+      const keyword = document.getElementById('filterKeyword').value.trim().toLowerCase();
+      const status = document.getElementById('filterStatus').value;
+      document.querySelectorAll('#reportTableBody tr').forEach(row => { row.hidden = (keyword && !row.dataset.name.toLowerCase().includes(keyword)) || (status && row.dataset.status !== status); });
+      notify('查询完成');
+    }
+    document.getElementById('searchReport').addEventListener('click', filterReports);
+    document.getElementById('resetReport').addEventListener('click', () => { document.getElementById('filterKeyword').value = ''; document.getElementById('filterStatus').value = ''; filterReports(); });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') { if (phaseOverlay.classList.contains('show')) closePhasePicker(); else if (editorShell.classList.contains('show')) closeEditor(); } });
+    if (new URLSearchParams(location.search).get('mode') === 'new') openEditor();
+  </script>
+</body>
+</html>

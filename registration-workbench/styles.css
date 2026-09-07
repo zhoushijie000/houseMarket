@@ -1397,11 +1397,11 @@ textarea {
 }
 
 .admin-topbar__nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 28px;
-}
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
 
 .admin-topbar__link {
   position: relative;

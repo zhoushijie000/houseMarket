@@ -3485,7 +3485,7 @@
               <path d="M13 58c2.8-13.6 11.1-21 19-21s16.2 7.4 19 21Z" />
             </svg>
           </span>
-          <strong class="mine-login">请登录</strong>
+          <strong class="mine-login">房产超市用户</strong>
           <svg class="mine-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
         </div>
       </section>
@@ -3735,6 +3735,7 @@
     </div>
   </section>
 
+  <script src="./assets/profile-binding.js"></script>
   <script>
     const scanEntry = document.getElementById("scanEntry");
     const qrScanner = document.getElementById("qrScanner");
@@ -3829,6 +3830,9 @@
       if (tabHome) {
         tabHome.classList.toggle("active", viewName === "home");
       }
+      if (tabNews) {
+        tabNews.classList.toggle("active", viewName === "news");
+      }
       if (tabMine) {
         tabMine.classList.toggle("active", viewName === "mine");
       }
@@ -3858,6 +3862,14 @@
 
     function showHashView() {
       const hashViewName = window.location.hash.replace("#", "") || "home";
+      if (hashViewName === "news") {
+        showView("home");
+        setActiveTab("news");
+        requestAnimationFrame(() => {
+          document.getElementById("propertyNews")?.scrollIntoView({ behavior: "auto", block: "center" });
+        });
+        return;
+      }
       const viewName = hashViewName === "couponEstate" || hashViewName.startsWith("couponDetail")
         ? "couponDetail"
         : hashViewName;
@@ -3870,6 +3882,7 @@
     tabHome.addEventListener("click", () => navigateTo("home"));
     tabNews.addEventListener("click", () => {
       navigateTo("home");
+      setActiveTab("news");
       requestAnimationFrame(() => {
         document.getElementById("propertyNews").scrollIntoView({ behavior: "smooth", block: "center" });
       });

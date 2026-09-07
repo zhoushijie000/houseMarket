@@ -92,6 +92,11 @@
       border: 0;
       font-size: 15px;
     }
+    .nav-primary-link { height: 100%; padding: 0 8px 0 17px; display: flex; align-items: center; color: inherit; text-decoration: none; font-size: 15px; }
+    .nav-item:not([data-nav-menu]) .nav-primary-link { padding: 0 17px; }
+    .nav-menu-toggle { width: 30px; padding: 0 12px 0 0; }
+    .nav-primary-link:hover, .nav-item.open > .nav-primary-link { color: var(--primary); background: #f7f9fd; }
+    .nav-item.active > .nav-primary-link { color: var(--primary); font-weight: 600; }
     .nav-trigger:hover, .nav-item.open .nav-trigger { background: #f7f9fd; }
     .nav-item.active .nav-trigger { color: var(--primary); }
     .nav-item.open .nav-trigger .chevron { transform: rotate(225deg) translate(-1px, -1px); }
@@ -394,27 +399,42 @@
       </div>
     </div>
     <nav class="header-nav" id="headerNav" aria-label="主导航">
-      <div class="nav-item"><button class="nav-trigger" type="button" data-placeholder-menu>项目 <span class="chevron"></span></button></div>
-      <div class="nav-item"><button class="nav-trigger" type="button" data-placeholder-menu>申请 <span class="chevron"></span></button></div>
       <div class="nav-item" data-nav-menu>
-        <button class="nav-trigger" type="button" aria-expanded="false">运营 <span class="chevron"></span></button>
+        <a class="nav-primary-link" href="./0715-房源展示价格管理.html">项目</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开项目菜单" aria-expanded="false"><span class="chevron"></span></button>
+        <div class="nav-menu" role="menu" aria-label="项目">
+          <a class="nav-menu-link" href="./0715-房源展示价格管理.html">房源管理</a>
+          <a class="nav-menu-link" href="./0902-户型图VR链接管理.html">项目管理</a>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-primary-link" href="./registration-workbench/admin.html">申请</a></div>
+      <div class="nav-item" data-nav-menu>
+        <a class="nav-primary-link" href="./0821-直播管理.html">运营</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开运营菜单" aria-expanded="false"><span class="chevron"></span></button>
         <div class="nav-menu" role="menu" aria-label="运营">
           <button class="nav-menu-link" type="button" data-placeholder-menu>内容管理</button>
+          <a class="nav-menu-link" href="./0902-项目报告管理.html" style="padding-left:32px">项目报告</a>
           <button class="nav-menu-link" type="button" data-placeholder-menu>活动报名审核</button>
           <button class="nav-menu-link" type="button" data-placeholder-menu>楼盘管理</button>
           <a class="nav-menu-link" href="./0821-直播管理.html">直播间管理</a>
+          <a class="nav-menu-link" href="./0828-专题管理.html">专题管理</a>
           <button class="nav-menu-link" type="button" data-placeholder-menu>运营配置</button>
-          <button class="nav-menu-link" type="button" data-placeholder-menu>区县管理</button>
+          <a class="nav-menu-link" href="./0831-区县管理.html">区县管理</a>
           <button class="nav-menu-link" type="button" data-placeholder-menu>最新预售</button>
           <button class="nav-menu-link" type="button" data-placeholder-menu>城市专场</button>
           <button class="nav-menu-link" type="button" data-placeholder-menu>活动城市</button>
         </div>
       </div>
-      <div class="nav-item"><button class="nav-trigger" type="button" data-placeholder-menu>统计 <span class="chevron"></span></button></div>
-      <div class="nav-item"><button class="nav-trigger" type="button" data-placeholder-menu>政务 <span class="chevron"></span></button></div>
-      <div class="nav-item"><button class="nav-trigger" type="button" data-placeholder-menu>管理 <span class="chevron"></span></button></div>
+      <div class="nav-item"><a class="nav-primary-link" href="./网签成交.html">统计</a></div>
+      <div class="nav-item" data-nav-menu>
+        <a class="nav-primary-link" href="./0831-客户管理.html">客户</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开客户菜单" aria-expanded="false"><span class="chevron"></span></button>
+        <div class="nav-menu" role="menu" aria-label="客户">
+          <button class="nav-menu-link" type="button" data-customer-menu="客户消息">客户消息</button>
+          <a class="nav-menu-link" href="./0831-客户管理.html">客户管理</a>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-primary-link" href="./购房政策.html">政务</a></div>
+      <div class="nav-item"><a class="nav-primary-link" href="./0831-区县管理.html">管理</a></div>
       <div class="nav-item active" data-nav-menu>
-        <button class="nav-trigger" type="button" aria-expanded="false">系统 <span class="chevron"></span></button>
+        <a class="nav-primary-link" href="./0819-直播专区标签管理.html" aria-current="page">系统</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开系统菜单" aria-expanded="false"><span class="chevron"></span></button>
         <div class="nav-menu" role="menu" aria-label="系统">
           <a class="nav-menu-link active" href="./0819-直播专区标签管理.html" aria-current="page">小程序管理</a>
           <button class="nav-menu-link" type="button" data-placeholder-menu>机构管理</button>
@@ -865,6 +885,12 @@
         menu.classList.toggle('open', willOpen);
         menuTrigger.setAttribute('aria-expanded', String(willOpen));
         event.stopPropagation();
+        return;
+      }
+      const customerMenu = event.target.closest('[data-customer-menu]');
+      if (customerMenu) {
+        closeHeaderMenus();
+        showToast(`已选择${customerMenu.dataset.customerMenu}`);
         return;
       }
       const placeholder = event.target.closest('[data-placeholder-menu]');

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>客户 - 客户管理</title>
+  <style>
+    :root {
+      --primary: #3f6fe8;
+      --primary-dark: #315fda;
+      --primary-light: #edf3ff;
+      --text: #303133;
+      --regular: #606266;
+      --muted: #909399;
+      --placeholder: #c0c4cc;
+      --border: #dcdfe6;
+      --border-light: #ebeef5;
+      --background: #f3f4f6;
+      --surface: #fff;
+      --success: #32ad7f;
+      --warning: #d9942b;
+      --danger: #f56c6c;
+      --shadow: 0 14px 36px rgba(31, 41, 61, .16);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-width: 1180px; min-height: 100%; }
+    body {
+      color: var(--text);
+      background: var(--background);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-size: 14px;
+    }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+
+    /* Admin header */
+    .app-header {
+      height: 64px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border: 1px solid var(--border-light);
+    }
+    .brand, .brand-copy, .header-nav, .nav-item, .user { display: flex; align-items: center; }
+    .brand-logo { width: 36px; height: 36px; margin-right: 20px; position: relative; overflow: hidden; background: #406bdd; }
+    .brand-logo::before { content: ""; position: absolute; inset: 7px 9px; border-left: 5px solid #fff; border-right: 5px solid #fff; }
+    .brand-logo::after { content: ""; position: absolute; right: 9px; top: 13px; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-right: 10px solid #fff; }
+    .brand-title { color: #111; font-size: 18px; font-weight: 650; white-space: nowrap; }
+    .brand-agency { margin-left: 20px; color: var(--regular); white-space: nowrap; }
+    .brand-agency .chevron { margin-left: 24px; color: var(--primary); }
+    .header-nav { height: 100%; margin-left: auto; }
+    .nav-item { height: 100%; position: relative; color: #262626; white-space: nowrap; }
+    .nav-trigger { height: 100%; padding: 0 15px; display: flex; align-items: center; gap: 10px; color: inherit; background: transparent; border: 0; font-size: 15px; }
+    .nav-primary-link { height: 100%; padding: 0 8px 0 15px; display: flex; align-items: center; color: inherit; text-decoration: none; font-size: 15px; }
+    .nav-item:not([data-nav-menu]) .nav-primary-link { padding: 0 15px; }
+    .nav-menu-toggle { width: 28px; padding: 0 10px 0 0; }
+    .nav-primary-link:hover, .nav-item.open > .nav-primary-link { color: var(--primary); background: #f7f9fd; }
+    .nav-item.active > .nav-primary-link { color: var(--primary); font-weight: 600; }
+    .nav-trigger:hover, .nav-item.open .nav-trigger { background: #f7f9fd; }
+    .nav-item.active .nav-trigger { color: var(--primary); }
+    .nav-item.open .nav-trigger .chevron { transform: rotate(225deg) translate(-1px, -1px); }
+    .nav-menu { width: 212px; padding: 10px 0; position: absolute; top: calc(100% + 1px); left: 50%; z-index: 70; display: none; transform: translateX(-50%); background: #fff; border: 1px solid #edf0f5; border-radius: 4px; box-shadow: 0 8px 24px rgba(31, 41, 61, .14); }
+    .nav-item.open .nav-menu { display: block; }
+    .nav-menu-link { width: 100%; height: 46px; padding: 0 20px; display: flex; align-items: center; color: #30343a; background: transparent; border: 0; text-align: left; text-decoration: none; font-size: 15px; }
+    .nav-menu-link:hover { color: var(--primary); background: #f5f8ff; }
+    .nav-menu-link.active { color: var(--primary); background: var(--primary-light); font-weight: 600; }
+    .chevron { width: 7px; height: 7px; display: inline-block; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translateY(-2px); }
+    .user { height: 56px; margin-left: 34px; flex-direction: column; justify-content: center; }
+    .avatar { width: 35px; height: 35px; border-radius: 50%; position: relative; background: #e4e7ed; }
+    .avatar::before { content: ""; width: 9px; height: 9px; position: absolute; left: 13px; top: 7px; border-radius: 50%; background: #fff; }
+    .avatar::after { content: ""; width: 17px; height: 10px; position: absolute; left: 9px; top: 20px; border-radius: 9px 9px 3px 3px; background: #fff; }
+    .user-name { margin-top: -4px; padding: 1px 7px; border-radius: 4px; color: #fff; background: #85888d; font-size: 12px; }
+
+    .workspace-tabs { height: 54px; padding: 10px 12px; display: flex; align-items: center; gap: 6px; background: #f0f1f3; }
+    .workspace-tab { min-width: 96px; height: 34px; padding: 0 20px; display: inline-flex; align-items: center; justify-content: center; gap: 14px; color: #2f3033; background: #fff; border: 1px solid var(--border); border-radius: 4px; font-weight: 600; }
+    .workspace-tab.active { color: var(--primary); border-color: var(--primary); }
+    .workspace-tab .close { font-size: 16px; font-weight: 400; }
+    .more-actions { margin-left: auto; display: flex; align-items: center; gap: 12px; color: var(--regular); }
+
+    /* Customer list */
+    .page { padding: 0 12px 14px; }
+    .page-title { height: 72px; padding: 0 20px; position: relative; display: flex; align-items: center; background: #fff; border-bottom: 1px solid var(--border); color: #202328; font-size: 16px; font-weight: 600; }
+    .page-title::after { content: ""; width: 36px; height: 2px; position: absolute; left: 20px; bottom: 0; background: var(--primary); }
+    .filter-card { min-height: 92px; margin-top: 12px; padding: 20px; display: flex; align-items: center; background: #fff; }
+    .filter-fields { display: flex; align-items: center; gap: 24px; }
+    .filter-item { display: flex; align-items: center; gap: 10px; }
+    .filter-label { color: var(--regular); font-size: 15px; white-space: nowrap; }
+    .control-input, .control-select { width: 210px; height: 36px; padding: 0 13px; color: var(--text); background: #fff; border: 1px solid var(--border); border-radius: 4px; outline: none; }
+    .control-input.phone { width: 190px; }
+    .control-select { width: 150px; }
+    .control-input::placeholder { color: var(--placeholder); }
+    .control-input:focus, .control-select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(63, 111, 232, .1); }
+    .filter-actions { display: flex; gap: 10px; margin-left: 30px; }
+    .btn { height: 36px; padding: 0 18px; color: var(--regular); background: #fff; border: 1px solid var(--border); border-radius: 4px; }
+    .btn:hover { color: var(--primary); border-color: #9eb5f2; }
+    .btn-primary { color: #fff; background: var(--primary); border-color: var(--primary); }
+    .btn-primary:hover { color: #fff; background: var(--primary-dark); border-color: var(--primary-dark); }
+    .list-card { min-height: calc(100vh - 304px); margin-top: 12px; padding: 20px; background: #fff; }
+    .toolbar { display: flex; align-items: center; justify-content: space-between; }
+    .toolbar-title { color: #30343a; font-size: 15px; font-weight: 600; }
+    .toolbar-tip { color: var(--muted); font-size: 13px; }
+    .table-wrap { margin-top: 18px; overflow-x: auto; border: 1px solid var(--border-light); }
+    table { width: 100%; min-width: 1110px; table-layout: fixed; border-collapse: collapse; }
+    th, td { height: 68px; padding: 0 14px; color: var(--regular); text-align: left; border-bottom: 1px solid var(--border-light); }
+    th { height: 42px; background: #f3f4f6; font-weight: 500; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:hover td { background: #fafcff; }
+    .col-index { width: 62px; text-align: center; }
+    .col-name { width: 150px; }
+    .col-phone { width: 150px; }
+    .col-tags { width: 240px; }
+    .col-event { width: 290px; }
+    .col-count { width: 110px; text-align: center; }
+    .col-action { width: 230px; text-align: center; white-space: nowrap; }
+    .customer-name { color: #374151; font-weight: 600; }
+    .phone-value { color: #4b5563; font-variant-numeric: tabular-nums; letter-spacing: .4px; }
+    .tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+    .customer-tag { min-height: 24px; padding: 2px 8px; display: inline-flex; align-items: center; border-radius: 3px; color: #3f6fe8; background: #edf3ff; font-size: 12px; }
+    .customer-tag.orange { color: #d98216; background: #fff7e8; }
+    .customer-tag.green { color: #248969; background: #edf9f5; }
+    .event-name { overflow: hidden; color: #414b5b; text-overflow: ellipsis; white-space: nowrap; }
+    .event-time { margin-top: 5px; color: var(--muted); font-size: 12px; }
+    .contact-count { color: var(--primary); font-size: 16px; font-weight: 600; }
+    .table-action { padding: 6px 8px; color: var(--primary); background: transparent; border: 0; }
+    .table-action + .table-action { margin-left: 4px; }
+    .empty { height: 190px; color: var(--muted); text-align: center; }
+    .pagination { margin-top: 16px; display: flex; align-items: center; justify-content: flex-end; gap: 8px; color: var(--regular); }
+    .page-btn { min-width: 30px; height: 30px; padding: 0 8px; color: var(--regular); background: #fff; border: 1px solid var(--border); border-radius: 4px; }
+    .page-btn.active { color: #fff; background: var(--primary); border-color: var(--primary); }
+
+    /* Detail dialog */
+    .overlay { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(24, 31, 45, .48); }
+    .overlay.show { display: flex; }
+    .dialog { width: min(820px, calc(100vw - 48px)); max-height: calc(100vh - 48px); display: flex; flex-direction: column; background: #fff; box-shadow: var(--shadow); }
+    .dialog-header { height: 62px; padding: 0 22px; display: flex; align-items: center; border-bottom: 1px solid var(--border-light); }
+    .dialog-title { color: #202328; font-size: 17px; font-weight: 600; }
+    .dialog-close { width: 34px; height: 34px; margin-left: auto; color: var(--muted); background: transparent; border: 0; font-size: 24px; line-height: 1; }
+    .dialog-body { padding: 22px; overflow-y: auto; }
+    .customer-summary { padding: 15px 18px; display: grid; grid-template-columns: 1fr 1fr 1.3fr; gap: 18px; background: #f7f9fc; border: 1px solid var(--border-light); }
+    .summary-label { color: var(--muted); font-size: 12px; }
+    .summary-value { margin-top: 7px; color: #374151; font-weight: 600; }
+    .timeline { margin-top: 20px; padding-left: 8px; }
+    .timeline-item { min-height: 74px; padding: 0 0 20px 28px; position: relative; border-left: 1px solid #dfe6f4; }
+    .timeline-item:last-child { border-left-color: transparent; }
+    .timeline-dot { width: 11px; height: 11px; position: absolute; left: -6px; top: 4px; border: 2px solid #fff; border-radius: 50%; background: var(--primary); box-shadow: 0 0 0 2px #b8c9f7; }
+    .timeline-title { color: #374151; font-weight: 600; }
+    .timeline-copy { margin-top: 7px; color: var(--regular); line-height: 1.6; }
+    .timeline-time { margin-top: 5px; color: var(--muted); font-size: 12px; }
+    .record-table { margin-top: 20px; border: 1px solid var(--border-light); }
+    .record-table table { min-width: 0; }
+    .record-table th, .record-table td { height: 54px; }
+    .dialog-footer { height: 66px; padding: 0 22px; display: flex; align-items: center; justify-content: flex-end; border-top: 1px solid var(--border-light); }
+    .toast { min-width: 180px; padding: 12px 18px; position: fixed; left: 50%; top: 82px; z-index: 130; opacity: 0; pointer-events: none; transform: translate(-50%, -10px); color: #fff; background: rgba(40, 47, 59, .92); border-radius: 4px; text-align: center; transition: .2s ease; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width: 1320px) {
+      .nav-trigger { padding: 0 11px; }
+      .user { margin-left: 18px; }
+      .brand-agency { display: none; }
+      .filter-fields { gap: 14px; }
+      .filter-actions { margin-left: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-logo" aria-hidden="true"></div>
+      <div class="brand-copy">
+        <div class="brand-title">成都住建线上房产超市管理平台</div>
+        <div class="brand-agency">成都市住房和城乡建设局 <span class="chevron"></span></div>
+      </div>
+    </div>
+    <nav class="header-nav" id="headerNav" aria-label="主导航">
+      <div class="nav-item" data-nav-menu>
+        <a class="nav-primary-link" href="./0715-房源展示价格管理.html">项目</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开项目菜单" aria-expanded="false"><span class="chevron"></span></button>
+        <div class="nav-menu" role="menu" aria-label="项目">
+          <a class="nav-menu-link" href="./0715-房源展示价格管理.html">房源管理</a>
+          <a class="nav-menu-link" href="./0902-户型图VR链接管理.html">项目管理</a>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-primary-link" href="./registration-workbench/admin.html">申请</a></div>
+      <div class="nav-item" data-nav-menu>
+        <a class="nav-primary-link" href="./0821-直播管理.html">运营</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开运营菜单" aria-expanded="false"><span class="chevron"></span></button>
+        <div class="nav-menu" role="menu" aria-label="运营">
+          <button class="nav-menu-link" type="button" data-placeholder-menu>内容管理</button>
+          <a class="nav-menu-link" href="./0902-项目报告管理.html" style="padding-left:32px">项目报告</a>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>活动报名审核</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>楼盘管理</button>
+          <a class="nav-menu-link" href="./0821-直播管理.html">直播间管理</a>
+          <a class="nav-menu-link" href="./0828-专题管理.html">专题管理</a>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>运营配置</button>
+          <a class="nav-menu-link" href="./0831-区县管理.html">区县管理</a>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-primary-link" href="./网签成交.html">统计</a></div>
+      <div class="nav-item active" data-nav-menu>
+        <a class="nav-primary-link" href="./0831-客户管理.html" aria-current="page">客户</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开客户菜单" aria-expanded="false"><span class="chevron"></span></button>
+        <div class="nav-menu" role="menu" aria-label="客户">
+          <button class="nav-menu-link" type="button" data-customer-menu="客户消息">客户消息</button>
+          <a class="nav-menu-link active" href="./0831-客户管理.html" aria-current="page">客户管理</a>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-primary-link" href="./购房政策.html">政务</a></div>
+      <div class="nav-item"><a class="nav-primary-link" href="./0831-区县管理.html">管理</a></div>
+      <div class="nav-item" data-nav-menu>
+        <a class="nav-primary-link" href="./0819-直播专区标签管理.html">系统</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开系统菜单" aria-expanded="false"><span class="chevron"></span></button>
+        <div class="nav-menu" role="menu" aria-label="系统">
+          <a class="nav-menu-link" href="./0819-直播专区标签管理.html">小程序管理</a>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>机构管理</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>人员管理</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>权限管理</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>系统日志</button>
+        </div>
+      </div>
+    </nav>
+    <div class="user"><div class="avatar"></div><div class="user-name">周世杰</div></div>
+  </header>
+
+  <div class="workspace-tabs">
+    <div class="workspace-tab">选择企业</div>
+    <div class="workspace-tab">项目管理</div>
+    <div class="workspace-tab">内容管理</div>
+    <div class="workspace-tab active">客户管理 <span class="close">×</span></div>
+    <div class="more-actions">更多操作 <span class="chevron"></span></div>
+  </div>
+
+  <main class="page">
+    <div class="page-title">客户管理</div>
+    <section class="filter-card" aria-label="客户筛选">
+      <div class="filter-fields">
+        <label class="filter-item"><span class="filter-label">客户昵称</span><input class="control-input" id="nameFilter" placeholder="请输入客户昵称"></label>
+        <label class="filter-item"><span class="filter-label">客户手机号</span><input class="control-input phone" id="phoneFilter" maxlength="11" placeholder="请输入完整手机号"></label>
+        <label class="filter-item"><span class="filter-label">客户标签</span><select class="control-select" id="tagFilter"><option value="">全部</option><option value="高意向">高意向</option><option value="改善型">改善型</option><option value="刚需">刚需</option><option value="已联系">已联系</option><option value="待跟进">待跟进</option></select></label>
+      </div>
+      <div class="filter-actions"><button class="btn btn-primary" id="searchButton" type="button">查询</button><button class="btn" id="resetButton" type="button">重置</button></div>
+    </section>
+
+    <section class="list-card">
+      <div class="toolbar"><div class="toolbar-title">客户列表</div><div class="toolbar-tip">手机号中间四位已脱敏保护</div></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th class="col-index">序号</th><th class="col-name">客户昵称</th><th class="col-phone">客户手机号</th><th class="col-tags">客户标签</th><th class="col-event">最近联系客户事件</th><th class="col-count">联系客户次数</th><th class="col-action">操作</th></tr></thead>
+          <tbody id="customerTableBody"></tbody>
+        </table>
+      </div>
+      <div class="pagination"><span id="totalText">共 0 条</span><button class="page-btn" type="button">‹</button><button class="page-btn active" type="button">1</button><button class="page-btn" type="button">›</button><span>10条/页</span></div>
+    </section>
+  </main>
+
+  <div class="overlay" id="detailOverlay" aria-hidden="true">
+    <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+      <header class="dialog-header"><div class="dialog-title" id="detailTitle">客户动态</div><button class="dialog-close" id="closeDialog" type="button" aria-label="关闭">×</button></header>
+      <div class="dialog-body" id="detailBody"></div>
+      <footer class="dialog-footer"><button class="btn btn-primary" id="confirmDialog" type="button">关闭</button></footer>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const $ = selector => document.querySelector(selector);
+    const $$ = selector => [...document.querySelectorAll(selector)];
+    const customers = [
+      { id: 1, name: '成都安家小陈', phone: '13882015678', tags: ['高意向', '改善型'], event: '电话沟通｜关注天府新区改善楼盘', eventTime: '2026-08-31 10:26', count: 8,
+        dynamics: [['咨询楼盘', '咨询“麓湖生态城”在售户型与交房时间', '2026-08-31 10:26'], ['收藏楼盘', '收藏“中海天府里”项目', '2026-08-30 19:42'], ['浏览专题', '查看“成都改善好房”专题', '2026-08-30 16:18']],
+        records: [['电话', '沟通天府新区改善楼盘预算与户型需求', '李顾问', '2026-08-31 10:26'], ['企微', '发送麓湖生态城项目资料', '李顾问', '2026-08-29 15:08']] },
+      { id: 2, name: '蓉城看房人', phone: '18602873451', tags: ['刚需', '已联系'], event: '企微沟通｜已发送龙泉驿区楼盘清单', eventTime: '2026-08-30 17:45', count: 5,
+        dynamics: [['查看楼盘', '查看“华润置地未来之城”楼盘详情', '2026-08-30 17:40'], ['使用工具', '使用房贷计算器测算首付', '2026-08-29 21:12']],
+        records: [['企微', '发送龙泉驿区总价200万以内楼盘清单', '王顾问', '2026-08-30 17:45'], ['电话', '确认首套资格与首付预算', '王顾问', '2026-08-27 11:20']] },
+      { id: 3, name: '向阳而居', phone: '13551098243', tags: ['待跟进', '政策关注'], event: '在线留言｜咨询成都最新购房政策', eventTime: '2026-08-29 14:08', count: 2,
+        dynamics: [['政策查询', '查看“成都购房资格与限售政策”', '2026-08-29 14:03'], ['在线留言', '提交购房资格咨询', '2026-08-29 14:08']],
+        records: [['在线留言', '咨询外地户籍在成都购房条件', '张顾问', '2026-08-29 14:16']] },
+      { id: 4, name: '林溪听风', phone: '15982106734', tags: ['高意向', '学区关注'], event: '电话沟通｜预约周末线下看房', eventTime: '2026-08-28 16:32', count: 11,
+        dynamics: [['预约看房', '预约“锦江金茂府”周末线下看房', '2026-08-28 16:32'], ['楼盘对比', '对比锦江区3个改善项目', '2026-08-28 15:55']],
+        records: [['电话', '确定周六上午看房，关注学校与通勤', '陈顾问', '2026-08-28 16:32'], ['企微', '发送项目区位与教育配套资料', '陈顾问', '2026-08-27 09:48']] },
+      { id: 5, name: '一米阳光', phone: '17780651209', tags: ['刚需', '待跟进'], event: '直播互动｜咨询首付及月供', eventTime: '2026-08-27 20:18', count: 3,
+        dynamics: [['直播互动', '在“成都刚需购房课堂”中咨询首付', '2026-08-27 20:18'], ['查看回放', '观看网签流程直播回放46分钟', '2026-08-26 22:02']],
+        records: [['直播回访', '回访直播提问，确认预算约160万元', '刘顾问', '2026-08-28 09:35']] },
+      { id: 6, name: '西岭归客', phone: '18190764532', tags: ['改善型', '已联系'], event: '企微沟通｜发送青羊区改善项目资料', eventTime: '2026-08-26 11:56', count: 6,
+        dynamics: [['收藏楼盘', '收藏“青羊樾府”项目', '2026-08-26 11:42'], ['地图找房', '筛选青羊区地铁沿线项目', '2026-08-25 18:36']],
+        records: [['企微', '发送青羊区改善项目对比表', '周顾问', '2026-08-26 11:56'], ['电话', '沟通现有住房置换计划', '周顾问', '2026-08-24 10:05']] }
+    ];
+    let query = { name: '', phone: '', tag: '' };
+    let toastTimer;
+
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char]));
+    }
+
+    function maskPhone(phone) { return `${phone.slice(0, 3)}****${phone.slice(7)}`; }
+
+    function tagClass(tag) {
+      if (['高意向', '待跟进'].includes(tag)) return 'orange';
+      if (['已联系', '改善型'].includes(tag)) return 'green';
+      return '';
+    }
+
+    function filteredCustomers() {
+      return customers.filter(customer => {
+        const nameMatch = !query.name || customer.name.includes(query.name);
+        const phoneMatch = !query.phone || customer.phone.includes(query.phone);
+        const tagMatch = !query.tag || customer.tags.includes(query.tag);
+        return nameMatch && phoneMatch && tagMatch;
+      });
+    }
+
+    function renderCustomers() {
+      const rows = filteredCustomers();
+      $('#customerTableBody').innerHTML = rows.length ? rows.map((customer, index) => `
+        <tr>
+          <td class="col-index">${index + 1}</td>
+          <td><span class="customer-name">${escapeHTML(customer.name)}</span></td>
+          <td><span class="phone-value">${maskPhone(customer.phone)}</span></td>
+          <td><div class="tag-list">${customer.tags.map(tag => `<span class="customer-tag ${tagClass(tag)}">${escapeHTML(tag)}</span>`).join('')}</div></td>
+          <td><div class="event-name">${escapeHTML(customer.event)}</div><div class="event-time">${escapeHTML(customer.eventTime)}</div></td>
+          <td class="col-count"><span class="contact-count">${customer.count}</span> 次</td>
+          <td class="col-action"><button class="table-action" type="button" data-dynamic="${customer.id}">查看客户动态</button><button class="table-action" type="button" data-records="${customer.id}">联系记录</button></td>
+        </tr>`).join('') : '<tr><td class="empty" colspan="7">暂无符合条件的客户</td></tr>';
+      $('#totalText').textContent = `共 ${rows.length} 条`;
+    }
+
+    function summaryHTML(customer) {
+      return `<div class="customer-summary"><div><div class="summary-label">客户昵称</div><div class="summary-value">${escapeHTML(customer.name)}</div></div><div><div class="summary-label">客户手机号</div><div class="summary-value phone-value">${maskPhone(customer.phone)}</div></div><div><div class="summary-label">客户标签</div><div class="summary-value"><div class="tag-list">${customer.tags.map(tag => `<span class="customer-tag ${tagClass(tag)}">${escapeHTML(tag)}</span>`).join('')}</div></div></div></div>`;
+    }
+
+    function openDynamics(customer) {
+      $('#detailTitle').textContent = '查看客户动态';
+      $('#detailBody').innerHTML = summaryHTML(customer) + `<div class="timeline">${customer.dynamics.map(item => `<div class="timeline-item"><span class="timeline-dot"></span><div class="timeline-title">${escapeHTML(item[0])}</div><div class="timeline-copy">${escapeHTML(item[1])}</div><div class="timeline-time">${escapeHTML(item[2])}</div></div>`).join('')}</div>`;
+      openDialog();
+    }
+
+    function openRecords(customer) {
+      $('#detailTitle').textContent = '联系记录';
+      const rows = customer.records.map(item => `<tr><td>${escapeHTML(item[0])}</td><td>${escapeHTML(item[1])}</td><td>${escapeHTML(item[2])}</td><td>${escapeHTML(item[3])}</td></tr>`).join('');
+      $('#detailBody').innerHTML = summaryHTML(customer) + `<div class="record-table"><table><thead><tr><th style="width:100px">联系渠道</th><th>联系内容</th><th style="width:100px">跟进人</th><th style="width:170px">联系时间</th></tr></thead><tbody>${rows || '<tr><td colspan="4" class="empty">暂无联系记录</td></tr>'}</tbody></table></div>`;
+      openDialog();
+    }
+
+    function openDialog() {
+      $('#detailOverlay').classList.add('show');
+      $('#detailOverlay').setAttribute('aria-hidden', 'false');
+    }
+
+    function closeDialog() {
+      $('#detailOverlay').classList.remove('show');
+      $('#detailOverlay').setAttribute('aria-hidden', 'true');
+    }
+
+    function showToast(message) {
+      clearTimeout(toastTimer);
+      $('#toast').textContent = message;
+      $('#toast').classList.add('show');
+      toastTimer = setTimeout(() => $('#toast').classList.remove('show'), 1800);
+    }
+
+    function closeHeaderMenus() {
+      $$('[data-nav-menu]').forEach(item => {
+        item.classList.remove('open');
+        item.querySelector('.nav-trigger')?.setAttribute('aria-expanded', 'false');
+      });
+    }
+
+    $('#searchButton').addEventListener('click', () => {
+      query = { name: $('#nameFilter').value.trim(), phone: $('#phoneFilter').value.trim(), tag: $('#tagFilter').value };
+      renderCustomers();
+    });
+    $('#resetButton').addEventListener('click', () => {
+      $('#nameFilter').value = ''; $('#phoneFilter').value = ''; $('#tagFilter').value = '';
+      query = { name: '', phone: '', tag: '' };
+      renderCustomers();
+    });
+    $('#phoneFilter').addEventListener('input', event => { event.target.value = event.target.value.replace(/\D/g, '').slice(0, 11); });
+    $('#customerTableBody').addEventListener('click', event => {
+      const dynamicButton = event.target.closest('[data-dynamic]');
+      const recordButton = event.target.closest('[data-records]');
+      if (dynamicButton) openDynamics(customers.find(item => item.id === Number(dynamicButton.dataset.dynamic)));
+      if (recordButton) openRecords(customers.find(item => item.id === Number(recordButton.dataset.records)));
+    });
+    $('#closeDialog').addEventListener('click', closeDialog);
+    $('#confirmDialog').addEventListener('click', closeDialog);
+    $('#detailOverlay').addEventListener('mousedown', event => { if (event.target === $('#detailOverlay')) closeDialog(); });
+
+    $('#headerNav').addEventListener('click', event => {
+      const menuTrigger = event.target.closest('[data-nav-menu] > .nav-trigger');
+      if (menuTrigger) {
+        const menu = menuTrigger.parentElement;
+        const willOpen = !menu.classList.contains('open');
+        closeHeaderMenus();
+        menu.classList.toggle('open', willOpen);
+        menuTrigger.setAttribute('aria-expanded', String(willOpen));
+        event.stopPropagation();
+        return;
+      }
+      const customerMenu = event.target.closest('[data-customer-menu]');
+      if (customerMenu) { closeHeaderMenus(); showToast(`已选择${customerMenu.dataset.customerMenu}`); return; }
+      const placeholder = event.target.closest('[data-placeholder-menu]');
+      if (placeholder) { closeHeaderMenus(); showToast(`“${placeholder.textContent.trim()}”未纳入本次原型`); }
+    });
+    document.addEventListener('click', event => { if (!event.target.closest('#headerNav')) closeHeaderMenus(); });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') { if ($('#detailOverlay').classList.contains('show')) closeDialog(); else closeHeaderMenus(); } });
+
+    renderCustomers();
+  </script>
+</body>
+</html>
