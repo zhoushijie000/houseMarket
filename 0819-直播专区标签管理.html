@@ -410,8 +410,7 @@
       <div class="nav-item" data-nav-menu>
         <a class="nav-primary-link" href="./0821-直播管理.html">运营</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开运营菜单" aria-expanded="false"><span class="chevron"></span></button>
         <div class="nav-menu" role="menu" aria-label="运营">
-          <button class="nav-menu-link" type="button" data-placeholder-menu>内容管理</button>
-          <a class="nav-menu-link" href="./0902-项目报告管理.html" style="padding-left:32px">项目报告</a>
+          <a class="nav-menu-link" href="./0902-项目报告管理.html">内容管理</a>
           <button class="nav-menu-link" type="button" data-placeholder-menu>活动报名审核</button>
           <button class="nav-menu-link" type="button" data-placeholder-menu>楼盘管理</button>
           <a class="nav-menu-link" href="./0821-直播管理.html">直播间管理</a>
@@ -478,6 +477,7 @@
           <button class="segment" data-type="news">房产资讯</button>
           <button class="segment" data-type="promotion">企业促销</button>
           <button class="segment active" data-type="live">直播专区</button>
+          <button class="segment" data-type="report">项目报告</button>
         </div>
       </div>
 
@@ -602,6 +602,7 @@
         { id: 3, sort: 3, name: '看房团', icon: 'route', createdAt: '2026-08-15 09:38:07' },
         { id: 4, sort: 4, name: '住进成都', icon: 'camera', createdAt: '2026-08-15 09:46:23' }
       ],
+      reportTags: [],
       legacy: {
         policy: [
           { id: 11, sort: 1, name: '以旧换新支持', createdAt: '2025-04-25 12:15:58' },
@@ -619,7 +620,7 @@
       }
     };
 
-    const typeNames = { policy: '政策解读', news: '房产资讯', promotion: '企业促销', live: '直播专区' };
+    const typeNames = { policy: '政策解读', news: '房产资讯', promotion: '企业促销', live: '直播专区', report: '项目报告' };
     const $ = (selector) => document.querySelector(selector);
     const $$ = (selector) => [...document.querySelectorAll(selector)];
 
@@ -635,8 +636,10 @@
       return `<svg viewBox="0 0 24 24" ${common}>${paths[type] || paths.spark}</svg>`;
     }
 
+    function editableTags() { return state.currentType === 'report' ? state.reportTags : state.liveTags; }
+
     function getRows() {
-      const source = state.currentType === 'live' ? state.liveTags : state.legacy[state.currentType];
+      const source = ['live', 'report'].includes(state.currentType) ? editableTags() : state.legacy[state.currentType];
       return source
         .filter(item => item.name.toLowerCase().includes(state.query.toLowerCase()))
         .sort((a, b) => a.sort - b.sort || a.id - b.id);
@@ -644,13 +647,16 @@
 
     function renderTable() {
       const live = state.currentType === 'live';
+      const report = state.currentType === 'report';
       const rows = getRows();
       $('#tableHead').innerHTML = live
         ? `<tr><th class="col-sort">排序</th><th class="col-name">标签名称</th><th class="col-icon">选中图标</th><th class="col-icon">未选中图标</th><th class="col-time">创建时间</th><th class="col-action">操作</th></tr>`
-        : `<tr><th class="col-sort">排序</th><th>标签</th><th class="col-time">创建时间</th><th>标签类型</th><th class="col-action">操作</th></tr>`;
+        : report ? `<tr><th class="col-sort">排序</th><th>标签名称</th><th class="col-time">创建时间</th><th class="col-action">操作</th></tr>` : `<tr><th class="col-sort">排序</th><th>标签</th><th class="col-time">创建时间</th><th>标签类型</th><th class="col-action">操作</th></tr>`;
 
       if (!rows.length) {
-        $('#tableBody').innerHTML = `<tr><td class="empty" colspan="${live ? 6 : 5}">暂无符合条件的标签</td></tr>`;
+        $('#tableBody').innerHTML = `<tr><td class="empty" colspan="${live ? 6 : report ? 4 : 5}">暂无符合条件的标签</td></tr>`;
+      } else if (report) {
+        $('#tableBody').innerHTML = rows.map(item => `<tr><td>${item.sort}</td><td class="tag-name">${escapeHtml(item.name)}</td><td>${item.createdAt}</td><td class="col-action"><button class="table-action" data-edit="${item.id}">编辑</button><button class="table-action danger" data-delete="${item.id}">删除</button></td></tr>`).join('');
       } else if (live) {
         $('#tableBody').innerHTML = rows.map(item => `
           <tr>
@@ -701,7 +707,7 @@
 
     function resetErrors() {
       $('#nameHelp').className = 'help';
-      $('#nameHelp').textContent = '建议使用2–6个汉字，用于小程序直播专区导航';
+      $('#nameHelp').textContent = state.currentType === 'report' ? '建议使用2–6个汉字，用于项目报告类型分类' : '建议使用2–6个汉字，用于小程序直播专区导航';
       $('#selectedHelp').className = 'help';
       $('#selectedHelp').textContent = '';
       $('#unselectedHelp').className = 'help';
@@ -714,7 +720,8 @@
       state.editingId = item?.id ?? null;
       state.selectedIcon = item?.selectedData || (item ? `existing:${item.icon}` : null);
       state.unselectedIcon = item?.unselectedData || (item ? `existing:${item.icon}` : null);
-      $('#modalTitle').textContent = item ? '编辑直播专区标签' : '新增直播专区标签';
+      $('#modalTitle').textContent = `${item ? '编辑' : '新增'}${typeNames[state.currentType]}标签`;
+      ['selectedFile', 'unselectedFile'].forEach(id => { $('#'+id).closest('.form-row').style.display = state.currentType === 'report' ? 'none' : ''; });
       $('#tagName').value = item?.name || '';
       $('#nameCount').textContent = $('#tagName').value.length;
       $('#tagSort').value = item?.sort || '';
@@ -774,17 +781,17 @@
         $('#nameHelp').className = 'help error';
         $('#nameHelp').textContent = '请输入标签名称';
         valid = false;
-      } else if (state.liveTags.some(item => item.id !== state.editingId && item.name === name)) {
+      } else if (editableTags().some(item => item.id !== state.editingId && item.name === name)) {
         $('#nameHelp').className = 'help error';
         $('#nameHelp').textContent = '标签名称已存在，请更换名称';
         valid = false;
       }
-      if (!state.selectedIcon) {
+      if (state.currentType === 'live' && !state.selectedIcon) {
         $('#selectedHelp').className = 'help error';
         $('#selectedHelp').textContent = '请上传选中图标';
         valid = false;
       }
-      if (!state.unselectedIcon) {
+      if (state.currentType === 'live' && !state.unselectedIcon) {
         $('#unselectedHelp').className = 'help error';
         $('#unselectedHelp').textContent = '请上传未选中图标';
         valid = false;
@@ -802,16 +809,16 @@
       const name = $('#tagName').value.trim();
       const sort = Number($('#tagSort').value);
       if (state.editingId) {
-        const item = state.liveTags.find(tag => tag.id === state.editingId);
+        const item = editableTags().find(tag => tag.id === state.editingId);
         item.name = name;
         item.sort = sort;
-        if (!String(state.selectedIcon).startsWith('existing:')) item.selectedData = state.selectedIcon;
-        if (!String(state.unselectedIcon).startsWith('existing:')) item.unselectedData = state.unselectedIcon;
+        if (state.currentType === 'live' && !String(state.selectedIcon).startsWith('existing:')) item.selectedData = state.selectedIcon;
+        if (state.currentType === 'live' && !String(state.unselectedIcon).startsWith('existing:')) item.unselectedData = state.unselectedIcon;
         showToast('标签编辑成功');
       } else {
-        state.liveTags.push({
-          id: Date.now(), sort, name, icon: 'spark', createdAt: nowText(),
-          selectedData: state.selectedIcon, unselectedData: state.unselectedIcon
+        editableTags().push({
+          id: Date.now(), sort, name, createdAt: nowText(),
+          ...(state.currentType === 'live' ? { icon: 'spark', selectedData: state.selectedIcon, unselectedData: state.unselectedIcon } : {})
         });
         showToast('标签新增成功');
       }
@@ -834,7 +841,7 @@
     $('#searchInput').addEventListener('keydown', event => { if (event.key === 'Enter') $('#searchButton').click(); });
     $('#resetButton').addEventListener('click', () => { $('#searchInput').value = ''; state.query = ''; renderTable(); });
     $('#addButton').addEventListener('click', () => {
-      if (state.currentType !== 'live') {
+      if (!['live', 'report'].includes(state.currentType)) {
         showToast('原有类型保持现有配置，请切换到“直播专区”体验新功能');
         return;
       }
@@ -845,13 +852,14 @@
       const editButton = event.target.closest('[data-edit]');
       const deleteButton = event.target.closest('[data-delete]');
       if (editButton) {
-        const item = state.liveTags.find(tag => tag.id === Number(editButton.dataset.edit));
+        const item = editableTags().find(tag => tag.id === Number(editButton.dataset.edit));
         if (item) openModal(item);
       }
       if (deleteButton) {
-        const item = state.liveTags.find(tag => tag.id === Number(deleteButton.dataset.delete));
+        const item = editableTags().find(tag => tag.id === Number(deleteButton.dataset.delete));
         if (item && window.confirm(`确认删除标签“${item.name}”吗？`)) {
-          state.liveTags = state.liveTags.filter(tag => tag.id !== item.id);
+          if (state.currentType === 'report') state.reportTags = state.reportTags.filter(tag => tag.id !== item.id);
+          else state.liveTags = state.liveTags.filter(tag => tag.id !== item.id);
           renderTable();
           showToast('标签删除成功');
         }

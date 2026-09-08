@@ -191,7 +191,7 @@
     .template-row { margin-top: 20px; display: flex; align-items: center; justify-content: space-between; }
     .template-title { font-weight: 600; color: #4d5561; }
     .template-desc { color: #9198a4; font-size: 13px; margin-top: 5px; }
-    .download-link { border: 0; background: transparent; color: var(--primary); padding: 7px; }
+    .download-link { border: 0; background: transparent; color: var(--primary); padding: 7px; flex-shrink: 0; white-space: nowrap; }
     .download-link svg { width: 17px; height: 17px; vertical-align: -4px; margin-right: 5px; }
     .upload-box { margin-top: 18px; height: 168px; border: 1px dashed #b8c6e3; border-radius: 6px; background: #fafcff; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: .2s; }
     .upload-box.dragover { border-color: var(--primary); background: #f2f6ff; }
@@ -257,8 +257,7 @@
         <a class="nav-primary-link" href="./0821-直播管理.html">运营</a>
         <button class="nav-menu-toggle" type="button" aria-label="展开运营菜单" aria-expanded="false" data-nav-toggle><svg class="nav-chevron" viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2"/></svg></button>
         <div class="nav-menu" role="menu" aria-label="运营">
-          <button class="nav-menu-link" type="button">内容管理</button>
-          <a class="nav-menu-link" href="./0902-项目报告管理.html" style="padding-left:32px">项目报告</a>
+          <a class="nav-menu-link" href="./0902-项目报告管理.html">内容管理</a>
           <a class="nav-menu-link" href="./0821-直播管理.html">直播间管理</a>
           <a class="nav-menu-link" href="./0828-专题管理.html">专题管理</a>
           <a class="nav-menu-link" href="./0831-区县管理.html">区县管理</a>
@@ -367,7 +366,12 @@
           <div class="upload-hint">支持 .xls、.xlsx、.csv 文件，单次最多导入 1000 条</div>
           <input type="file" id="fileInput" accept=".xls,.xlsx,.csv" hidden>
         </div>
+        <div class="template-row">
+          <div><div class="template-title">导入失败模板</div><div class="template-desc">在“对外展示总价（万元）”后增加“失败原因”列。<br>失败原因：未匹配房源、价格格式不正确。</div></div>
+          <button class="download-link" id="downloadFailureTemplate" type="button">下载失败模板</button>
+        </div>
         <div class="file-card" id="fileCard"><div class="file-type">XLS</div><div class="file-info"><div class="file-name" id="fileName"></div><div class="file-result" id="fileResult">文件校验通过</div></div><button class="file-remove" id="removeFile">×</button></div>
+        <div id="importFailureResult" hidden style="margin-top:12px;padding:12px 14px;background:#fff2f0;border:1px solid #ffccc7;border-radius:5px;color:#c7473e"><span id="importFailureSummary"></span><button class="download-link" id="downloadFailedRows" type="button">下载失败明细</button><div class="template-desc">仅导入校验通过的房源；失败行保留原始数据，可下载后修正并重新导入。</div></div>
       </div>
       <div class="modal-footer"><button class="btn" data-close="importModal">取 消</button><button class="btn btn-primary" id="confirmImport" disabled>确认导入</button></div>
     </div>
@@ -508,6 +512,21 @@
 
     // Excel 兼容模板下载与导入
     let importedRows = [];
+    let failedRows = [];
+    const failureResult = document.getElementById('importFailureResult');
+    function downloadFailureFile(rows, filename) {
+      const headers = ['分期名','楼栋','单元','层','房号','面积（㎡）','预售证','对外展示总价（万元）','失败原因'];
+      const html = `<html><head><meta charset="UTF-8"></head><body><table><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr>${rows.map(row => `<tr>${row.map(value => `<td style="mso-number-format:'\\@'">${escapeHtml(String(value ?? ''))}</td>`).join('')}</tr>`).join('')}</table></body></html>`;
+      const url = URL.createObjectURL(new Blob(['\ufeff', html], {type:'application/vnd.ms-excel;charset=utf-8'}));
+      const link = document.createElement('a'); link.href = url; link.download = filename; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+    document.getElementById('downloadFailureTemplate').addEventListener('click', () => {
+      downloadFailureFile([
+        ['示例分期','1','1','1','101','100.00','','100.00','未匹配房源'],
+        ['示例分期','1','1','1','102','100.00','','价格填写示例','价格格式不正确']
+      ], '对外展示价格导入失败模板.xls');
+    });
+    document.getElementById('downloadFailedRows').addEventListener('click', () => downloadFailureFile(failedRows, '对外展示价格导入失败明细.xls'));
     const fileInput = document.getElementById('fileInput');
     const chooseFile = document.getElementById('chooseFile');
     const dropzone = document.getElementById('dropzone');
@@ -529,6 +548,7 @@
 
     async function handleFile(file) {
       importedRows = [];
+      failedRows = []; failureResult.hidden = true;
       document.getElementById('confirmImport').disabled = true;
       document.getElementById('fileCard').classList.remove('show');
       const ext = file.name.split('.').pop().toLowerCase();
@@ -537,22 +557,48 @@
       if (ext !== 'xlsx') {
         try {
           const text = await file.text();
-          const plain = text.replace(/<\/tr>/gi, '\n').replace(/<\/t[dh]>/gi, ',').replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ');
-          plain.split(/\r?\n/).forEach(line => {
-            const cols = line.split(/[,\t，]/).map(s => s.trim());
+          let rows;
+          if (/<table[\s>]/i.test(text)) {
+            const doc = new DOMParser().parseFromString(text, 'text/html');
+            rows = [...doc.querySelectorAll('tr')].map(row => [...row.querySelectorAll('td,th')].map(cell => cell.textContent.trim()));
+          } else {
+            rows = []; let row = [], cell = '', quoted = false;
+            for (let i = 0; i < text.length; i++) {
+              const char = text[i];
+              if (char === '"') { if (quoted && text[i + 1] === '"') { cell += '"'; i++; } else quoted = !quoted; }
+              else if (!quoted && [',','\t','，'].includes(char)) { row.push(cell.trim()); cell = ''; }
+              else if (!quoted && (char === '\n' || char === '\r')) { if (char === '\r' && text[i + 1] === '\n') i++; row.push(cell.trim()); rows.push(row); row = []; cell = ''; }
+              else cell += char;
+            }
+            row.push(cell.trim()); rows.push(row);
+          }
+          rows = rows.filter(cols => cols.some(value => value.trim()));
+          if (rows[0]?.[0].replace(/^\uFEFF/, '') === '分期名') rows.shift();
+          if (rows.length > 1000) { showToast('单次最多导入 1000 条', 'error'); return; }
+          rows.forEach(values => {
+            const cols = Array.from({length:8}, (_, i) => values[i] || '');
             const matches = houses.filter(h => h.phase === cols[0] && String(h.building) === cols[1] && String(h.unit) === cols[2] && String(h.floor) === cols[3] && h.room === cols[4]);
-            if (matches.length === 1 && Number.isFinite(Number(cols[7])) && Number(cols[7]) > 0 && Number(cols[5]) === matches[0].area) importedRows.push({id:matches[0].id, permit:cols[6], total:Number(cols[7])});
+            const reasons = [];
+            if (matches.length !== 1 || Number(cols[5]) !== matches[0].area) reasons.push('未匹配房源');
+            if (!/^\d+(?:\.\d+)?$/.test(cols[7]) || !Number.isFinite(Number(cols[7])) || Number(cols[7]) <= 0) reasons.push('价格格式不正确');
+            if (reasons.length) failedRows.push([...cols, reasons.join('；')]);
+            else importedRows.push({id:matches[0].id, permit:cols[6], total:Number(cols[7])});
           });
         } catch (_) { importedRows = []; }
       }
-      if (!importedRows.length) { showToast(ext === 'xlsx' ? '当前原型请使用下载的模板或 CSV 文件导入' : '未匹配到有效房源，请核对房源信息、面积及最后一列展示总价', 'error'); return; }
+      if (failedRows.length) {
+        failureResult.hidden = false;
+        document.getElementById('importFailureSummary').textContent = `${failedRows.length} 条导入失败，可下载失败原因明细。`;
+      }
+      if (!importedRows.length && !failedRows.length) { showToast(ext === 'xlsx' ? '当前原型请使用下载的模板或 CSV 文件导入' : '未读取到房源数据，请核对文件内容', 'error'); return; }
       document.getElementById('fileName').textContent = file.name;
-      document.getElementById('fileResult').textContent = `文件校验通过，可匹配 ${importedRows.length} 套房源`;
+      document.getElementById('fileResult').textContent = `校验通过 ${importedRows.length} 条，失败 ${failedRows.length} 条`;
       document.getElementById('fileCard').classList.add('show');
-      document.getElementById('confirmImport').disabled = false;
+      document.getElementById('confirmImport').disabled = importedRows.length === 0;
     }
 
     document.getElementById('removeFile').addEventListener('click', () => {
+      failedRows = []; failureResult.hidden = true;
       importedRows = []; fileInput.value = ''; document.getElementById('fileCard').classList.remove('show'); document.getElementById('confirmImport').disabled = true;
     });
     document.getElementById('confirmImport').addEventListener('click', () => {

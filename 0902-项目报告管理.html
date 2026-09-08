@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>项目报告管理</title>
+  <title>内容管理 - 项目报告</title>
   <style>
     :root {
       --primary: #3f6fe8;
@@ -65,7 +65,7 @@
     .more-actions { margin-left: auto; display: flex; align-items: center; gap: 12px; color: var(--regular); }
 
     /* 报告列表 */
-    .report-page { min-height: calc(100vh - 118px); padding: 0 12px 14px; display: grid; grid-template-columns: 312px minmax(780px, 1fr); gap: 12px; }
+    .report-page { min-height: calc(100vh - 118px); padding: 0 12px 14px; display: block; }
     .org-panel { padding: 22px 20px; background: #fff; }
     .org-title { margin-bottom: 22px; color: #263447; font-size: 16px; }
     .org-search { height: 36px; padding: 0 12px; display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); border-radius: 4px; color: var(--placeholder); }
@@ -76,6 +76,10 @@
     .folder { width: 15px; height: 12px; position: relative; border: 1.5px solid currentColor; border-radius: 2px; }
     .folder::before { content: ""; width: 7px; height: 3px; position: absolute; left: 1px; top: -4px; border: 1.5px solid currentColor; border-bottom: 0; border-radius: 2px 2px 0 0; }
     .report-main { min-width: 0; }
+    .content-tabs { display: flex; align-items: center; min-height: 54px; padding: 0 20px; background: #fff; border-bottom: 1px solid var(--border-light); }
+    .content-tab { align-self: stretch; padding: 0 8px; color: var(--regular); background: transparent; border: 0; border-bottom: 2px solid transparent; }
+    .content-tab.is-active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
+    .content-tab:focus-visible { outline: 2px solid var(--primary); outline-offset: -4px; }
     .filter-card { min-height: 86px; padding: 20px; display: flex; align-items: center; gap: 12px; background: #fff; }
     .filter-group { display: flex; align-items: center; gap: 12px; }
     .filter-label { min-width: 72px; color: var(--regular); font-size: 15px; }
@@ -86,7 +90,7 @@
     .btn:hover { color: var(--primary); border-color: #9eb5f2; }
     .btn-primary { color: #fff; background: var(--primary); border-color: var(--primary); }
     .btn-primary:hover { color: #fff; background: var(--primary-hover); border-color: var(--primary-hover); }
-    .report-card { min-height: calc(100vh - 232px); margin-top: 12px; padding: 20px; background: #fff; }
+    .report-card { min-height: calc(100vh - 286px); margin-top: 12px; padding: 20px; background: #fff; }
     .report-toolbar { margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; }
     .toolbar-note { color: var(--muted); font-size: 13px; }
     .table-wrap { overflow-x: auto; border: 1px solid var(--border-light); }
@@ -99,6 +103,7 @@
     .summary-cell { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .status { padding: 4px 9px; display: inline-flex; border-radius: 10px; font-size: 12px; }
     .status-published { color: #218762; background: #eaf8f2; }
+    .status-unpublished { color: #909399; background: #f2f3f5; }
     .action-link { padding: 4px 6px; color: var(--primary); background: transparent; border: 0; white-space: nowrap; }
     .action-link.danger { color: var(--danger); }
 
@@ -169,7 +174,7 @@
     <nav class="header-nav" id="headerNav" aria-label="主导航">
       <div class="nav-item" data-nav-menu><a class="nav-primary-link" href="./0715-房源展示价格管理.html">项目</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开项目菜单" aria-expanded="false"><span class="chevron"></span></button><div class="nav-menu" role="menu" aria-label="项目"><a class="nav-menu-link" href="./0715-房源展示价格管理.html">房源管理</a><a class="nav-menu-link" href="./0902-户型图VR链接管理.html">项目管理</a></div></div>
       <div class="nav-item"><a class="nav-primary-link" href="./registration-workbench/admin.html">申请</a></div>
-      <div class="nav-item active" data-nav-menu><a class="nav-primary-link" href="./0821-直播管理.html">运营</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开运营菜单" aria-expanded="false"><span class="chevron"></span></button><div class="nav-menu" role="menu" aria-label="运营"><button class="nav-menu-link" type="button">内容管理</button><a class="nav-menu-link active" href="./0902-项目报告管理.html" aria-current="page" style="padding-left:32px">项目报告</a><a class="nav-menu-link" href="./0821-直播管理.html">直播间管理</a><a class="nav-menu-link" href="./0828-专题管理.html">专题管理</a><a class="nav-menu-link" href="./0831-区县管理.html">区县管理</a></div></div>
+      <div class="nav-item active" data-nav-menu><a class="nav-primary-link" href="./0821-直播管理.html">运营</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开运营菜单" aria-expanded="false"><span class="chevron"></span></button><div class="nav-menu" role="menu" aria-label="运营"><a class="nav-menu-link active" href="./0902-项目报告管理.html" aria-current="page">内容管理</a><a class="nav-menu-link" href="./0821-直播管理.html">直播间管理</a><a class="nav-menu-link" href="./0828-专题管理.html">专题管理</a><a class="nav-menu-link" href="./0831-区县管理.html">区县管理</a></div></div>
       <div class="nav-item"><a class="nav-primary-link" href="./网签成交.html">统计</a></div>
       <div class="nav-item" data-nav-menu><a class="nav-primary-link" href="./0831-客户管理.html">客户</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开客户菜单" aria-expanded="false"><span class="chevron"></span></button><div class="nav-menu" role="menu" aria-label="客户"><a class="nav-menu-link" href="./0831-客户管理.html">客户管理</a></div></div>
       <div class="nav-item"><a class="nav-primary-link" href="./购房政策.html">政务</a></div>
@@ -179,33 +184,32 @@
     <div class="user"><div class="avatar"></div><div class="user-name">周世杰</div></div>
   </header>
 
-  <div class="workspace-tabs"><div class="workspace-tab">选择企业</div><div class="workspace-tab">内容管理</div><div class="workspace-tab active">项目报告 <span class="close">×</span></div><div class="more-actions">更多操作 <span class="chevron"></span></div></div>
+  <div class="workspace-tabs"><div class="workspace-tab">选择企业</div><div class="workspace-tab active">内容管理 <span class="close">×</span></div><div class="more-actions">更多操作 <span class="chevron"></span></div></div>
 
   <main class="report-page">
-    <aside class="org-panel">
-      <div class="org-title">机构列表</div>
-      <label class="org-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"></circle><path d="m16.2 16.2 4 4"></path></svg><input placeholder="请输入关键词"></label>
-      <div class="org-tree"><span class="chevron" style="color:#b6beca;transform:rotate(-45deg)"></span><span class="folder"></span>成都市住房和城乡建设局</div>
-    </aside>
-
-    <section class="report-main">
+<section class="report-main">
+      <div class="content-tabs" role="tablist" aria-label="内容管理">
+        <button class="content-tab is-active" type="button" role="tab" id="projectReportTab" aria-selected="true" aria-controls="projectReportPanel">项目报告</button>
+      </div>
+      <div id="projectReportPanel" role="tabpanel" aria-labelledby="projectReportTab">
       <div class="filter-card">
         <div class="filter-group"><span class="filter-label">项目/分期</span><input class="control-input" id="filterKeyword" placeholder="请输入项目或分期名称"></div>
-        <div class="filter-group"><span class="filter-label" style="min-width:42px">状态</span><select class="control-select" id="filterStatus"><option value="">全部</option><option value="已发布">已发布</option></select></div>
+        <div class="filter-group"><span class="filter-label" style="min-width:42px">状态</span><select class="control-select" id="filterStatus"><option value="">全部</option><option value="已发布">已发布</option><option value="未发布">未发布</option></select></div>
         <button class="btn btn-primary" id="searchReport" type="button">查询</button><button class="btn" id="resetReport" type="button">重置</button>
       </div>
       <div class="report-card">
         <div class="report-toolbar"><button class="btn btn-primary" id="newReport" type="button">新增项目报告</button><span class="toolbar-note">报告按项目分期维护，同一分期保留一份当前报告</span></div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th style="width:22%">项目/分期名称</th><th style="width:34%">一句话总结</th><th style="width:15%">更新时间</th><th style="width:9%">状态</th><th style="width:20%">操作</th></tr></thead>
+            <thead><tr><th style="width:22%">分期名称</th><th style="width:34%">总结</th><th style="width:15%">更新时间</th><th style="width:9%">状态</th><th style="width:20%">操作</th></tr></thead>
             <tbody id="reportTableBody">
-              <tr data-name="招商时代花园一期" data-status="已发布"><td class="report-name">招商时代花园一期</td><td class="summary-cell">项目周边生活与交通基础较成熟，小高层和改善型户型是主要亮点。</td><td>2026-09-02 11:20</td><td><span class="status status-published">已发布</span></td><td><button class="action-link edit-report" type="button">编辑</button><button class="action-link preview-report" type="button">预览</button><button class="action-link danger delete-report" type="button">删除</button></td></tr>
-              <tr data-name="星河七栖里一期" data-status="已发布"><td class="report-name">星河七栖里一期</td><td class="summary-cell">板块生活基础成熟，产品定位偏向主城刚改家庭。</td><td>2026-09-01 16:42</td><td><span class="status status-published">已发布</span></td><td><button class="action-link edit-report" type="button">编辑</button><button class="action-link preview-report" type="button">预览</button><button class="action-link danger delete-report" type="button">删除</button></td></tr>
-              <tr data-name="绿城桂语兰庭一期" data-status="已发布"><td class="report-name">绿城桂语兰庭一期</td><td class="summary-cell">低密度基础与生活半径是项目的主要居住价值。</td><td>2026-08-30 09:18</td><td><span class="status status-published">已发布</span></td><td><button class="action-link edit-report" type="button">编辑</button><button class="action-link preview-report" type="button">预览</button><button class="action-link danger delete-report" type="button">删除</button></td></tr>
+              <tr data-name="招商时代花园一期" data-status="已发布"><td class="report-name">招商时代花园一期</td><td class="summary-cell">项目周边生活与交通基础较成熟，小高层和改善型户型是主要亮点。</td><td>2026-09-02 11:20</td><td><span class="status status-published">已发布</span></td><td><button class="action-link edit-report" type="button">编辑</button><button class="action-link toggle-report" type="button">取消发布</button><button class="action-link danger delete-report" type="button">删除</button></td></tr>
+              <tr data-name="星河七栖里一期" data-status="已发布"><td class="report-name">星河七栖里一期</td><td class="summary-cell">板块生活基础成熟，产品定位偏向主城刚改家庭。</td><td>2026-09-01 16:42</td><td><span class="status status-published">已发布</span></td><td><button class="action-link edit-report" type="button">编辑</button><button class="action-link toggle-report" type="button">取消发布</button><button class="action-link danger delete-report" type="button">删除</button></td></tr>
+              <tr data-name="绿城桂语兰庭一期" data-status="已发布"><td class="report-name">绿城桂语兰庭一期</td><td class="summary-cell">低密度基础与生活半径是项目的主要居住价值。</td><td>2026-08-30 09:18</td><td><span class="status status-published">已发布</span></td><td><button class="action-link edit-report" type="button">编辑</button><button class="action-link toggle-report" type="button">取消发布</button><button class="action-link danger delete-report" type="button">删除</button></td></tr>
             </tbody>
           </table>
         </div>
+      </div>
       </div>
     </section>
   </main>
@@ -216,7 +220,7 @@
       <form class="form-card" id="reportForm" novalidate>
         <div class="form-section-title">报告内容</div>
         <div class="form-row"><label class="form-label required" for="phaseInput">分析项目</label><div class="form-control"><div class="select-project"><input class="form-input" id="phaseInput" readonly placeholder="请选择项目分期"><button class="btn" id="openPhasePicker" type="button">选择分期</button></div><div class="field-help" id="phaseError">请选择需要分析的具体项目分期</div></div></div>
-        <div class="form-row"><label class="form-label required" for="summaryInput">Deepseek一句话总结</label><div class="form-control"><div class="textarea-wrap"><textarea class="form-textarea summary counted" id="summaryInput" maxlength="200" data-counter="summaryCount" placeholder="请输入一句话总结，概括项目整体定位与适合人群"></textarea><span class="counter"><span id="summaryCount">0</span>/200</span></div><div class="field-help">建议控制在40～80字，面向用户自然表达</div></div></div>
+        <div class="form-row"><label class="form-label required" for="summaryInput">总结</label><div class="form-control"><div class="textarea-wrap"><textarea class="form-textarea summary counted" id="summaryInput" maxlength="200" data-counter="summaryCount" placeholder="请输入总结，概括项目整体定位与适合人群"></textarea><span class="counter"><span id="summaryCount">0</span>/200</span></div><div class="field-help">建议控制在40～80字，面向用户自然表达</div></div></div>
         <div class="form-row"><label class="form-label required" for="blockInput">板块价值分析</label><div class="form-control"><div class="textarea-wrap"><textarea class="form-textarea counted" id="blockInput" maxlength="2000" data-counter="blockCount" placeholder="请输入板块定位、发展成熟度、产业基础、人口导入及城市规划等分析"></textarea><span class="counter"><span id="blockCount">0</span>/2000</span></div></div></div>
         <div class="form-row"><label class="form-label required" for="trafficInput">区位交通分析</label><div class="form-control"><div class="textarea-wrap"><textarea class="form-textarea counted" id="trafficInput" maxlength="2000" data-counter="trafficCount" placeholder="请输入轨道交通、主干道、核心商圈及实际通勤便利性分析"></textarea><span class="counter"><span id="trafficCount">0</span>/2000</span></div></div></div>
         <div class="form-row"><label class="form-label required" for="facilityInput">周边配套分析</label><div class="form-control"><div class="textarea-wrap"><textarea class="form-textarea counted" id="facilityInput" maxlength="2000" data-counter="facilityCount" placeholder="请输入商业、教育、医疗、公园及生活服务配套分析，并区分已建成和规划中"></textarea><span class="counter"><span id="facilityCount">0</span>/2000</span></div></div></div>
@@ -298,7 +302,7 @@
       if (row) {
         phaseInput.value = row.dataset.name;
         summaryInput.value = row.querySelector('.summary-cell').textContent.trim();
-        Object.entries(sampleContent).forEach(([id, value]) => { document.getElementById(id).value = value; });
+        Object.entries(sampleContent).forEach(([id, value]) => { document.getElementById(id).value = row.reportContent?.[id] ?? value; });
         textFields.forEach(updateCounter);
       }
       editorShell.classList.add('show');
@@ -338,26 +342,30 @@
     }
 
     function submitReport() {
-      const status = '已发布';
+      const status = editingRow ? editingRow.dataset.status : '未发布';
       if (!validateForm(true)) { notify('请完整填写项目分期和五项报告内容', true); return; }
       if (editingRow) {
         editingRow.dataset.name = phaseInput.value;
         editingRow.dataset.status = status;
         editingRow.querySelector('.report-name').textContent = phaseInput.value;
-        editingRow.querySelector('.summary-cell').textContent = summaryInput.value.trim() || '暂未填写一句话总结';
+        editingRow.querySelector('.summary-cell').textContent = summaryInput.value.trim() || '暂未填写总结';
         editingRow.children[2].textContent = currentTime();
         const statusCell = editingRow.children[3];
-        statusCell.innerHTML = '<span class="status status-published">已发布</span>';
+        statusCell.innerHTML = reportStatusMarkup(status);
       } else {
         const row = document.createElement('tr');
-        const reportSummary = summaryInput.value.trim() || '暂未填写一句话总结';
+        const reportSummary = summaryInput.value.trim() || '暂未填写总结';
         row.dataset.name = phaseInput.value;
         row.dataset.status = status;
-        row.innerHTML = `<td class="report-name">${escapeHtml(phaseInput.value)}</td><td class="summary-cell">${escapeHtml(reportSummary)}</td><td>${currentTime()}</td><td><span class="status status-published">已发布</span></td><td><button class="action-link edit-report" type="button">编辑</button><button class="action-link preview-report" type="button">预览</button><button class="action-link danger delete-report" type="button">删除</button></td>`;
+        row.innerHTML = `<td class="report-name">${escapeHtml(phaseInput.value)}</td><td class="summary-cell">${escapeHtml(reportSummary)}</td><td>${currentTime()}</td><td>${reportStatusMarkup(status)}</td><td><button class="action-link edit-report" type="button">编辑</button><button class="action-link toggle-report" type="button">发布</button><button class="action-link danger delete-report" type="button">删除</button></td>`;
         document.getElementById('reportTableBody').prepend(row);
         bindRowActions();
       }
-      notify('项目报告已保存并发布');
+      const savedRow = editingRow || document.getElementById('reportTableBody').firstElementChild;
+      savedRow.reportContent = Object.fromEntries(textFields.map(field => [field.id, field.value.trim()]));
+      bindRowActions();
+      filterReports(false);
+      notify(status === '未发布' ? '项目报告已保存，可在列表中发布' : '项目报告已保存');
       closeEditor();
     }
 
@@ -400,18 +408,35 @@
     document.getElementById('searchPhase').addEventListener('click', filterPhase);
     document.getElementById('resetPhase').addEventListener('click', () => { document.getElementById('phaseKeyword').value = ''; filterPhase(); });
 
+    function reportStatusMarkup(status) {
+      return `<span class="status ${status === '已发布' ? 'status-published' : 'status-unpublished'}">${status}</span>`;
+    }
+
     function bindRowActions() {
       document.querySelectorAll('.edit-report').forEach(button => button.onclick = () => openEditor(button.closest('tr')));
-      document.querySelectorAll('.preview-report').forEach(button => button.onclick = () => window.open('./0902-楼盘AI分析.html', '_blank'));
+      document.querySelectorAll('.toggle-report').forEach(button => {
+        const row = button.closest('tr');
+        button.textContent = row.dataset.status === '已发布' ? '取消发布' : '发布';
+        button.onclick = () => {
+          const nextStatus = row.dataset.status === '已发布' ? '未发布' : '已发布';
+          if (nextStatus === '未发布' && !confirm('确定取消发布该项目报告吗？')) return;
+          row.dataset.status = nextStatus;
+          row.children[3].innerHTML = reportStatusMarkup(nextStatus);
+          row.children[2].textContent = currentTime();
+          button.textContent = nextStatus === '已发布' ? '取消发布' : '发布';
+          filterReports(false);
+          notify(nextStatus === '已发布' ? '项目报告已发布' : '项目报告已取消发布');
+        };
+      });
       document.querySelectorAll('.delete-report').forEach(button => button.onclick = () => { if (confirm('确定删除该项目报告吗？')) { button.closest('tr').remove(); notify('项目报告已删除'); } });
     }
     bindRowActions();
 
-    function filterReports() {
+    function filterReports(showFeedback = true) {
       const keyword = document.getElementById('filterKeyword').value.trim().toLowerCase();
       const status = document.getElementById('filterStatus').value;
       document.querySelectorAll('#reportTableBody tr').forEach(row => { row.hidden = (keyword && !row.dataset.name.toLowerCase().includes(keyword)) || (status && row.dataset.status !== status); });
-      notify('查询完成');
+      if (showFeedback) notify('查询完成');
     }
     document.getElementById('searchReport').addEventListener('click', filterReports);
     document.getElementById('resetReport').addEventListener('click', () => { document.getElementById('filterKeyword').value = ''; document.getElementById('filterStatus').value = ''; filterReports(); });
