@@ -3727,6 +3727,10 @@
       white-space: nowrap;
       flex-shrink: 0;
     }
+    #messageScreen .message-list-item__sender { display: flex; align-items: center; gap: 6px; min-width: 0; }
+    .message-list-item__name { overflow: hidden; text-overflow: ellipsis; }
+    .message-list-item__advisor-tag { flex-shrink: 0; padding: 2px 5px; border: 1px solid #ffd9c2; border-radius: 4px; background: #fff3eb; color: #fd5d00; font-size: 10px; font-weight: 400; line-height: 1.4; }
+    .message-list-item__estate { color: #909399; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
     #messageScreen .message-list-item__preview {
       color: #606266;
@@ -4017,18 +4021,20 @@
     }
 
     #messageDetailScreen .message-thread__reply {
-      display: grid;
-      justify-items: start;
-      gap: 4px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
     }
 
     #messageDetailScreen .message-thread__reply.is-user {
-      justify-items: end;
+      justify-content: flex-end;
       margin-right: 0;
     }
 
-    #messageDetailScreen .message-thread__reply span {
-      max-width: 86%;
+    #messageDetailScreen .message-thread__reply > span {
+      max-width: calc(100% - 56px);
+      min-width: 0;
+      overflow-wrap: anywhere;
       padding: 10px 12px;
       border-radius: 14px;
       background: #ffffff;
@@ -4042,7 +4048,46 @@
       background: #ff7b2b;
       color: #ffffff;
     }
+    #messageDetailScreen .message-thread__reply .message-thread__avatar img { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; }
 
+    .message-estate { margin-left: 6px; font-size: 11px; font-weight: 400; color: #909399; }
+    .message-wechat-number { display: block; margin: 6px 0 10px; user-select: text; overflow-wrap: anywhere; }
+    .message-wechat-copy { border: 1px solid #fd5d00; border-radius: 6px; padding: 6px 12px; color: #fd5d00; background: #fff; cursor: pointer; }
+    .message-contact { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #fff; border-bottom: 1px solid #eee; }
+    .message-contact[hidden] { display: none; }
+    .message-contact__avatar { display: grid; place-items: center; width: 46px; height: 46px; flex-shrink: 0; border-radius: 50%; background: #fff0e6; color: #fd5d00; overflow: hidden; }
+    .message-contact__avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .message-contact__info { flex: 1; min-width: 0; }
+    [data-open-advisor-profile] { cursor: pointer; }
+    .advisor-profile-body { padding: 16px; background: #f4f5f7; min-height: calc(100vh - 88px); }
+    .advisor-profile-card { padding: 20px; background: #fff; border-radius: 12px; margin-bottom: 12px; }
+    .advisor-profile-heading { display: flex; align-items: center; gap: 12px; }
+    .advisor-profile-active { margin: 18px 0 0; font-size: 13px; color: #606266; }
+    .advisor-profile-stats { display: grid; grid-template-columns: 1fr 1fr; text-align: center; gap: 12px; }
+    .advisor-profile-stats strong { display: block; font-size: 28px; color: #fd5d00; margin-bottom: 6px; }
+    .advisor-profile-stats span { font-size: 13px; color: #606266; }
+    .advisor-profile-note { color: #909399; font-size: 12px; margin: 14px 0 0; line-height: 1.6; }
+    .advisor-profile-card .message-block-row { padding: 0; border: 0; }
+    .advisor-profile-card .message-block-notice { margin-top: 12px; }
+    .message-contact__name { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-size: 15px; font-weight: 600; color: #303133; }
+    .message-contact__project { margin-top: 5px; font-size: 12px; color: #909399; overflow-wrap: anywhere; }
+    #messageDetailScreen .message-thread__sender { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+    #messageWechatButton { border: 1px solid #fd5d00; border-radius: 8px; background: #fd5d00; color: #fff; font-size: 12px; font-weight: 600; white-space: nowrap; padding: 9px 14px; flex-shrink: 0; cursor: pointer; }
+    #messageWechatButton:active { background: #e65300; border-color: #e65300; }
+    .message-contact { flex-wrap: wrap; }
+    .message-contact__actions { display: flex; gap: 8px; margin-left: auto; }
+    .message-block-row { display: flex; align-items: center; justify-content: space-between; width: 100%; padding-top: 10px; border-top: 1px solid #f0f0f0; font-size: 13px; color: #606266; }
+    #messageBlockToggle { position: relative; width: 40px; height: 24px; padding: 0; border: 0; border-radius: 12px; background: #dcdfe6; cursor: pointer; }
+    #messageBlockToggle::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: #fff; border-radius: 50%; transition: transform .15s; }
+    #messageBlockToggle[aria-checked="true"] { background: #fd5d00; }
+    #messageBlockToggle[aria-checked="true"]::after { transform: translateX(16px); }
+    .message-block-notice { width: 100%; margin: 0; font-size: 12px; line-height: 1.6; color: #c74100; }
+    .message-block-notice[hidden] { display: none; }
+    #messagePhoneButton { display: inline-flex; align-items: center; border: 1px solid #fd5d00; border-radius: 8px; padding: 9px 14px; background: #fff; color: #fd5d00; font-size: 12px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+    #messagePhoneButton[aria-disabled="true"] { border-color: #ddd; color: #999; cursor: default; }
+    #messagePhoneButton[hidden] { display: none; }
+    @media (max-width: 480px) { .message-contact__info { flex-basis: calc(100% - 58px); } }
+    #messageDetailScreen .message-thread__reply img { display: block; max-width: 100%; max-height: 240px; border-radius: 8px; object-fit: contain; }
     .message-online {
       position: sticky;
       bottom: 0;
@@ -4058,28 +4103,47 @@
     }
 
     .message-online__quick {
+      padding: 24px 8px 30px;
+      border-top: 1px solid #e9e9e9;
+      background: #f7f7f7;
+      margin: 0 -12px;
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
     }
 
     .message-online__quick button {
-      min-height: 34px;
-      border: 1px solid rgba(253, 93, 0, 0.16);
-      border-radius: 999px;
-      background: #fff7f0;
-      color: #c74100;
-      font-size: 11px;
-      font-weight: 700;
+      display: grid;
+      justify-items: center;
+      gap: 9px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: #808080;
+      font-size: 12px;
+      font-weight: 400;
+      cursor: pointer;
       white-space: nowrap;
     }
 
+    .message-common { position: relative; min-width: 0; }
+    .message-common__toggle { padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 16px; background: #fff; color: #606266; font: inherit; font-size: 12px; cursor: pointer; }
+    .message-common__toggle[aria-expanded="true"] { color: #fd5d00; border-color: #fd5d00; background: #fff7f0; }
+    .message-common__list { position: absolute; bottom: calc(100% + 10px); left: 0; width: 100%; max-height: 260px; overflow-y: auto; padding: 6px; display: grid; background: #fff; border: 1px solid #ebeef5; border-radius: 12px; box-shadow: 0 6px 24px rgba(17, 24, 39, .14); }
+    .message-common__list[hidden] { display: none; }
+    .message-common__list button { padding: 12px 10px; border: 0; border-radius: 6px; background: #fff; color: #303133; font: inherit; font-size: 13px; text-align: left; cursor: pointer; }
+    .message-common__list button:hover, .message-common__list button:focus-visible { border-color: #fd5d00; color: #fd5d00; outline-offset: 2px; }
     .message-online__form {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 54px;
+      grid-template-columns: minmax(0, 1fr) 54px 38px;
       gap: 6px;
     }
 
+    .message-online__quick[hidden] { display: none; }
+    .message-media-icon { display: grid; place-items: center; width: 58px; height: 58px; border-radius: 14px; background: #fff; color: #303133; }
+    .message-media-icon svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .message-online__form #messageMediaToggle { padding: 0; border: 1px solid #dcdfe6; background: #fff; color: #606266; font-size: 26px; line-height: 1; border-radius: 50%; cursor: pointer; }
+    .message-online__form #messageMediaToggle[aria-expanded="true"] { color: #fd5d00; border-color: #fd5d00; background: #fff7f0; }
     .message-online__form input {
       width: 100%;
       min-height: 38px;
@@ -8190,18 +8254,24 @@
                 <span class="topbar-pill__icon topbar-pill__icon--home">⌂</span>
               </button>
             </div>
-            <span class="topbar__title" id="messageDetailTopbarTitle">成都住建房产超市</span>
+            <span class="topbar__title" id="messageDetailTopbarTitle">消息通知</span>
             <div class="topbar-pill topbar-pill--trailing">
-              <button class="topbar-pill__button" type="button" aria-label="更多操作">
-                <span class="topbar-pill__icon topbar-pill__icon--more">•••</span>
-              </button>
-              <button class="topbar-pill__button" type="button" aria-label="消息详情">
-                <span class="topbar-pill__icon topbar-pill__icon--target">◎</span>
-              </button>
+              <button class="topbar-pill__button" type="button" aria-label="更多操作"><span class="topbar-pill__icon topbar-pill__icon--more">•••</span></button>
+              <button class="topbar-pill__button" type="button" aria-label="消息详情"><span class="topbar-pill__icon topbar-pill__icon--target">◎</span></button>
             </div>
           </div>
         </header>
-
+        <div class="message-contact" id="messageContact" hidden>
+          <div class="message-contact__avatar" id="messageContactAvatar" data-open-advisor-profile role="button" tabindex="0" aria-label="查看置业顾问详情"></div>
+          <div class="message-contact__info" data-open-advisor-profile role="button" tabindex="0" aria-label="查看置业顾问详情">
+            <div class="message-contact__name" id="messageContactName"></div>
+            <div class="message-contact__project" id="messageContactProject"></div>
+          </div>
+          <div class="message-contact__actions">
+            <button id="messageWechatButton" type="button" hidden>交换微信</button>
+            <a id="messagePhoneButton" hidden>电话联系</a>
+          </div>
+        </div>
         <div class="page-content">
           <section class="message-thread">
             <div class="message-thread__body">
@@ -8219,25 +8289,65 @@
                       <span class="message-thread__card-action">立即查看</span>
                     </button>
                   </div>
-                  <div class="message-thread__conversation" id="messageDetailConversation"></div>
                 </div>
               </div>
+              <div class="message-thread__conversation" id="messageDetailConversation"></div>
             </div>
 
             <div class="message-online" id="messageOnlinePanel" hidden>
-              <div class="message-online__quick" id="messageOnlineQuick">
-                <button type="button" data-message-reply="获取置业顾问微信号">获取置业顾问微信号</button>
-                <button type="button" data-message-reply="咨询对应房源">咨询对应房源</button>
+              <div class="message-common">
+                <button class="message-common__toggle" id="messageCommonToggle" type="button" aria-expanded="false" aria-controls="messageCommonPhrases">常用语</button>
+                <div class="message-common__list" id="messageCommonPhrases" aria-label="选择常用语" hidden>
+                  <button type="button">您好，想咨询一下楼盘信息。</button>
+                  <button type="button">请问目前有哪些在售户型？</button>
+                  <button type="button">请问总价和首付大概多少？</button>
+                  <button type="button">方便发一份楼盘资料吗？</button>
+                  <button type="button">我想预约看房，什么时候方便？</button>
+                  <button type="button">好的，谢谢您的回复。</button>
+                </div>
               </div>
+              <input id="messageImageInput" type="file" accept="image/*" multiple hidden />
+              <input id="messageCameraInput" type="file" accept="image/*" capture="environment" hidden />
               <form class="message-online__form" id="messageReplyForm">
                 <input id="messageReplyInput" type="text" placeholder="输入想咨询的问题" aria-label="输入想咨询的问题" />
                 <button type="submit">发送</button>
+                <button id="messageMediaToggle" type="button" aria-label="添加图片或拍照" aria-expanded="false" aria-controls="messageOnlineQuick">＋</button>
               </form>
+              <div class="message-online__quick" id="messageOnlineQuick" aria-label="选择图片或拍照" hidden>
+                <button type="button" data-message-media="image"><span class="message-media-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8" cy="8" r="1.5"/><path d="m3 17 6-6 4 4 3-3 5 5"/></svg></span><span>图片</span></button>
+                <button type="button" data-message-media="camera"><span class="message-media-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h4l2-3h6l2 3h4v13H3Z"/><circle cx="12" cy="13" r="4"/></svg></span><span>拍照</span></button>
+              </div>
             </div>
           </section>
         </div>
       </section>
 
+      <section class="screen" id="advisorProfileScreen" aria-label="置业顾问详情">
+        <header class="topbar topbar--ios">
+          <div class="topbar__meta">
+            <div class="topbar-pill">
+              <button class="topbar-pill__button" id="backAdvisorProfileButton" type="button" aria-label="返回聊天"><span class="topbar-pill__icon topbar-pill__icon--back">‹</span></button>
+              <button class="topbar-pill__button" id="advisorProfileHomeButton" type="button" aria-label="返回首页"><span class="topbar-pill__icon topbar-pill__icon--home">⌂</span></button>
+            </div>
+            <span class="topbar__title">置业顾问详情</span>
+            <div class="topbar-pill topbar-pill--trailing"><button class="topbar-pill__button" type="button" aria-label="更多操作"><span class="topbar-pill__icon topbar-pill__icon--more">•••</span></button><button class="topbar-pill__button" type="button" aria-label="置业顾问详情"><span class="topbar-pill__icon topbar-pill__icon--target">◎</span></button></div>
+          </div>
+        </header>
+        <div class="advisor-profile-body">
+          <div class="advisor-profile-card">
+            <div class="advisor-profile-heading"><div class="message-contact__avatar" id="advisorProfileAvatar"></div><div><div class="message-contact__name" id="advisorProfileName"></div><div class="message-contact__project" id="advisorProfileEstate"></div></div></div>
+            <p class="advisor-profile-active" id="advisorProfileActive"></p>
+          </div>
+          <div class="advisor-profile-card">
+            <div class="advisor-profile-stats"><div><strong id="advisorProfileReplies">—</strong><span>今日回复数</span></div><div><strong id="advisorProfileCustomers">—</strong><span>已服务客户数</span></div></div>
+          </div>
+          <div class="advisor-profile-card">
+            <div class="message-block-row"><span id="messageBlockLabel">屏蔽该置业顾问</span><button id="messageBlockToggle" type="button" role="switch" aria-checked="false" aria-labelledby="messageBlockLabel" aria-describedby="messageBlockNotice"></button></div>
+            <p class="advisor-profile-note">开启后，您将不再接收该置业顾问的消息；关闭后恢复接收。</p>
+            <p class="message-block-notice" id="messageBlockNotice" role="status" hidden></p>
+          </div>
+        </div>
+      </section>
       <section class="screen" id="mineScreen" aria-label="我的">
         <header class="topbar topbar--ios">
           <div class="topbar__meta">
@@ -8519,6 +8629,7 @@
 
 <script src="./registration-workbench/shared.js"></script>
 <script src="./assets/profile-binding.js"></script>
+<script src="./assets/blocked-keywords.js"></script>
   <script>
     const cityActivities = [
       {
@@ -8636,12 +8747,15 @@
         id: "message-consult-001",
         kind: "chat",
         sender: "李晓雨置业顾问",
+        advisorPhone: "13709063518",
+        advisorEstate: "招商·时代花园",
         avatarText: "李",
         avatarImage: "./assets/advisor-avatar.png",
         unreadCount: 2,
         latestMessage: "您好，我是招商·时代花园置业顾问，可以帮您预约看房。",
         content: "您好，我是招商·时代花园置业顾问李晓雨。可以直接咨询看房预约、一房一价、购房资格或线上签约流程。",
         timeLabel: "2分钟前",
+        lastMessageAt: new Date(Date.now() - 2 * 60 * 1000).toISOString(),
         dialog: [
           { role: "bot", text: "您关注的 123㎡ 三房目前还有中高楼层可选，今天 19:30 也有样板间云直播。" },
           { role: "user", text: "我想周末看房，可以先发我一房一价吗？" },
@@ -8656,6 +8770,7 @@
         latestMessage: "走进上海的活动开始啦，立即查看。",
         content: "走进上海的活动开始啦，立即查看。",
         timeLabel: "刚刚",
+        lastMessageAt: new Date().toISOString(),
         activityCity: "上海",
         activityTitle: "上海春季成都好房展",
         activityCover: "./assets/activity-detail-hero-shanghai.svg"
@@ -8968,6 +9083,7 @@
       live: document.getElementById("liveScreen"),
       message: document.getElementById("messageScreen"),
       messageDetail: document.getElementById("messageDetailScreen"),
+      advisorProfile: document.getElementById("advisorProfileScreen"),
       mine: document.getElementById("mineScreen"),
       customerList: document.getElementById("customerListScreen"),
       customerDetail: document.getElementById("customerDetailScreen"),
@@ -9070,6 +9186,12 @@
 let currentActivityPayload = null;
 let selectedDistrict = "";
 let currentMessageNotification = null;
+const blockedMessageAdvisors = (() => {
+  try {
+    const saved = JSON.parse(localStorage.getItem("houseMarketBlockedAdvisors") || "[]");
+    return new Set(Array.isArray(saved) ? saved.filter(value => typeof value === "string") : []);
+  } catch (_) { return new Set(); }
+})();
 let currentScreenName = "home";
 let previousScreenName = "home";
 const initialRouteParams = new URLSearchParams(window.location.search);
@@ -10453,6 +10575,29 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       openActivityDetail(groupIndex, itemIndex);
     }
 
+    function formatMessageListTime(value, now = new Date()) {
+      if (!value) return "";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "";
+      const day = d => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Shanghai", year: "numeric", month: "2-digit", day: "2-digit" }).format(d);
+      const time = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Shanghai", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).format(date);
+      if (day(date) === day(now)) return time;
+      if (day(date) === day(new Date(now.getTime() - 86400000))) return `昨天 ${time}`;
+      return day(date);
+    }
+
+    function updateLatestMessage(text) {
+      const item = currentMessageNotification;
+      if (!item || item.customerName) return;
+      item.latestMessage = text;
+      item.lastMessageAt = new Date().toISOString();
+      const stored = getMessageNotificationById(item.id);
+      if (stored && stored.sender === item.sender && stored.advisorEstate === item.advisorEstate) {
+        stored.latestMessage = item.latestMessage;
+        stored.lastMessageAt = item.lastMessageAt;
+      }
+    }
+
     function renderMessageList() {
       if (!messageList) {
         return;
@@ -10464,10 +10609,11 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
             <div class="message-list-item__avatar">${item.avatarImage ? `<img src="${item.avatarImage}" alt="${item.sender}头像">` : (item.avatarText || item.sender.slice(0, 1))}</div>
             <div class="message-list-item__main">
               <div class="message-list-item__head">
-                <strong class="message-list-item__sender">${item.sender}</strong>
-                <span class="message-list-item__time">${item.timeLabel}</span>
+                <strong class="message-list-item__sender"><span class="message-list-item__name">${formatPlainTextHtml(item.sender.replace(/置业顾问$/, ""))}</span>${item.advisorEstate || /置业顾问$/.test(item.sender) ? '<span class="message-list-item__advisor-tag">置业顾问</span>' : ""}</strong>
+                <span class="message-list-item__time">${formatMessageListTime(item.lastMessageAt)}</span>
               </div>
-              <div class="message-list-item__preview">${item.latestMessage || item.content}</div>
+              ${item.advisorEstate ? `<div class="message-list-item__estate">${formatPlainTextHtml(item.advisorEstate)}</div>` : ""}
+              <div class="message-list-item__preview">${formatPlainTextHtml(BlockedKeywords.mask(item.latestMessage || item.content))}</div>
             </div>
             <div class="message-list-item__aside">
               ${item.unreadCount ? `<span class="message-list-item__badge">${item.unreadCount}</span>` : "<span></span>"}
@@ -10504,7 +10650,9 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
           avatarImage: advisorRoute.name === "李晓雨" ? "./assets/advisor-avatar.png" : "",
           content: `您好，我是${advisorRoute.estate || "招商·时代花园"}${advisorRoute.name}，${advisorRoute.role || "置业顾问"}。可以直接咨询看房预约、一房一价、购房资格或线上签约流程。`,
           advisorName: advisorRoute.name,
-          advisorWechat: advisorRoute.wechat || ""
+          advisorEstate: advisorRoute.estate || "招商·时代花园",
+          advisorWechat: advisorRoute.wechat || "",
+          advisorPhone: advisorRoute.phone || (advisorRoute.name === "李晓雨" ? "13709063518" : "")
         };
       }
       if (!messageItem) {
@@ -10512,9 +10660,34 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       }
 
       currentMessageNotification = messageItem;
+      updateMessageBlockState();
 
       if (messageDetailTopbarTitle) {
-        messageDetailTopbarTitle.textContent = messageItem.sender;
+        messageDetailTopbarTitle.textContent = "消息通知";
+      }
+      const contactVisible = messageItem.kind === "chat" && !customerRoute;
+      document.getElementById("messageContact").hidden = !contactVisible;
+      const advisorDisplayName = contactVisible ? (messageItem.advisorName || messageItem.sender.replace(/置业顾问$/, "")) : messageItem.sender;
+      function renderAdvisorName(element) {
+        element.textContent = advisorDisplayName;
+        if (contactVisible) {
+          const tag = document.createElement("span");
+          tag.className = "message-list-item__advisor-tag";
+          tag.textContent = "置业顾问";
+          element.append(tag);
+        }
+      }
+      renderAdvisorName(document.getElementById("messageContactName"));
+      document.getElementById("messageContactProject").textContent = messageItem.advisorEstate || "待补充";
+      const contactAvatar = document.getElementById("messageContactAvatar");
+      contactAvatar.replaceChildren();
+      if (messageItem.avatarImage) {
+        const img = document.createElement("img");
+        img.src = messageItem.avatarImage;
+        img.alt = `${messageItem.sender}头像`;
+        contactAvatar.append(img);
+      } else {
+        contactAvatar.textContent = messageItem.avatarText || messageItem.sender.slice(0, 1);
       }
       if (messageDetailAvatar) {
         if (messageItem.avatarImage) {
@@ -10524,13 +10697,14 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         }
       }
       if (messageDetailSender) {
-        messageDetailSender.textContent = messageItem.sender;
+        renderAdvisorName(messageDetailSender);
       }
       if (messageDetailTime) {
         messageDetailTime.textContent = messageItem.timeLabel;
       }
       if (messageDetailContent) {
-        messageDetailContent.textContent = messageItem.content;
+        messageDetailContent.dataset.unmasked = messageItem.content;
+        messageDetailContent.textContent = BlockedKeywords.mask(messageItem.content);
       }
       if (messageDetailCard) {
         messageDetailCard.hidden = !messageItem.activityTitle;
@@ -10548,10 +10722,17 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         messageOnlinePanel.hidden = messageItem.kind !== "chat";
       }
       if (messageOnlineQuick) {
-        messageOnlineQuick.innerHTML = customerRoute
-          ? '<button type="button" data-message-reply="发送楼盘资料">发送楼盘资料</button><button type="button" data-message-reply="预约电话沟通">预约电话沟通</button>'
-          : '<button type="button" data-message-reply="获取置业顾问微信号">获取置业顾问微信号</button><button type="button" data-message-reply="咨询对应房源">咨询对应房源</button>';
+        setMessageMediaOpen(false);
       }
+      document.getElementById("messageWechatButton").hidden = messageItem.kind !== "chat" || Boolean(customerRoute);
+      const phoneButton = document.getElementById("messagePhoneButton");
+      const advisorPhone = String(messageItem.advisorPhone || "").replace(/[\s()-]/g, "");
+      const hasPhone = /^\+?\d{7,15}$/.test(advisorPhone);
+      phoneButton.hidden = !contactVisible;
+      phoneButton.setAttribute("aria-disabled", String(!hasPhone));
+      phoneButton.textContent = hasPhone ? "电话联系" : "暂无电话";
+      if (hasPhone) phoneButton.href = `tel:${advisorPhone}`;
+      else phoneButton.removeAttribute("href");
       if (messageReplyInput) {
         messageReplyInput.value = "";
       }
@@ -10563,7 +10744,6 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
     }
 
     function openMessageDetailScreen(messageId, advisorRoute = null, options = {}) {
-      if (!options.customerRoute && (advisorRoute || messageId === "message-consult-001") && !window.houseMarketRequirePhone("在线联系置业顾问前，需要先获取您的手机号。")) return;
       messageDetailReturnTarget = options.returnTarget || "message";
       renderMessageDetail(messageId, advisorRoute, options.customerRoute || null);
       showScreen("messageDetail");
@@ -10579,9 +10759,23 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       openActivityByCityAndTitle(currentMessageNotification.activityCity, currentMessageNotification.activityTitle);
     }
 
+    function createMessageAdvisorAvatar() {
+      const avatar = messageDetailAvatar.cloneNode(true);
+      avatar.removeAttribute("id");
+      return avatar;
+    }
+
+    function refreshBlockedMessageText() {
+      renderMessageList();
+      document.querySelectorAll('[data-unmasked]').forEach(node => { node.textContent = BlockedKeywords.mask(node.dataset.unmasked); });
+    }
+    window.addEventListener('keywords-changed', refreshBlockedMessageText);
+    window.addEventListener('focus', refreshBlockedMessageText);
+
     function renderMessageReply(role, text) {
       const className = role === "user" ? "message-thread__reply is-user" : "message-thread__reply";
-      return `<div class="${className}"><span>${formatPlainTextHtml(text)}</span></div>`;
+      const avatar = role === "user" ? "" : createMessageAdvisorAvatar().outerHTML;
+      return `<div class="${className}">${avatar}<span data-unmasked="${escapeHtml(text).replace(/"/g, "&quot;").replace(/\n/g, "&#10;")}">${formatPlainTextHtml(BlockedKeywords.mask(text))}</span></div>`;
     }
 
     function getOnlineReply(text) {
@@ -10617,11 +10811,61 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       return "收到，我会把问题同步给在线顾问。你也可以继续补充预算、区县和户型偏好。";
     }
 
+    function messageAdvisorKey() {
+      const advisor = currentMessageNotification;
+      if (!advisor || advisor.customerName || advisor.kind !== "chat") return "";
+      return `${advisor.advisorName || advisor.sender.replace(/置业顾问$/, "")}|${advisor.advisorEstate || ""}`;
+    }
+
+    function isMessageAdvisorBlocked() {
+      return blockedMessageAdvisors.has(messageAdvisorKey());
+    }
+
+    function updateMessageBlockState() {
+      const blocked = isMessageAdvisorBlocked();
+      document.getElementById("messageBlockToggle").setAttribute("aria-checked", String(blocked));
+      const notice = document.getElementById("messageBlockNotice");
+      notice.hidden = !blocked;
+      notice.textContent = blocked ? "已屏蔽，您将不再接收该置业顾问的消息。" : "";
+    }
+
+    function openAdvisorProfile() {
+      if (!messageAdvisorKey()) return;
+      document.getElementById("advisorProfileAvatar").innerHTML = document.getElementById("messageContactAvatar").innerHTML;
+      document.getElementById("advisorProfileName").innerHTML = document.getElementById("messageContactName").innerHTML;
+      document.getElementById("advisorProfileEstate").textContent = currentMessageNotification.advisorEstate || "";
+      const isDemoAdvisor = (currentMessageNotification.advisorName || currentMessageNotification.sender.replace(/置业顾问$/, "")) === "李晓雨";
+      document.getElementById("advisorProfileActive").textContent = isDemoAdvisor ? "活跃情况：今日活跃 · 最近活跃于 2 分钟前" : "活跃情况：暂无数据";
+      document.getElementById("advisorProfileReplies").textContent = isDemoAdvisor ? "36" : "—";
+      document.getElementById("advisorProfileCustomers").textContent = isDemoAdvisor ? "128" : "—";
+      updateMessageBlockState();
+      showScreen("advisorProfile");
+    }
+    document.querySelectorAll("[data-open-advisor-profile]").forEach(entry => {
+      entry.addEventListener("click", openAdvisorProfile);
+      entry.addEventListener("keydown", event => {
+        if (event.key === "Enter" || event.key === " ") { event.preventDefault(); openAdvisorProfile(); }
+      });
+    });
+    document.getElementById("backAdvisorProfileButton").addEventListener("click", () => showScreen("messageDetail"));
+    document.getElementById("advisorProfileHomeButton").addEventListener("click", () => showScreen("home"));
+
+    document.getElementById("messageBlockToggle").addEventListener("click", () => {
+      const key = messageAdvisorKey();
+      if (!key) return;
+      if (blockedMessageAdvisors.has(key)) blockedMessageAdvisors.delete(key);
+      else blockedMessageAdvisors.add(key);
+      try { localStorage.setItem("houseMarketBlockedAdvisors", JSON.stringify([...blockedMessageAdvisors])); } catch (_) {}
+      updateMessageBlockState();
+    });
+
     function appendOnlineMessage(role, text) {
+      if (role !== "user" && isMessageAdvisorBlocked()) return;
       if (!messageDetailConversation || !text) {
         return;
       }
       messageDetailConversation.insertAdjacentHTML("beforeend", renderMessageReply(role, text));
+      updateLatestMessage(text);
       messageDetailConversation.scrollIntoView({ block: "end", behavior: "smooth" });
     }
 
@@ -10631,7 +10875,60 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         return;
       }
       appendOnlineMessage("user", question);
+      if (question.includes("微信") && !currentMessageNotification?.customerName) {
+        sendAdvisorWechat();
+        return;
+      }
       appendOnlineMessage("bot", getOnlineReply(question));
+    }
+
+    function sendAdvisorWechat() {
+      const advisor = currentMessageNotification;
+      if (!advisor || advisor.customerName || isMessageAdvisorBlocked()) return;
+      const wechat = advisor.advisorWechat || (advisor.advisorName && advisor.advisorName !== "李晓雨" ? "" : "AJCD-LXY2026");
+      const qrRow = document.createElement("div");
+      qrRow.className = "message-thread__reply";
+      qrRow.append(createMessageAdvisorAvatar());
+      const qrBubble = document.createElement("span");
+      const qrImage = document.createElement("img");
+      qrImage.src = advisor.advisorWechatQr || "./assets/advisor-wechat-placeholder.svg";
+      qrImage.alt = `${advisor.sender}微信二维码${advisor.advisorWechatQr ? "" : "（示意，待提供真实二维码）"}`;
+      qrImage.width = 200;
+      qrBubble.append(qrImage);
+      qrRow.append(qrBubble);
+      const numberRow = document.createElement("div");
+      numberRow.className = "message-thread__reply";
+      numberRow.append(createMessageAdvisorAvatar());
+      const bubble = document.createElement("span");
+      bubble.append(document.createTextNode("置业顾问微信号"));
+      const number = document.createElement("strong");
+      number.className = "message-wechat-number";
+      number.textContent = wechat || "暂未提供";
+      bubble.append(number);
+      if (wechat) {
+        const copy = document.createElement("button");
+        copy.type = "button";
+        copy.className = "message-wechat-copy";
+        copy.textContent = "复制微信号";
+        copy.addEventListener("click", async () => {
+          let copied = false;
+          try { await navigator.clipboard.writeText(wechat); copied = true; } catch (_) {
+            const input = document.createElement("textarea");
+            input.value = wechat;
+            input.style.cssText = "position:fixed;left:-9999px;top:0";
+            document.body.append(input);
+            input.select();
+            try { copied = document.execCommand("copy"); } catch (_) {}
+            input.remove();
+          }
+          copy.textContent = copied ? "已复制" : "请长按微信号复制";
+        });
+        bubble.append(copy);
+      }
+      numberRow.append(bubble);
+      messageDetailConversation.append(qrRow, numberRow);
+      updateLatestMessage(`微信号：${wechat || "暂未提供"}`);
+      numberRow.scrollIntoView({ block: "end", behavior: "smooth" });
     }
 
     function addChatMessage(role, content) {
@@ -11103,7 +11400,8 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         name: advisorName,
         role: params.get("advisorRole") || "置业顾问",
         initial: params.get("advisorInitial") || advisorName.slice(0, 1),
-        wechat: params.get("advisorWechat") || ""
+        wechat: params.get("advisorWechat") || "",
+        phone: params.get("advisorPhone") || ""
       } : null;
       const groupIndex = Number(params.get("group"));
       const itemIndex = Number(params.get("item"));
@@ -11512,8 +11810,32 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         openCurrentMessageTarget();
       });
     }
+    function setMessageMediaOpen(open) {
+      messageOnlineQuick.hidden = !open;
+      document.getElementById("messageMediaToggle").setAttribute("aria-expanded", String(open));
+      if (open) {
+        messageReplyInput.blur();
+        requestAnimationFrame(() => messageOnlinePanel.scrollIntoView({ block: "end", behavior: "smooth" }));
+      }
+    }
+    document.getElementById("messageMediaToggle").addEventListener("click", () => setMessageMediaOpen(messageOnlineQuick.hidden));
+    document.addEventListener("click", event => {
+      if (!event.target.closest("#messageMediaToggle, #messageOnlineQuick")) setMessageMediaOpen(false);
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && !messageOnlineQuick.hidden) {
+        setMessageMediaOpen(false);
+        document.getElementById("messageMediaToggle").focus();
+      }
+    });
     if (messageOnlineQuick) {
       messageOnlineQuick.addEventListener("click", (event) => {
+        const media = event.target.closest("[data-message-media]");
+        if (media) {
+          setMessageMediaOpen(false);
+          document.getElementById(media.dataset.messageMedia === "camera" ? "messageCameraInput" : "messageImageInput").click();
+          return;
+        }
         const button = event.target.closest("[data-message-reply]");
         if (!button) {
           return;
@@ -11521,6 +11843,62 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         sendOnlineMessage(button.dataset.messageReply || button.textContent.trim());
       });
     }
+    document.getElementById("messageWechatButton").addEventListener("click", () => sendOnlineMessage("交换微信"));
+    ["messageImageInput", "messageCameraInput"].forEach(id => {
+      document.getElementById(id).addEventListener("change", async event => {
+        const files = Array.from(event.target.files || []);
+        const conversation = currentMessageNotification;
+        event.target.value = "";
+        for (const file of files) {
+          if (!file.type.startsWith("image/")) continue;
+          const src = await new Promise(resolve => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = () => resolve(null);
+            reader.readAsDataURL(file);
+          });
+          if (!src || currentMessageNotification !== conversation) continue;
+          const row = document.createElement("div");
+          row.className = "message-thread__reply is-user";
+          const bubble = document.createElement("span");
+          const img = document.createElement("img");
+          img.src = src;
+          img.alt = id === "messageCameraInput" ? "拍摄的照片" : file.name;
+          bubble.append(img);
+          row.append(bubble);
+          messageDetailConversation.append(row);
+          updateLatestMessage("[图片]");
+          img.onload = () => row.scrollIntoView({ block: "end", behavior: "smooth" });
+        }
+      });
+    });
+    const messageCommonToggle = document.getElementById("messageCommonToggle");
+    const messageCommonPhrases = document.getElementById("messageCommonPhrases");
+    function setMessageCommonOpen(open) {
+      messageCommonPhrases.hidden = !open;
+      messageCommonToggle.setAttribute("aria-expanded", String(open));
+    }
+    messageCommonToggle.addEventListener("click", () => setMessageCommonOpen(messageCommonPhrases.hidden));
+    document.addEventListener("click", event => {
+      if (!event.target.closest(".message-common")) setMessageCommonOpen(false);
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && !messageCommonPhrases.hidden) {
+        setMessageCommonOpen(false);
+        messageCommonToggle.focus();
+      }
+    });
+    messageCommonPhrases.addEventListener("click", event => {
+      const button = event.target.closest("button");
+      if (!button) return;
+      const phrase = button.textContent.trim();
+      setMessageCommonOpen(false);
+      messageReplyInput.value = messageReplyInput.value.trim()
+        ? `${messageReplyInput.value.trim()} ${phrase}` : phrase;
+      messageReplyInput.focus();
+      messageReplyInput.setSelectionRange(messageReplyInput.value.length, messageReplyInput.value.length);
+      messageReplyInput.dispatchEvent(new Event("input", { bubbles: true }));
+    });
     if (messageReplyForm) {
       messageReplyForm.addEventListener("submit", (event) => {
         event.preventDefault();

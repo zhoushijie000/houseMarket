@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>用户 - 消息记录</title>
+  <style>
+    :root {
+      --primary: #3f6fe8;
+      --primary-dark: #315fda;
+      --primary-light: #edf3ff;
+      --text: #303133;
+      --regular: #606266;
+      --muted: #909399;
+      --placeholder: #c0c4cc;
+      --border: #dcdfe6;
+      --border-light: #ebeef5;
+      --background: #f3f4f6;
+      --surface: #fff;
+      --success: #32ad7f;
+      --warning: #d9942b;
+      --danger: #f56c6c;
+      --shadow: 0 14px 36px rgba(31, 41, 61, .16);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-width: 1180px; min-height: 100%; }
+    body {
+      color: var(--text);
+      background: var(--background);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-size: 14px;
+    }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+
+    /* Admin header */
+    .app-header {
+      height: 64px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border: 1px solid var(--border-light);
+    }
+    .brand, .brand-copy, .header-nav, .nav-item, .user { display: flex; align-items: center; }
+    .brand-logo { width: 36px; height: 36px; margin-right: 20px; position: relative; overflow: hidden; background: #406bdd; }
+    .brand-logo::before { content: ""; position: absolute; inset: 7px 9px; border-left: 5px solid #fff; border-right: 5px solid #fff; }
+    .brand-logo::after { content: ""; position: absolute; right: 9px; top: 13px; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-right: 10px solid #fff; }
+    .brand-title { color: #111; font-size: 18px; font-weight: 650; white-space: nowrap; }
+    .brand-agency { margin-left: 20px; color: var(--regular); white-space: nowrap; }
+    .brand-agency .chevron { margin-left: 24px; color: var(--primary); }
+    .header-nav { height: 100%; margin-left: auto; }
+    .nav-item { height: 100%; position: relative; color: #262626; white-space: nowrap; }
+    .nav-trigger { height: 100%; padding: 0 15px; display: flex; align-items: center; gap: 10px; color: inherit; background: transparent; border: 0; font-size: 15px; }
+    .nav-primary-link { height: 100%; padding: 0 8px 0 15px; display: flex; align-items: center; color: inherit; text-decoration: none; font-size: 15px; }
+    .nav-item:not([data-nav-menu]) .nav-primary-link { padding: 0 15px; }
+    .nav-menu-toggle { width: 28px; padding: 0 10px 0 0; }
+    .nav-primary-link:hover, .nav-item.open > .nav-primary-link { color: var(--primary); background: #f7f9fd; }
+    .nav-item.active > .nav-primary-link { color: var(--primary); font-weight: 600; }
+    .nav-trigger:hover, .nav-item.open .nav-trigger { background: #f7f9fd; }
+    .nav-item.active .nav-trigger { color: var(--primary); }
+    .nav-item.open .nav-trigger .chevron { transform: rotate(225deg) translate(-1px, -1px); }
+    .nav-menu { width: 212px; padding: 10px 0; position: absolute; top: calc(100% + 1px); left: 50%; z-index: 70; display: none; transform: translateX(-50%); background: #fff; border: 1px solid #edf0f5; border-radius: 4px; box-shadow: 0 8px 24px rgba(31, 41, 61, .14); }
+    .nav-item.open .nav-menu { display: block; }
+    .nav-menu-link { width: 100%; height: 46px; padding: 0 20px; display: flex; align-items: center; color: #30343a; background: transparent; border: 0; text-align: left; text-decoration: none; font-size: 15px; }
+    .nav-menu-link:hover { color: var(--primary); background: #f5f8ff; }
+    .nav-menu-link.active { color: var(--primary); background: var(--primary-light); font-weight: 600; }
+    .chevron { width: 7px; height: 7px; display: inline-block; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translateY(-2px); }
+    .user { height: 56px; margin-left: 34px; flex-direction: column; justify-content: center; }
+    .avatar { width: 35px; height: 35px; border-radius: 50%; position: relative; background: #e4e7ed; }
+    .avatar::before { content: ""; width: 9px; height: 9px; position: absolute; left: 13px; top: 7px; border-radius: 50%; background: #fff; }
+    .avatar::after { content: ""; width: 17px; height: 10px; position: absolute; left: 9px; top: 20px; border-radius: 9px 9px 3px 3px; background: #fff; }
+    .user-name { margin-top: -4px; padding: 1px 7px; border-radius: 4px; color: #fff; background: #85888d; font-size: 12px; }
+
+    .workspace-tabs { height: 54px; padding: 10px 12px; display: flex; align-items: center; gap: 6px; background: #f0f1f3; }
+    .workspace-tab { min-width: 96px; height: 34px; padding: 0 20px; display: inline-flex; align-items: center; justify-content: center; gap: 14px; color: #2f3033; background: #fff; border: 1px solid var(--border); border-radius: 4px; font-weight: 600; }
+    .workspace-tab.active { color: var(--primary); border-color: var(--primary); }
+    .workspace-tab .close { font-size: 16px; font-weight: 400; }
+    .more-actions { margin-left: auto; display: flex; align-items: center; gap: 12px; color: var(--regular); }
+
+    /* Customer list */
+    .page { padding: 0 12px 14px; }
+    .page-title { height: 72px; padding: 0 20px; position: relative; display: flex; align-items: center; background: #fff; border-bottom: 1px solid var(--border); color: #202328; font-size: 16px; font-weight: 600; }
+    .page-title::after { content: ""; width: 36px; height: 2px; position: absolute; left: 20px; bottom: 0; background: var(--primary); }
+    .filter-card { min-height: 92px; margin-top: 12px; padding: 20px; display: flex; align-items: center; background: #fff; }
+    .filter-fields { display: flex; align-items: center; gap: 24px; }
+    .filter-item { display: flex; align-items: center; gap: 10px; }
+    .filter-label { color: var(--regular); font-size: 15px; white-space: nowrap; }
+    .control-input, .control-select { width: 210px; height: 36px; padding: 0 13px; color: var(--text); background: #fff; border: 1px solid var(--border); border-radius: 4px; outline: none; }
+    .control-input.phone { width: 190px; }
+    .control-select { width: 150px; }
+    .control-input::placeholder { color: var(--placeholder); }
+    .control-input:focus, .control-select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(63, 111, 232, .1); }
+    .filter-actions { display: flex; gap: 10px; margin-left: 30px; }
+    .btn { height: 36px; padding: 0 18px; color: var(--regular); background: #fff; border: 1px solid var(--border); border-radius: 4px; }
+    .btn:hover { color: var(--primary); border-color: #9eb5f2; }
+    .btn-primary { color: #fff; background: var(--primary); border-color: var(--primary); }
+    .btn-primary:hover { color: #fff; background: var(--primary-dark); border-color: var(--primary-dark); }
+    .list-card { min-height: calc(100vh - 304px); margin-top: 12px; padding: 20px; background: #fff; }
+    .toolbar { display: flex; align-items: center; justify-content: space-between; }
+    .toolbar-title { color: #30343a; font-size: 15px; font-weight: 600; }
+    .toolbar-tip { color: var(--muted); font-size: 13px; }
+    .table-wrap { margin-top: 18px; overflow-x: auto; border: 1px solid var(--border-light); }
+    table { width: 100%; min-width: 1110px; table-layout: fixed; border-collapse: collapse; }
+    th, td { height: 68px; padding: 0 14px; color: var(--regular); text-align: left; border-bottom: 1px solid var(--border-light); }
+    th { height: 42px; background: #f3f4f6; font-weight: 500; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:hover td { background: #fafcff; }
+    .col-index { width: 62px; text-align: center; }
+    .col-name { width: 150px; }
+    .col-phone { width: 150px; }
+    .col-tags { width: 240px; }
+    .col-event { width: 290px; }
+    .col-count { width: 110px; text-align: center; }
+    .col-action { width: 230px; text-align: center; white-space: nowrap; }
+    .customer-name { color: #374151; font-weight: 600; }
+    .phone-value { color: #4b5563; font-variant-numeric: tabular-nums; letter-spacing: .4px; }
+    .tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+    .customer-tag { min-height: 24px; padding: 2px 8px; display: inline-flex; align-items: center; border-radius: 3px; color: #3f6fe8; background: #edf3ff; font-size: 12px; }
+    .customer-tag.orange { color: #d98216; background: #fff7e8; }
+    .customer-tag.green { color: #248969; background: #edf9f5; }
+    .event-name { overflow: hidden; color: #414b5b; text-overflow: ellipsis; white-space: nowrap; }
+    .event-time { margin-top: 5px; color: var(--muted); font-size: 12px; }
+    .contact-count { color: var(--primary); font-size: 16px; font-weight: 600; }
+    .table-action { padding: 6px 8px; color: var(--primary); background: transparent; border: 0; }
+    .table-action + .table-action { margin-left: 4px; }
+    .empty { height: 190px; color: var(--muted); text-align: center; }
+    .pagination { margin-top: 16px; display: flex; align-items: center; justify-content: flex-end; gap: 8px; color: var(--regular); }
+    .page-btn { min-width: 30px; height: 30px; padding: 0 8px; color: var(--regular); background: #fff; border: 1px solid var(--border); border-radius: 4px; }
+    .page-btn.active { color: #fff; background: var(--primary); border-color: var(--primary); }
+
+    /* Detail dialog */
+    .overlay { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(24, 31, 45, .48); }
+    .overlay.show { display: flex; }
+    .dialog { width: min(820px, calc(100vw - 48px)); max-height: calc(100vh - 48px); display: flex; flex-direction: column; background: #fff; box-shadow: var(--shadow); }
+    .dialog-header { height: 62px; padding: 0 22px; display: flex; align-items: center; border-bottom: 1px solid var(--border-light); }
+    .dialog-title { color: #202328; font-size: 17px; font-weight: 600; }
+    .dialog-close { width: 34px; height: 34px; margin-left: auto; color: var(--muted); background: transparent; border: 0; font-size: 24px; line-height: 1; }
+    .dialog-body { padding: 22px; overflow-y: auto; }
+    .customer-summary { padding: 15px 18px; display: grid; grid-template-columns: 1fr 1fr 1.3fr; gap: 18px; background: #f7f9fc; border: 1px solid var(--border-light); }
+    .summary-label { color: var(--muted); font-size: 12px; }
+    .summary-value { margin-top: 7px; color: #374151; font-weight: 600; }
+    .timeline { margin-top: 20px; padding-left: 8px; }
+    .timeline-item { min-height: 74px; padding: 0 0 20px 28px; position: relative; border-left: 1px solid #dfe6f4; }
+    .timeline-item:last-child { border-left-color: transparent; }
+    .timeline-dot { width: 11px; height: 11px; position: absolute; left: -6px; top: 4px; border: 2px solid #fff; border-radius: 50%; background: var(--primary); box-shadow: 0 0 0 2px #b8c9f7; }
+    .timeline-title { color: #374151; font-weight: 600; }
+    .timeline-copy { margin-top: 7px; color: var(--regular); line-height: 1.6; }
+    .timeline-time { margin-top: 5px; color: var(--muted); font-size: 12px; }
+    .record-table { margin-top: 20px; border: 1px solid var(--border-light); }
+    .record-table table { min-width: 0; }
+    .record-table th, .record-table td { height: 54px; }
+    .dialog-footer { height: 66px; padding: 0 22px; display: flex; align-items: center; justify-content: flex-end; border-top: 1px solid var(--border-light); }
+    .toast { min-width: 180px; padding: 12px 18px; position: fixed; left: 50%; top: 82px; z-index: 130; opacity: 0; pointer-events: none; transform: translate(-50%, -10px); color: #fff; background: rgba(40, 47, 59, .92); border-radius: 4px; text-align: center; transition: .2s ease; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width: 1320px) {
+      .nav-trigger { padding: 0 11px; }
+      .user { margin-left: 18px; }
+      .brand-agency { display: none; }
+      .filter-fields { gap: 14px; }
+      .filter-actions { margin-left: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-logo" aria-hidden="true"></div>
+      <div class="brand-copy">
+        <div class="brand-title">成都住建线上房产超市管理平台</div>
+        <div class="brand-agency">成都市住房和城乡建设局 <span class="chevron"></span></div>
+      </div>
+    </div>
+    <nav class="header-nav" id="headerNav" aria-label="主导航">
+      <div class="nav-item" data-nav-menu>
+        <a class="nav-primary-link" href="./0715-房源展示价格管理.html">项目</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开项目菜单" aria-expanded="false"><span class="chevron"></span></button>
+        <div class="nav-menu" role="menu" aria-label="项目">
+          <a class="nav-menu-link" href="./0715-房源展示价格管理.html">房源管理</a>
+          <a class="nav-menu-link" href="./0902-户型图VR链接管理.html">项目管理</a>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-primary-link" href="./registration-workbench/admin.html">申请</a></div>
+      <div class="nav-item" data-nav-menu>
+        <a class="nav-primary-link" href="./0821-直播管理.html">运营</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开运营菜单" aria-expanded="false"><span class="chevron"></span></button>
+        <div class="nav-menu" role="menu" aria-label="运营">
+          <a class="nav-menu-link" href="./0902-项目报告管理.html">内容管理</a>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>活动报名审核</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>楼盘管理</button>
+          <a class="nav-menu-link" href="./0821-直播管理.html">直播间管理</a>
+          <a class="nav-menu-link" href="./0828-专题管理.html">专题管理</a>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>运营配置</button>
+          <a class="nav-menu-link" href="./0831-区县管理.html">区县管理</a>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-primary-link" href="./网签成交.html">统计</a></div>
+      <div class="nav-item" data-nav-menu>
+        <a class="nav-primary-link" href="./0831-客户管理.html">客户</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开客户菜单" aria-expanded="false"><span class="chevron"></span></button>
+        <div class="nav-menu" role="menu" aria-label="客户">
+          <button class="nav-menu-link" type="button" data-customer-menu="客户消息">客户消息</button>
+          <a class="nav-menu-link" href="./0831-客户管理.html">客户管理</a>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-primary-link" href="./购房政策.html">政务</a></div>
+      <div class="nav-item"><a class="nav-primary-link" href="./0831-区县管理.html">管理</a></div>
+      <div class="nav-item active" data-nav-menu>
+        <a class="nav-primary-link" href="./0819-直播专区标签管理.html">系统</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开系统菜单" aria-expanded="false"><span class="chevron"></span></button>
+        <div class="nav-menu" role="menu" aria-label="系统">
+          <a class="nav-menu-link" href="./0910-消息管理.html">消息管理</a>
+          <a class="nav-menu-link" href="./0819-直播专区标签管理.html">小程序管理</a>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>机构管理</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>人员管理</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>权限管理</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>系统日志</button>
+        </div>
+      </div>
+
+      </nav>
+    <div class="user"><div class="avatar"></div><div class="user-name">周世杰</div></div>
+  </header>
+
+
+  <div class="workspace-tabs"><a class="workspace-tab " href="./0910-消息管理.html" style="text-decoration:none">消息管理</a><a class="workspace-tab active" href="./0910-消息记录.html" style="text-decoration:none">消息记录</a></div>
+  <main class="page" data-page="消息记录">
+    <div class="page-title">消息记录</div>
+    <form class="filter-card" id="filters">
+      <div class="filter-fields">
+        <label class="filter-item"><span class="filter-label">消息标题</span><input class="control-input" name="title" placeholder="请输入消息标题"></label>
+        <label class="filter-item"><span class="filter-label">消息类型</span><select class="control-select" name="type"><option value="">全部</option><option>系统通知</option><option>活动通知</option><option>业务提醒</option></select></label>
+        <label class="filter-item"><span class="filter-label">阅读状态</span><select class="control-select" name="status"><option value="">全部</option><option>已读</option><option>未读</option></select></label>
+      </div>
+      <div class="filter-actions"><button class="btn btn-primary" type="submit">查询</button><button class="btn" type="reset">重置</button></div>
+    </form>
+    <section class="list-card"><div class="toolbar"><div class="toolbar-title">消息记录列表</div><div class="toolbar-tip">示例数据</div></div>
+      <div class="table-wrap"><table><thead id="tableHead"></thead><tbody id="messageRows"></tbody></table></div>
+      <div class="pagination"><span id="totalText"></span><button class="page-btn" id="prev" aria-label="上一页">‹</button><span class="page-btn active" id="pageNumber">1</span><button class="page-btn" id="next" aria-label="下一页">›</button><span>10条/页</span></div>
+    </section>
+  </main>
+  <div class="overlay" id="detailOverlay" aria-hidden="true"><section class="dialog" role="dialog" aria-modal="true" aria-labelledby="detailTitle"><header class="dialog-header"><div class="dialog-title" id="detailTitle">消息详情</div><button class="dialog-close" id="closeDialog" aria-label="关闭">×</button></header><div class="dialog-body" id="detailBody" style="line-height:1.9;white-space:pre-wrap"></div><footer class="dialog-footer"><button class="btn btn-primary" id="confirmDialog">关闭</button></footer></section></div>
+  <style>.page-btn:disabled{opacity:.45;cursor:not-allowed}td{overflow-wrap:anywhere}.brand-logo{flex-shrink:0}.nav-primary-link{padding-left:11px}.user{margin-left:18px}</style>
+  <script src="./assets/user-messages.js"></script>
+</body></html>
