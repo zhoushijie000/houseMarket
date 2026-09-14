@@ -1952,6 +1952,61 @@
       animation: screen-enter 280ms ease;
     }
 
+    .chat-drawer--home { position: fixed; inset: 0; max-width: 425px; margin: 0 auto; }
+    .chat-drawer--home .chat-panel { height: 100dvh; background: #fff; }
+    .chat-drawer--home .chat-panel__head { display: block; border: 0; background: #fff; padding: env(safe-area-inset-top,0px) 0 0; }
+    .ai-mini-header { display: none; }
+    .chat-drawer--home .chat-panel__head > :not(.ai-mini-header) { display: none; }
+    .chat-drawer--home .ai-mini-header { display: block; }
+    .ai-mini-status { height: 44px; padding: 0 20px 8px; display: flex; align-items: flex-end; justify-content: space-between; font-size: 15px; font-weight: 600; color: #000; }
+    .ai-mini-status svg { width: 66px; height: 14px; }
+    .ai-mini-nav { position: relative; height: 44px; display: flex; align-items: center; justify-content: center; color: #000; }
+    .ai-mini-nav strong { font-size: 17px; font-weight: 600; }
+    .ai-mini-back { position: absolute; left: 16px; width: 32px; height: 32px; border: 0; background: transparent; cursor: pointer; }
+    .ai-mini-back svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; }
+    .ai-mini-capsule { position: absolute; right: 6px; width: 87px; height: 32px; border: 1px solid #ececec; border-radius: 16px; display: flex; align-items: center; justify-content: space-evenly; }
+    .ai-mini-capsule span { font-size: 19px; letter-spacing: 1px; }
+    .ai-mini-capsule i { height: 18px; width: 1px; background: #e6e6e6; }
+    .ai-mini-capsule button { width: 30px; height: 28px; border: 0; background: transparent; display: grid; place-items: center; cursor: pointer; }
+    .ai-mini-capsule svg { width: 18px; height: 18px; }
+    .chat-drawer--home .chat-panel__head h3 { margin: 0; font-size: 17px; }
+    .chat-drawer--home .chat-panel__head h3::after { content: '房产超市 · 让好房更简单'; display: block; margin-top: 5px; font-size: 11px; font-weight: 400; color: var(--text-secondary); }
+    .chat-drawer--home .chat-close { background: #fff; color: var(--text-secondary); font-size: 22px; }
+    .chat-drawer--home .chat-panel__body { padding: 16px; background: #fff; }
+    .ai-welcome { margin-bottom: 20px; }
+    .ai-welcome__intro { padding: 14px; margin-bottom: 12px; border-radius: 4px 14px 14px 14px; background: #f5f6f8; }
+    .ai-welcome h1 { margin: 0 0 8px; color: var(--text-primary); font-size: 16px; line-height: 1.5; }
+    .ai-welcome__intro p { margin: 0; font-size: 14px; line-height: 1.85; color: var(--text-secondary); }
+    .ai-welcome__groups { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+    .ai-question-card { min-width: 0; padding: 12px; border: 1px solid #ffe7d7; border-radius: 12px; background: #fff8f2; }
+    .ai-question-card--policy { background: #f7f8fa; border-color: #edf0f3; }
+    .ai-question-card__head { display: grid; gap: 4px; margin-bottom: 4px; }
+    .ai-question-card h2 { margin: 0; font-size: 14px; color: var(--brand-primary); }
+    .ai-question-card--policy h2 { color: var(--text-primary); }
+    .ai-question-card__head span { font-size: 11px; color: var(--text-tertiary); }
+    .ai-question { display: flex; align-items: center; justify-content: space-between; gap: 5px; width: 100%; min-height: 62px; padding: 8px 0; border: 0; border-bottom: 1px solid rgba(0,0,0,.045); background: transparent; text-align: left; font: inherit; font-size: 12px; line-height: 1.6; color: var(--text-primary); cursor: pointer; }
+    .ai-question:last-child { border-bottom: 0; padding-bottom: 0; }
+    .ai-question::after { content: '›'; flex-shrink: 0; font-size: 22px; color: #a8a8a8; }
+    .ai-question:hover { color: var(--brand-primary); }
+    .chat-drawer--home .chat-panel__form { margin: 0 16px calc(16px + env(safe-area-inset-bottom,0px)); padding: 6px; gap: 4px; border: 1px solid var(--line-soft); border-radius: 999px; box-shadow: 0 4px 16px rgba(0,0,0,.04); }
+    .chat-drawer--home .chat-input { min-width: 0; width: 100%; height: 42px; border: 0; background: transparent; font-size: 13px; }
+    .chat-send svg { display: none; }
+    .chat-drawer--home .chat-send { min-width: 70px; padding: 0 12px; border-radius: 999px; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+    .chat-drawer--home .chat-send svg { display: block; width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .chat-drawer--home .chat-send:active { transform: scale(.96); }
+    .chat-drawer--home .chat-panel__form:focus-within { border-color: var(--brand-primary); }
+    .chat-drawer--home .chat-quick-list:empty { display: none; }
+    .ai-policy-list { display: grid; gap: 10px; white-space: normal; }
+    .chat-bubble .ai-policy-card { display: block; padding: 12px; border-radius: 8px; background: #f7f8fa; color: var(--text-primary); text-decoration: none; }
+    .ai-policy-card h3 { margin: 0; font-size: 13px; line-height: 1.5; }
+    .ai-policy-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+    .ai-policy-tags span { padding: 2px 8px; border-radius: 4px; background: #fdefe9; color: var(--brand-primary); font-size: 11px; }
+    .ai-policy-card p { margin: 9px 0; color: var(--text-secondary); font-size: 11px; }
+    .ai-policy-detail { color: var(--brand-primary); font-size: 12px; }
+    .ai-policy-analysis { margin: 0 0 4px; padding: 0; background: transparent; }
+
+    .ai-policy-analysis p { margin: 0 0 8px; font-size: 13px; line-height: 1.8; color: var(--text-primary); }
+    .ai-policy-analysis p:last-child { margin-bottom: 0; }
     .chat-drawer.is-visible {
       display: block;
     }
@@ -2177,23 +2232,26 @@
     }
 
     .chat-inline-followup {
-      width: 100%;
-      min-height: 44px;
-      display: grid;
-      grid-template-columns: 24px minmax(0, 1fr) 16px;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 10px;
-      border: 1px solid rgba(228, 231, 237, 0.78);
-      border-radius: 10px;
-      color: #303133;
-      background: #fff;
-      box-shadow: 0 4px 12px rgba(17, 24, 39, 0.04);
+      width: fit-content;
+      max-width: 100%;
+      min-height: 36px;
+      display: block;
+      padding: 6px 0;
+      border: 0;
+      border-radius: 0;
+      color: var(--brand-primary);
+      background: transparent;
+      box-shadow: none;
       text-align: left;
-      font-size: 12px;
-      line-height: 1.4;
+      font: inherit;
+      font-size: 13px;
+      line-height: 1.7;
+      text-decoration: underline;
+      text-underline-offset: 4px;
       cursor: pointer;
     }
+    .chat-inline-followup .chat-inline-followup__icon,
+    .chat-inline-followup .chat-inline-followup__arrow { display: none; }
 
     .chat-inline-followup__icon {
       width: 22px;
@@ -8611,6 +8669,10 @@
     <div class="chat-drawer" id="chatDrawer">
       <div class="chat-panel">
         <div class="chat-panel__head">
+          <div class="ai-mini-header">
+            <div class="ai-mini-status"><span>9:41</span><svg viewBox="0 0 66 14" aria-hidden="true"><path d="M1 13V9h3v4zm5 0V6h3v7zm5 0V3h3v10zm5 0V0h3v13z" fill="currentColor"/><path d="M25 4q8-7 16 0m-13 3q5-4 10 0m-7 3q2-2 4 0" fill="none" stroke="currentColor" stroke-width="2"/><rect x="46" y="1" width="17" height="11" rx="2" fill="none" stroke="currentColor"/><rect x="48" y="3" width="13" height="7" rx="1" fill="currentColor"/><path d="M65 4v5" stroke="currentColor"/></svg></div>
+            <div class="ai-mini-nav"><button class="ai-mini-back" type="button" aria-label="返回" onclick="closeChatDrawer()"><svg viewBox="0 0 24 24"><path d="m15 4-8 8 8 8"/></svg></button><strong>安安AI</strong><div class="ai-mini-capsule"><span aria-hidden="true">•••</span><i></i><button type="button" aria-label="关闭安安AI" onclick="closeChatDrawer()"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="3.5" fill="currentColor"/></svg></button></div></div>
+          </div>
           <div>
             <h3>安安ai</h3>
           </div>
@@ -8620,7 +8682,7 @@
         <div class="chat-quick-list" id="chatQuickList"></div>
         <form class="chat-panel__form" id="chatForm">
           <input class="chat-input" id="chatInput" type="text" placeholder="例如：外地人在成都购房需要什么条件？" />
-          <button class="chat-send" type="submit">发送</button>
+          <button class="chat-send" type="submit" aria-label="发送消息"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 3-7 18-4-7-7-4 18-7ZM10 14 21 3"/></svg><span>发送</span></button>
         </form>
       </div>
     </div>
@@ -8628,6 +8690,7 @@
   </div>
 
 <script src="./registration-workbench/shared.js"></script>
+<script src="./assets/policy-catalog.js"></script>
 <script src="./assets/profile-binding.js"></script>
 <script src="./assets/blocked-keywords.js"></script>
   <script>
@@ -8740,7 +8803,7 @@
 
     const quickQuestions = [
       "区县政策",
-      "购房流程"
+      "找房"
     ];
     const messageNotifications = [
       {
@@ -11192,13 +11255,32 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       return `<div class="chat-project-list">${cards}</div>`;
     }
 
-    function getAiProjectListReply() {
-
-      return `
-        <strong>安安ai为你筛选了现有楼盘列表</strong><br>
-        你提到青羊区和 400 万预算，当前先从楼盘库里展示可选项目，并为每个项目匹配一位置业顾问：
-        ${renderAiEstateCards(estateTemplates)}
-      `;
+    function getAiProjectListReply(question = "") {
+      const districtNames = [...window.policyCatalog.districtOrder, "天府新区", "高新区"];
+      const district = districtNames.find(name => question.includes(name));
+      const budgetMatch = question.match(/(\d+(?:\.\d+)?)\s*(?:万|w)/i);
+      const budget = budgetMatch ? Number(budgetMatch[1]) : null;
+      const lowerBound = /以上|起步/.test(question);
+      const improvement = /改善/.test(question);
+      const namedEstate = estateTemplates.find(estate => question.includes(estate.title));
+      const matched = estateTemplates.filter(estate =>
+        (!district || estate.meta.includes(district.replace("四川", "").replace("成都", ""))) &&
+        (budget === null || (lowerBound ? Number(estate.price) >= budget : Number(estate.price) <= budget)) &&
+        (!improvement || estate.keyword.includes("改善")) &&
+        (!namedEstate || estate.title === namedEstate.title)
+      );
+      if (matched.length) {
+        const description = `根据你的查询，在当前楼盘列表中找到${matched.length}个符合筛选条件的项目。${budget !== null ? "价格为项目起步总价，具体房源总价可进入详情查看。" : "可以结合区域、面积和总价进一步比较。"}${/通勤|骡马市/.test(question) ? "通勤时间尚未核验，可先进入详情查看位置和交通配套。" : ""}`;
+        return `${description}${renderAiEstateCards(matched)}`;
+      }
+      const conditions = [district, budget !== null ? `${budget}万${lowerBound ? "以上" : "以内"}` : "", improvement ? "改善型" : ""].filter(Boolean).join("、");
+      const alternatives = estateTemplates.filter(estate => budget === null || (lowerBound ? Number(estate.price) >= budget : Number(estate.price) <= budget));
+      const suggestions = [...new Set([
+        ...(district && alternatives.length ? [`成都${budget !== null ? budget + "万" + (lowerBound ? "以上" : "以内") : ""}有哪些新房？`] : []),
+        ...alternatives.slice(0,2).map(estate => `${estate.meta.split(" · ")[0]}${budget !== null ? budget + "万" + (lowerBound ? "以上" : "以内") : ""}有哪些新房？`),
+        "不限区域和预算，看看现有楼盘"
+      ])].filter(item => item !== question).slice(0,3);
+      return `当前楼盘列表中暂未找到${conditions ? "同时满足“" + conditions + "”的" : "符合条件的"}项目。可以尝试扩大区域范围、调整预算或放宽改善要求，点击下面的条件继续查询。<div class="chat-inline-followups"><strong class="chat-inline-followups__title">你可以试着问问</strong>${suggestions.map(item => `<button class="chat-inline-followup" type="button" data-chat-inline-question="${item}"><span>${item}</span><span class="chat-inline-followup__arrow">›</span></button>`).join("")}</div>`;
     }
 
     function isQingyangFiveThousandQuery(text) {
@@ -11209,7 +11291,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       const questions = highBudgetAiSuggestions.filter((suggestion) => suggestion !== activeQuestion);
       return `
         <div class="chat-inline-followups">
-          <strong class="chat-inline-followups__title">猜你想问</strong>
+          <strong class="chat-inline-followups__title">你可以试着问问</strong>
           ${questions.map((question) => `
             <button class="chat-inline-followup" type="button" data-chat-inline-question="${question}">
               <span class="chat-inline-followup__icon">?</span>
@@ -11230,8 +11312,47 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       return `<div class="chat-project-list__label">为你匹配的楼盘</div>${renderAiEstateCards(estates)}`;
     }
 
+    function getAiPolicyListReply(question) {
+      const catalog = window.policyCatalog;
+      const district = catalog.districtOrder.find(name => question.includes(name) || question.includes(name.replace(/^(四川|成都)/, "")));
+      const allPolicies = catalog.districtOrder.flatMap(name => catalog.policiesByDistrict[name].map(policy => ({ ...policy, district: name })));
+      const topicRules = [
+        [/人才/, ["人才购房支持"]], [/就学|入学|教育/, ["就学支持"]],
+        [/补贴/, ["购房补贴支持", "公房承租人购买新建商品住房补贴支持"]],
+        [/消费券/, ["购房消费券支持"]], [/以旧换新|换房/, ["以旧换新支持"]],
+        [/交通/, ["交通优惠支持"]], [/车位/, ["车位购买支持"]],
+        [/房票/, ["房票购房支持", "房票安置支持"]],
+        [/公房|承租人/, ["公房承租人购买新建商品住房补贴支持"]]
+      ];
+      const requestedTopics = topicRules.filter(([pattern]) => pattern.test(question));
+      const unsupportedTopic = /公积金|首付|契税|税费|贷款|利率|租房|装修|生育|退休|落户|限购|购房资格/.test(question);
+      const unknownDistrict = !district && /[\u4e00-\u9fa5]{2,}(?:区|县|市)(?:现在|目前|的|有|购房|人才)/.test(question) && !/成都|哪些区域/.test(question);
+      const matchesTopics = policy => requestedTopics.every(([,tags]) => tags.some(tag => policy.tags.includes(tag)));
+      const policies = unsupportedTopic || unknownDistrict ? [] : allPolicies.filter(policy => (!district || policy.district === district) && matchesTopics(policy));
+      if (!policies.length) {
+        const related = [...allPolicies].sort((a,b) => {
+          const score = policy => (district && policy.district === district ? 4 : 0) + requestedTopics.filter(([,tags]) => tags.some(tag => policy.tags.includes(tag))).length;
+          return score(b) - score(a);
+        });
+        const questions = [...new Set(related.map(policy => policy.district + "有哪些" + policy.tags[0] + "政策？"))].filter(item => item !== question).slice(0,3);
+        return `当前政策数据中暂未找到与你的查询相匹配的政策。可以换个支持方向或区域继续了解。<div class="chat-inline-followups"><strong class="chat-inline-followups__title">你可以问问</strong>${questions.map(item => `<button class="chat-inline-followup" type="button" data-chat-inline-question="${item}">${item}</button>`).join("")}</div>`;
+      }
+      const selected = question.includes("最新") ? [...policies].sort((a,b) => b.start.localeCompare(a.start)) : policies;
+      const displayed = selected.slice(0,6);
+      const categories = [...new Set(displayed.flatMap(policy => policy.tags))];
+      const overview = `从当前匹配的政策信息看，${district || "下列区域"}的支持方向包括${categories.join("、")}。`;
+      const advice = question.includes("人才")
+        ? "你可以优先关注人才认定要求和适用对象，再核对申请条件与办理时间。人才购房支持不等于一定有现金补贴。"
+        : "可以先结合意向购房区域与所需支持方向选择政策，再核对有效期和适用条件。";
+      const analysis = `<section class="ai-policy-analysis" aria-label="政策解读"><p>${overview}</p><p>${advice}${question.includes("最新") ? "以下按起始日期排序，起始日期较晚的政策可能尚未生效。" : ""}</p><p>当前数据仅包含标题、标签和有效期，具体补贴标准及申请条件待正文补充。</p><p>具体的政策你可以通过政策详情查看：</p></section>`;
+      return `<div class="ai-policy-list">${analysis}${displayed.map(policy => `<a class="ai-policy-card" href="./政策详情.html?district=${encodeURIComponent(policy.district)}&amp;policy=${encodeURIComponent(policy.title)}&amp;source=home-ai"><h3>${policy.title}</h3><div class="ai-policy-tags">${policy.tags.map(tag => `<span>${tag}</span>`).join("")}</div><p>有效期：${policy.start} 至 ${policy.end}</p><span class="ai-policy-detail">查看政策详情 ›</span></a>`).join("")}</div>`;
+    }
+
     function getBotReply(question) {
       const text = question.trim();
+      if (/政策|补贴/.test(text) && chatDrawer.classList.contains("chat-drawer--home")) {
+        return getAiPolicyListReply(text);
+      }
       if (!text) {
         return "可以直接问我成都购房资格、公积金、税费或异地看房流程。";
       }
@@ -11257,7 +11378,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       }
 
       if (text.includes("青羊区") && (text.includes("400万") || text.includes("400 万") || text.includes("400w") || text.includes("400W") || text.includes("四百万"))) {
-        return getAiProjectListReply();
+        return getAiProjectListReply(text);
       }
 
       if (activeChatFlow && activeChatFlow.type === "talent-check") {
@@ -11266,6 +11387,14 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
 
       if (text.includes("区县政策")) {
         return "区县政策：你可以告诉我目标区县，例如“青羊区”“锦江区”“成华区”，我会按购房资格、人才政策、补贴口径和当前供应情况给你做静态示例解读。";
+      }
+
+      if (text === "找房") {
+        return "你想在哪个区县找房，购房总预算大概多少？例如：青羊区，400万以内。";
+      }
+
+      if (/新房|楼盘|房子|找房|通勤|骡马市/.test(text) && !/政策|资格|公积金|首付|税|签约/.test(text)) {
+        return getAiProjectListReply(text);
       }
 
       if (text.includes("购房流程")) {
@@ -11320,6 +11449,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
     }
 
     function openChatDrawer(prefill, options = {}) {
+      chatDrawer.classList.toggle("chat-drawer--home", Boolean(options.homeAi));
       chatDrawer.classList.add("is-visible");
       if (typeof prefill === "string") {
         chatInput.value = prefill;
@@ -11347,14 +11477,31 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       suspendedTalentAssessment = null;
       chatMessages.innerHTML = "";
       openChatDrawer("", {
-        placeholder: "例如：我想要青羊区楼盘，400万预算"
+        homeAi: true,
+        placeholder: "直接问我，例如：青羊区300万新房"
       });
-      addChatMessage("bot", "<strong>安安ai</strong><br>我可以按区县政策、购房流程、预算和楼盘偏好帮你做静态分析。");
-      renderQuickQuestions([
-        { type: "question", label: "区县政策", value: "区县政策" },
-        { type: "question", label: "购房流程", value: "购房流程" }
-      ], true);
+      chatInput.blur();
+      chatQuickList.innerHTML = "";
+      chatMessages.innerHTML = `<section class="ai-welcome" id="aiWelcome">
+        <div class="ai-welcome__intro">
+          <h1>你好，我是安安机器人！</h1>
+          <p>我可以帮你选房，也可以查询成都的购房支持政策，随时为你解答。</p>
+        </div>
+        <div class="ai-welcome__groups">
+          ${[
+            { title: "找新房", kind: "", questions: ["青羊区300万左右有哪些新房？", "高新区有哪些改善型楼盘？", "我在骡马市上班，推荐通勤方便的房子"] },
+            { title: "购房支持政策", kind: " ai-question-card--policy", questions: ["青羊区现在有哪些政策", "人才可以在哪些区域享受补贴", "我想了解最新的购房支持政策"] }
+          ].map(group => `<section class="ai-question-card${group.kind}"><div class="ai-question-card__head"><h2>${group.title}</h2></div>${group.questions.map(question => `<button class="ai-question" type="button" data-ai-welcome-question="${question}">${question}</button>`).join("")}</section>`).join("")}
+        </div>
+      </section>`;
     }
+
+    chatMessages.addEventListener("click", event => {
+      const question = event.target.closest("[data-ai-welcome-question]");
+      if (!question) return;
+      chatInput.value = question.dataset.aiWelcomeQuestion;
+      document.getElementById("chatForm").requestSubmit();
+    });
 
     const HOME_AI_CONVERSATION_KEY = "home-ai-conversation-state";
 
@@ -11378,6 +11525,23 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
           return false;
         }
         chatMessages.innerHTML = savedState.messagesHtml;
+        chatMessages.querySelectorAll(".ai-question-card h2").forEach(title => {
+          if (title.textContent === "找房") title.textContent = "找新房";
+        });
+        chatMessages.querySelectorAll(".chat-inline-followups__title").forEach(title => {
+          if (["推荐查询条件", "猜你想问"].includes(title.textContent.trim())) title.textContent = "你可以试着问问";
+        });
+        chatMessages.querySelectorAll(".ai-policy-more").forEach(link => link.remove());
+        chatMessages.querySelectorAll(".ai-policy-list").forEach(list => {
+          list.querySelector(":scope > strong")?.remove();
+          const analysis = list.querySelector(".ai-policy-analysis");
+          if (!analysis) return;
+          analysis.querySelector("h3")?.remove();
+          analysis.querySelectorAll("p").forEach(paragraph => {
+            paragraph.textContent = paragraph.textContent.replace("从上面", "从以下").replace("上方按政策", "下方按政策");
+          });
+          list.prepend(analysis);
+        });
         chatQuickList.innerHTML = savedState.quickHtml || "";
         chatQuickList.classList.toggle("chat-quick-list--grid", Boolean(savedState.quickGrid));
         requestAnimationFrame(() => {
@@ -11421,6 +11585,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
           activeChatFlow = null;
           suspendedTalentAssessment = null;
           chatDrawer.classList.add("is-visible");
+          chatDrawer.classList.add("chat-drawer--home");
           chatInput.value = "";
           chatInput.placeholder = "例如：我想要青羊区楼盘，400万预算";
           chatInput.focus();
@@ -12139,7 +12304,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         return;
       }
 
-      const projectDetailLink = event.target.closest(".chat-project-card__detail");
+      const projectDetailLink = event.target.closest(".chat-project-card__detail, .ai-policy-card");
       if (projectDetailLink) {
         saveHomeAiConversationState();
         return;
@@ -12169,7 +12334,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         return;
       }
       addChatMessage("user", question);
-      if (question.includes("人才政策") || question.includes("政策详情") || (question.includes("政策") && question.includes("区"))) {
+      if (!chatDrawer.classList.contains("chat-drawer--home") && (question.includes("人才政策") || question.includes("政策详情") || (question.includes("政策") && question.includes("区")))) {
         openTalentPolicyChooser(currentActivityPayload ? currentActivityPayload.item.title : "成都人才安家专场");
         chatInput.value = "";
         return;
@@ -12312,7 +12477,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
     renderDecorDirectory();
     renderActivityDetail(0, 0);
     renderQuickQuestions();
-    addChatMessage("bot", "你好，我是安安ai。你可以先问区县政策、购房流程，也可以告诉我预算和目标区县，我会给出静态楼盘推荐。");
+    addChatMessage("bot", "你好，我是安安ai。你可以先问区县政策，也可以点击找房，告诉我预算和目标区县。");
     applyInitialRoute();
   </script>
 </body>

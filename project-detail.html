@@ -3431,6 +3431,21 @@
   <script src="./assets/profile-binding.js"></script>
   <script>
     const projectRouteParams = new URLSearchParams(window.location.search);
+    const aiLinkedProjects = {
+      "天府锦城观澜": { district: "天府新区", price: "168", photo: "./assets/楼盘实景-会所书吧.png" },
+      "锦江文脉府": { district: "锦江区", price: "231", photo: "./assets/楼盘实景-楼栋外立面.png" },
+      "东客站云庭": { district: "成华区", price: "126", photo: "./assets/楼盘实景-社区楼景.png" }
+    };
+    const aiLinkedName = projectRouteParams.get("project");
+    const aiLinkedProject = aiLinkedProjects[aiLinkedName];
+    if (aiLinkedProject && projectRouteParams.get("presale") !== "1") {
+      document.title = `${aiLinkedName} - 楼盘详情`;
+      document.querySelector(".summary-head h2").textContent = aiLinkedName;
+      document.querySelector(".location-row > span:not(.pill)").textContent = aiLinkedProject.district;
+      document.querySelector(".summary .price").innerHTML = `${aiLinkedProject.price}<small>万元/套起</small>`;
+      document.getElementById("heroImage").src = aiLinkedProject.photo;
+      document.getElementById("heroImage").alt = `${aiLinkedName}楼盘实景`;
+    }
     if (projectRouteParams.get("source") === "home-ai" || projectRouteParams.has("project")) {
       document.getElementById("projectBackLink").href = "./房产超市_住进成都.html?chat=home-ai&restore=1";
     }

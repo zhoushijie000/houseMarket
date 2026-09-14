@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>政策详情</title>
+<style>
+:root{--brand:#fd5d00;--text:#303133;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}*{box-sizing:border-box}body{margin:0;background:#eef0f2;color:var(--text)}.app{max-width:425px;margin:auto;min-height:100dvh;background:#fff}.status{height:44px;padding:18px 20px 0;font-size:15px;font-weight:600}header{height:44px;position:relative;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #f2f2f2}header a{position:absolute;left:16px;text-decoration:none;color:#000;font-size:28px}header strong{font-size:17px}main{padding:24px 16px}h1{font-size:21px;line-height:1.55;margin:0 0 16px}.tags{display:flex;gap:6px;flex-wrap:wrap}.tags span{font-size:11px;color:var(--brand);background:#fdefe9;padding:4px 8px;border-radius:4px}dl{background:#f7f8fa;border-radius:12px;padding:16px;margin:20px 0;display:grid;grid-template-columns:70px 1fr;gap:12px;font-size:13px;line-height:1.6}dt{color:#909399}dd{margin:0}h2{font-size:16px;margin-top:28px}p{font-size:14px;line-height:1.8;color:#606266}.list-link{display:block;margin-top:24px;color:var(--brand);text-decoration:none;font-size:14px}
+</style></head>
+<body><div class="app"><div class="status">9:41</div><header><a id="back" href="./购房政策.html" aria-label="返回">‹</a><strong>政策详情</strong></header><main><h1 id="title">政策未找到</h1><div class="tags" id="tags"></div><dl id="meta" hidden></dl><h2>政策正文</h2><p id="body">暂无该政策内容，请返回政策列表重新选择。</p><a id="list" class="list-link" href="./购房政策.html">查看政策列表 ›</a></main></div>
+<script src="./assets/policy-catalog.js"></script>
+<script>
+const params = new URLSearchParams(location.search);
+const district = params.get('district');
+const policy = (window.policyCatalog.policiesByDistrict[district] || []).find(item => item.title === params.get('policy'));
+const listUrl = './购房政策.html?district=' + encodeURIComponent(district || '四川天府新区');
+document.getElementById('list').href = listUrl;
+document.getElementById('back').href = params.get('source') === 'home-ai' ? './房产超市_住进成都.html?chat=home-ai&restore=1' : listUrl;
+if(policy){
+ document.title = policy.title + ' - 政策详情';
+ document.getElementById('title').textContent = policy.title;
+ policy.tags.forEach(tag => {const span = document.createElement('span');span.textContent=tag;document.getElementById('tags').append(span)});
+ const meta = document.getElementById('meta');meta.hidden=false;
+ [['适用区域',district],['有效期',policy.start+' 至 '+policy.end]].forEach(([label,value])=>{const dt=document.createElement('dt');dt.textContent=label;const dd=document.createElement('dd');dd.textContent=value;meta.append(dt,dd)});
+ document.getElementById('body').textContent='该政策正文暂未录入，补贴标准、申请条件及办理方式待补充。';
+}
+</script></body></html>
