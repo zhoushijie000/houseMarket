@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>用户 - 消息记录</title>
-  <style>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>AI配置 - 引导语设置</title><style>
     :root {
       --primary: #3f6fe8;
       --primary-dark: #315fda;
@@ -162,10 +156,9 @@
       .filter-fields { gap: 14px; }
       .filter-actions { margin-left: 18px; }
     }
-  </style>
-</head>
-<body>
-  <header class="app-header">
+  
+.breadcrumb{padding:18px 20px;color:#909399;background:white}.breadcrumb b{color:#606266;font-weight:400}.ai-tabs{display:flex;gap:32px;padding:0 20px;background:white;border-bottom:1px solid #ebeef5}.ai-tabs a{padding:18px 0;text-decoration:none;color:#606266}.ai-tabs a.active{color:#3f6fe8;border-bottom:2px solid #3f6fe8}.color-value{display:inline-flex;align-items:center;gap:10px;font-family:monospace}.swatch{width:22px;height:22px;border:1px solid #dcdfe6;border-radius:4px}.category-tag{display:inline-block;padding:6px 12px;border-radius:4px}.switch{border:0;border-radius:15px;background:#c0c4cc;color:white;padding:5px 13px}.switch.on{background:#3f6fe8}dialog{width:530px;border:0;border-radius:6px;padding:0;box-shadow:0 16px 50px #0003}dialog::backdrop{background:#18202e70}.edit-body{padding:24px}.field{display:block;margin-bottom:22px}.field>span{display:block;margin-bottom:10px}.field input:not([type=color]),.field select,.field textarea{width:100%;padding:10px 12px;border:1px solid #dcdfe6;border-radius:4px;font:inherit}.field textarea{height:100px;resize:vertical}.colors{display:flex;gap:20px}.colors .field{flex:1}.color-edit{display:flex;gap:8px;align-items:center}.color-edit input[type=color]{height:38px;width:48px;padding:2px;background:white;border:1px solid #dcdfe6}.counter{text-align:right;color:#909399;margin-top:6px;font-size:12px}.error{color:#e45454;min-height:20px;margin:0}.dialog-footer{gap:10px}.required{color:#f56c6c;margin-right:5px}.btn:disabled,.page-btn:disabled{opacity:.45;cursor:not-allowed}.brand-agency{font-size:12px;margin-left:14px}.brand-logo{flex-shrink:0;margin-right:12px}.nav-primary-link{padding-left:10px;font-size:14px}.user{margin-left:12px}.table-action.danger{color:#f56c6c}
+</style></head><body data-ai-page="prompts"><header class="app-header">
     <div class="brand">
       <div class="brand-logo" aria-hidden="true"></div>
       <div class="brand-copy">
@@ -207,7 +200,6 @@
       <div class="nav-item active" data-nav-menu>
         <a class="nav-primary-link" href="./0819-直播专区标签管理.html">系统</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开系统菜单" aria-expanded="false"><span class="chevron"></span></button>
         <div class="nav-menu" role="menu" aria-label="系统">
-          <a class="nav-menu-link" href="./0917-AI类别管理.html">AI配置</a>
           <a class="nav-menu-link" href="./0910-消息管理.html">消息管理</a>
           <a class="nav-menu-link" href="./0819-直播专区标签管理.html">小程序管理</a>
           <button class="nav-menu-link" type="button" data-placeholder-menu>机构管理</button>
@@ -219,26 +211,4 @@
 
       </nav>
     <div class="user"><div class="avatar"></div><div class="user-name">周世杰</div></div>
-  </header>
-
-
-  <div class="workspace-tabs"><a class="workspace-tab " href="./0910-消息管理.html" style="text-decoration:none">消息管理</a><a class="workspace-tab active" href="./0910-消息记录.html" style="text-decoration:none">消息记录</a></div>
-  <main class="page" data-page="消息记录">
-    <div class="page-title">消息记录</div>
-    <form class="filter-card" id="filters">
-      <div class="filter-fields">
-        <label class="filter-item"><span class="filter-label">消息标题</span><input class="control-input" name="title" placeholder="请输入消息标题"></label>
-        <label class="filter-item"><span class="filter-label">消息类型</span><select class="control-select" name="type"><option value="">全部</option><option>系统通知</option><option>活动通知</option><option>业务提醒</option></select></label>
-        <label class="filter-item"><span class="filter-label">阅读状态</span><select class="control-select" name="status"><option value="">全部</option><option>已读</option><option>未读</option></select></label>
-      </div>
-      <div class="filter-actions"><button class="btn btn-primary" type="submit">查询</button><button class="btn" type="reset">重置</button></div>
-    </form>
-    <section class="list-card"><div class="toolbar"><div class="toolbar-title">消息记录列表</div><div class="toolbar-tip">示例数据</div></div>
-      <div class="table-wrap"><table><thead id="tableHead"></thead><tbody id="messageRows"></tbody></table></div>
-      <div class="pagination"><span id="totalText"></span><button class="page-btn" id="prev" aria-label="上一页">‹</button><span class="page-btn active" id="pageNumber">1</span><button class="page-btn" id="next" aria-label="下一页">›</button><span>10条/页</span></div>
-    </section>
-  </main>
-  <div class="overlay" id="detailOverlay" aria-hidden="true"><section class="dialog" role="dialog" aria-modal="true" aria-labelledby="detailTitle"><header class="dialog-header"><div class="dialog-title" id="detailTitle">消息详情</div><button class="dialog-close" id="closeDialog" aria-label="关闭">×</button></header><div class="dialog-body" id="detailBody" style="line-height:1.9;white-space:pre-wrap"></div><footer class="dialog-footer"><button class="btn btn-primary" id="confirmDialog">关闭</button></footer></section></div>
-  <style>.page-btn:disabled{opacity:.45;cursor:not-allowed}td{overflow-wrap:anywhere}.brand-logo{flex-shrink:0}.nav-primary-link{padding-left:11px}.user{margin-left:18px}</style>
-  <script src="./assets/user-messages.js"></script>
-</body></html>
+  </header><div class="workspace-tabs"><a class="workspace-tab active" style="text-decoration:none" href="./0917-AI类别管理.html">AI配置</a></div><main class="page"><div class="breadcrumb">系统设置 / AI配置 / <b>引导语设置</b></div><nav class="ai-tabs"><a class="" href="./0917-AI类别管理.html">类别管理</a><a class="active" href="./0917-AI引导语设置.html">引导语设置</a></nav><form class="filter-card" id="searchForm"><div class="filter-fields"><label class="filter-item">引导语内容 <input class="control-input" id="query" placeholder="请输入引导语内容"></label><label class="filter-item">所属类别 <select class="control-select" id="categoryFilter"></select></label><label class="filter-item">是否启用 <select class="control-select" id="statusFilter"><option value="">全部</option><option value="true">启用</option><option value="false">停用</option></select></label></div><div class="filter-actions"><button class="btn btn-primary">查询</button><button class="btn" type="reset">重置</button></div></form><section class="list-card"><div class="toolbar"><span class="toolbar-title">引导语设置列表</span><button class="btn btn-primary" id="add">＋ 新增引导语</button></div><div class="table-wrap"><table><thead><tr><th>序号</th><th>引导语内容</th><th>所属类别</th><th>是否启用</th><th>操作</th></tr></thead><tbody id="rows"></tbody></table></div><div class="pagination"><span id="total"></span><button class="page-btn" id="prev" aria-label="上一页">‹</button><span class="page-btn active" id="page">1</span><button class="page-btn" id="next" aria-label="下一页">›</button><span>10条/页</span></div></section></main><dialog id="editor" aria-labelledby="editorTitle"><form id="editForm"><div class="dialog-header"><span class="dialog-title" id="editorTitle"></span><button class="dialog-close" type="button" id="close" aria-label="关闭">×</button></div><div class="edit-body"><label class="field"><span><i class="required">*</i>引导语内容</span><textarea id="content" placeholder="请输入引导语内容，不超过30个字" required></textarea><div class="counter" id="counter">0 / 30</div></label><label class="field"><span><i class="required">*</i>所属类别</span><select id="category" required></select></label><label class="field"><span><i class="required">*</i>是否启用</span><select id="enabled"><option value="true">启用</option><option value="false">停用</option></select></label><p class="error" id="error" role="alert"></p></div><div class="dialog-footer"><button class="btn" type="button" id="cancel">取消</button><button class="btn btn-primary">保存</button></div></form></dialog><div class="toast" id="toast" role="status"></div><script src="./assets/ai-admin.js"></script></body></html>
