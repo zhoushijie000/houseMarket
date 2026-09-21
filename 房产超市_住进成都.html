@@ -4103,14 +4103,15 @@
     }
 
     #messageDetailScreen .message-thread__reply.is-user span {
-      background: #ff7b2b;
-      color: #ffffff;
+      background: #ffffff;
+      color: #303133;
     }
     #messageDetailScreen .message-thread__reply .message-thread__avatar img { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; }
 
     .message-estate { margin-left: 6px; font-size: 11px; font-weight: 400; color: #909399; }
     .message-wechat-number { display: block; margin: 6px 0 10px; user-select: text; overflow-wrap: anywhere; }
     .message-wechat-copy { border: 1px solid #fd5d00; border-radius: 6px; padding: 6px 12px; color: #fd5d00; background: #fff; cursor: pointer; }
+    .message-wechat-copy:disabled { border-color: #dcdfe6; color: #909399; background: #f5f7fa; cursor: not-allowed; }
     .message-contact { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #fff; border-bottom: 1px solid #eee; }
     .message-contact[hidden] { display: none; }
     .message-contact__avatar { display: grid; place-items: center; width: 46px; height: 46px; flex-shrink: 0; border-radius: 50%; background: #fff0e6; color: #fd5d00; overflow: hidden; }
@@ -4132,6 +4133,7 @@
     #messageDetailScreen .message-thread__sender { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
     #messageWechatButton { border: 1px solid #fd5d00; border-radius: 8px; background: #fd5d00; color: #fff; font-size: 12px; font-weight: 600; white-space: nowrap; padding: 9px 14px; flex-shrink: 0; cursor: pointer; }
     #messageWechatButton:active { background: #e65300; border-color: #e65300; }
+    #messageWechatButton:disabled { background: #fff3eb; border-color: #ffd8bf; color: #a96840; cursor: default; }
     .message-contact { flex-wrap: wrap; }
     .message-contact__actions { display: flex; gap: 8px; margin-left: auto; }
     .message-block-row { display: flex; align-items: center; justify-content: space-between; width: 100%; padding-top: 10px; border-top: 1px solid #f0f0f0; font-size: 13px; color: #606266; }
@@ -8809,10 +8811,20 @@
     ];
     const messageNotifications = [
       {
+        id: "message-user-001", kind: "chat", sender: "成都小满",
+        customerName: "成都小满", customerId: "user-xiaoman", customerWechat: "xiaoman_cd2026",
+        avatarText: "满", unreadCount: 1,
+        latestMessage: "你好，周末可以预约看房吗？", content: "你好，周末可以预约看房吗？",
+        timeLabel: "刚刚", lastMessageAt: new Date().toISOString(),
+        dialog: [{ role: "bot", text: "想了解一下三居室，可以先聊聊吗？" }]
+      },
+      {
         id: "message-consult-002",
         kind: "chat",
         sender: "陈晨经纪人",
         contactRole: "broker",
+        brokerAgency: "安家房产",
+        advisorWechat: "chenchen_cd2026",
         advisorEstate: "招商·时代花园",
         avatarText: "陈",
         unreadCount: 1,
@@ -8828,6 +8840,8 @@
         id: "message-consult-001",
         kind: "chat",
         sender: "李晓雨置业顾问",
+        incomingWechatRequest: true,
+        advisorWechat: "AJCD-LXY2026",
         advisorPhone: "13709063518",
         advisorEstate: "招商·时代花园",
         avatarText: "李",
@@ -10690,10 +10704,11 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
             <div class="message-list-item__avatar">${item.avatarImage ? `<img src="${item.avatarImage}" alt="${item.sender}头像">` : (item.avatarText || item.sender.slice(0, 1))}</div>
             <div class="message-list-item__main">
               <div class="message-list-item__head">
-                <strong class="message-list-item__sender"><span class="message-list-item__name">${formatPlainTextHtml(item.sender.replace(/(置业顾问|经纪人)$/, ""))}</span>${item.contactRole === "broker" ? '<span class="message-list-item__advisor-tag">经纪人</span>' : item.advisorEstate || /置业顾问$/.test(item.sender) ? '<span class="message-list-item__advisor-tag">置业顾问</span>' : ""}</strong>
+                <strong class="message-list-item__sender"><span class="message-list-item__name">${formatPlainTextHtml(item.sender.replace(/(置业顾问|经纪人)$/, ""))}</span>${!item.customerName && item.kind === "chat" ? (item.contactRole === "broker" ? '<span class="message-list-item__advisor-tag">经纪人</span>' : item.advisorEstate || /置业顾问$/.test(item.sender) ? '<span class="message-list-item__advisor-tag">置业顾问</span>' : "") : ""}</strong>
                 <span class="message-list-item__time">${formatMessageListTime(item.lastMessageAt)}</span>
               </div>
-              ${item.advisorEstate ? `<div class="message-list-item__estate">${formatPlainTextHtml(item.advisorEstate)}</div>` : ""}
+              ${!item.customerName && item.contactRole !== "broker" && item.advisorEstate ? `<div class="message-list-item__estate">${formatPlainTextHtml(item.advisorEstate)}</div>` : ""}
+              ${!item.customerName && item.contactRole === "broker" && item.brokerAgency ? `<div class="message-list-item__estate">${formatPlainTextHtml(item.brokerAgency)}</div>` : ""}
               <div class="message-list-item__preview">${formatPlainTextHtml(BlockedKeywords.mask(item.latestMessage || item.content))}</div>
             </div>
             <div class="message-list-item__aside">
@@ -10706,6 +10721,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
     }
 
     function renderMessageDetail(messageId, advisorRoute = null, customerRoute = null) {
+      saveWechatConversation();
       const baseMessageItem = getMessageNotificationById(messageId) || messageNotifications[0] || null;
       let messageItem = baseMessageItem;
       if (customerRoute && baseMessageItem) {
@@ -10721,7 +10737,8 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
           activityTitle: "",
           activityCover: "",
           customerName: customerRoute.name,
-          customerId: customerRoute.id
+          customerId: customerRoute.id,
+          customerWechat: customerRoute.wechat || ""
         };
       } else if (advisorRoute && baseMessageItem) {
         messageItem = {
@@ -10746,9 +10763,9 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       if (messageDetailTopbarTitle) {
         messageDetailTopbarTitle.textContent = "消息通知";
       }
-      const contactVisible = messageItem.kind === "chat" && !customerRoute;
+      const contactVisible = messageItem.kind === "chat" && !messageItem.customerName;
       document.getElementById("messageShareHouse").hidden = !contactVisible || messageItem.contactRole !== "broker";
-      document.getElementById("messageContact").hidden = !contactVisible;
+      document.getElementById("messageContact").hidden = messageItem.kind !== "chat";
       const advisorDisplayName = contactVisible ? (messageItem.advisorName || messageItem.sender.replace(/(置业顾问|经纪人)$/, "")) : messageItem.sender;
       function renderAdvisorName(element) {
         element.textContent = advisorDisplayName;
@@ -10760,7 +10777,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         }
       }
       renderAdvisorName(document.getElementById("messageContactName"));
-      document.getElementById("messageContactProject").textContent = messageItem.advisorEstate || "待补充";
+      document.getElementById("messageContactProject").textContent = messageItem.customerName ? "" : messageItem.advisorEstate || "待补充";
       const contactAvatar = document.getElementById("messageContactAvatar");
       contactAvatar.replaceChildren();
       if (messageItem.avatarImage) {
@@ -10806,7 +10823,11 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       if (messageOnlineQuick) {
         setMessageMediaOpen(false);
       }
-      document.getElementById("messageWechatButton").hidden = messageItem.kind !== "chat" || Boolean(customerRoute);
+      document.getElementById("messageWechatButton").hidden = messageItem.kind !== "chat";
+      const savedConversation = wechatConversations[wechatExchangeKey()];
+      if (savedConversation) messageDetailConversation.innerHTML = savedConversation;
+      renderWechatExchange();
+      if (messageItem.incomingWechatRequest && !advisorRoute && !messageItem.customerName) renderAdvisorWechatRequest();
       const phoneButton = document.getElementById("messagePhoneButton");
       const advisorPhone = String(messageItem.advisorPhone || "").replace(/[\s()-]/g, "");
       const hasPhone = /^\+?\d{7,15}$/.test(advisorPhone);
@@ -10871,9 +10892,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         return `消息已在线发送给${currentMessageNotification.customerName}，客户回复后会同步到消息列表。`;
       }
       if (text.includes("微信")) {
-        const advisorName = currentMessageNotification?.advisorName || "李晓雨";
-        const advisorWechat = currentMessageNotification?.advisorWechat || "AJCD-LXY2026";
-        return `可以添加置业顾问${advisorName}微信：${advisorWechat}。添加时备注“安家成都-招商时代花园”，我会同步发送项目资料。`;
+        return "交换微信需要对方确认，确认后才会展示微信号和二维码。";
       }
       if (text.includes("对应房源") || text.includes("房源")) {
         return "已为你定位招商·时代花园 123㎡ 三房房源，可咨询中高楼层、剩余套数、总价区间和在线选房流程。";
@@ -10951,25 +10970,162 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       messageDetailConversation.scrollIntoView({ block: "end", behavior: "smooth" });
     }
 
+    let wechatSaved = {};
+    try { wechatSaved = JSON.parse(localStorage.getItem("houseMarketWechatHistory") || "{}"); } catch (_) {}
+    const wechatExchanges = new Map(wechatSaved.states || []);
+    const wechatConversations = wechatSaved.conversations || {};
+    const wechatIncoming = wechatSaved.incoming || {};
+    function saveWechatConversation() {
+      const key = wechatExchangeKey();
+      if (!key || (!wechatExchanges.has(key) && !wechatExchanges.has(`${key}|advisor-request`))) return;
+      wechatConversations[key] = messageDetailConversation.innerHTML;
+      try { localStorage.setItem("houseMarketWechatHistory", JSON.stringify({states: [...wechatExchanges], conversations: wechatConversations, incoming: wechatIncoming})); } catch (_) {}
+    }
+    window.addEventListener("pagehide", saveWechatConversation);
+    messageDetailConversation.addEventListener("click", async event => {
+      const incomingAgree = event.target.closest("[data-advisor-wechat-agree]");
+      if (incomingAgree && !incomingAgree.disabled) {
+        const key = `${wechatExchangeKey()}|advisor-request`;
+        if (wechatExchanges.get(key) !== "pending") return;
+        wechatExchanges.set(key, "confirmed");
+        incomingAgree.textContent = "已同意";
+        incomingAgree.disabled = true;
+        appendOnlineMessage("user", "已同意交换微信");
+        appendOnlineMessage("user", "我的微信号：dsadasd");
+        saveWechatConversation();
+      }
+      const agree = event.target.closest("[data-wechat-agree]");
+      if (agree && !agree.disabled) receiveWechatConsent(wechatExchangeKey());
+      const copy = event.target.closest("[data-wechat-copy-value]");
+      if (copy) {
+        try { await navigator.clipboard.writeText(copy.dataset.wechatCopyValue); copy.textContent = "已复制"; }
+        catch (_) { copy.textContent = "请长按微信号复制"; }
+      }
+    });
+
+    function wechatExchangeKey() {
+      return currentMessageNotification?.customerName
+        ? `customer:${currentMessageNotification.customerId || currentMessageNotification.customerName}`
+        : messageAdvisorKey();
+    }
+
+    function renderAdvisorWechatRequest() {
+      const key = `${wechatExchangeKey()}|advisor-request`;
+      if (messageDetailConversation.querySelector("[data-advisor-wechat-request]")) return;
+      const confirmed = wechatExchanges.get(key) === "confirmed";
+      if (!confirmed) wechatExchanges.set(key, "pending");
+      const row = document.createElement("div");
+      row.className = "message-thread__reply";
+      row.dataset.advisorWechatRequest = "true";
+      row.append(createMessageAdvisorAvatar());
+      const bubble = document.createElement("span");
+      const title = document.createElement("strong");
+      title.textContent = "申请交换微信";
+      const number = document.createElement("p");
+      number.textContent = currentMessageNotification.advisorWechat;
+      const agree = document.createElement("button");
+      agree.type = "button";
+      agree.className = "message-wechat-copy";
+      agree.dataset.advisorWechatAgree = "true";
+      agree.textContent = confirmed ? "已同意" : "同意";
+      agree.disabled = confirmed;
+      const privacy = document.createElement("small");
+      privacy.style.cssText = "display:block;margin-top:8px;color:#888";
+      privacy.textContent = "平台将保护您的隐私，微信号仅双方可见";
+      bubble.append(title, number, agree, privacy);
+      row.append(bubble);
+      messageDetailConversation.append(row);
+      saveWechatConversation();
+    }
+
+    // Incoming request for the current recipient; acceptance requires their click.
+    function receiveWechatRequest(wechat) {
+      const key = wechatExchangeKey();
+      if (!key || wechatExchanges.has(key) || isMessageAdvisorBlocked()) return;
+      wechatIncoming[key] = String(wechat || "");
+      wechatExchanges.set(key, "pending");
+      renderWechatExchange();
+    }
+
+    // Prototype integration hook: call only when the remote participant accepts.
+    function receiveWechatConsent(key) {
+      if (!key || wechatExchanges.get(key) !== "pending") return;
+      wechatExchanges.set(key, "confirmed");
+      if (wechatExchangeKey() === key) renderWechatExchange();
+    }
+
+    function renderWechatExchange() {
+      const key = wechatExchangeKey();
+      const state = wechatExchanges.get(key);
+      const button = document.getElementById("messageWechatButton");
+      button.disabled = false;
+      button.textContent = "交换微信";
+      if (!state) return;
+      let row = messageDetailConversation.querySelector('[data-wechat-exchange="request"]');
+      if (!row) {
+      row = document.createElement("div");
+      row.className = wechatIncoming[key] ? "message-thread__reply" : "message-thread__reply is-user";
+      if (wechatIncoming[key]) row.append(createMessageAdvisorAvatar());
+      row.dataset.wechatExchange = "request";
+      const bubble = document.createElement("span");
+      const title = document.createElement("strong");
+      title.textContent = "申请交换微信";
+      const status = document.createElement("p");
+      status.textContent = wechatIncoming[key] || (currentMessageNotification.customerName ? "AJCD-LXY2026" : "dsadasd");
+      const confirm = document.createElement("button");
+      confirm.type = "button";
+      confirm.className = "message-wechat-copy";
+      confirm.dataset.wechatAgree = "true";
+      confirm.textContent = state === "confirmed" ? "已同意" : currentMessageNotification.customerName && !wechatIncoming[key] ? "等待对方同意" : "同意";
+      confirm.disabled = state === "confirmed" || (Boolean(currentMessageNotification.customerName) && !wechatIncoming[key]);
+      const recipient = document.createElement("small");
+      recipient.style.cssText = "display:block;margin-top:8px;color:#888";
+      recipient.textContent = "平台将保护您的隐私，微信号仅双方可见";
+      bubble.append(title, status, confirm, recipient);
+      row.append(bubble);
+      messageDetailConversation.append(row);
+      }
+      const agree = row.querySelector("[data-wechat-agree]");
+      if (state === "confirmed" && agree) { agree.textContent = "已同意"; agree.disabled = true; }
+      if (state === "confirmed" && !isMessageAdvisorBlocked() && !messageDetailConversation.querySelector('[data-wechat-exchange="accepted"]')) {
+        const accepted = document.createElement("div");
+        accepted.className = "message-thread__reply";
+        accepted.dataset.wechatExchange = "accepted";
+        const text = document.createElement("span");
+        text.textContent = "对方已同意";
+        accepted.append(createMessageAdvisorAvatar(), text);
+        messageDetailConversation.append(accepted);
+        sendAdvisorWechat();
+      }
+      saveWechatConversation();
+      row.scrollIntoView({ block: "end", behavior: "smooth" });
+    }
+
     function sendOnlineMessage(text) {
       const question = String(text || "").trim();
       if (!question) {
         return;
       }
-      appendOnlineMessage("user", question);
-      if (question.includes("微信") && !currentMessageNotification?.customerName) {
-        sendAdvisorWechat();
+      if (question.includes("微信")) {
+        const key = wechatExchangeKey();
+        if (!key || wechatExchanges.has(key) || isMessageAdvisorBlocked()) return;
+        wechatExchanges.set(key, "pending");
+        renderWechatExchange();
+        updateLatestMessage("申请交换微信，等待对方同意");
         return;
       }
+      appendOnlineMessage("user", question);
       appendOnlineMessage("bot", getOnlineReply(question));
+      saveWechatConversation();
     }
 
     function sendAdvisorWechat() {
       const advisor = currentMessageNotification;
-      if (!advisor || advisor.customerName || isMessageAdvisorBlocked()) return;
-      const wechat = advisor.advisorWechat || (advisor.advisorName && advisor.advisorName !== "李晓雨" ? "" : "AJCD-LXY2026");
+      if (!advisor || isMessageAdvisorBlocked() || wechatExchanges.get(wechatExchangeKey()) !== "confirmed") return;
+      const wechat = advisor.customerName ? advisor.customerWechat : advisor.advisorWechat || (advisor.advisorName && advisor.advisorName !== "李晓雨" ? "" : "AJCD-LXY2026");
       const qrRow = document.createElement("div");
       qrRow.className = "message-thread__reply";
+      qrRow.dataset.wechatExchange = "details";
       qrRow.append(createMessageAdvisorAvatar());
       const qrBubble = document.createElement("span");
       const qrImage = document.createElement("img");
@@ -10980,9 +11136,10 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       qrRow.append(qrBubble);
       const numberRow = document.createElement("div");
       numberRow.className = "message-thread__reply";
+      numberRow.dataset.wechatExchange = "details";
       numberRow.append(createMessageAdvisorAvatar());
       const bubble = document.createElement("span");
-      bubble.append(document.createTextNode("置业顾问微信号"));
+      bubble.append(document.createTextNode(advisor.customerName ? "用户微信号" : advisor.contactRole === "broker" ? "经纪人微信号" : "置业顾问微信号"));
       const number = document.createElement("strong");
       number.className = "message-wechat-number";
       number.textContent = wechat || "暂未提供";
@@ -10992,23 +11149,12 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         copy.type = "button";
         copy.className = "message-wechat-copy";
         copy.textContent = "复制微信号";
-        copy.addEventListener("click", async () => {
-          let copied = false;
-          try { await navigator.clipboard.writeText(wechat); copied = true; } catch (_) {
-            const input = document.createElement("textarea");
-            input.value = wechat;
-            input.style.cssText = "position:fixed;left:-9999px;top:0";
-            document.body.append(input);
-            input.select();
-            try { copied = document.execCommand("copy"); } catch (_) {}
-            input.remove();
-          }
-          copy.textContent = copied ? "已复制" : "请长按微信号复制";
-        });
+        copy.dataset.wechatCopyValue = wechat;
         bubble.append(copy);
       }
       numberRow.append(bubble);
-      messageDetailConversation.append(qrRow, numberRow);
+      messageDetailConversation.append(numberRow);
+      if (!advisor.customerName) messageDetailConversation.append(qrRow);
       updateLatestMessage(`微信号：${wechat || "暂未提供"}`);
       numberRow.scrollIntoView({ block: "end", behavior: "smooth" });
     }
