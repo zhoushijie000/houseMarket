@@ -3432,6 +3432,15 @@
   <script>
     const projectRouteParams = new URLSearchParams(window.location.search);
     const aiLinkedProjects = {
+      "浣花锦著": { district: "青羊区", price: "3680" },
+      "金沙云璟": { district: "青羊区", price: "3150" },
+      "金沙壹号院": { district: "青羊区", price: "3280" },
+      "浣花境": { district: "青羊区", price: "3060" },
+      "攀成钢壹号": { district: "锦江区", price: "4860" },
+      "锦江天玺": { district: "锦江区", price: "5280" },
+      "金融城云端": { district: "高新区", price: "5100" },
+      "麓湖隐溪": { district: "天府新区", price: "4980" },
+      "浣花御府": { district: "青羊区", price: "4680" },
       "天府锦城观澜": { district: "天府新区", price: "168", photo: "./assets/楼盘实景-会所书吧.png" },
       "锦江文脉府": { district: "锦江区", price: "231", photo: "./assets/楼盘实景-楼栋外立面.png" },
       "东客站云庭": { district: "成华区", price: "126", photo: "./assets/楼盘实景-社区楼景.png" }
@@ -3443,8 +3452,12 @@
       document.querySelector(".summary-head h2").textContent = aiLinkedName;
       document.querySelector(".location-row > span:not(.pill)").textContent = aiLinkedProject.district;
       document.querySelector(".summary .price").innerHTML = `${aiLinkedProject.price}<small>万元/套起</small>`;
-      document.getElementById("heroImage").src = aiLinkedProject.photo;
-      document.getElementById("heroImage").alt = `${aiLinkedName}楼盘实景`;
+      if (aiLinkedProject.photo) {
+        document.getElementById("heroImage").src = aiLinkedProject.photo;
+        document.getElementById("heroImage").alt = `${aiLinkedName}楼盘实景`;
+      } else {
+        document.getElementById("heroImage").alt = "楼盘展示示意图";
+      }
     }
     if (projectRouteParams.get("source") === "home-ai" || projectRouteParams.has("project")) {
       document.getElementById("projectBackLink").href = "./房产超市_住进成都.html?chat=home-ai&restore=1";

@@ -2163,60 +2163,19 @@
       line-height: 1.45;
     }
 
-    .chat-project-advisor {
-      display: grid;
-      grid-template-columns: 32px minmax(0, 1fr) auto;
-      align-items: center;
-      gap: 8px;
-      margin-top: 4px;
-      padding-top: 9px;
-      border-top: 1px solid rgba(228, 231, 237, 0.86);
-    }
-
-    .chat-project-advisor__avatar {
-      width: 32px;
-      height: 32px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      color: #fff !important;
-      background: linear-gradient(135deg, #ff8f2e, #fd5d00);
-      font-size: 13px !important;
-      font-weight: 700;
-    }
-
-    .chat-project-advisor__info {
-      min-width: 0;
-      display: grid;
-      gap: 1px;
-    }
-
-    .chat-project-advisor__info strong {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      font-size: 12px;
-    }
-
-    .chat-project-advisor__info span {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      font-size: 10px;
-    }
-
-    .chat-project-advisor__contact {
-      min-height: 30px;
-      padding: 0 10px;
-      border: 0;
-      border-radius: 999px;
-      color: #fff;
-      background: #fd5d00;
-      font-size: 11px;
+    .chat-project-card .chat-project-card__price {
+      color: #fd5d00;
+      font-size: 16px;
       font-weight: 600;
-      white-space: nowrap;
-      cursor: pointer;
     }
+
+    .chat-project-card .chat-project-card__cta {
+      color: #fd5d00;
+      padding-top: 6px;
+      border-top: 1px solid #e4e7ed;
+    }
+
+    .ai-estate-analysis p { margin: 8px 0; line-height: 1.7; }
 
     .chat-inline-followups {
       display: grid;
@@ -9138,13 +9097,6 @@
       }
     ];
 
-    const aiProjectAdvisors = [
-      { name: "李晓雨", role: "高级置业顾问", wechat: "AJCD-LXY2026" },
-      { name: "周可欣", role: "楼盘咨询顾问", wechat: "AJCD-ZKX2026" },
-      { name: "陈子航", role: "新房置业顾问", wechat: "AJCD-CZH2026" },
-      { name: "王嘉宁", role: "改善置业顾问", wechat: "AJCD-WJN2026" }
-    ];
-
     const highBudgetAiSuggestions = [
       "青羊区高端楼盘",
       "青羊区3000万以上楼盘",
@@ -11395,9 +11347,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
     }
 
     function renderAiEstateCards(estates) {
-      const advisorPool = [...aiProjectAdvisors].sort(() => Math.random() - 0.5);
-      const cards = estates.map((estate, index) => {
-        const advisor = advisorPool[index % advisorPool.length];
+      const cards = estates.map((estate) => {
         return `
         <div class="chat-project-card">
           <a class="chat-project-card__detail" href="./project-detail.html?project=${encodeURIComponent(estate.title)}&source=home-ai" aria-label="进入${estate.title}楼盘详情">
@@ -11405,19 +11355,38 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
               <strong>${estate.title}</strong>
               <span class="chat-project-card__arrow"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5"></path></svg></span>
             </span>
-            <span>${formatEstateMeta(estate.meta)} · 总价 ${estate.price}万起</span>
+            <span>${formatEstateMeta(estate.meta)}</span>
+            <span class="chat-project-card__price">总价 ${estate.price}万起</span>
             <span>${estate.keyword}</span>
+            ${estate.tags ? `<span>${estate.tags.join(" · ")}</span>` : ""}
+            <span class="chat-project-card__cta">查看楼盘详情 ›</span>
           </a>
-          <div class="chat-project-advisor">
-            <span class="chat-project-advisor__avatar">${advisor.name.slice(0, 1)}</span>
-            <span class="chat-project-advisor__info"><strong>${advisor.name}</strong><span>${advisor.role}</span></span>
-            <button class="chat-project-advisor__contact" type="button" data-chat-advisor-name="${advisor.name}" data-chat-advisor-role="${advisor.role}" data-chat-advisor-wechat="${advisor.wechat}" data-chat-advisor-estate="${estate.title}">在线联系</button>
-          </div>
+
         </div>
       `;
       }).join("");
 
       return `<div class="chat-project-list">${cards}</div>`;
+    }
+
+    function getNamedAiEstates(question) {
+      const normalize = value => value.replace(/[\s·•・—-]/g, "").toLowerCase();
+      const text = normalize(question);
+      const projects = [...estateTemplates, ...Object.values(highBudgetEstateGroups).flat()];
+      return projects.filter((estate, index) => projects.findIndex(item => item.title === estate.title) === index && text.includes(normalize(estate.title)));
+    }
+
+    function getAiEstateInterpretation(estates) {
+      return estates.map(estate => {
+        const focus = estate.title === "天府锦城观澜"
+          ? "105–143㎡的面积段覆盖家庭改善需求，精装修可减少自行装修的准备工作；可重点比较不同户型的空间利用和交付配置。"
+          : estate.title === "锦江文脉府"
+          ? "89–128㎡的面积段可供不同家庭规模选择，适合结合常住人数比较户型；精装修的具体品牌与标准需核对交付清单。"
+          : estate.title === "东客站云庭"
+          ? "76–99㎡的面积段和126万起的总价适合优先控制购房预算的用户；清水交付还需单独预留装修预算。"
+          : `当前资料中的项目特点为“${estate.keyword}”，可结合面积需求和总价预算进一步比较。`;
+        return `<section class="ai-estate-analysis" aria-label="楼盘解读"><strong>${estate.title} · 楼盘解读</strong><p><b>项目概况：</b>${formatEstateMeta(estate.meta)}，总价${estate.price}万起${estate.tags ? "，" + estate.tags.join("、") : ""}。</p><p><b>居住与选房：</b>${focus}</p><p><b>看房关注：</b>起步总价不代表所有房源价格，具体户型、在售房源和交付时间需以项目详情为准。当前为原型示例资料，尚未核验实时价格、交通与配套信息。</p></section>${renderAiEstateCards([estate])}`;
+      }).join("");
     }
 
     function getAiProjectListReply(question = "") {
@@ -11515,6 +11484,8 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
 
     function getBotReply(question) {
       const text = question.trim();
+      const namedEstates = getNamedAiEstates(text);
+      if (namedEstates.length) return getAiEstateInterpretation(namedEstates);
       if (/政策|补贴/.test(text) && chatDrawer.classList.contains("chat-drawer--home")) {
         return getAiPolicyListReply(text);
       }
@@ -11527,7 +11498,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       }
 
       if (text.includes("青羊区3000万以上楼盘")) {
-        return `<strong>可以把总价下探到 3000 万以上继续筛选。</strong><br>这一档在青羊区更可能覆盖核心板块的大平层、叠拼或少量低密产品。建议优先确认建面 250㎡以上、实际可售楼层和装修配置，再联系顾问核验实时房源。${getHighBudgetProjectListMarkup(text)}`;
+        return `<strong>可以把总价下探到 3000 万以上继续筛选。</strong><br>这一档在青羊区更可能覆盖核心板块的大平层、叠拼或少量低密产品。建议优先确认建面 250㎡以上、实际可售楼层和装修配置，再核验实时房源。${getHighBudgetProjectListMarkup(text)}`;
       }
 
       if (text.includes("锦江区5000万级楼盘")) {
@@ -11690,7 +11661,9 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
           return false;
         }
         chatMessages.innerHTML = savedState.messagesHtml;
+        chatMessages.querySelectorAll(".chat-project-advisor").forEach(advisor => advisor.remove());
         chatMessages.querySelectorAll(".ai-question-card h2").forEach(title => {
+          if (title.textContent.trim() === "楼盘解读") title.closest(".ai-question-card").remove();
           if (title.textContent === "找房") title.textContent = "找新房";
         });
         chatMessages.querySelectorAll(".chat-inline-followups__title").forEach(title => {
@@ -12475,21 +12448,6 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         return;
       }
 
-      const contactButton = event.target.closest("[data-chat-advisor-name]");
-      if (!contactButton) {
-        return;
-      }
-      const advisorName = contactButton.dataset.chatAdvisorName;
-      returnHomeOnChatClose = false;
-      chatDrawer.classList.remove("is-visible");
-      resetChatQuickQuestions();
-      openMessageDetailScreen("message-consult-001", {
-        name: advisorName,
-        role: contactButton.dataset.chatAdvisorRole || "置业顾问",
-        initial: advisorName.slice(0, 1),
-        wechat: contactButton.dataset.chatAdvisorWechat || "",
-        estate: contactButton.dataset.chatAdvisorEstate || ""
-      });
     });
 
     document.getElementById("chatForm").addEventListener("submit", (event) => {
