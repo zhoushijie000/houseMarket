@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>购房知识</title>
+<style>
+:root{--brand:#fd5d00;--soft:#fff1e7;--ink:#303133;--muted:#909399;--line:#eef0f3}*{box-sizing:border-box}body{margin:0;background:#eef0f2;color:var(--ink);font:14px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}button,a,input{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible{outline:2px solid var(--brand);outline-offset:3px}button{border:0;background:none;color:inherit}a{color:inherit;text-decoration:none}.phone{max-width:425px;margin:auto;background:white;min-height:100dvh}.status{height:32px;padding:9px 23px 0;font-size:12px;font-weight:650;display:flex;justify-content:space-between}.nav{height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 16px}.nav h1{font-size:17px;margin:0;font-weight:600}.nav a{display:flex;align-items:center;justify-content:center;width:62px;height:30px;border:1px solid #eceef1;border-radius:20px;gap:13px}.nav svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7}.capsule{border:1px solid #eceef1;border-radius:20px;width:62px;height:30px;text-align:center;line-height:28px;font-weight:700;letter-spacing:2px}.tabs{display:flex;padding:0 10px;background:white;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none;position:sticky;top:0;z-index:2}.tab{min-width:25%;white-space:nowrap;padding:18px 9px 16px;position:relative;font-size:14px}.tab.active{color:var(--brand);font-weight:650}.tab.active:after{content:'';position:absolute;bottom:0;left:calc(50% - 11px);height:3px;width:22px;border-radius:3px;background:var(--brand)}.layout{display:grid;grid-template-columns:88px minmax(0,1fr);min-height:calc(100dvh - 139px)}.side{background:#f6f7f9;padding:12px 0}.category{display:block;width:100%;min-height:54px;padding:14px 10px;font-size:12px;color:#7a808a;position:relative;line-height:1.7;overflow-wrap:anywhere}.category.active{background:white;color:var(--brand);font-weight:600}.category.active:before{content:'';position:absolute;left:0;top:19px;bottom:19px;width:3px;border-radius:0 3px 3px 0;background:var(--brand)}.content{padding:8px 17px 28px;min-width:0}.article{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:16px 0;border-bottom:1px solid var(--line)}.article-cover{width:80px;height:60px;flex:0 0 80px;object-fit:cover;border-radius:6px;background:#f3f5f6}.article h3{flex:1;min-width:0}.article h3{font-size:15px;font-weight:550;line-height:1.65;margin:0;overflow-wrap:anywhere}.foot{padding-top:24px;text-align:center;font-size:10px;color:#b9bec6;letter-spacing:1px}.empty{padding:60px 0;text-align:center;font-size:12px;color:#9298a1;line-height:2}.detail{position:fixed;inset:0;max-width:425px;margin:auto;z-index:5;background:white;overflow:auto}.detail[hidden]{display:none}.detail .nav{border-bottom:1px solid var(--line)}.detail .nav button{font-size:25px}.detail-body{padding:25px 24px}.detail-body h2{font-size:23px;line-height:1.6;margin:14px 0}.detail-body p{line-height:1.9;color:#727984}.detail-body h3{font-size:16px;margin-top:28px}.detail-body li{line-height:2;color:#606975;margin:8px 0}.notice{padding:12px 14px;background:#f6f7f9;font-size:12px;border-radius:8px}.video-placeholder{padding:36px 16px;background:#f6f7f9;text-align:center;border-radius:10px;color:#909399}.detail small{color:#aaa}@media(max-width:350px){.layout{grid-template-columns:76px 1fr}.content{padding:0 13px 24px}.tab{font-size:12px}}
+</style>
+</head><body><main class="phone"><div class="status"><span>9:41</span><span aria-hidden="true">▥ ▰</span></div><header class="nav"><a href="./安家成都-首页-扫码.html" aria-label="返回首页"><svg viewBox="0 0 24 24"><path d="m14 5-7 7 7 7"/></svg><svg viewBox="0 0 24 24"><path d="m3 11 9-8 9 8M6 9v11h12V9M10 20v-7h4v7"/></svg></a><h1>购房知识</h1><span class="capsule" aria-hidden="true">··· ◉</span></header><nav class="tabs" id="tabs" aria-label="知识栏目"></nav><div class="layout"><aside class="side" id="categories" aria-label="知识分类"></aside><section class="content"><div id="articles"></div><div class="foot">把知识装进口袋 · 把生活安在成都</div></section></div></main><section class="detail" id="detail" hidden aria-label="知识详情"><header class="nav"><button id="back" aria-label="返回知识列表">‹</button><h1>购房知识</h1><span style="width:24px"></span></header><div class="detail-body" id="detailBody"></div></section>
+<script>
+const defaults=[{id:'1',name:'买新房',children:['买房准备','选项目','看房','决策','签约交付'].map((name,i)=>({id:'1-'+(i+1),name}))},{id:'2',name:'买二手房',children:['购房准备','选房看房','交易过户','入住交接'].map((name,i)=>({id:'2-'+(i+1),name}))},{id:'3',name:'卖二手房',children:['出售准备','挂牌带看','签约交易','交房收款'].map((name,i)=>({id:'3-'+(i+1),name}))},{id:'4',name:'视频知识',children:['买房入门','看房技巧','交易流程'].map((name,i)=>({id:'4-'+(i+1),name}))}];
+let groups=defaults;
+try{const saved=JSON.parse(localStorage.getItem('houseMarket.knowledgeTags.v1'));if(Array.isArray(saved))groups=saved;}catch{}
+let parentId=groups[0]?.id, childId=groups[0]?.children[0]?.id;
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const covers=['楼盘实景-社区楼景.png','楼盘实景-客厅样板间.png','楼盘实景-园林入口.png','楼盘实景-楼栋外立面.png','楼盘实景-会所书吧.png'];
+const titles={
+'1-1':['第一次买房，从这份准备清单开始','买房预算怎么做？先列清这些支出','刚需还是改善，如何梳理居住需求？','购房前，先整理好你的家庭收支','买房常见名词，一次看明白'],
+'1-2':['选项目，先从通勤和生活圈看起','比较楼盘时，如何做好信息记录？','看懂楼盘信息，这些资料值得关注'],
+'1-3':['实地看房，带上这份观察清单','看户型图，从采光和动线开始','样板间之外，还应该看些什么？'],
+'1-4':['两套房怎么选？列一张对比清单','做购房决定前，再问自己五个问题','从喜欢到适合，理清你的购房优先级'],
+'1-5':['签约前，把待确认的问题列清楚','交房准备：资料与验房记录怎么整理'],
+'2-1':['购买二手房，需要做哪些准备？','二手房预算，怎样逐项记录？'],
+'2-2':['看二手房，留意房屋与小区的日常','实地看房记录表，帮你理清优缺点'],
+'2-3':['交易进度与材料，如何做好记录？','过户办理前，向服务窗口确认什么？'],
+'2-4':['交接前，列好设备与物品清单','入住前的检查与整理计划'],
+'3-1':['准备卖房，从整理房屋资料开始','卖房前，先明确自己的时间安排'],
+'3-2':['如何整理一份清晰的房源介绍？','带看前，做好这几项房屋整理'],
+'3-3':['沟通交易安排，先列清待确认事项','签约相关资料，怎样归档更清楚？'],
+'3-4':['交房前，核对物品与设备清单','房屋交接，怎样做好双方记录？'],
+'4-1':['三分钟了解：买房前的准备工作','购房名词小课堂：认识户型图'],
+'4-2':['跟着镜头，学习观察房屋采光','看房时，如何记录户型动线？'],
+'4-3':['交易过程中的资料整理方法','交房检查清单，带你逐项了解']};
+function render(){
+const p=groups.find(x=>x.id===parentId);
+$('#tabs').innerHTML=groups.map(x=>`<button class="tab ${x.id===parentId?'active':''}" data-parent="${esc(x.id)}" aria-pressed="${x.id===parentId}">${esc(x.name)}</button>`).join('');
+$('#categories').innerHTML=(p?.children||[]).map(x=>`<button class="category ${x.id===childId?'active':''}" data-child="${esc(x.id)}" aria-pressed="${x.id===childId}">${esc(x.name)}</button>`).join('');
+const rows=titles[childId]||[];
+$('#articles').innerHTML=rows.map((t,i)=>`<button class="article" data-article="${i}"><img class="article-cover" src="./assets/${covers[i%covers.length]}" alt="" loading="lazy" width="80" height="60"><h3>${esc(t)}</h3></button>`).join('')||'<div class="empty">该分类暂无内容<br>更多知识，敬请期待</div>';
+}
+$('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-parent]');if(!b)return;parentId=b.dataset.parent;childId=groups.find(x=>x.id===parentId).children[0]?.id;render();});
+$('#categories').addEventListener('click',e=>{const b=e.target.closest('[data-child]');if(!b)return;childId=b.dataset.child;render();});
+$('#articles').addEventListener('click',e=>{const b=e.target.closest('[data-article]');if(!b)return;const t=titles[childId][Number(b.dataset.article)];$('#detailBody').innerHTML=`<small>购房知识 / ${esc(groups.find(x=>x.id===parentId).name)}</small><h2>${esc(t)}</h2><p class="notice">原型示例内容 · 正式文章及视频由内容运营配置</p>${parentId==='4'?'<div class="video-placeholder">视频内容待配置<br><small>发布后可在这里播放完整视频</small></div>':'<h3>先明确你的关注重点</h3><p>结合家庭居住需求和时间安排，记录这一步最想了解的问题，把已确认的信息和待确认事项分开整理。</p><h3>准备一份自己的清单</h3><ul><li>记录房屋和项目的基本信息，保留资料来源。</li><li>整理需要现场观察、向工作人员确认的问题。</li><li>将不同选择放在同一张表中比较，补齐缺失的信息。</li></ul><h3>保留过程记录</h3><p>为资料和沟通记录标注日期，方便后续核对与查找。</p>'}`;$('#detail').hidden=false;$('#detail').scrollTop=0;$('#back').focus();});
+$('#back').onclick=()=>{$('#detail').hidden=true;};document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#detail').hidden=true;});
+window.addEventListener('storage',e=>{if(e.key==='houseMarket.knowledgeTags.v1'){try{groups=JSON.parse(e.newValue)||defaults;parentId=groups[0]?.id;childId=groups[0]?.children[0]?.id;render();}catch{}}});
+render();
+</script></body></html>

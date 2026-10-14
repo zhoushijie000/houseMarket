@@ -1,0 +1,192 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>运营 - 城市专场</title><style>    :root {
+      --primary: #3f6fe8;
+      --primary-dark: #315fda;
+      --primary-light: #edf3ff;
+      --text: #303133;
+      --regular: #606266;
+      --muted: #909399;
+      --placeholder: #c0c4cc;
+      --border: #dcdfe6;
+      --border-light: #ebeef5;
+      --background: #f3f4f6;
+      --surface: #fff;
+      --success: #32ad7f;
+      --success-bg: #edf9f5;
+      --danger: #f56c6c;
+      --danger-bg: #fff1f1;
+      --info: #6f7c90;
+      --info-bg: #f1f3f6;
+      --shadow: 0 14px 36px rgba(31, 41, 61, .16);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-width: 1180px; min-height: 100%; }
+    body {
+      color: var(--text);
+      background: var(--background);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-size: 14px;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+
+    /* Existing admin header */
+    .app-header {
+      height: 64px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border: 1px solid var(--border-light);
+    }
+    .brand, .brand-copy, .header-nav, .nav-item, .user { display: flex; align-items: center; }
+    .brand-logo { width: 36px; height: 36px; margin-right: 20px; position: relative; overflow: hidden; background: #406bdd; }
+    .brand-logo::before { content: ""; position: absolute; inset: 7px 9px; border-left: 5px solid #fff; border-right: 5px solid #fff; }
+    .brand-logo::after { content: ""; position: absolute; right: 9px; top: 13px; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-right: 10px solid #fff; }
+    .brand-title { color: #111; font-size: 18px; font-weight: 650; white-space: nowrap; }
+    .brand-agency { margin-left: 20px; color: var(--regular); white-space: nowrap; }
+    .brand-agency .chevron { margin-left: 24px; color: var(--primary); }
+    .header-nav { height: 100%; margin-left: auto; }
+    .nav-item { height: 100%; position: relative; color: #262626; white-space: nowrap; }
+    .nav-trigger { height: 100%; padding: 0 17px; display: flex; align-items: center; gap: 10px; color: inherit; background: transparent; border: 0; font-size: 15px; }
+    .nav-primary-link { height: 100%; padding: 0 8px 0 17px; display: flex; align-items: center; color: inherit; text-decoration: none; font-size: 15px; }
+    .nav-item:not([data-nav-menu]) .nav-primary-link { padding: 0 17px; }
+    .nav-menu-toggle { width: 30px; padding: 0 12px 0 0; }
+    .nav-primary-link:hover, .nav-item.open > .nav-primary-link { color: var(--primary); background: #f7f9fd; }
+    .nav-item.active > .nav-primary-link { color: var(--primary); font-weight: 600; }
+    .nav-trigger:hover, .nav-item.open .nav-trigger { background: #f7f9fd; }
+    .nav-item.active .nav-trigger { color: var(--primary); }
+    .nav-item.open .nav-trigger .chevron { transform: rotate(225deg) translate(-1px, -1px); }
+    .nav-menu { width: 212px; padding: 10px 0; position: absolute; top: calc(100% + 1px); left: 50%; z-index: 70; display: none; transform: translateX(-50%); background: #fff; border: 1px solid #edf0f5; border-radius: 4px; box-shadow: 0 8px 24px rgba(31, 41, 61, .14); }
+    .nav-item.open .nav-menu { display: block; }
+    .nav-menu-link { width: 100%; height: 46px; padding: 0 20px; display: flex; align-items: center; color: #30343a; background: transparent; border: 0; text-align: left; text-decoration: none; font-size: 15px; }
+    .nav-menu-link:hover { color: var(--primary); background: #f5f8ff; }
+    .nav-menu-link.active { color: var(--primary); background: var(--primary-light); font-weight: 600; }
+    .chevron { width: 7px; height: 7px; display: inline-block; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translateY(-2px); }
+    .user { height: 56px; margin-left: 64px; flex-direction: column; justify-content: center; }
+    .avatar { width: 35px; height: 35px; border-radius: 50%; position: relative; background: #e4e7ed; }
+    .avatar::before { content: ""; width: 9px; height: 9px; position: absolute; left: 13px; top: 7px; border-radius: 50%; background: #fff; }
+    .avatar::after { content: ""; width: 17px; height: 10px; position: absolute; left: 9px; top: 20px; border-radius: 9px 9px 3px 3px; background: #fff; }
+    .user-name { margin-top: -4px; padding: 1px 7px; border-radius: 4px; color: #fff; background: #85888d; font-size: 12px; }
+
+    .workspace-tabs { height: 54px; padding: 10px 12px; display: flex; align-items: center; gap: 6px; background: #f0f1f3; }
+    .workspace-tab { min-width: 96px; height: 34px; padding: 0 20px; display: inline-flex; align-items: center; justify-content: center; gap: 14px; color: #2f3033; background: #fff; border: 1px solid var(--border); border-radius: 4px; font-weight: 600; }
+    .workspace-tab.active { color: var(--primary); border-color: var(--primary); }
+    .workspace-tab .close { font-size: 16px; font-weight: 400; }
+    .more-actions { margin-left: auto; display: flex; align-items: center; gap: 12px; color: var(--regular); }
+
+
+[hidden]{display:none!important}button,input,textarea,select{font:inherit}button{cursor:pointer}a{color:var(--primary);text-decoration:none}.btn{height:36px;padding:0 16px;border:1px solid var(--border);border-radius:4px;background:#fff;color:#606266}.btn-primary{background:var(--primary);border-color:var(--primary);color:#fff}.btn:disabled{opacity:.5;cursor:wait}.workspace-tab{text-decoration:none}.city-page{padding:0 12px 20px}.search-panel{padding:20px;background:#fff;display:flex;gap:10px;margin-bottom:12px}.search-panel input{width:500px;max-width:55vw}.control{padding:10px 14px;border:1px solid var(--border);border-radius:4px;background:#fff;color:#606266;outline:0}.control:focus{border-color:var(--primary)}.list-panel{background:#fff;padding:20px}.list-toolbar{display:flex;gap:10px;margin-bottom:16px}.table-scroll{overflow:auto}table{border-collapse:collapse;width:100%;table-layout:fixed;color:#606266}th{font-weight:400;background:#f2f3f5;text-align:left}th,td{padding:16px 12px;border:1px solid #edf0f5;line-height:1.8;overflow-wrap:anywhere}tbody tr:nth-child(odd){background:#f7f8fa}.row-actions{text-align:center}.row-actions button{padding:3px 6px;line-height:1.8;color:var(--primary);border:0;background:none;font-size:12px}.pagination{display:flex;justify-content:flex-end;align-items:center;gap:12px;margin-top:20px;color:#909399}.empty{text-align:center;padding:40px;color:#909399}dialog::backdrop{background:#30313366}.editor{position:fixed;inset:0;width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;margin:0;border:0;padding:0;background:#f2f3f5;color:#606266;border-radius:0}.editor form{height:100%;display:flex;flex-direction:column}.editor-head{height:56px;flex-shrink:0;background:#fff;padding:0 20px;display:flex;align-items:center;justify-content:space-between}.editor-head h1{font-size:18px;font-weight:400;margin:0}.close{border:0;background:none;color:#909399;font-size:22px}.editor-scroll{flex:1;overflow:auto;padding:10px}.editor-panel{background:white;padding:24px 10px 40px}.section-title{font-size:18px;font-weight:600;margin:6px 0 24px;border-left:4px solid var(--primary);padding-left:6px;color:#303133}.fields{display:grid;grid-template-columns:1fr 1fr;gap:24px 36px;padding:0 0 26px}.field{display:grid;grid-template-columns:100px minmax(0,1fr);align-items:start;gap:12px}.field>label,.field-label{padding-top:12px;text-align:right;white-space:nowrap}.required:before{content:'* ';color:#f56c6c}.wide{grid-column:1/-1}.field .control{width:100%;min-height:40px}.text-wrap{position:relative}.text-wrap .control{padding-right:70px}.counter{position:absolute;right:10px;bottom:12px;font-size:11px;color:#909399;pointer-events:none}textarea.control{resize:vertical;min-height:58px!important}.date-range{display:flex;align-items:center;gap:10px}.date-range input{min-width:0}.upload-content{display:grid;justify-items:start;gap:12px}.upload-preview{width:98px;height:98px;object-fit:cover;border:1px solid #eee}.list-preview{width:174px;height:98px}.upload-help{font-size:12px;color:#909399;line-height:1.8;margin:0}.upload-button{display:inline-flex;align-items:center}.upload-button input{display:none}.image-actions{display:flex;gap:12px}.image-actions button{border:0;background:none;color:var(--primary);font-size:12px;padding:0}.districts{display:flex;flex-wrap:wrap;gap:22px 26px;margin-left:112px}.districts label{display:flex;gap:8px;align-items:center;white-space:nowrap}.districts input{accent-color:var(--primary);width:15px;height:15px}.order{margin:20px 0 0 112px;display:flex;flex-wrap:wrap;gap:12px;padding:10px;background:#f6f7f8;border-radius:8px;min-height:60px}.order-item{display:flex;align-items:center;gap:9px;padding:8px 12px;background:#fff;border:1px solid #e4e7ed;border-radius:6px;box-shadow:0 2px 6px #0001;cursor:grab}.order-item button{background:none;border:0;color:#909399}.order-item button:disabled{opacity:.3}.editor-footer{padding:10px 20px;background:#fff;display:flex;justify-content:flex-end;gap:10px;align-items:center;border-top:1px solid #eee}.error{color:#f56c6c;margin-right:auto;font-size:13px}.small-dialog{width:480px;max-width:90vw;border:0;border-radius:6px;padding:24px;color:#606266}.small-dialog h2{font-size:18px;margin:0 0 20px}.small-dialog footer{display:flex;justify-content:flex-end;gap:10px;margin-top:24px}.small-dialog .control{width:100%;margin:10px 0}.toast{position:fixed;top:90px;left:50%;transform:translateX(-50%);padding:12px 20px;background:#303133e6;color:#fff;border-radius:6px;z-index:99}.brand-agency{font-size:12px;margin-left:12px}.user{margin-left:24px}.nav-primary-link{padding-left:10px}.app-header{height:66px}.brand-title{font-size:18px}@media(max-width:1300px){.brand-agency{display:none}.fields{gap:20px}.field{grid-template-columns:90px minmax(0,1fr)}}
+</style></head><body>  <header class="app-header">
+    <div class="brand">
+      <div class="brand-logo" aria-hidden="true"></div>
+      <div class="brand-copy">
+        <div class="brand-title">成都住建线上房产超市管理平台</div>
+        <div class="brand-agency">成都市住房和城乡建设局 <span class="chevron"></span></div>
+      </div>
+    </div>
+    <nav class="header-nav" id="headerNav" aria-label="主导航">
+      <div class="nav-item" data-nav-menu>
+        <a class="nav-primary-link" href="./0715-房源展示价格管理.html">项目</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开项目菜单" aria-expanded="false"><span class="chevron"></span></button>
+        <div class="nav-menu" role="menu" aria-label="项目">
+          <a class="nav-menu-link" href="./0715-房源展示价格管理.html">房源管理</a>
+          <a class="nav-menu-link" href="./0902-户型图VR链接管理.html">项目管理</a>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-primary-link" href="./registration-workbench/admin.html">申请</a></div>
+      <div class="nav-item active" data-nav-menu>
+        <a class="nav-primary-link" href="./0821-直播管理.html">运营</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开运营菜单" aria-expanded="false"><span class="chevron"></span></button>
+        <div class="nav-menu" role="menu" aria-label="运营">
+          <a class="nav-menu-link" href="./0902-项目报告管理.html">内容管理</a>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>活动报名审核</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>楼盘管理</button>
+          <a class="nav-menu-link" href="./0821-直播管理.html">直播间管理</a>
+          <a class="nav-menu-link active" href="./0828-专题管理.html" aria-current="page">专题管理</a>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>运营配置</button>
+          <a class="nav-menu-link" href="./0831-区县管理.html">区县管理</a>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>最新预售</button>
+          <a class="nav-menu-link active" href="./1012-城市专场管理.html">城市专场</a>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>活动城市</button>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-primary-link" href="./网签成交.html">统计</a></div>
+      <div class="nav-item" data-nav-menu>
+        <a class="nav-primary-link" href="./0831-客户管理.html">客户</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开客户菜单" aria-expanded="false"><span class="chevron"></span></button>
+        <div class="nav-menu" role="menu" aria-label="客户">
+          <button class="nav-menu-link" type="button" data-customer-menu="客户消息">客户消息</button>
+          <a class="nav-menu-link" href="./0831-客户管理.html">客户管理</a>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-primary-link" href="./购房政策.html">政务</a></div>
+      <div class="nav-item"><a class="nav-primary-link" href="./0831-区县管理.html">管理</a></div>
+      <div class="nav-item" data-nav-menu>
+        <a class="nav-primary-link" href="./0819-直播专区标签管理.html">系统</a><button class="nav-trigger nav-menu-toggle" type="button" aria-label="展开系统菜单" aria-expanded="false"><span class="chevron"></span></button>
+        <div class="nav-menu" role="menu" aria-label="系统">
+          <a class="nav-menu-link" href="./0917-AI类别管理.html">AI配置</a>
+          <a class="nav-menu-link" href="./0910-消息管理.html">消息管理</a>
+          <a class="nav-menu-link" href="./0819-直播专区标签管理.html">小程序管理</a>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>机构管理</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>人员管理</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>权限管理</button>
+          <button class="nav-menu-link" type="button" data-placeholder-menu>系统日志</button>
+        </div>
+      </div>
+
+      </nav>
+    <div class="user"><div class="avatar"></div><div class="user-name">周世杰</div></div>
+  </header>
+
+
+<div class="workspace-tabs"><span class="workspace-tab">选择企业</span><span class="workspace-tab">项目管理</span><a href="./1012-城市专场管理.html" class="workspace-tab active">城市专场 <span class="close">×</span></a><span class="more-actions">更多操作⌄</span></div>
+<main class="city-page"><form class="search-panel" id="searchForm"><input class="control" id="query" placeholder="请输入活动名称" aria-label="活动名称"><button class="btn btn-primary">查询</button><button class="btn" type="reset">重置</button></form><section class="list-panel"><div class="list-toolbar"><button class="btn btn-primary" id="addCity">新增城市专场</button><button class="btn btn-primary" id="promotionButton">宣传配置</button></div><div class="table-scroll"><table><thead><tr><th style="width:12%">活动城市</th><th style="width:15%">活动名称</th><th style="width:19%">活动时间</th><th style="width:9%">活动状态</th><th style="width:16%">创建时间</th><th style="width:10%">是否展示</th><th style="width:19%;text-align:center">操作</th></tr></thead><tbody id="cityRows"></tbody></table></div><div class="pagination"><span id="total"></span><button class="btn" id="prev">‹</button><span id="pageNumber"></span><button class="btn" id="next">›</button><span>10条/页</span></div></section></main>
+<dialog id="cityEditor" class="editor" aria-labelledby="editorTitle"><form id="cityForm"><header class="editor-head"><h1 id="editorTitle">编辑城市专场</h1><button class="close" type="button" data-close-editor aria-label="关闭">×</button></header><div class="editor-scroll"><section class="editor-panel"><h2 class="section-title">基本信息</h2><div class="fields"><div class="field"><label for="city" class="required">活动城市</label><select class="control" id="city" required><option value="">请选择活动城市</option><option>西安站</option><option>兰州</option><option>乌鲁木齐</option><option>银川</option><option>拉萨</option><option>北京</option><option>上海</option><option>西宁</option></select></div><div class="field"><label for="name" class="required">活动名称</label><div class="text-wrap"><input class="control" id="name" maxlength="50" required><span class="counter" data-count="name">0/50</span></div></div><div class="field"><label for="start" class="required">参与时间</label><div class="date-range"><input class="control" id="start" type="datetime-local" step="1" required aria-label="开始时间"><span>至</span><input class="control" id="end" type="datetime-local" step="1" required aria-label="结束时间"></div></div><div class="field"><label for="address" class="required">活动地点</label><div class="text-wrap"><input class="control" id="address" maxlength="100" required><span class="counter" data-count="address">0/100</span></div></div><div class="field wide"><label for="intro" class="required">活动简介</label><div class="text-wrap"><textarea class="control" id="intro" maxlength="200" required></textarea><span class="counter" data-count="intro">0/200</span></div></div><div class="field wide"><label for="phone">活动电话</label><div class="text-wrap"><input class="control" id="phone" maxlength="20" placeholder="请输入活动电话"><span class="counter" data-count="phone">0/20</span></div></div>
+<div class="field wide"><span class="field-label required">背景图片</span><div class="upload-content"><label class="btn btn-primary upload-button">点击上传<input id="backgroundFile" type="file" accept="image/png,image/jpeg" aria-label="上传背景图片"></label><img id="backgroundPreview" class="upload-preview" alt="背景图片预览" hidden><div class="image-actions"><button type="button" data-remove-image="background">移除图片</button></div><p class="upload-help">仅支持上传png/jpg格式文件，单个文件不能超过10MB</p></div></div>
+<div class="field wide"><span class="field-label required">列表图片</span><div class="upload-content"><label class="btn btn-primary upload-button">点击上传<input id="listFile" type="file" accept="image/png,image/jpeg" aria-label="上传列表图片"></label><img id="listPreview" class="upload-preview list-preview" alt="列表图片预览" hidden><div class="image-actions"><button type="button" data-remove-image="list">移除图片</button></div><p class="upload-help">用于城市专场列表展示。仅支持上传png/jpg格式文件，单个文件不能超过10MB</p><p class="upload-help">严禁在本互联网非涉密平台处理、传输国家秘密，请确认扫描、传输的文件不涉及国家秘密</p></div></div></div>
+<h2 class="section-title">参与区县</h2><div id="districts" class="districts"></div><div id="districtOrder" class="order" aria-label="参与区县排序"></div></section></div><footer class="editor-footer"><span id="formError" class="error" role="alert"></span><button class="btn" type="button" data-close-editor>取消</button><button class="btn btn-primary" id="saveCity">确定</button></footer></form></dialog>
+<dialog id="promotionDialog" class="small-dialog"><form id="promotionForm"><h2>宣传配置</h2><label for="promotionTitle">宣传标题</label><input class="control" id="promotionTitle" maxlength="50" required placeholder="请输入宣传标题"><label for="promotionIntro">宣传简介</label><textarea class="control" id="promotionIntro" maxlength="200" placeholder="请输入宣传简介"></textarea><p id="promotionError" class="error"></p><footer><button class="btn" type="button" id="cancelPromotion">取消</button><button class="btn btn-primary">保存</button></footer></form></dialog>
+<dialog id="entryDialog" class="small-dialog"><h2 id="entryTitle"></h2><p>正式小程序二维码待接入，当前可预览对应页面。</p><a id="entryLink" class="btn btn-primary" target="_blank" rel="noopener">预览页面</a><footer><button class="btn" id="closeEntry">关闭</button></footer></dialog><div id="toast" class="toast" role="status" hidden></div>
+<script>
+'use strict';
+const $=id=>document.getElementById(id), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const districtNames=['崇州市','邛崃市','彭州市','都江堰市','简阳市','天府新区','新津区','蒲江县','大邑县','郫都区','双流区','金堂县','东部新区','温江区','新都区','青白江区','龙泉驿区','成华区','武侯区','金牛区','青羊区','锦江区','高新区'];
+const seedRows=[
+['西安站','万千气象幸福成都（西安站）','2026-09-19T10:30:00','2026-09-19T16:30:00','2026-09-12 15:41:13',true],
+['兰州','成都城市价值推介暨市场拓展活动（兰州站）','2026-07-25T10:00:00','2026-07-25T17:30:00','2026-07-16 17:08:33',true],
+['乌鲁木齐','新疆建工企业专场（特定邀请参加）','2026-06-12T16:00:00','2026-06-12T19:00:00','2026-06-05 15:20:35',true],
+['银川','银川站','2026-05-26T00:00:00','2026-05-31T00:00:00','2026-05-15 22:33:31',false],
+['拉萨','拉萨站','2026-09-12T00:00:00','2026-09-12T17:00:00','2026-05-15 22:32:30',true],
+['兰州','成都城市价值推介暨市场拓展活动（兰州站）','2026-07-25T10:00:00','2026-07-25T17:30:00','2026-05-15 22:29:44',false],
+['乌鲁木齐','乌鲁木齐站（公众参与）','2026-06-13T11:00:00','2026-06-13T19:00:00','2026-05-09 16:49:38',true]
+].map(([city,name,start,end,created,visible],i)=>({id:'city-'+(i+1),city,name,start,end,created,visible,address:'待定',intro:'成都城市价值推介暨市场拓展活动',phone:'',background:'./assets/activity-detail-hero-shanghai.svg',list:'./assets/activity-detail-hero-shanghai.svg',districts:['成华区','天府新区','高新区','锦江区','金牛区','郫都区']}));
+let rows=structuredClone(seedRows),promotion={title:'安家成都 城市专场',intro:''},page=1,query='',editing=null,selected=[],images={},urls=[],version=0,pending=0,dbPromise;
+function toast(t){$('toast').textContent=t;$('toast').hidden=false;clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('toast').hidden=true,2800);}
+function db(){return dbPromise??=new Promise((resolve,reject)=>{const request=indexedDB.open('houseMarketCityEvents',1);request.onupgradeneeded=()=>request.result.createObjectStore('config');request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);});}
+async function readConfig(){const database=await db();return new Promise((resolve,reject)=>{const tx=database.transaction('config','readonly'),r=tx.objectStore('config').get('state');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});}
+async function persist(nextRows,nextPromotion=promotion){const database=await db();return new Promise((resolve,reject)=>{const tx=database.transaction('config','readwrite');tx.objectStore('config').put({rows:nextRows,promotion:nextPromotion},'state');tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error);});}
+const dateTime=v=>v.replace('T',' ').padEnd(19,':00');
+function stateLabel(r){const now=Date.now();return now<new Date(r.start+'+08:00').getTime()?'未开始':now<=new Date(r.end+'+08:00').getTime()?'进行中':'已开展';}
+function render(){const filtered=rows.filter(r=>r.name.includes(query));page=Math.max(1,Math.min(page,Math.ceil(filtered.length/10)));$('cityRows').innerHTML=filtered.slice((page-1)*10,page*10).map(r=>`<tr><td>${esc(r.city)}</td><td>${esc(r.name)}</td><td>${esc(dateTime(r.start))} ~ ${esc(dateTime(r.end))}</td><td>${stateLabel(r)}</td><td>${esc(r.created)}</td><td>${r.visible?'是':'否'}</td><td class="row-actions"><button data-toggle="${r.id}">${r.visible?'取消展示':'展示'}</button><button data-edit="${r.id}">编辑</button><button data-entry="checkin" data-id="${r.id}">签到二维码</button><br><button data-entry="vote" data-id="${r.id}">投票二维码</button><button data-entry="group" data-id="${r.id}">团购二维码</button></td></tr>`).join('')||'<tr><td class="empty" colspan="7">暂无符合条件的城市专场</td></tr>';$('total').textContent='共 '+filtered.length+' 条';$('pageNumber').textContent=page;$('prev').disabled=page===1;$('next').disabled=page*10>=filtered.length;}
+function revoke(){urls.forEach(u=>URL.revokeObjectURL(u));urls=[];}
+function previews(){revoke();for(const type of ['background','list']){const image=$(type+'Preview'),value=images[type];image.hidden=!value;if(!value){image.removeAttribute('src');continue;}const url=value instanceof Blob?URL.createObjectURL(value):value;if(value instanceof Blob)urls.push(url);image.src=url;}}
+function counters(){document.querySelectorAll('[data-count]').forEach(c=>{const el=$(c.dataset.count);c.textContent=el.value.length+'/'+el.maxLength;});}
+function renderDistricts(){ $('districts').innerHTML=districtNames.map(d=>`<label><input type="checkbox" value="${d}" ${selected.includes(d)?'checked':''}>${d}</label>`).join('');$('districtOrder').innerHTML=selected.length?selected.map((d,i)=>`<div class="order-item" draggable="true" data-district="${d}"><span aria-hidden="true">☰</span>${d}<button type="button" data-move="${i}" data-step="-1" ${i===0?'disabled':''} aria-label="${d}前移">‹</button><button type="button" data-move="${i}" data-step="1" ${i===selected.length-1?'disabled':''} aria-label="${d}后移">›</button></div>`).join(''):'<span class="upload-help">勾选参与区县后，可拖动或点击箭头调整顺序</span>';}
+function openEditor(row=null){version++;pending=0;editing=row?.id||null;$('cityForm').reset();$('formError').textContent='';$('saveCity').disabled=false;$('editorTitle').textContent=row?'编辑城市专场':'新增城市专场';for(const id of ['city','name','start','end','address','intro','phone'])$(id).value=row?.[id]||'';images={background:row?.background||null,list:row?.list||null};selected=[...(row?.districts||[])];previews();counters();renderDistricts();$('cityEditor').showModal();document.querySelector('.editor-scroll').scrollTop=0;}
+function closeEditor(){version++;revoke();$('cityEditor').close();}
+function validateUpload(file){if(!['image/png','image/jpeg'].includes(file.type))return '仅支持PNG/JPG格式图片';if(file.size>10*1024*1024)return '单个文件不能超过10MB';return '';}
+const uploadVersions={background:0,list:0};
+async function upload(type,file){if(!file)return;const error=validateUpload(file);if(error){$('formError').textContent=error;return;}const session=version,uploadVersion=++uploadVersions[type];pending++;$('saveCity').disabled=true;$('formError').textContent='正在读取图片…';try{const bitmap=await createImageBitmap(file);bitmap.close();if(session!==version||uploadVersion!==uploadVersions[type])return;images[type]=file;previews();$('formError').textContent='';}catch{if(session===version)$('formError').textContent='图片无法读取，请重新选择有效图片';}finally{if(session===version){pending--;$('saveCity').disabled=pending>0;}}}
+function validateRow(r){if(!r.city||!r.name.trim()||!r.address.trim()||!r.intro.trim())return '请完善活动城市、名称、地点和简介';if(r.name.length>50||r.address.length>100||r.intro.length>200||r.phone.length>20)return '输入内容超过字数限制';if(!r.start||!r.end||!Number.isFinite(Date.parse(r.start))||!Number.isFinite(Date.parse(r.end))||r.start>=r.end)return '结束时间须晚于开始时间';if(!r.background||!r.list)return '请上传背景图片和列表图片';if(!r.districts.length)return '请至少选择一个参与区县';return '';}
+$('cityForm').onsubmit=async e=>{e.preventDefault();if(pending)return;const r={id:editing||crypto.randomUUID(),...Object.fromEntries(['city','name','start','end','address','intro','phone'].map(id=>[id,$(id).value.trim()])),...images,districts:[...selected]};for(const id of ['start','end'])if(r[id].length===16)r[id]+=':00';const old=rows.find(row=>row.id===editing);r.created=old?.created||new Date().toLocaleString('sv-SE',{timeZone:'Asia/Shanghai'});r.visible=old?.visible??true;const error=validateRow(r);if(error){$('formError').textContent=error;return;}$('saveCity').disabled=true;const next=editing?rows.map(row=>row.id===editing?r:row):[r,...rows];try{await persist(next);rows=next;render();closeEditor();toast('城市专场保存成功');}catch{$('formError').textContent='保存失败，请检查浏览器存储空间后重试';}finally{$('saveCity').disabled=false;}};
+$('addCity').onclick=()=>openEditor();document.querySelectorAll('[data-close-editor]').forEach(b=>b.onclick=closeEditor);$('cityEditor').addEventListener('cancel',e=>{e.preventDefault();closeEditor();});$('cityForm').addEventListener('input',counters);
+for(const type of ['background','list'])$(type+'File').onchange=e=>{upload(type,e.target.files[0]);e.target.value='';};
+document.querySelectorAll('[data-remove-image]').forEach(b=>b.onclick=()=>{const type=b.dataset.removeImage;uploadVersions[type]++;images[type]=null;previews();});
+$('districts').onchange=e=>{if(!e.target.matches('input'))return;selected=e.target.checked?[...selected,e.target.value]:selected.filter(d=>d!==e.target.value);renderDistricts();};
+$('districtOrder').onclick=e=>{const b=e.target.closest('[data-move]');if(!b)return;const i=Number(b.dataset.move),next=i+Number(b.dataset.step);if(next<0||next>=selected.length)return;[selected[i],selected[next]]=[selected[next],selected[i]];renderDistricts();};
+$('districtOrder').ondragstart=e=>{const item=e.target.closest('[data-district]');if(item)e.dataTransfer.setData('text/plain',item.dataset.district);};$('districtOrder').ondragover=e=>e.preventDefault();$('districtOrder').ondrop=e=>{e.preventDefault();const item=e.target.closest('[data-district]'),from=selected.indexOf(e.dataTransfer.getData('text/plain'));if(!item||from<0)return;const to=selected.indexOf(item.dataset.district);selected.splice(to,0,selected.splice(from,1)[0]);renderDistricts();};
+$('cityRows').onclick=async e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.edit){openEditor(rows.find(r=>r.id===b.dataset.edit));return;}if(b.dataset.toggle){b.disabled=true;const next=rows.map(r=>r.id===b.dataset.toggle?{...r,visible:!r.visible}:r);try{await persist(next);rows=next;render();toast('展示状态已更新');}catch{toast('保存失败，请重试');b.disabled=false;}return;}if(b.dataset.entry){const row=rows.find(r=>r.id===b.dataset.id),types={checkin:['签到二维码','checkin.html'],vote:['投票二维码','楼盘投票.html'],group:['团购二维码','registration.html']};$('entryTitle').textContent=row.name+' · '+types[b.dataset.entry][0];$('entryLink').href='./'+types[b.dataset.entry][1]+'?activity='+encodeURIComponent(row.name);$('entryDialog').showModal();}};
+$('closeEntry').onclick=()=>$('entryDialog').close();$('searchForm').onsubmit=e=>{e.preventDefault();query=$('query').value.trim();page=1;render();};$('searchForm').onreset=()=>{query='';page=1;render();};$('prev').onclick=()=>{page--;render();};$('next').onclick=()=>{page++;render();};
+$('promotionButton').onclick=()=>{$('promotionTitle').value=promotion.title;$('promotionIntro').value=promotion.intro;$('promotionError').textContent='';$('promotionDialog').showModal();};$('cancelPromotion').onclick=()=>$('promotionDialog').close();$('promotionForm').onsubmit=async e=>{e.preventDefault();const next={title:$('promotionTitle').value.trim(),intro:$('promotionIntro').value.trim()};if(!next.title){$('promotionError').textContent='请输入宣传标题';return;}try{await persist(rows,next);promotion=next;$('promotionDialog').close();toast('宣传配置已保存');}catch{$('promotionError').textContent='保存失败，请重试';}};
+document.addEventListener('click',e=>{const b=e.target.closest('.nav-menu-toggle');document.querySelectorAll('[data-nav-menu]').forEach(n=>{const open=b?.parentElement===n&&!n.classList.contains('open');n.classList.toggle('open',open);});if(e.target.closest('[data-placeholder-menu],[data-customer-menu]'))toast('该功能暂未开放');});
+$('addCity').disabled=true;$('promotionButton').disabled=true;
+readConfig().then(saved=>{if(saved&&Array.isArray(saved.rows)){rows=saved.rows;promotion=saved.promotion||promotion;}}).catch(()=>toast('本地存储不可用，保存时请重试')).finally(()=>{$('addCity').disabled=false;$('promotionButton').disabled=false;render();});
+</script></body></html>

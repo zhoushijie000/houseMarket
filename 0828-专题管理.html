@@ -111,7 +111,9 @@
     tbody tr:last-child td { border-bottom: 0; }
     tbody tr:hover td { background: #fafcff; }
     .col-index { width: 64px; text-align: center; }
-    .col-name { width: auto; }
+    .col-name { width: 200px; }
+    .col-description { min-width: 220px; }
+    .topic-description-preview { max-width: 380px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 22px; overflow-wrap: anywhere; }
     .col-time { width: 210px; }
     .col-status { width: 120px; }
     .col-action { width: 260px; text-align: center; white-space: nowrap; }
@@ -188,8 +190,8 @@
     .estate-modal .modal-header { height: 66px; }
     .estate-modal .modal-title { font-size: 22px; }
     .estate-modal .modal-body { padding: 0; display: flex; flex-direction: column; background: #fff; }
-    .estate-filters { min-height: 92px; padding: 22px 28px; display: flex; align-items: center; gap: 28px; background: #f7f8fa; }
-    .estate-filters .filter-item { flex: 1; }
+    .estate-filters { min-height: 92px; padding: 22px 28px; display: flex; align-items: center; gap: 18px; background: #f7f8fa; }
+    .estate-filters .filter-item { flex: 1; min-width: 0; }
     .estate-filters .control-input { width: auto; min-width: 0; flex: 1; }
     .estate-table-shell { min-height: 0; padding: 0 16px; overflow: auto; flex: 1; }
     .estate-table-shell .table-wrap { margin-top: 0; }
@@ -251,7 +253,7 @@
           <button class="nav-menu-link" type="button" data-placeholder-menu>运营配置</button>
           <a class="nav-menu-link" href="./0831-区县管理.html">区县管理</a>
           <button class="nav-menu-link" type="button" data-placeholder-menu>最新预售</button>
-          <button class="nav-menu-link" type="button" data-placeholder-menu>城市专场</button>
+          <a class="nav-menu-link" href="./1012-城市专场管理.html">城市专场</a>
           <button class="nav-menu-link" type="button" data-placeholder-menu>活动城市</button>
         </div>
       </div>
@@ -307,7 +309,7 @@
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th class="col-index">序号</th><th class="col-name">专题名称</th><th class="col-time">更新时间</th><th class="col-status">状态</th><th class="col-action">操作</th></tr></thead>
+          <thead><tr><th class="col-index">序号</th><th class="col-index">排序</th><th class="col-name">专题名称</th><th class="col-description">专题描述</th><th class="col-time">更新时间</th><th class="col-status">状态</th><th class="col-action">操作</th></tr></thead>
           <tbody id="topicTableBody"></tbody>
         </table>
       </div>
@@ -327,20 +329,10 @@
             <div class="form-label required">专题图片</div>
             <div class="form-control">
               <div class="upload-grid">
-                <div class="upload-card"><button class="upload-trigger" id="topicPictureTrigger" type="button"></button><div class="help">仅支持PNG/JPG格式，单个文件不超过1MB</div></div>
+                <div class="upload-card"><button class="upload-trigger" id="topicPictureTrigger" type="button"></button><div class="help">仅支持PNG/JPG格式，单个文件不超过10MB</div></div>
               </div>
               <input id="topicPictureInput" type="file" accept="image/png,image/jpeg" hidden>
               <div class="help" id="topicPictureError"></div>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-label required">专题icon</div>
-            <div class="form-control">
-              <div class="upload-grid">
-                <div class="upload-card icon-card"><button class="upload-trigger icon-upload" id="topicIconTrigger" type="button"></button><div class="help">仅支持PNG/JPG格式，单个文件不超过1MB</div></div>
-              </div>
-              <input id="topicIconInput" type="file" accept="image/png,image/jpeg" hidden>
-              <div class="help" id="topicIconError"></div>
             </div>
           </div>
           <div class="form-row">
@@ -348,6 +340,24 @@
             <div class="form-control">
               <div class="text-wrap"><input class="form-input" id="topicNameInput" maxlength="30" placeholder="请输入专题名称"><span class="counter"><span id="topicNameCount">0</span>/30</span></div>
               <div class="help" id="topicNameError"></div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label class="form-label" for="topicDescriptionInput">专题描述</label>
+            <div class="form-control">
+              <div class="text-wrap"><textarea class="form-textarea" id="topicDescriptionInput" maxlength="200" placeholder="请输入专题描述，简要介绍专题特色" aria-describedby="topicDescriptionHelp topicDescriptionError"></textarea><span class="counter"><span id="topicDescriptionCount">0</span>/200</span></div>
+              <div class="help" id="topicDescriptionHelp">用于介绍整个专题，与下方各楼盘的专题描述分别维护。</div>
+              <div class="help" id="topicDescriptionError"></div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label class="form-label required" for="topicSortInput">排序</label>
+            <div class="form-control">
+              <input class="form-input" id="topicSortInput" type="number" min="1" max="9999" step="1" placeholder="请输入排序" style="width:220px" aria-describedby="topicSortHelp topicSortError">
+              <div class="help" id="topicSortHelp">请输入1–9999的整数，数字越小越靠前；相同排序按创建先后展示。</div>
+              <div class="help error" id="topicSortError" role="alert"></div>
             </div>
           </div>
 
@@ -374,6 +384,7 @@
       </header>
       <div class="modal-body">
         <div class="estate-filters">
+          <label class="filter-item"><span class="filter-label">分期名称</span><input class="control-input" id="estatePhaseFilter" maxlength="30" placeholder="请输入分期名称"></label>
           <label class="filter-item"><span class="filter-label">项目名称</span><input class="control-input" id="estateNameFilter" maxlength="30" placeholder="请输入项目名称"></label>
           <label class="filter-item"><span class="filter-label">开发企业</span><input class="control-input" id="developerFilter" maxlength="30" placeholder="请输入开发企业"></label>
           <button class="btn btn-primary" id="estateSearchButton">查询</button>
@@ -418,19 +429,18 @@
     ];
 
     const topics = [
-      { id: 1, name: '成都改善好房', pictureClass: '', estates: [1, 7, 10], status: 'enabled', updatedAt: '2026-08-26 15:32', picture: null, icon: null },
-      { id: 2, name: '公园宜居楼盘', pictureClass: 'green', estates: [4, 5, 6], status: 'enabled', updatedAt: '2026-08-25 10:18', picture: null, icon: null },
-      { id: 3, name: '主城品质新盘', pictureClass: 'orange', estates: [2, 3, 9], status: 'disabled', updatedAt: '2026-08-22 09:46', picture: null, icon: null }
+      { id: 1, sort: 1, name: '成都改善好房', description: '精选品质改善好房，满足家庭居住空间升级需求。', pictureClass: '', estates: [1, 7, 10], status: 'enabled', updatedAt: '2026-08-26 15:32', picture: null },
+      { id: 2, sort: 2, name: '公园宜居楼盘', description: '发现公园周边好房，享受自然与生活相伴的宜居环境。', pictureClass: 'green', estates: [4, 5, 6], status: 'enabled', updatedAt: '2026-08-25 10:18', picture: null },
+      { id: 3, sort: 3, name: '主城品质新盘', description: '聚焦主城品质新盘，兼顾城市配套与居住体验。', pictureClass: 'orange', estates: [2, 3, 9], status: 'disabled', updatedAt: '2026-08-22 09:46', picture: null }
     ];
 
     const state = {
       editingId: null,
       topicPicture: null,
-      topicIcon: null,
       selectedEstates: [],
       pendingEstateIds: new Set(),
       topicQuery: { name: '', status: '' },
-      estateQuery: { name: '', developer: '' }
+      estateQuery: { phase: '', name: '', developer: '' }
     };
 
     const $ = selector => document.querySelector(selector);
@@ -448,20 +458,22 @@
 
     function renderTopics() {
       const name = state.topicQuery.name.trim().toLowerCase();
-      const rows = topics.filter(item => (!name || item.name.toLowerCase().includes(name)) && (!state.topicQuery.status || item.status === state.topicQuery.status));
+      const rows = topics.filter(item => (!name || item.name.toLowerCase().includes(name)) && (!state.topicQuery.status || item.status === state.topicQuery.status)).sort((a, b) => a.sort - b.sort || a.id - b.id);
       $('#topicTotal').textContent = rows.length;
       $('#topicTableBody').innerHTML = rows.length ? rows.map((topic, index) => {
         return `<tr>
           <td class="col-index">${index + 1}</td>
+          <td class="col-index">${topic.sort}</td>
           <td><div class="primary-text">${escapeHTML(topic.name)}</div></td>
+          <td class="col-description"><div class="topic-description-preview" title="${escapeHTML(topic.description || '')}">${escapeHTML(topic.description || '—')}</div></td>
           <td>${topic.updatedAt}</td><td><span class="status ${topic.status}">${topic.status === 'enabled' ? '启用' : '禁用'}</span></td>
           <td class="col-action"><button class="table-action" data-edit-topic="${topic.id}">编辑</button><button class="table-action" data-toggle-topic="${topic.id}">${topic.status === 'enabled' ? '禁用' : '启用'}</button><button class="table-action danger" data-delete-topic="${topic.id}">删除</button></td>
         </tr>`;
-      }).join('') : '<tr><td class="empty" colspan="5">暂无符合条件的专题</td></tr>';
+      }).join('') : '<tr><td class="empty" colspan="7">暂无符合条件的专题</td></tr>';
     }
 
     function renderUpload(trigger, dataUrl, type) {
-      if (dataUrl) trigger.innerHTML = `<img src="${dataUrl}" alt="${type === 'picture' ? '专题图片' : '专题icon'}预览"><span class="replace-label">重新上传</span>`;
+      if (dataUrl) trigger.innerHTML = `<img src="${dataUrl}" alt="专题图片预览"><span class="replace-label">重新上传</span>`;
       else trigger.innerHTML = uploadIcon;
     }
 
@@ -482,17 +494,21 @@
     function openTopicModal(topic = null) {
       state.editingId = topic?.id ?? null;
       state.topicPicture = topic?.picture ?? null;
-      state.topicIcon = topic?.icon ?? null;
       state.selectedEstates = topic ? (topic.estateEntries?.map(item => ({ ...item })) || topic.estates.map((id, index) => ({ id, description: `${estates.find(item => item.id === id)?.phase || '该楼盘'}兼具区位、配套与居住品质，适合专题重点推荐。`, sort: index + 1 }))) : [];
       $('#topicModalTitle').textContent = topic ? '编辑专题' : '新增专题';
       $('#topicNameInput').value = topic?.name ?? '';
+      $('#topicSortInput').value = topic?.sort ?? Math.min(9999, Math.max(0, ...topics.map(item => item.sort)) + 1);
+      $('#topicSortError').textContent = '';
+      $('#topicSortInput').removeAttribute('aria-invalid');
+      $('#topicDescriptionInput').value = topic?.description ?? '';
+      $('#topicDescriptionCount').textContent = $('#topicDescriptionInput').value.length;
+      $('#topicDescriptionError').textContent = '';
+      $('#topicDescriptionInput').removeAttribute('aria-invalid');
       $('#topicNameCount').textContent = $('#topicNameInput').value.length;
       $('#topicPictureError').textContent = '';
-      $('#topicIconError').textContent = '';
       $('#topicNameError').textContent = '';
       $('#estateError').textContent = '';
       renderUpload($('#topicPictureTrigger'), state.topicPicture, 'picture');
-      renderUpload($('#topicIconTrigger'), state.topicIcon, 'icon');
       renderSelectedEstates();
       $('#topicOverlay').classList.add('show');
       $('#topicOverlay').setAttribute('aria-hidden', 'false');
@@ -506,14 +522,15 @@
     }
 
     function filteredEstates() {
+      const phase = state.estateQuery.phase.trim().toLowerCase();
       const name = state.estateQuery.name.trim().toLowerCase();
       const developer = state.estateQuery.developer.trim().toLowerCase();
-      return estates.filter(item => (!name || item.project.toLowerCase().includes(name) || item.phase.toLowerCase().includes(name)) && (!developer || item.developer.toLowerCase().includes(developer)));
+      return estates.filter(item => (!phase || item.phase.toLowerCase().includes(phase)) && (!name || item.project.toLowerCase().includes(name)) && (!developer || item.developer.toLowerCase().includes(developer)));
     }
 
     function renderEstatePicker() {
       const rows = filteredEstates();
-      $('#estateTotal').textContent = rows.length ? 467 : 0;
+      $('#estateTotal').textContent = rows.length;
       $('#estateTableBody').innerHTML = rows.length ? rows.map(estate => `<tr>
         <td class="check-col"><input class="row-check" type="checkbox" data-estate-check="${estate.id}" ${state.pendingEstateIds.has(estate.id) ? 'checked' : ''}></td>
         <td>${escapeHTML(estate.phase)}</td><td>${escapeHTML(estate.project)}</td><td>${escapeHTML(estate.developer)}</td><td>${escapeHTML(estate.district)}</td>
@@ -526,7 +543,8 @@
 
     function openEstateModal() {
       state.pendingEstateIds = new Set(state.selectedEstates.map(item => item.id));
-      state.estateQuery = { name: '', developer: '' };
+      state.estateQuery = { phase: '', name: '', developer: '' };
+      $('#estatePhaseFilter').value = '';
       $('#estateNameFilter').value = '';
       $('#developerFilter').value = '';
       renderEstatePicker();
@@ -548,33 +566,39 @@
     }
 
     function handleImage(file, type) {
-      const error = type === 'picture' ? $('#topicPictureError') : $('#topicIconError');
+      const error = $('#topicPictureError');
       error.className = 'help';
       error.textContent = '';
       if (!file) return;
       if (!['image/png', 'image/jpeg'].includes(file.type)) {
         error.className = 'help error'; error.textContent = '仅支持PNG/JPG格式图片'; return;
       }
-      if (file.size > 1024 * 1024) {
-        error.className = 'help error'; error.textContent = '单个文件不能超过1MB'; return;
+      if (file.size > 10 * 1024 * 1024) {
+        error.className = 'help error'; error.textContent = '单个文件不能超过10MB'; return;
       }
       const reader = new FileReader();
       reader.onload = () => {
         if (type === 'picture') { state.topicPicture = reader.result; renderUpload($('#topicPictureTrigger'), reader.result, type); }
-        else { state.topicIcon = reader.result; renderUpload($('#topicIconTrigger'), reader.result, type); }
       };
       reader.readAsDataURL(file);
     }
 
     function saveTopic() {
       const name = $('#topicNameInput').value.trim();
+      const description = $('#topicDescriptionInput').value.trim();
+      const sort = Number($('#topicSortInput').value);
       let valid = true;
+      $('#topicSortError').textContent = '';
+      $('#topicSortInput').removeAttribute('aria-invalid');
+      if (!Number.isInteger(sort) || sort < 1 || sort > 9999) { $('#topicSortError').textContent = '请输入1–9999的整数'; $('#topicSortInput').setAttribute('aria-invalid', 'true'); valid = false; }
+      $('#topicDescriptionError').textContent = '';
+      $('#topicDescriptionInput').removeAttribute('aria-invalid');
+      if (description.length > 200) { $('#topicDescriptionError').className = 'help error'; $('#topicDescriptionError').textContent = '专题描述不能超过200字'; $('#topicDescriptionInput').setAttribute('aria-invalid', 'true'); valid = false; }
       $('#topicNameError').className = 'help';
       $('#estateError').className = 'help';
       if (!name) { $('#topicNameError').className = 'help error'; $('#topicNameError').textContent = '请输入专题名称'; valid = false; }
       else $('#topicNameError').textContent = '';
       if (!state.topicPicture && !state.editingId) { $('#topicPictureError').className = 'help error'; $('#topicPictureError').textContent = '请上传专题图片'; valid = false; }
-      if (!state.topicIcon && !state.editingId) { $('#topicIconError').className = 'help error'; $('#topicIconError').textContent = '请上传专题icon'; valid = false; }
       if (!state.selectedEstates.length) { $('#estateError').className = 'help error'; $('#estateError').textContent = '请至少添加一个专题楼盘'; valid = false; }
       const missingDescription = state.selectedEstates.find(item => !item.description.trim());
       if (missingDescription) { $('#estateError').className = 'help error'; $('#estateError').textContent = `请填写“${estates.find(item => item.id === missingDescription.id)?.phase}”的专题描述`; valid = false; }
@@ -583,21 +607,20 @@
       const ids = estateEntries.map(item => item.id);
       if (state.editingId) {
         const topic = topics.find(item => item.id === state.editingId);
-        Object.assign(topic, { name, estates: ids, estateEntries, picture: state.topicPicture, icon: state.topicIcon, updatedAt: '2026-08-28 14:30' });
+        Object.assign(topic, { name, description, sort, estates: ids, estateEntries, picture: state.topicPicture, updatedAt: '2026-08-28 14:30' });
         showToast('专题保存成功');
       } else {
-        topics.unshift({ id: Date.now(), name, estates: ids, estateEntries, picture: state.topicPicture, icon: state.topicIcon, pictureClass: '', status: 'enabled', updatedAt: '2026-08-28 14:30' });
+        topics.unshift({ id: Date.now(), name, description, sort, estates: ids, estateEntries, picture: state.topicPicture, pictureClass: '', status: 'enabled', updatedAt: '2026-08-28 14:30' });
         showToast('专题新增成功');
       }
       renderTopics();
       closeTopicModal();
     }
 
+    $('#topicDescriptionInput').addEventListener('input', event => { $('#topicDescriptionCount').textContent = event.target.value.length; });
     $('#topicNameInput').addEventListener('input', event => { $('#topicNameCount').textContent = event.target.value.length; });
     $('#topicPictureTrigger').addEventListener('click', () => $('#topicPictureInput').click());
-    $('#topicIconTrigger').addEventListener('click', () => $('#topicIconInput').click());
     $('#topicPictureInput').addEventListener('change', event => handleImage(event.target.files[0], 'picture'));
-    $('#topicIconInput').addEventListener('change', event => handleImage(event.target.files[0], 'icon'));
     $('#addButton').addEventListener('click', () => openTopicModal());
     $('#closeTopicModal').addEventListener('click', closeTopicModal);
     $('#cancelTopicModal').addEventListener('click', closeTopicModal);
@@ -634,11 +657,14 @@
       renderEstatePicker();
     });
     $('#estateSearchButton').addEventListener('click', () => {
-      state.estateQuery = { name: $('#estateNameFilter').value, developer: $('#developerFilter').value };
+      state.estateQuery = { phase: $('#estatePhaseFilter').value, name: $('#estateNameFilter').value, developer: $('#developerFilter').value };
       renderEstatePicker();
     });
     $('#estateResetButton').addEventListener('click', () => {
-      $('#estateNameFilter').value = ''; $('#developerFilter').value = ''; state.estateQuery = { name: '', developer: '' }; renderEstatePicker();
+      $('#estatePhaseFilter').value = ''; $('#estateNameFilter').value = ''; $('#developerFilter').value = ''; state.estateQuery = { phase: '', name: '', developer: '' }; renderEstatePicker();
+    });
+    ['estatePhaseFilter', 'estateNameFilter', 'developerFilter'].forEach(id => {
+      $('#'+id).addEventListener('keydown', event => { if (event.key === 'Enter') $('#estateSearchButton').click(); });
     });
 
     $('#searchButton').addEventListener('click', () => {
@@ -704,7 +730,6 @@
 
     renderTopics();
     renderUpload($('#topicPictureTrigger'), null, 'picture');
-    renderUpload($('#topicIconTrigger'), null, 'icon');
     const params = new URLSearchParams(location.search);
     if (params.get('modal') === 'topic') openTopicModal();
     if (params.get('modal') === 'estate') { openTopicModal(); openEstateModal(); }

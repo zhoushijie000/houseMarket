@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>小程序管理 - 直播标签配置</title>
+  <title>小程序管理 - 标签配置</title>
   <style>
     :root {
       --primary: #3f6fe8;
@@ -387,6 +387,7 @@
       .nav-trigger { padding: 0 12px; }
       .user { margin-left: 34px; }
     }
+  .k-handle{cursor:grab;font-size:24px;color:#929ba9;padding:8px;display:inline-block}.k-handle:active{cursor:grabbing}.k-order{color:#a0a7b2;font-size:12px}.k-parent{background:#f7f9fd}.k-child strong{font-weight:400}.k-branch{color:#c2cad8;margin:0 20px}.k-count{font-size:12px;color:#909399;margin-left:16px}.k-level{background:#edf3ff;color:#5474ad;padding:4px 10px;border-radius:4px;font-size:12px}.k-child .k-level{background:#f4f5f7;color:#909399}.k-drop td{box-shadow:inset 0 3px #3f6fe8}.k-dragging{opacity:.4}#kName{width:100%;height:38px;border:1px solid #dcdfe6;border-radius:4px;padding:0 12px}#kOverlay .modal{width:560px}
   </style>
 </head>
 <body>
@@ -474,13 +475,14 @@
 
     <section class="content-card">
       <div class="type-row">
-        <div class="field-label">图片类型</div>
+        <div class="field-label">标签类型</div>
         <div class="segmented" id="typeTabs" role="tablist" aria-label="标签类型">
           <button class="segment" data-type="policy">政策解读</button>
           <button class="segment" data-type="news">房产资讯</button>
           <button class="segment" data-type="promotion">企业促销</button>
           <button class="segment active" data-type="live">直播专区</button>
           <button class="segment" data-type="report">项目报告</button>
+          <button class="segment" data-type="knowledge">购房知识</button>
         </div>
       </div>
 
@@ -590,6 +592,7 @@
     </section>
   </div>
 
+  <div class="overlay" id="kOverlay"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="kTitle"><form id="kForm"><header class="modal-header"><div class="modal-title" id="kTitle"></div><button type="button" class="modal-close" data-k-close aria-label="关闭">×</button></header><div class="modal-body"><div class="form-panel"><div class="form-row"><span class="form-label">所属父级</span><div class="control" id="kParent" style="padding-top:9px"></div></div><div class="form-row"><label class="form-label required" for="kName">标签名称</label><div class="control"><input id="kName" maxlength="20" placeholder="请输入标签名称"><div class="help error" id="kError" role="alert"></div><div class="help">最多20字；新增标签默认排在同级末尾，可拖动调整。</div></div></div></div></div><footer class="modal-footer"><button type="button" class="btn" data-k-close>取消</button><button class="btn btn-primary" type="submit">保存</button></footer></form></section></div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
@@ -649,6 +652,9 @@
     }
 
     function renderTable() {
+      if (state.currentType === "knowledge") return renderKnowledge();
+      document.querySelector(".toolbar-tip").innerHTML = '共 <strong id="totalCount">0</strong> 条，排序数字越小越靠前';
+      document.querySelector(".pagination").style.display = "";
       const live = state.currentType === 'live';
       const report = state.currentType === 'report';
       const rows = getRows();
@@ -844,6 +850,7 @@
     $('#searchInput').addEventListener('keydown', event => { if (event.key === 'Enter') $('#searchButton').click(); });
     $('#resetButton').addEventListener('click', () => { $('#searchInput').value = ''; state.query = ''; renderTable(); });
     $('#addButton').addEventListener('click', () => {
+      if (state.currentType === 'knowledge') return openKnowledge();
       if (!['live', 'report'].includes(state.currentType)) {
         showToast('原有类型保持现有配置，请切换到“直播专区”体验新功能');
         return;
@@ -913,6 +920,85 @@
     document.addEventListener('click', event => { if (!event.target.closest('#headerNav')) closeHeaderMenus(); });
     document.addEventListener('keydown', event => { if (event.key === 'Escape') closeHeaderMenus(); });
 
+
+    const knowledgeKey = 'houseMarket.knowledgeTags.v1';
+    let knowledge = [{"id": "1", "name": "买新房", "children": [{"id": "1-1", "name": "买房准备"}, {"id": "1-2", "name": "选项目"}, {"id": "1-3", "name": "看房"}, {"id": "1-4", "name": "决策"}, {"id": "1-5", "name": "签约交付"}]}, {"id": "2", "name": "买二手房", "children": [{"id": "2-1", "name": "购房准备"}, {"id": "2-2", "name": "选房看房"}, {"id": "2-3", "name": "交易过户"}, {"id": "2-4", "name": "入住交接"}]}, {"id": "3", "name": "卖二手房", "children": [{"id": "3-1", "name": "出售准备"}, {"id": "3-2", "name": "挂牌带看"}, {"id": "3-3", "name": "签约交易"}, {"id": "3-4", "name": "交房收款"}]}, {"id": "4", "name": "视频知识", "children": [{"id": "4-1", "name": "买房入门"}, {"id": "4-2", "name": "看房技巧"}, {"id": "4-3", "name": "交易流程"}]}];
+    try { const saved = JSON.parse(localStorage.getItem(knowledgeKey)); if (Array.isArray(saved)) knowledge = saved; } catch {}
+    let knowledgeEdit = null, knowledgeDrag = null;
+    function persistKnowledge() {
+      try { localStorage.setItem(knowledgeKey, JSON.stringify(knowledge)); return true; }
+      catch { showToast('浏览器无法保存，当前修改仅在本次页面中有效', true); return false; }
+    }
+    function renderKnowledge() {
+      $('.pagination').style.display = 'none';
+      $('#addButton').textContent = '新增父级标签';
+      $('.toolbar-tip').textContent = '拖动左侧手柄排序 · 父级整体移动，子级在同一父级内排序 · 自动保存';
+      $('#tableHead').innerHTML = '<tr><th style="width:84px">拖动排序</th><th>标签名称</th><th style="width:140px">层级</th><th>所属父级</th><th style="width:250px;text-align:center">操作</th></tr>';
+      const q=state.query.toLowerCase();
+      $('#tableBody').innerHTML=knowledge.map((p,i)=> {
+        const matches=p.name.toLowerCase().includes(q);
+        const children=p.children.filter(c=>matches || c.name.toLowerCase().includes(q));
+        if (!matches && !children.length) return '';
+        const row=(item,parent,index)=>`<tr data-k-row="${item.id}" data-k-parent="${parent?.id || ''}" class="${parent?'k-child':'k-parent'}"><td><span class="k-handle" draggable="${!q}" title="${q?'请重置查询后排序':'按住拖动排序'}" aria-label="拖动排序">⠿</span><span class="k-order">${index+1}</span></td><td>${parent?'<span class="k-branch">└</span>':''}<strong>${escapeHtml(item.name)}</strong>${parent?'':`<span class="k-count">${p.children.length} 个子级</span>`}</td><td><span class="k-level">${parent?'子级分类':'父级栏目'}</span></td><td>${parent?escapeHtml(parent.name):'—'}</td><td style="text-align:center">${parent?'':`<button class="table-action" data-k-add="${item.id}">新增子级</button>`}<button class="table-action" data-k-edit="${item.id}">编辑</button><button class="table-action danger" data-k-delete="${item.id}">删除</button></td></tr>`;
+        return row(p,null,i)+children.map(c=>row(c,p,p.children.indexOf(c))).join('');
+      }).join('') || '<tr><td colspan="5" class="empty">暂无标签，请新增父级标签</td></tr>';
+    }
+    function locateKnowledge(id) {
+      for(const p of knowledge) { if(p.id===id) return {item:p,parent:null}; const c=p.children.find(c=>c.id===id); if(c) return {item:c,parent:p}; }
+    }
+    function openKnowledge(id=null,parentId=null) {
+      knowledgeEdit=id?locateKnowledge(id):{item:null,parent:knowledge.find(p=>p.id===parentId)};
+      const child=!!knowledgeEdit.parent;
+      $('#kTitle').textContent=`${id?'编辑':'新增'}${child?'子级':'父级'}标签`;
+      $('#kName').value=knowledgeEdit.item?.name || '';
+      $('#kParent').textContent=child?knowledgeEdit.parent.name:'无（作为顶部栏目展示）';
+      $('#kError').textContent='';
+      $('#kOverlay').classList.add('show'); $('#kName').focus();
+    }
+    function closeKnowledge(){ $('#kOverlay').classList.remove('show'); }
+    $('#kForm').addEventListener('submit', e=>{
+      e.preventDefault(); const name=$('#kName').value.trim();
+      const siblings=knowledgeEdit.parent?knowledgeEdit.parent.children:knowledge;
+      if(!name || name.length>20) { $('#kError').textContent='请输入1–20字的标签名称'; return; }
+      if(siblings.some(x=>x!==knowledgeEdit.item && x.name===name)){ $('#kError').textContent='同一层级下标签名称不能重复'; return; }
+      if(knowledgeEdit.item) knowledgeEdit.item.name=name;
+      else { const item={id:'k'+Date.now()+Math.random().toString(16).slice(2),name}; if(!knowledgeEdit.parent) item.children=[]; siblings.push(item); }
+      const saved=persistKnowledge(); closeKnowledge(); renderKnowledge(); if(saved) showToast('标签已保存');
+    });
+    $$('#kOverlay [data-k-close]').forEach(b=>b.addEventListener('click',closeKnowledge));
+    $('#kOverlay').addEventListener('click',e=>{if(e.target===$('#kOverlay')) closeKnowledge();});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')closeKnowledge();});
+    $('#tableBody').addEventListener('click',e=>{
+      const add=e.target.closest('[data-k-add]'), edit=e.target.closest('[data-k-edit]'), del=e.target.closest('[data-k-delete]');
+      if(add)openKnowledge(null,add.dataset.kAdd);
+      if(edit)openKnowledge(edit.dataset.kEdit);
+      if(del){ const {item,parent}=locateKnowledge(del.dataset.kDelete);
+        if(item.children?.length) return showToast('请先删除该父级下的子级标签',true);
+        if(!confirm(`确定删除“${item.name}”标签吗？`))return;
+        const siblings=parent?parent.children:knowledge; siblings.splice(siblings.indexOf(item),1);
+        const saved=persistKnowledge();renderKnowledge();if(saved)showToast('标签已删除');
+      }
+    });
+    $('#tableBody').addEventListener('dragstart',e=>{
+      const handle=e.target.closest('.k-handle'); if(!handle || state.query) return e.preventDefault();
+      const row=handle.closest('tr'); knowledgeDrag={id:row.dataset.kRow,parent:row.dataset.kParent};
+      e.dataTransfer.setData('text/plain',knowledgeDrag.id);e.dataTransfer.effectAllowed='move'; row.classList.add('k-dragging');
+    });
+    $('#tableBody').addEventListener('dragover',e=>{
+      const row=e.target.closest('[data-k-row]'); $$('.k-drop').forEach(r=>r.classList.remove('k-drop'));
+      if(row && knowledgeDrag && row.dataset.kParent===knowledgeDrag.parent && row.dataset.kRow!==knowledgeDrag.id){e.preventDefault();e.dataTransfer.dropEffect='move';row.classList.add('k-drop');}
+    });
+    $('#tableBody').addEventListener('drop',e=>{
+      const row=e.target.closest('[data-k-row]');
+      if(!row || !knowledgeDrag || row.dataset.kParent!==knowledgeDrag.parent)return;
+      e.preventDefault();const siblings=knowledgeDrag.parent?knowledge.find(p=>p.id===knowledgeDrag.parent).children:knowledge;
+      const from=siblings.findIndex(x=>x.id===knowledgeDrag.id),to=siblings.findIndex(x=>x.id===row.dataset.kRow);
+      if(from===to)return; siblings.splice(to,0,siblings.splice(from,1)[0]); knowledgeDrag=null;
+      const saved=persistKnowledge();renderKnowledge();if(saved)showToast('排序已保存');
+    });
+    $('#tableBody').addEventListener('dragend',()=>{knowledgeDrag=null;$$('.k-drop,.k-dragging').forEach(r=>r.classList.remove('k-drop','k-dragging'));});
+
+    if(new URLSearchParams(location.search).get("type")==="knowledge"){state.currentType="knowledge"; $$(".segment").forEach(b=>b.classList.toggle("active",b.dataset.type==="knowledge"));}
     renderTable();
     if (new URLSearchParams(location.search).get('modal') === '1') openModal();
   </script>

@@ -2956,7 +2956,18 @@
       font-weight: 900;
     }
 
+    #homeView .home-topic-panel__all {
+      grid-column: 2;
+      grid-row: 1;
+      justify-self: end;
+      color: var(--brand);
+      font-size: 10px;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
     #homeView .home-topic-panel__subtitle {
+      grid-column: 1 / -1;
       color: #97918e;
       font-size: 10px;
       line-height: 1;
@@ -3320,10 +3331,10 @@
 
       <section class="home-services-card" aria-label="便民找房服务">
         <nav class="home-tool-strip" aria-label="核心服务入口">
-          <img class="home-tool-strip__art" src="./assets/home-five-tools-2026.svg" alt="">
+          <img class="home-tool-strip__art" src="./assets/home-five-tools-knowledge.svg" alt="">
           <a href="./网签成交.html" aria-label="网签成交"></a>
           <a href="./楼盘榜单.html" aria-label="楼盘榜单"></a>
-          <a href="javascript:void(0)" aria-label="房贷计算"></a>
+          <a href="./购房知识.html" aria-label="购房知识"></a>
           <a href="./地图搜索.html" aria-label="地图找房"></a>
           <a href="./购房政策.html" aria-label="政策列表"></a>
         </nav>
@@ -3341,6 +3352,7 @@
             <section class="home-topic-panel" aria-labelledby="homeTopicTitle">
               <header class="home-topic-panel__header">
                 <h2 class="home-topic-panel__title" id="homeTopicTitle">专题找房</h2>
+                <a class="home-topic-panel__all" href="./专题找房.html?view=all">更多专题 ›</a>
                 <span class="home-topic-panel__subtitle">为您精选优质房源</span>
               </header>
               <div class="home-topic-panel__list">

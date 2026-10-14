@@ -1,0 +1,118 @@
+/* 房产超市与置业顾问端共用消息列表组件 */
+    :is(#messageScreen, .app.is-messages) .message-list {
+      display: grid;
+    }
+
+    :is(#messageScreen, .app.is-messages) .message-list-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 14px 16px;
+      border: none;
+      border-bottom: 1px solid rgba(228, 231, 237, 0.92);
+      background: #ffffff;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    :is(#messageScreen, .app.is-messages) .message-list-item__avatar,
+    :is(#messageDetailScreen, .app.is-chat) .message-thread__avatar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #fd7c00, #ffaf66);
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1;
+      flex-shrink: 0;
+      box-shadow: 0 10px 20px rgba(253, 93, 0, 0.18);
+    }
+
+    :is(#messageScreen, .app.is-messages) .message-list-item__avatar img,
+    :is(#messageDetailScreen, .app.is-chat) .message-thread__avatar img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: inherit;
+      object-fit: cover;
+    }
+
+    :is(#messageScreen, .app.is-messages) .message-list-item__main {
+      flex: 1;
+      min-width: 0;
+      display: grid;
+      gap: 4px;
+    }
+
+    :is(#messageScreen, .app.is-messages) .message-list-item__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    :is(#messageScreen, .app.is-messages) .message-list-item__sender {
+      color: #111827;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    :is(#messageScreen, .app.is-messages) .message-list-item__time {
+      color: #909399;
+      font-size: 12px;
+      line-height: 1.4;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    :is(#messageScreen, .app.is-messages) .message-list-item__sender { display: flex; align-items: center; gap: 6px; min-width: 0; }
+    .message-list-item__name { overflow: hidden; text-overflow: ellipsis; }
+    .message-list-item__advisor-tag { flex-shrink: 0; padding: 2px 5px; border: 1px solid #ffd9c2; border-radius: 4px; background: #fff3eb; color: #fd5d00; font-size: 10px; font-weight: 400; line-height: 1.4; }
+    .message-list-item__estate { color: #909399; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    :is(#messageScreen, .app.is-messages) .message-list-item__preview {
+      color: #606266;
+      font-size: 13px;
+      line-height: 1.5;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    :is(#messageScreen, .app.is-messages) .message-list-item__aside {
+      display: grid;
+      justify-items: end;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    :is(#messageScreen, .app.is-messages) .message-list-item__badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: #ff4d4f;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+      box-shadow: 0 8px 18px rgba(255, 77, 79, 0.2);
+    }
+
+    :is(#messageScreen, .app.is-messages) .message-list-item__meta {
+      color: #c0c4cc;
+      font-size: 12px;
+      line-height: 1;
+    }
+

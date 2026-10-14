@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>专题找房</title>
   <style>
+    :root { --brand: #fd5d00; --text: #303133; --muted: #909399; --line: #e4e7ed; --surface: #f3f5f6; }
+    [hidden] { display: none !important; }
     * { box-sizing: border-box; }
     html { background: #f3f5f7; }
     body {
@@ -46,6 +48,30 @@
     }
     .topbar h1 { margin: 0; text-align: center; font-size: 19px; font-weight: 900; }
     .topbar__more { text-align: center; color: #4b5563; font-size: 23px; letter-spacing: 1px; }
+    .page--directory { width: min(100%, 375px); background: var(--surface); }
+    .page--directory .topbar { height: 52px; border-bottom: 0; }
+    .page--directory .topbar h1 { color: var(--text); font-size: 17px; font-weight: 600; }
+    .topic-directory { padding: 8px 16px calc(28px + env(safe-area-inset-bottom, 0px)); background: linear-gradient(180deg, #fff 0, #fff8f2 160px, var(--surface) 330px); min-height: calc(100vh - 52px); }
+    .topic-directory__hero { position: relative; padding: 20px 0 24px; overflow: hidden; }
+    .topic-directory__eyebrow { margin: 0 0 8px; color: var(--brand); font-size: 11px; font-weight: 600; letter-spacing: 2px; }
+    .topic-directory__hero h2 { position: relative; margin: 0; color: var(--text); font-size: 24px; line-height: 1.4; font-weight: 600; }
+    .topic-directory__intro { position: relative; margin: 8px 0 0; color: #85817d; font-size: 12px; line-height: 1.6; }
+    .topic-directory__art { position: absolute; right: -6px; top: 12px; width: 108px; height: 108px; color: #ffdac0; opacity: .65; }
+    .topic-directory__heading { display: flex; align-items: center; justify-content: space-between; margin: 0 0 12px; }
+    .topic-directory__heading h2 { margin: 0; font-size: 15px; font-weight: 600; }
+    .topic-directory__heading span { color: var(--muted); font-size: 11px; }
+    .topic-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    /* 卡片统一样式：每个专题仅配置 backgroundImage，无需配置渐变色。 */
+    .topic-option { position: relative; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; min-width: 0; min-height: 120px; overflow: hidden; padding: 16px 14px; border-radius: 8px; background: #52616b; text-decoration: none; color: #fff; -webkit-tap-highlight-color: transparent; transition: transform .15s; }
+    .topic-option__image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .topic-option::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,.46); pointer-events: none; }
+    .topic-option strong, .topic-option__subtitle { position: relative; z-index: 1; }
+    .topic-option strong { font-size: 15px; line-height: 1.4; font-weight: 600; }
+    .topic-option__subtitle { margin-top: 5px; font-size: 11px; line-height: 1.5; color: #fff; }
+    .topic-option:active { transform: scale(.98); }
+    .topic-option:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+    @media (hover: hover) { .topic-option:hover { box-shadow: 0 5px 18px rgba(52,43,32,.09); transform: translateY(-2px); } }
+    @media (prefers-reduced-motion: reduce) { .topic-option { transition: none; } }
     .topic-summary { padding: 16px 16px 12px; background: linear-gradient(135deg, #fff7ef, #fff); }
     .topic-summary strong { display: block; font-size: 21px; font-weight: 900; }
     .topic-summary p { margin: 6px 0 0; color: #7b8492; font-size: 13px; line-height: 1.5; }
@@ -173,6 +199,17 @@
       <span class="topbar__more" aria-hidden="true">•••</span>
     </header>
 
+    <section class="topic-directory" id="topicDirectory" aria-label="专题选项" hidden>
+      <div class="topic-directory__hero">
+        <svg class="topic-directory__art" viewBox="0 0 108 108" fill="none" aria-hidden="true"><circle cx="60" cy="53" r="43" fill="currentColor" opacity=".3"/><path d="M20 88V47L46 31V88M46 88V20L82 35V88M82 88V52L98 61V88M13 88H102" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M29 52V60M29 68V76M37 48V56M37 64V72M57 38V47M70 43V52M57 58V67M70 63V72" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
+        <p class="topic-directory__eyebrow">安家成都 · 专题精选</p>
+        <h2>好房子，按需选</h2>
+        <p class="topic-directory__intro">从您的置业需求出发，发现心仪好房</p>
+      </div>
+      <header class="topic-directory__heading"><h2>全部专题</h2><span id="topicCount"></span></header>
+      <div class="topic-options" id="topicOptions"></div>
+    </section>
+    <div id="topicDetail">
     <section class="topic-summary">
       <strong id="topicName">新规产品</strong>
       <p id="topicDescription">聚合符合成都住宅新规的在售项目。</p>
@@ -191,12 +228,33 @@
       <span id="resultCount">5个项目</span>
     </div>
     <section class="estate-list" id="estateList" aria-live="polite"></section>
+    </div>
   </main>
 
   <script>
+    // 背景图建议上传约 660 × 480 px；标题、副标题仍独立配置。
     const topicConfig = {
+      rigid: {
+        title: "刚需优选", subtitle: "低总价好上车",
+        backgroundImage: "./assets/楼盘实景-社区楼景.png",
+        description: "围绕首置需求，比较户型面积、购房总价与日常配套。",
+        noteClass: "", notes: ["刚需关注：比较首付与月供预算", "刚需关注：核对实用面积与空间布局", "刚需关注：确认开盘价格与交付时间", "刚需关注：结合通勤与生活配套选房", "刚需关注：对比现房与装修成本"]
+      },
+      improve: {
+        title: "改善优选", subtitle: "品质大三房",
+        backgroundImage: "./assets/楼盘实景-客厅样板间.png",
+        description: "关注家庭空间升级，比较户型布局、居住品质与社区配套。",
+        noteClass: "", notes: ["改善关注：比较家庭活动与独立卧室空间", "改善关注：核对户型朝向与采光", "改善关注：了解交付标准与产品配置", "改善关注：比较社区密度与园林空间", "改善关注：实地体验居住环境"]
+      },
+      invest: {
+        title: "投资优选", subtitle: "潜力区域好盘",
+        backgroundImage: "./assets/楼盘实景-楼栋外立面.png",
+        description: "从区域配套、持有成本与市场供需等角度比较项目。",
+        noteClass: "", notes: ["选房关注：核验区域配套兑现情况", "选房关注：比较周边同类房源供应", "选房关注：确认交付计划与持有成本", "选房关注：了解区域租售需求", "选房关注：综合评估流动性与价格风险"]
+      },
       "new-rule": {
-        title: "新规产品",
+        title: "新规产品", subtitle: "舒适空间新体验",
+        backgroundImage: "./assets/楼盘实景-园林入口.png",
         description: "聚合符合成都住宅新规的在售项目。",
         noteClass: "",
         notes: [
@@ -208,7 +266,8 @@
         ]
       },
       metro: {
-        title: "地铁产品",
+        title: "地铁产品", subtitle: "轨道通勤更便捷",
+        backgroundImage: "./assets/区县-成都高新区.jpg",
         description: "精选地铁站周边在售项目，步行距离清晰标注。",
         noteClass: "topic-note--metro",
         notes: [
@@ -220,7 +279,8 @@
         ]
       },
       subsidy: {
-        title: "购房补贴产品",
+        title: "购房补贴产品", subtitle: "安家优惠轻松享",
+        backgroundImage: "./assets/楼盘实景-会所书吧.png",
         description: "汇集可申请购房补贴的项目，补贴信息随项目展示。",
         noteClass: "topic-note--subsidy",
         notes: [
@@ -241,12 +301,27 @@
       { name: "保利·天悦", price: "28500元/㎡起", meta: "龙泉驿区 / 建面108~143㎡", tags: ["现房", "品牌房企"], image: "楼盘实景-会所书吧.png", badge: "到访有礼", views: "1320", leftover: "12套<br>剩余" }
     ];
 
-    const requestedTopic = new URLSearchParams(location.search).get("topic");
+    const routeParams = new URLSearchParams(location.search);
+    const isDirectory = routeParams.get("view") === "all";
+    document.querySelector(".page").classList.toggle("page--directory", isDirectory);
+    if (isDirectory) document.querySelector(".topbar__more").hidden = true;
+    document.getElementById("topicCount").textContent = Object.keys(topicConfig).length + " 个精选专题";
+    document.getElementById("topicDirectory").hidden = !isDirectory;
+    document.getElementById("topicDetail").hidden = isDirectory;
+    document.getElementById("topicOptions").innerHTML = Object.entries(topicConfig).map(([key, topic]) => `
+      <a class="topic-option" data-topic="${key}" href="./专题找房.html?topic=${encodeURIComponent(key)}&from=all">
+        <img class="topic-option__image" src="${topic.backgroundImage}" alt="" onerror="this.hidden=true">
+        <strong>${topic.title}</strong><span class="topic-option__subtitle">${topic.subtitle}</span>
+      </a>
+    `).join("");
+    const backButton = document.querySelector(".back");
+    backButton.onclick = () => { location.href = !isDirectory && routeParams.get("from") === "all" ? "./专题找房.html?view=all" : "./安家成都-首页-扫码.html"; };
+    const requestedTopic = routeParams.get("topic");
     const currentTopic = topicConfig[requestedTopic] ? requestedTopic : "new-rule";
     const config = topicConfig[currentTopic];
 
-    document.title = config.title + " - 专题找房";
-    document.getElementById("pageTitle").textContent = config.title;
+    document.title = isDirectory ? "更多专题 - 专题找房" : config.title + " - 专题找房";
+    document.getElementById("pageTitle").textContent = isDirectory ? "更多专题" : config.title;
     document.getElementById("topicName").textContent = config.title;
     document.getElementById("topicDescription").textContent = config.description;
     document.getElementById("resultCount").textContent = projects.length + "个项目";

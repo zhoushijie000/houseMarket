@@ -5,10 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>房产超市 - 住进成都专题原型</title>
   <script>
+    if (new URLSearchParams(location.search).get("role") === "advisor") {
+      location.replace("./置业顾问端.html" + (new URLSearchParams(location.search).get("screen") === "message" ? "#messages" : "#customers"));
+    }
     if (new URLSearchParams(location.search).get("screen") === "city-tour") {
       document.documentElement.classList.add("city-tour-mode");
     }
   </script>
+  <link rel="stylesheet" href="./assets/message-list.css">
+  <link rel="stylesheet" href="./assets/mine-page.css">
   <style>
     :root {
       --brand-primary: #fd5d00;
@@ -3670,123 +3675,6 @@
       background: #ffffff;
     }
 
-    #messageScreen .message-list {
-      display: grid;
-    }
-
-    #messageScreen .message-list-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      width: 100%;
-      padding: 14px 16px;
-      border: none;
-      border-bottom: 1px solid rgba(228, 231, 237, 0.92);
-      background: #ffffff;
-      text-align: left;
-      cursor: pointer;
-    }
-
-    #messageScreen .message-list-item__avatar,
-    #messageDetailScreen .message-thread__avatar {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #fd7c00, #ffaf66);
-      color: #ffffff;
-      font-size: 18px;
-      font-weight: 800;
-      line-height: 1;
-      flex-shrink: 0;
-      box-shadow: 0 10px 20px rgba(253, 93, 0, 0.18);
-    }
-
-    #messageScreen .message-list-item__avatar img,
-    #messageDetailScreen .message-thread__avatar img {
-      width: 100%;
-      height: 100%;
-      display: block;
-      border-radius: inherit;
-      object-fit: cover;
-    }
-
-    #messageScreen .message-list-item__main {
-      flex: 1;
-      min-width: 0;
-      display: grid;
-      gap: 4px;
-    }
-
-    #messageScreen .message-list-item__head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    #messageScreen .message-list-item__sender {
-      color: #111827;
-      font-size: 16px;
-      font-weight: 700;
-      line-height: 1.4;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    #messageScreen .message-list-item__time {
-      color: #909399;
-      font-size: 12px;
-      line-height: 1.4;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    #messageScreen .message-list-item__sender { display: flex; align-items: center; gap: 6px; min-width: 0; }
-    .message-list-item__name { overflow: hidden; text-overflow: ellipsis; }
-    .message-list-item__advisor-tag { flex-shrink: 0; padding: 2px 5px; border: 1px solid #ffd9c2; border-radius: 4px; background: #fff3eb; color: #fd5d00; font-size: 10px; font-weight: 400; line-height: 1.4; }
-    .message-list-item__estate { color: #909399; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-    #messageScreen .message-list-item__preview {
-      color: #606266;
-      font-size: 13px;
-      line-height: 1.5;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    #messageScreen .message-list-item__aside {
-      display: grid;
-      justify-items: end;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-
-    #messageScreen .message-list-item__badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 20px;
-      height: 20px;
-      padding: 0 6px;
-      border-radius: 999px;
-      background: #ff4d4f;
-      color: #ffffff;
-      font-size: 11px;
-      font-weight: 700;
-      line-height: 1;
-      box-shadow: 0 8px 18px rgba(255, 77, 79, 0.2);
-    }
-
-    #messageScreen .message-list-item__meta {
-      color: #c0c4cc;
-      font-size: 12px;
-      line-height: 1;
-    }
-
     #messageScreen .message-tabbar {
       position: absolute;
       left: 0;
@@ -4208,149 +4096,6 @@
     #customerDetailScreen .page-content {
       padding: 0 16px 96px;
       background: #f4f5f7;
-    }
-
-    .mine-profile {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      min-height: 174px;
-      margin: 0 -16px;
-      padding: 28px 24px 54px;
-      overflow: hidden;
-      background: linear-gradient(135deg, #ff6428 0%, #ff8a4d 100%);
-      color: #fff;
-    }
-
-    .mine-profile::after {
-      content: "";
-      position: absolute;
-      right: -20px;
-      bottom: -42px;
-      width: 210px;
-      height: 150px;
-      opacity: .2;
-      transform: skewY(-25deg);
-      background: linear-gradient(90deg, transparent 0 12%, #fff 12% 23%, transparent 23% 40%, #fff 40% 55%, transparent 55% 72%, #fff 72% 84%, transparent 84%);
-    }
-
-    .mine-profile__avatar {
-      position: relative;
-      z-index: 1;
-      width: 72px;
-      height: 72px;
-      overflow: hidden;
-      flex: 0 0 auto;
-      border: 3px solid rgba(255,255,255,.5);
-      border-radius: 50%;
-      background: #fff2e8;
-    }
-
-    .mine-profile__avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .mine-profile__copy {
-      position: relative;
-      z-index: 1;
-      min-width: 0;
-    }
-
-    .mine-profile__phone {
-      display: block;
-      font-size: 25px;
-      line-height: 1.2;
-      font-weight: 700;
-      letter-spacing: .02em;
-    }
-
-    .mine-profile__role {
-      display: inline-flex;
-      margin-top: 9px;
-      padding: 5px 9px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.2);
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .mine-card {
-      position: relative;
-      z-index: 2;
-      margin-top: -32px;
-      padding: 18px 10px 4px;
-      border-radius: 16px;
-      background: #fff;
-      box-shadow: 0 12px 30px rgba(48,49,51,.08);
-    }
-
-    .mine-card + .mine-card {
-      margin-top: 14px;
-    }
-
-    .mine-card__title {
-      margin: 0 12px 10px;
-      color: #20242a;
-      font-size: 19px;
-      font-weight: 700;
-    }
-
-    .mine-menu-item {
-      width: 100%;
-      min-height: 58px;
-      display: grid;
-      grid-template-columns: 36px minmax(0,1fr) auto;
-      align-items: center;
-      gap: 8px;
-      padding: 0 12px;
-      border: 0;
-      border-top: 1px solid #eef0f3;
-      background: transparent;
-      color: #30343a;
-      text-align: left;
-      cursor: pointer;
-    }
-
-    .mine-menu-item:first-of-type {
-      border-top: 0;
-    }
-
-    .mine-menu-item__icon {
-      width: 26px;
-      height: 26px;
-      color: #16191d;
-    }
-
-    .mine-menu-item__icon svg {
-      width: 100%;
-      height: 100%;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.8;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .mine-menu-item__name {
-      font-size: 15px;
-    }
-
-    .mine-menu-item__meta {
-      color: #9aa0a8;
-      font-size: 12px;
-    }
-
-    .mine-menu-item__arrow {
-      color: #b9bec5;
-      font-size: 22px;
-    }
-
-    .mine-menu-item--customer .mine-menu-item__icon,
-    .mine-menu-item--customer .mine-menu-item__meta {
-      color: #fd5d00;
     }
 
     [data-advisor-only][hidden] {
@@ -8388,7 +8133,7 @@
             <span class="mine-profile__avatar"><img src="./assets/advisor-avatar.png" alt="置业顾问头像"></span>
             <span class="mine-profile__copy">
               <strong class="mine-profile__phone">房产超市用户</strong>
-              <span class="mine-profile__role" id="mineRoleLabel">置业顾问 · 招商·时代花园</span>
+              <span class="mine-profile__role" id="mineRoleLabel">个人用户</span>
             </span>
           </section>
           <section class="mine-card">
@@ -8830,94 +8575,8 @@
         activityCover: "./assets/activity-detail-hero-shanghai.svg"
       }
     ];
-    const advisorCustomers = [
-      {
-        id: "customer-001",
-        name: "张女士",
-        phone: "138****1745",
-        privacyNumber: "95013801245",
-        status: "uncontacted",
-        priority: true,
-        priorityReason: "已关注置业顾问所在楼盘“招商·时代花园”",
-        estate: "招商·时代花园",
-        intent: "123㎡ 三房 · 预算 320-380 万",
-        source: "楼盘详情在线咨询",
-        lastActive: "10分钟前",
-        dialog: [
-          { role: "bot", text: "我想了解招商·时代花园 123㎡ 三房，中高楼层还有吗？" }
-        ],
-        dynamics: [
-          { time: "今天 14:32", text: "138****1745 关注了招商·时代花园" },
-          { time: "今天 14:18", text: "138****1745 浏览招商·时代花园一房一价 3 次" },
-          { time: "昨天 20:06", text: "138****1745 查看了 123㎡ 三房户型详情" }
-        ]
-      },
-      {
-        id: "customer-002",
-        name: "李先生",
-        phone: "186****0921",
-        privacyNumber: "95013801246",
-        status: "uncontacted",
-        priority: true,
-        priorityReason: "近 3 天内 6 次浏览置业顾问所在楼盘",
-        estate: "招商·时代花园",
-        intent: "改善四房 · 预算 450 万左右",
-        source: "首页楼盘推荐",
-        lastActive: "1小时前",
-        dialog: [
-          { role: "bot", text: "近期一直在比较 143㎡ 四房，希望了解周末看房时间。" }
-        ],
-        dynamics: [
-          { time: "今天 13:10", text: "186****0921 第 6 次浏览招商·时代花园" },
-          { time: "昨天 21:44", text: "186****0921 查看项目周边配套" },
-          { time: "前天 18:20", text: "186****0921 浏览 143㎡ 四房户型" }
-        ]
-      },
-      {
-        id: "customer-003",
-        name: "王女士",
-        phone: "159****6638",
-        privacyNumber: "95013801247",
-        status: "contacted",
-        priority: false,
-        priorityReason: "",
-        estate: "招商·时代花园",
-        intent: "首套三房 · 关注购房资格",
-        source: "政策咨询转入",
-        lastActive: "昨天",
-        dialog: [
-          { role: "bot", text: "谢谢您的资格说明，我准备好资料后再联系。" },
-          { role: "user", text: "好的，资料清单已经发送，有问题随时在线沟通。" }
-        ],
-        dynamics: [
-          { time: "昨天 16:40", text: "置业顾问通过隐私号联系 159****6638，沟通 4 分 26 秒" },
-          { time: "昨天 16:28", text: "159****6638 咨询成都购房资格" },
-          { time: "3天前", text: "159****6638 首次浏览招商·时代花园" }
-        ]
-      },
-      {
-        id: "customer-004",
-        name: "赵先生",
-        phone: "177****5310",
-        privacyNumber: "95013801248",
-        status: "contacted",
-        priority: true,
-        priorityReason: "已关注置业顾问所在楼盘并预约周末看房",
-        estate: "招商·时代花园",
-        intent: "中高楼层三房 · 周末到访",
-        source: "置业顾问二维码",
-        lastActive: "2天前",
-        dialog: [
-          { role: "bot", text: "周六下午两点可以到访，麻烦帮我预留时间。" },
-          { role: "user", text: "已登记周六 14:00，到访前我会再提醒您。" }
-        ],
-        dynamics: [
-          { time: "2天前 11:05", text: "177****5310 预约周六 14:00 到访" },
-          { time: "2天前 10:42", text: "置业顾问向 177****5310 在线发送一房一价资料" },
-          { time: "4天前", text: "177****5310 关注招商·时代花园" }
-        ]
-      }
-    ];
+    // 顾问客户数据与会话已迁移至独立置业顾问端。
+    const advisorCustomers = [];
     const talentPolicyEntries = [
       {
         district: "成都东部新区",
@@ -9242,7 +8901,7 @@ const blockedMessageAdvisors = (() => {
 let currentScreenName = "home";
 let previousScreenName = "home";
 const initialRouteParams = new URLSearchParams(window.location.search);
-const currentUserRole = initialRouteParams.get("role") || "advisor";
+const currentUserRole = "user";
 const isAdvisorRole = currentUserRole === "advisor";
 let currentCustomerFilter = "all";
 let priorityCustomersOnly = false;

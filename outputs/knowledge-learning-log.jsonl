@@ -1,0 +1,5 @@
+{"timestamp":"2026-10-13","action":"modify","files":["购房知识.html","0819-直播专区标签管理.html","安家成都-首页-扫码.html"],"changes":"首页房贷计算替换为购房知识；新增四栏目和左侧分类无图标题列表；原标签配置新增购房知识父子树、增删改和同级拖拽排序；确认专题描述既有实现。","design_patterns_used":["顶部父栏目与左侧子分类","无图文章标题摘要列表","父子树同级拖拽","原管理端蓝色表格与弹窗"],"user_preferences_learned":["购房知识分买新房、买二手房、卖二手房、视频知识","标签排序使用拖拉拽","延续0819管理端风格"],"scope":"项目内记录，未改写其他项目的技能配置"}
+{"timestamp": "2026-10-13", "action": "modify", "file": "购房知识.html", "changes": "移除介绍横幅、重复分类标题及计数行、所有文章摘要与阅读元信息；压缩为纯标题列表。", "user_preferences_learned": ["购房知识列表仅保留文章标题，删除装饰介绍和重复信息"]}
+{"timestamp": "2026-10-13", "action": "modify", "file": "购房知识.html", "changes": "为各栏目知识列表添加左侧80×60圆角封面，使用现有楼盘实景素材；右侧仅保留标题。"}
+{"file":"专题找房.html","user_preferences_learned":["专题卡片不显示分类图标"],"changes":"移除六个专题卡片图标及相关代码，卡片高度由170px调整为120px","timestamp":"2026-10-13","action":"modify"}
+{"timestamp":"2026-10-14","action":"modify","file":"专题找房.html","changes":"专题卡片改为可配置背景图片，统一白色标题和副标题，移除渐变配色及查看专题装饰","user_preferences_learned":["专题卡片样式简单，使用背景图片方便配置"]}

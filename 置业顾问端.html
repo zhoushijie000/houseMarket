@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>置业顾问端</title><link rel="stylesheet" href="./assets/advisor-app.css"><link rel="stylesheet" href="./assets/message-list.css"><link rel="stylesheet" href="./assets/mine-page.css"><link rel="stylesheet" href="./assets/advisor-settings.css"></head>
+<body><main class="app">
+<header class="topbar"><button id="back" type="button" aria-label="返回">‹</button><strong id="title">置业顾问端</strong><span aria-hidden="true"></span></header>
+<section id="listTools" class="list-tools"><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="搜索客户姓名或手机号" aria-label="搜索客户"></label><div id="filters" class="filters"></div><div class="list-meta"><span id="count"></span><button id="priority" type="button" aria-pressed="false">只看重点客户</button></div></section>
+<section id="content" class="content" aria-live="polite"></section>
+<section id="chatTools" class="chat-tools message-online" hidden>
+<div class="message-common"><button type="button" id="phrasesToggle" class="message-common__toggle" aria-expanded="false" aria-controls="phrases">常用语</button><div id="phrases" class="message-common__list" hidden></div></div>
+<form id="composer" class="message-online__form"><input id="messageInput" type="text" maxlength="1000" placeholder="输入消息" aria-label="消息内容" required><button type="submit">发送</button><button id="mediaToggle" type="button" aria-label="更多聊天操作" aria-expanded="false" aria-controls="mediaPanel">＋</button></form>
+<div id="mediaPanel" class="message-online__quick" aria-label="聊天附件入口" hidden><button id="albumButton" type="button"><span class="message-media-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8" cy="8" r="1.5"/><path d="m3 17 6-6 4 4 3-3 5 5"/></svg></span><span>相册</span></button><button id="cameraButton" type="button"><span class="message-media-icon"><svg viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3Z"/><circle cx="12" cy="13" r="4"/></svg></span><span>拍照</span></button></div>
+<input type="file" id="imageInput" accept="image/png,image/jpeg" hidden><input type="file" id="cameraInput" accept="image/png,image/jpeg" capture="environment" hidden>
+</section>
+<nav id="nav" class="nav" aria-label="顾问端导航"><a href="#messages" data-tab="messages"><svg viewBox="0 0 24 24"><path d="M4 4h16v13H9l-5 4V4Z"/><path d="M8 8h8M8 12h5"/></svg><span>消息</span><b id="unread" hidden></b></a><a href="#customers" data-tab="customers"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M16 5a3 3 0 0 1 0 6m2 3a5 5 0 0 1 3 5"/></svg><span>客户</span></a><a href="#mine" data-tab="mine"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>我的</span></a></nav>
+<dialog id="callDialog"><h2>隐私号联系</h2><p id="callNumber"></p><p class="muted">当前为演示号码，正式接入隐私号服务后可拨打联系客户。</p><button id="closeCall" class="primary" type="button">我知道了</button></dialog>
+<dialog id="settingsDialog" class="binding-page" aria-labelledby="settingsTitle"><header class="binding-header"><button type="button" id="closeSettings" class="binding-back" aria-label="返回我的">‹</button><h1 id="settingsTitle">资料设置</h1></header><div class="binding-body"><form id="settingsForm"><label class="binding-avatar binding-avatar--hero"><span class="binding-avatar-icon"><img id="settingsAvatarPreview" src="./assets/advisor-avatar.png" alt="头像预览"></span><span>点击修改头像</span><input type="file" id="settingsAvatarInput" accept="image/png,image/jpeg,image/webp" aria-label="选择头像" hidden></label><div class="binding-card"><div class="binding-nickname-choice" id="nicknameChoice" hidden><button type="button" id="useWechatNickname"><span>用微信昵称</span><strong>Jie</strong></button></div><div class="binding-row"><label for="advisorName">昵称</label><input id="advisorName" maxlength="20" required placeholder="请输入昵称" autocomplete="nickname"><button type="button" id="clearAdvisorName" class="binding-clear" aria-label="清空昵称">×</button></div><button id="settingsPhone" class="binding-row binding-phone" type="button"><span>手机号</span><span id="settingsPhoneValue" class="binding-phone-value">待获取</span><span class="binding-chevron" aria-hidden="true">›</span></button><div class="binding-row"><label for="advisorWechat">绑定微信号</label><input id="advisorWechat" maxlength="32" placeholder="默认与手机号一致" autocomplete="off"><button class="binding-clear" id="clearAdvisorWechat" type="button" aria-label="清空微信号">×</button></div></div><div class="binding-actions"><button id="saveSettings" class="binding-save" type="submit">保存</button><p id="settingsError" class="binding-feedback" role="status" hidden></p><div class="binding-legal"><button type="button" data-settings-policy="用户协议">《用户协议》</button><span>|</span><button type="button" data-settings-policy="隐私政策">《隐私政策》</button></div></div></form><section id="settingsPolicy" class="binding-policy" hidden><p id="settingsPolicyText"></p></section></div></dialog>
+<dialog id="settingsPhonePrompt" class="binding-phone-prompt" aria-labelledby="settingsPhoneTitle"><h2 id="settingsPhoneTitle">获取手机号</h2><p>获取手机号后，可绑定手机号；微信号默认与手机号一致。</p><button id="closeSettingsPhone" type="button">我知道了</button></dialog>
+<div id="toast" class="toast" role="status" hidden></div></main>
+<template id="mineTemplate">
+          <section class="mine-profile" data-open-settings role="button" tabindex="0" aria-label="进入资料设置">
+            <span class="mine-profile__avatar"><img src="./assets/advisor-avatar.png" alt="置业顾问头像"></span>
+            <span class="mine-profile__copy">
+              <strong class="mine-profile__phone">李晓雨</strong>
+              <span class="mine-profile__role" id="mineRoleLabel">置业顾问 · 招商·时代花园</span>
+            </span>
+          <span class="profile-entry-arrow" aria-hidden="true">›</span></section>
+          <section class="mine-card">
+            <button class="mine-menu-item" type="button" data-mine-placeholder="平台咨询">
+              <span class="mine-menu-item__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 14v-3a7 7 0 0 1 14 0v3M5 14H3v4h4v-4H5ZM19 14h2v4h-4v-4h2ZM17 18c0 2-1.5 3-4 3"></path></svg></span><span class="mine-menu-item__name">平台咨询</span><span class="mine-menu-item__meta">cdzjfccs@163.com</span>
+            </button>
+          </section>
+
+</template>
+<script src="./assets/blocked-keywords.js"></script><script src="./assets/advisor-data.js"></script><script src="./assets/advisor-app.js"></script></body></html>

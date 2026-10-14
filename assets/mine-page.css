@@ -1,0 +1,144 @@
+/* 房产超市与置业顾问端共用我的页面组件 */
+    .mine-profile {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-height: 174px;
+      margin: 0 -16px;
+      padding: 28px 24px 54px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #ff6428 0%, #ff8a4d 100%);
+      color: #fff;
+    }
+
+    .mine-profile::after {
+      content: "";
+      position: absolute;
+      right: -20px;
+      bottom: -42px;
+      width: 210px;
+      height: 150px;
+      opacity: .2;
+      transform: skewY(-25deg);
+      background: linear-gradient(90deg, transparent 0 12%, #fff 12% 23%, transparent 23% 40%, #fff 40% 55%, transparent 55% 72%, #fff 72% 84%, transparent 84%);
+    }
+
+    .mine-profile__avatar {
+      position: relative;
+      z-index: 1;
+      width: 72px;
+      height: 72px;
+      overflow: hidden;
+      flex: 0 0 auto;
+      border: 3px solid rgba(255,255,255,.5);
+      border-radius: 50%;
+      background: #fff2e8;
+    }
+
+    .mine-profile__avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .mine-profile__copy {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+    }
+
+    .mine-profile__phone {
+      display: block;
+      font-size: 25px;
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: .02em;
+    }
+
+    .mine-profile__role {
+      display: inline-flex;
+      margin-top: 9px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.2);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .mine-card {
+      position: relative;
+      z-index: 2;
+      margin-top: -32px;
+      padding: 18px 10px 4px;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 12px 30px rgba(48,49,51,.08);
+    }
+
+    .mine-card + .mine-card {
+      margin-top: 14px;
+    }
+
+    .mine-card__title {
+      margin: 0 12px 10px;
+      color: #20242a;
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .mine-menu-item {
+      width: 100%;
+      min-height: 58px;
+      display: grid;
+      grid-template-columns: 36px minmax(0,1fr) auto;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+      border: 0;
+      border-top: 1px solid #eef0f3;
+      background: transparent;
+      color: #30343a;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .mine-menu-item:first-of-type {
+      border-top: 0;
+    }
+
+    .mine-menu-item__icon {
+      width: 26px;
+      height: 26px;
+      color: #16191d;
+    }
+
+    .mine-menu-item__icon svg {
+      width: 100%;
+      height: 100%;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .mine-menu-item__name {
+      font-size: 15px;
+    }
+
+    .mine-menu-item__meta {
+      color: #9aa0a8;
+      font-size: 12px;
+    }
+
+    .mine-menu-item__arrow {
+      color: #b9bec5;
+      font-size: 22px;
+    }
+
+    .mine-menu-item--customer .mine-menu-item__icon,
+    .mine-menu-item--customer .mine-menu-item__meta {
+      color: #fd5d00;
+    }
+
