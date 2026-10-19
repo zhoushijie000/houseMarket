@@ -176,10 +176,6 @@
     .estate-edit-table th, .estate-edit-table td { padding: 10px 12px; vertical-align: top; }
     .estate-edit-table th { height: 42px; }
     .estate-edit-table td { height: 88px; }
-    .estate-edit-table .description-cell { width: 33%; }
-    .estate-edit-table .description-wrap { position: relative; }
-    .estate-edit-table textarea { width: 100%; min-height: 64px; padding: 8px 42px 8px 10px; color: var(--text); border: 1px solid var(--border); border-radius: 4px; outline: 0; resize: vertical; line-height: 20px; }
-    .estate-edit-table textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(63,111,232,.1); }
     .estate-edit-table .counter { top: auto; right: 8px; bottom: 7px; }
     .sort-input { width: 70px; height: 34px; padding: 0 9px; border: 1px solid var(--border); border-radius: 4px; outline: 0; }
     .estate-empty { height: 116px !important; color: var(--muted); text-align: center; vertical-align: middle !important; }
@@ -357,7 +353,7 @@
             <label class="form-label" for="topicDescriptionInput">专题描述</label>
             <div class="form-control">
               <div class="text-wrap"><textarea class="form-textarea" id="topicDescriptionInput" maxlength="200" placeholder="请输入专题描述，简要介绍专题特色" aria-describedby="topicDescriptionHelp topicDescriptionError"></textarea><span class="counter"><span id="topicDescriptionCount">0</span>/200</span></div>
-              <div class="help" id="topicDescriptionHelp">用于介绍整个专题，与下方各楼盘的专题描述分别维护。</div>
+              <div class="help" id="topicDescriptionHelp">用于介绍整个专题的特色与选房方向。</div>
               <div class="help" id="topicDescriptionError"></div>
             </div>
           </div>
@@ -372,10 +368,10 @@
           </div>
 
           <div class="section-heading">专题楼盘</div>
-          <div class="section-tools"><button class="btn btn-primary btn-small" id="addEstateButton" type="button">新增楼盘</button><span class="selected-count">已添加 <strong id="selectedEstateCount">0</strong> 个楼盘，添加后请填写每个楼盘的专题描述</span></div>
+          <div class="section-tools"><button class="btn btn-primary btn-small" id="addEstateButton" type="button">新增楼盘</button><span class="selected-count">已添加 <strong id="selectedEstateCount">0</strong> 个楼盘</span></div>
           <div class="estate-edit-wrap">
             <table class="estate-edit-table">
-              <thead><tr><th style="width:17%">分期名称</th><th style="width:15%">项目名称</th><th style="width:18%">开发企业</th><th style="width:9%">区域</th><th class="description-cell"><span class="required">专题描述</span></th><th style="width:7%">排序</th><th style="width:8%;text-align:center">操作</th></tr></thead>
+              <thead><tr><th style="width:23%">分期名称</th><th style="width:22%">项目名称</th><th style="width:28%">开发企业</th><th style="width:12%">区域</th><th style="width:7%">排序</th><th style="width:8%;text-align:center">操作</th></tr></thead>
               <tbody id="selectedEstateBody"></tbody>
             </table>
           </div>
@@ -497,11 +493,10 @@
         if (!estate) return '';
         return `<tr data-selected-row="${row.id}">
           <td>${escapeHTML(estate.phase)}</td><td>${escapeHTML(estate.project)}</td><td>${escapeHTML(estate.developer)}</td><td>${escapeHTML(estate.district)}</td>
-          <td class="description-cell"><div class="description-wrap"><textarea maxlength="200" data-description="${row.id}" placeholder="请输入该楼盘的专题描述">${escapeHTML(row.description)}</textarea><span class="counter"><span>${row.description.length}</span>/200</span></div></td>
           <td><input class="sort-input" type="number" min="1" max="999" value="${row.sort || index + 1}" data-sort="${row.id}"></td>
           <td style="text-align:center"><button class="table-action danger" data-remove-estate="${row.id}" type="button">删除</button></td>
         </tr>`;
-      }).join('') : '<tr><td class="estate-empty" colspan="7">暂无楼盘，请点击“新增楼盘”添加</td></tr>';
+      }).join('') : '<tr><td class="estate-empty" colspan="6">暂无楼盘，请点击“新增楼盘”添加</td></tr>';
     }
 
     function openTopicModal(topic = null) {
@@ -514,7 +509,7 @@
       $('#topicBackgroundInput').value = '';
       $('#topicDetailInput').value = '';
       renderUpload($('#topicDetailTrigger'), state.topicDetail, 'Detail');
-      state.selectedEstates = topic ? (topic.estateEntries?.map(item => ({ ...item })) || topic.estates.map((id, index) => ({ id, description: `${estates.find(item => item.id === id)?.phase || '该楼盘'}兼具区位、配套与居住品质，适合专题重点推荐。`, sort: index + 1 }))) : [];
+      state.selectedEstates = topic ? (topic.estateEntries?.map(item => ({ ...item })) || topic.estates.map((id, index) => ({ id, sort: index + 1 }))) : [];
       $('#topicModalTitle').textContent = topic ? '编辑专题' : '新增专题';
       $('#topicNameInput').value = topic?.name ?? '';
       $('#topicSortInput').value = topic?.sort ?? Math.min(9999, Math.max(0, ...topics.map(item => item.sort)) + 1);
@@ -581,10 +576,10 @@
 
     function confirmEstates() {
       const previous = new Map(state.selectedEstates.map(item => [item.id, item]));
-      state.selectedEstates = [...state.pendingEstateIds].map((id, index) => previous.get(id) || ({ id, description: '', sort: index + 1 }));
+      state.selectedEstates = [...state.pendingEstateIds].map((id, index) => previous.get(id) || ({ id, sort: index + 1 }));
       renderSelectedEstates();
       closeEstateModal();
-      showToast(`已添加 ${state.selectedEstates.length} 个楼盘，请填写专题描述`);
+      showToast(`已添加 ${state.selectedEstates.length} 个楼盘`);
     }
 
     function handleImage(file, type) {
@@ -630,10 +625,8 @@
         if (!state['topic' + type]) { error.className = 'help error'; error.textContent = '请上传' + label; valid = false; }
       }
       if (!state.selectedEstates.length) { $('#estateError').className = 'help error'; $('#estateError').textContent = '请至少添加一个专题楼盘'; valid = false; }
-      const missingDescription = state.selectedEstates.find(item => !item.description.trim());
-      if (missingDescription) { $('#estateError').className = 'help error'; $('#estateError').textContent = `请填写“${estates.find(item => item.id === missingDescription.id)?.phase}”的专题描述`; valid = false; }
       if (!valid) return showToast('请完善必填信息', true);
-      const estateEntries = [...state.selectedEstates].sort((a, b) => Number(a.sort) - Number(b.sort)).map(item => ({ id: item.id, description: item.description.trim(), sort: Number(item.sort) || 1 }));
+      const estateEntries = [...state.selectedEstates].sort((a, b) => Number(a.sort) - Number(b.sort)).map(item => ({ id: item.id, sort: Number(item.sort) || 1 }));
       const ids = estateEntries.map(item => item.id);
       if (state.editingId) {
         const topic = topics.find(item => item.id === state.editingId);
@@ -663,13 +656,10 @@
     $('#confirmEstateButton').addEventListener('click', confirmEstates);
 
     $('#selectedEstateBody').addEventListener('input', event => {
-      const id = Number(event.target.dataset.description || event.target.dataset.sort);
+      const id = Number(event.target.dataset.sort);
       const row = state.selectedEstates.find(item => item.id === id);
       if (!row) return;
-      if (event.target.matches('[data-description]')) {
-        row.description = event.target.value;
-        event.target.nextElementSibling.querySelector('span').textContent = event.target.value.length;
-      } else if (event.target.matches('[data-sort]')) row.sort = event.target.value;
+      if (event.target.matches('[data-sort]')) row.sort = event.target.value;
     });
     $('#selectedEstateBody').addEventListener('click', event => {
       const button = event.target.closest('[data-remove-estate]');

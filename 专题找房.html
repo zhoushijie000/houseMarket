@@ -325,7 +325,7 @@
     document.getElementById("topicName").textContent = config.title;
     document.getElementById("topicDescription").textContent = config.description;
     document.getElementById("resultCount").textContent = projects.length + "个项目";
-    document.getElementById("estateList").innerHTML = projects.map((project, index) => `
+    document.getElementById("estateList").innerHTML = projects.map(project => `
       <a class="estate-card" href="./project-detail.html" aria-label="查看${project.name}楼盘详情">
         <div class="estate-cover" data-badge="${project.badge}" style="background-image:url('./assets/${project.image}')">
           <span class="estate-cover__views">${project.views}人关注</span>
@@ -335,7 +335,6 @@
           <div class="estate-price">${project.price}</div>
           <div class="estate-meta">${project.meta}</div>
           <div class="estate-tags">${project.tags.map(tag => `<span>${tag}</span>`).join("")}</div>
-          <div class="topic-note ${config.noteClass}">${config.notes[index]}</div>
         </div>
         <span class="estate-actions" aria-hidden="true">
           <span class="estate-favorite">♡</span>
