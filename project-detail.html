@@ -310,6 +310,9 @@
       stroke-width: 1.8;
     }
 
+    .follow.is-following { color: #ff6848; }
+    .follow.is-following svg { fill: #ff6848; stroke: #ff6848; }
+
     .location-row,
     .tag-row {
       display: flex;
@@ -2964,6 +2967,7 @@
       cursor: not-allowed;
     }
   </style>
+  <link rel="stylesheet" href="./assets/follow-notice.css">
 </head>
 <body>
   <main class="page">
@@ -2999,7 +3003,7 @@
     <section class="summary">
       <div class="summary-head">
         <h2>招商时代花园一期</h2>
-        <button class="follow" type="button" aria-label="关注楼盘">
+        <button class="follow" id="projectFollowButton" type="button" aria-label="关注楼盘" aria-pressed="false">
           <svg viewBox="0 0 24 24"><path d="M20.5 8.8c0 5-8.5 10-8.5 10s-8.5-5-8.5-10A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 8.5 2.8Z"></path></svg>
           <span>关注楼盘</span>
         </button>
@@ -3042,7 +3046,7 @@
       </a>
     </nav>
 
-    <section class="section">
+    <section class="section" id="openingInfo">
       <div class="section-head"><h2 class="section-title">即将开盘信息</h2></div>
       <div class="info-list">
         <div class="info-row"><span>预计开盘时间</span><strong>2025年10月</strong></div>
@@ -3428,6 +3432,7 @@
     </div>
   </section>
 
+  <script src="./assets/follow-notice.js"></script>
   <script src="./assets/profile-binding.js"></script>
   <script>
     const projectRouteParams = new URLSearchParams(window.location.search);
@@ -3459,24 +3464,57 @@
         document.getElementById("heroImage").alt = "楼盘展示示意图";
       }
     }
-    if (projectRouteParams.get("source") === "home-ai" || projectRouteParams.has("project")) {
+    if (projectRouteParams.get("source") === "home-ai" || (projectRouteParams.has("project") && projectRouteParams.get("presale") !== "1")) {
       document.getElementById("projectBackLink").href = "./房产超市_住进成都.html?chat=home-ai&restore=1";
     }
 
     const isPresaleProject = document.documentElement.classList.contains("is-presale");
     if (isPresaleProject) {
-      document.title = "锦江·天际云境 - 即将预售";
+      const presaleProjects = {
+        "招商·时代花园": { district: "天府新区", photo: "./assets/home-presale-2026.png", openingCount: 2, openingBuildings: "2栋、3栋" },
+        "天府公园未来城": { district: "天府新区", photo: "./assets/楼盘实景-社区楼景.png", openingCount: 2, openingBuildings: "1栋、2栋" },
+        "锦江·天际云境": { district: "锦江区", photo: "./assets/楼盘实景-楼栋外立面.png", openingCount: 2, openingBuildings: "2栋、3栋" }
+      };
+      const requestedProject = projectRouteParams.get("project");
+      const presaleName = Object.hasOwn(presaleProjects, requestedProject) ? requestedProject : "锦江·天际云境";
+      const presaleProject = presaleProjects[presaleName];
+      document.title = `${presaleName} - 即将预售`;
       const projectTitle = document.querySelector(".summary-head h2");
       const projectDistrict = document.querySelector(".location-row > span:not(.pill)");
       const projectStatus = document.querySelector(".tag-row .tag--green");
       const projectPrice = document.querySelector(".summary .price");
-      projectTitle.textContent = "锦江·天际云境";
-      projectDistrict.textContent = "锦江区";
+      projectTitle.textContent = presaleName;
+      projectDistrict.textContent = presaleProject.district;
       projectStatus.textContent = "即将预售";
       projectPrice.innerHTML = "价格待定<small>预售价格以取证信息为准</small>";
-      document.getElementById("heroImage").src = "./assets/楼盘实景-楼栋外立面.png";
-      document.getElementById("heroImage").alt = "锦江天际云境楼盘实景";
+      document.getElementById("heroImage").src = presaleProject.photo;
+      document.getElementById("heroImage").alt = `${presaleName}楼盘实景`;
+      document.querySelectorAll("#openingInfo .info-row").forEach((row) => {
+        const label = row.querySelector("span")?.textContent.trim();
+        if (label === "开盘栋数") row.querySelector("strong").textContent = `${presaleProject.openingCount}栋`;
+        if (label === "开盘楼栋") row.querySelector("strong").textContent = presaleProject.openingBuildings;
+      });
+      document.querySelectorAll("#basic .info-row").forEach((row) => {
+        const label = row.querySelector("span")?.textContent.trim();
+        const value = row.querySelector("strong");
+        if (value && ["参考单价", "开盘栋数", "开盘楼栋"].includes(label)) {
+          value.textContent = "-";
+        }
+      });
+      if (projectRouteParams.get("source") === "home-upcoming") {
+        document.getElementById("projectBackLink").href = "./安家成都-首页-扫码.html#upcomingProjects";
+      }
     }
+
+    const projectFollowButton = document.getElementById("projectFollowButton");
+    projectFollowButton.addEventListener("click", () => {
+      const followed = projectFollowButton.getAttribute("aria-pressed") !== "true";
+      projectFollowButton.classList.toggle("is-following", followed);
+      projectFollowButton.setAttribute("aria-pressed", String(followed));
+      projectFollowButton.setAttribute("aria-label", followed ? "取消关注楼盘" : "关注楼盘");
+      projectFollowButton.querySelector("span").textContent = followed ? "已关注" : "关注楼盘";
+      if (followed) HouseFollowNotice.show();
+    });
 
     const advisorProfiles = [
       { name: "李晓雨", initial: "李", role: "高级置业顾问", company: "招商蛇口成都公司", phone: "13709063518", wechat: "AJCD-LXY2026" },

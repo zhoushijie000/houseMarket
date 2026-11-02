@@ -3228,247 +3228,246 @@
         max-width: none;
       }
     }
+
+    /* 0918 SVG: 375px canvas, 343px content; scoped to the homepage. */
+    body:has(#homeView.is-active) { background: #f3f5f6; justify-content: center; }
+    .page:has(#homeView.is-active) { width: min(100%, 375px); min-width: 0; background: #f3f5f6; box-shadow: none; }
+    #homeView { --h-brand: #ff771a; --h-text: #404040; --h-muted: #909399; background: #f3f5f6; color: var(--h-text); padding-bottom: calc(122px + var(--safe-bottom)); font: 14px/1.4 -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif; }
+    #homeView h1, #homeView h2, #homeView h3, #homeView p { margin: 0; }
+    #homeView a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+    #homeView button { padding: 0; font: inherit; }
+    #homeView img { display: block; max-width: 100%; }
+    #homeView svg { display: block; }
+    #homeView [hidden] { display: none !important; }
+    #homeView .h-masthead { height: 132px; background: #ff9546 url('./assets/home-0918/header-background.svg') center top / 100% 132px no-repeat; }
+    #homeView .h-status { height: 44px; padding: 14px 16px 0 21px; display: flex; justify-content: space-between; align-items: flex-start; color: #fff; font-size: 15px; font-weight: 600; line-height: 20px; }
+    #homeView .h-status img { width: 66px; height: 12px; margin-top: 4px; }
+    #homeView .h-topbar { position: relative; height: 44px; padding: 14px 16px 0; }
+    #homeView .h-topbar h1 img { width: 120px; height: 19px; }
+    #homeView .h-capsule { position: absolute; right: 6px; top: 6px; width: 87px; height: 32px; }
+    #homeView .h-capsule img { width: 100%; height: 100%; }
+    #homeView .h-housing-tabs { position: relative; display: grid; grid-template-columns: 1fr 1fr; height: 44px; background: url('./assets/home-0918/housing-tabs.svg') center / 100% 44px no-repeat; text-align: center; font-size: 16px; font-weight: 500; }
+    #homeView .h-housing-tabs span { padding-top: 14px; cursor: default; }
+    #homeView .h-housing-tabs strong { padding-top: 11px; font-weight: 600; }
+    #homeView .h-hero { padding: 16px 16px 0; display: grid; gap: 12px; background: #fff; }
+    #homeView .h-banner { width: 100%; height: 128px; object-fit: fill; border-radius: 8px; }
+    #homeView .h-search { width: 100%; height: 44px; display: flex; align-items: center; border: 1px solid #ffe2cf; border-radius: 8px; background: #fff; }
+    #homeView .h-search-field { display: flex; align-items: center; gap: 6px; flex: 1; min-width: 0; padding-left: 12px; }
+    #homeView .h-search-field svg { flex: 0 0 18px; width: 18px; height: 18px; stroke: #909399; fill: none; stroke-width: 1.6; stroke-linecap: round; }
+    #homeView .h-search-field input { border: 0; outline: 0; width: 100%; min-width: 0; padding: 0; color: #606266; background: transparent; font: inherit; font-size: 14px; }
+    #homeView .h-search-field input::placeholder { color: #a1a4ab; opacity: 1; }
+    #homeView .h-search-field input::-webkit-search-cancel-button { display: none; }
+    #homeView .h-map { display: flex; flex: 0 0 64px; align-items: center; gap: 4px; padding-left: 3px; height: 24px; color: var(--h-brand); font-size: 13px; font-weight: 500; }
+    #homeView .h-map img { width: 20px; height: 20px; }
+    #homeView .h-scan { width: 48px; height: 20px; display: grid; place-items: center; border-left: 1px solid #ffe2cf; flex: 0 0 48px; }
+    #homeView .h-scan img { width: 20px; height: 20px; }
+    #homeView .h-content { display: grid; grid-template-columns: minmax(0,1fr); gap: 12px; padding: 12px 16px 0; background: linear-gradient(#fff, #f3f5f6 85px); }
+    #homeView .h-content > * { min-width: 0; }
+    #homeView .h-featured { height: 72px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    #homeView .h-feature { padding: 14px 11px 8px; border: 1px solid #fff; border-radius: 8px; background: linear-gradient(#fff5ef, #fff); overflow: hidden; }
+    #homeView .h-feature-title { display: flex; align-items: center; gap: 11px; line-height: 22px; font-weight: 500; white-space: nowrap; }
+    #homeView .h-feature-title img { width: 22px; height: 22px; }
+    #homeView .h-feature-update { margin-top: 6px; padding-top: 5px; display: block; border-top: 1px dashed #e4e7ed; white-space: nowrap; font-size: 12px; color: #a1a4ab; line-height: 17px; }
+    #homeView .h-feature-update em { color: var(--h-brand); font-style: normal; margin-right: 2px; }
+    #homeView .h-stats { height: 97px; display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); padding: 14px 0 12px; border-radius: 8px; background: linear-gradient(#fff7f1, #fff 70%); }
+    #homeView .h-stats a { display: flex; flex-direction: column; align-items: center; }
+    #homeView .h-stats img { width: 30px; height: 28px; object-fit: contain; margin-bottom: 6px; }
+    #homeView .h-stats strong { font-size: 14px; font-weight: 500; line-height: 20px; }
+    #homeView .h-stats span { font-size: 12px; line-height: 17px; }
+    #homeView .h-tools { position: relative; display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); height: 77px; border-radius: 8px; background: #fff; overflow: hidden; }
+    #homeView .h-tools-art { position: absolute; inset: 0; width: 100%; height: 77px; pointer-events: none; }
+    #homeView .h-tools a, #homeView .h-tools button { position: relative; display: flex; align-items: flex-end; justify-content: center; text-align: center; padding: 0 0 11px; line-height: 18px; font-size: 12px; white-space: nowrap; }
+    #homeView .h-market { height: 97px; padding: 12px 16px; background: url('./assets/home-0918/market-decoration.svg') center / 100% 100% no-repeat; border-radius: 8px; }
+    #homeView .h-section-heading { display: flex; align-items: center; justify-content: space-between; min-width: 0; }
+    #homeView .h-section-heading h2 { font-size: 16px; line-height: 24px; font-weight: 600; }
+    #homeView .h-section-heading a { font-size: 12px; line-height: 20px; }
+    #homeView .h-market h2 span, #homeView .h-market header a { color: #4388ff; }
+    #homeView .h-market-heading { display: flex; align-items: center; gap: 8px; }
+    #homeView .h-market-period { padding: 1px 5px; border-radius: 4px; background: #e7f0ff; color: #7b91b6; font-size: 10px; line-height: 16px; white-space: nowrap; }
+    #homeView .h-metrics { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); margin-top: 4px; }
+    #homeView .h-metrics > div:nth-child(2) { padding-left: 4px; }
+    #homeView .h-metrics > div:nth-child(3) { padding-left: 8px; }
+    #homeView .h-metrics > div > span { font-size: 12px; color: #8c99b3; line-height: 17px; white-space: nowrap; }
+    #homeView .h-metrics p { display: flex; align-items: baseline; color: #132454; line-height: 24px; gap: 2px; white-space: nowrap; }
+    #homeView .h-metrics strong { font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
+    #homeView .h-metrics small { font-size: 12px; }
+    #homeView .h-columns { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; height: 196px; }
+    #homeView .h-live { position: relative; border-radius: 8px; background: #f2f8ff; overflow: hidden; }
+    #homeView .h-live > img { width: 100%; height: 196px; object-fit: fill; }
+    #homeView .h-live > span { position: absolute; top: 151px; left: 24px; right: 10px; display: flex; align-items: center; gap: 5px; color: #457bd9; line-height: 20px; }
+    #homeView .h-live svg { width: 16px; height: 16px; fill: #457bd9; }
+    #homeView .h-live svg path { fill: none; stroke: #fff; stroke-width: 1.3; }
+    #homeView .h-topic { padding: 14px 12px 12px; background: #fff8f4; border-radius: 8px; }
+    #homeView .h-topic header { display: flex; align-items: center; justify-content: space-between; height: 20px; margin-bottom: 11px; color: var(--h-brand); }
+    #homeView .h-topic h2 { position: relative; z-index: 0; font-size: 16px; line-height: 20px; font-weight: 700; }
+    #homeView .h-topic h2:after { content:''; width: 16px; height: 16px; border: 2px solid #ffdfc8; border-radius: 50%; position: absolute; right: -10px; top: -6px; z-index: -1; }
+    #homeView .h-topic-links { display: grid; gap: 8px; }
+    #homeView .h-topic-links a { display: flex; align-items: center; justify-content: space-between; height: 40px; padding: 0 8px; border-radius: 8px; background: rgba(255,255,255,.9); white-space: nowrap; }
+    #homeView .h-topic-links svg { width: 16px; height: 16px; fill: none; stroke: #606676; stroke-width: 1; }
+    #homeView .h-bank { display: block; height: 84px; width: 100%; overflow: hidden; border-radius: 8px; }
+    #homeView .h-bank img { width: 100%; height: 84px; }
+    #homeView .h-upcoming { margin-top: 12px; padding: 14px 16px 16px; background: #fff; }
+    #homeView .h-upcoming-track { position: relative; display: flex; gap: 12px; margin-top: 14px; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+    #homeView .h-upcoming-track::-webkit-scrollbar { display: none; }
+    #homeView .h-upcoming-track:focus-visible { outline: 2px solid #ffb981; outline-offset: 3px; border-radius: 4px; }
+    #homeView .h-upcoming-track.is-dragging { scroll-snap-type: none; cursor: grabbing; user-select: none; }
+    #homeView .h-upcoming-card { display: grid; grid-template-columns: 108px minmax(0,1fr); gap: 10px; align-items: center; flex: 0 0 calc(100% - 36px); min-width: 0; padding: 10px; border: 1px solid #e4e7ed; border-radius: 8px; background: #fff; scroll-snap-align: start; scroll-snap-stop: always; }
+    #homeView .h-upcoming-card:only-child { flex-basis: 100%; }
+    #homeView .h-upcoming-track.is-dragging .h-upcoming-card { cursor: grabbing; }
+    #homeView .h-upcoming-card > div { min-width: 0; }
+    #homeView .h-upcoming-card h3, #homeView .h-upcoming-card .h-estate-meta { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #homeView .h-upcoming-card > img { width: 108px; height: 90px; border-radius: 4px; object-fit: cover; }
+    #homeView .h-upcoming h3 { font-size: 15px; font-weight: 600; line-height: 22px; }
+    #homeView .h-opening-label { display: inline-block; margin-top: 5px; padding: 2px 6px; color: var(--h-brand); background: #fff3e9; font-size: 11px; border-radius: 2px; }
+    #homeView .h-estates { margin-top: 12px; padding: 0 16px 12px; background: #fff; }
+    #homeView .h-estate-tabs { display: flex; align-items: center; gap: 14px; height: 35px; }
+    #homeView .h-estate-tabs button { position: relative; height: 35px; color: #909399; font-size: 16px; font-weight: 600; }
+    #homeView .h-estate-tabs .is-active { color: #303133; }
+    #homeView .h-estate-tabs .is-active:after { content:''; position: absolute; bottom: 1px; left: 16px; width: 28px; height: 5px; border-radius: 50%; background: linear-gradient(90deg,#ffb66d,#ff771a); transform: rotate(-6deg); opacity: .85; }
+    #homeView .h-filters { display: grid; grid-template-columns: repeat(5,1fr); height: 52px; margin: 0 -16px; }
+    #homeView .h-filters button { display: flex; align-items: center; justify-content: center; gap: 2px; font-size: 14px; }
+    #homeView .h-filters button.is-active { color: var(--h-brand); }
+    #homeView .h-filters svg { width: 10px; height: 10px; fill: none; stroke: currentColor; stroke-linecap: round; }
+    #homeView .h-estate { position: relative; padding: 0 0 8px; margin-bottom: 16px; border-bottom: 1px solid #e4e7ed; min-height: 107px; }
+    #homeView .h-estate:last-child { margin-bottom: 0; border: 0; }
+    #homeView .h-estate-main { display: grid; grid-template-columns: 108px minmax(0,1fr); gap: 10px; }
+    #homeView .h-estate-cover { width: 108px; height: 90px; object-fit: fill; border-radius: 4px; }
+    #homeView .h-estate-info { min-width: 0; }
+    #homeView .h-estate-info h3 { max-width: calc(100% - 20px); font-size: 15px; font-weight: 600; line-height: 22px; white-space: nowrap; }
+    #homeView .h-price { margin-top: 2px; font-size: 14px; line-height: 22px; color: #ff2828; white-space: nowrap; }
+    #homeView .h-estate-meta { margin-top: 2px; color: #909399; font-size: 11px; line-height: 18px; white-space: nowrap; }
+    #homeView .h-estate-tags { display: flex; gap: 2px; margin-top: 2px; font-size: 10px; line-height: 16px; }
+    #homeView .h-estate-tags span { padding: 0 3px; color: #8e98a1; background: #f0f4f5; }
+    #homeView .h-estate-tags .h-tag-green { color: #67cc35; background: #f0fae9; }
+    #homeView .h-benefit, #homeView .h-subsidy, #homeView .h-explain { display: flex; width: max-content; max-width: 100%; align-items: center; height: 16px; margin-top: 3px; padding-right: 3px; color: #a18155; background: #fff5e3; font-size: 10px; line-height: 16px; white-space: nowrap; }
+    #homeView .h-benefit b, #homeView .h-subsidy b, #homeView .h-explain b { display: grid; width: 16px; height: 16px; place-items: center; margin-right: 3px; background: linear-gradient(#ffbd6b,#ff963a); color: #fff; font-size: 12px; font-weight: 400; }
+    #homeView .h-subsidy { color: #b37d7f; background: #ffeeed; }
+    #homeView .h-subsidy b { background: #ff6851; }
+    #homeView .h-subsidy svg { width: 14px; height: 14px; fill: none; stroke: #fff; stroke-width: 1.4; }
+    #homeView .h-explain { color: #e5976c; background: #fff3ed; }
+    #homeView .h-explain b { background: #ff9b63; }
+    #homeView .h-explain svg { width: 14px; height: 14px; fill: #fff; }
+    #homeView .h-explain circle { fill: #ff9b63; }
+    #homeView .h-estate-side { position: absolute; top: 0; right: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 15px; }
+    #homeView .h-favorite { width: 22px; height: 23px; display: grid; place-items: center; }
+    #homeView .h-favorite svg { width: 19px; height: 19px; fill: none; stroke: #c6c8cb; stroke-width: 1.6; }
+    #homeView .h-favorite.is-saved svg { fill: #ff6848; stroke: #ff6848; }
+    #homeView .h-remaining { width: 40px; height: 42px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #ff8f2e; background: #fff4eb; border-radius: 5px; font-size: 10px; line-height: 16px; }
+    #homeView .h-remaining strong { font-size: 11px; font-weight: 600; }
+    #homeView .h-no-results { padding: 36px 0; color: #909399; text-align: center; }
+    #homeView .h-loan-dialog { width: min(343px,calc(100vw - 32px)); padding: 20px; border: 0; border-radius: 12px; color: #404040; }
+    #homeView .h-loan-dialog::backdrop { background: rgba(0,0,0,.4); }
+    #homeView .h-loan-dialog header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    #homeView .h-loan-dialog h2 { font-size: 18px; }
+    #homeView .h-loan-dialog header button { font-size: 26px; }
+    #homeView .h-loan-dialog label { display: block; margin: 10px 0; color: #606266; }
+    #homeView .h-loan-dialog input { display: block; margin-top: 5px; padding: 8px; width: 100%; border: 1px solid #e4e7ed; border-radius: 5px; }
+    #homeView .h-loan-calculate { width: 100%; padding: 10px; border-radius: 6px; background: #ff771a; color: #fff; margin: 8px 0; }
+    #homeView .h-loan-dialog output { display: block; font-size: 18px; color: #ff771a; margin: 8px 0; }
+    #homeView .h-loan-dialog small { font-size: 11px; color: #909399; }
+    body:has(#homeView.is-active) .tabbar { width: min(100%,375px); height: calc(94px + var(--safe-bottom)); padding: 10px 0 calc(34px + var(--safe-bottom)); border: 0; box-shadow: 0 -4px 18px rgba(30,40,50,.035); }
+    body:has(#homeView.is-active) .tabbar button { gap: 3px; font: 13px/18px -apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif; color: #909399; z-index: 1; }
+    body:has(#homeView.is-active) .tabbar button.active { color: #ff771a; }
+    body:has(#homeView.is-active) .tabbar button > svg { width: 24px; height: 24px; }
+    body:has(#homeView.is-active) .tabbar .tabbar__ai-icon { top: -26px; width: 46px; height: 46px; }
+    body:has(#homeView.is-active) .tabbar .tabbar__ai span { top: 25px; }
+    body:has(#homeView.is-active) .tabbar:after { height: 5px; bottom: calc(8px + var(--safe-bottom)); }
+    body:has(#homeView.is-active) .tabbar:before { content:''; position:absolute; width:56px; height:56px; top:-21px; left:calc(50% - 28px); background:white; border-radius:50%; }
+    body:has(#homeView.is-active) #tabMessage:after { content:''; position:absolute; width:5px; height:5px; background:#f53131; border-radius:50%; top:0; left:calc(50% + 9px); }
+    @media (max-width:359px) {
+      #homeView .h-search-field input { font-size:12px; }
+      #homeView .h-map { flex-basis:55px; }
+      #homeView .h-scan { flex-basis:36px; width:36px; }
+      #homeView .h-feature { padding-left:9px; padding-right:9px; }
+      #homeView .h-feature-title { gap:6px; font-size:13px; }
+      #homeView .h-feature-update { font-size:10px; }
+      #homeView .h-topic { padding-left:8px; padding-right:8px; }
+      #homeView .h-topic-links a { font-size:12px; }
+      #homeView .h-estate-main { grid-template-columns:94px minmax(0,1fr); gap:8px; }
+      #homeView .h-estate-cover { width:94px; height:80px; object-fit:cover; }
+      #homeView .h-estate-info h3 { font-size:13px; }
+      #homeView .h-price { font-size:12px; }
+      #homeView .h-estate-meta { font-size:10px; }
+    }
+
   </style>
+  <link rel="stylesheet" href="./assets/follow-notice.css">
 </head>
 <body>
   <main class="page">
     <section class="app-view is-active" id="homeView" data-view="home">
-    <div class="statusbar" aria-hidden="true">
-      <span>9:41</span>
-      <span class="statusbar__right">
-        <span class="signal"><i></i><i></i><i></i><i></i></span>
-        <svg class="status-wifi" viewBox="0 0 20 14" aria-hidden="true"><path d="M1 4.5C5.8.4 14.2.4 19 4.5M4.5 8c3.1-2.7 7.9-2.7 11 0M8 11.2c1.2-1 2.8-1 4 0" /></svg>
-        <span class="battery"></span>
-      </span>
-    </div>
-
-    <header class="topbar">
-      <div class="topbar__title">成都住建房产超市</div>
-      <div class="nav-pill nav-pill--right">
-        <button class="nav-pill__button" type="button" aria-label="更多"><span class="nav-more">•••</span></button>
-        <button class="nav-pill__button" type="button" aria-label="圆点入口"><span class="nav-target">◎</span></button>
-      </div>
-    </header>
-
-    <section class="hero">
-      <div class="search-row" role="search">
-        <div class="search-box">
-          <div class="city-picker">
-            <button class="city-picker__button" id="cityPickerButton" type="button" aria-haspopup="true" aria-expanded="false">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.1 7-13A7 7 0 0 0 5 9c0 6.9 7 13 7 13Z" /><circle cx="12" cy="9" r="2.4" fill="#fff" /></svg>
-              <span id="cityPickerValue">成都</span>
-            </button>
-            <div class="city-picker__menu" id="cityPickerMenu" role="menu" hidden>
-              <button class="city-picker__option is-active" type="button" data-city="成都">成都全城</button>
-              <button class="city-picker__option" type="button" data-city="天府新区">天府新区</button>
-              <button class="city-picker__option" type="button" data-city="高新区">高新区</button>
-              <button class="city-picker__option" type="button" data-city="锦江区">锦江区</button>
-            </div>
-          </div>
-          <label class="search-field">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke-width="2" />
-              <path d="m15.5 15.5 5 5" fill="none" stroke-width="2" stroke-linecap="round" />
-            </svg>
-            <input id="homeSearchInput" type="search" placeholder="请输入楼盘/区域/商圈关键词" aria-label="请输入楼盘、区域或商圈关键词" />
-          </label>
-          <a class="map-button" href="./地图搜索.html" aria-label="地图找房">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 22s7-6.1 7-13A7 7 0 0 0 5 9c0 6.9 7 13 7 13Z" />
-              <circle cx="12" cy="9" r="2.5" fill="#fff" />
-            </svg>
-            <span>地图</span>
-          </a>
-        </div>
-      </div>
-
-      <section class="promo" aria-label="智慧购房，安居成都">
-        <svg class="promo__art" viewBox="0 0 397 140" preserveAspectRatio="none" aria-hidden="true">
-          <defs>
-            <linearGradient id="bannerRoad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffbd6a" /><stop offset="0.52" stop-color="#ff6f2c" /><stop offset="1" stop-color="#ff9a45" /></linearGradient>
-            <linearGradient id="bannerCity" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffc071" /><stop offset="1" stop-color="#ed7133" /></linearGradient>
-          </defs>
-          <path d="M0 72 32 48 57 67 88 41 116 70 145 53 171 78V140H0Z" fill="#f1cda6" opacity=".66" />
-          <path d="M235 71 264 50 286 66 323 38 353 64 397 48V140H235Z" fill="#e9c8a8" opacity=".7" />
-          <g fill="url(#bannerCity)" opacity=".88">
-            <path d="M7 103h14v37H7zM24 94h18v46H24zM45 108h13v32H45zM61 97h18v43H61z" />
-            <path d="M321 101h16v39h-16zM341 86h17v54h-17zM362 96h12v44h-12zM378 77h14v63h-14z" />
-          </g>
-          <g fill="#fff4de" opacity=".65">
-            <path d="M12 110h5v5h-5zM29 101h6v6h-6zM49 115h5v5h-5zM66 104h6v6h-6z" />
-            <path d="M326 108h6v6h-6zM346 94h6v6h-6zM365 103h5v5h-5zM382 86h6v6h-6z" />
-          </g>
-          <path d="M-22 137C68 95 115 137 178 119c62-18 87-44 148-20 27 11 53 10 91-5" fill="none" stroke="url(#bannerRoad)" stroke-width="30" stroke-linecap="round" />
-          <path d="M-14 134C70 105 116 143 179 123c63-20 89-42 148-18 24 10 51 8 83-3" fill="none" stroke="#fff7e9" stroke-width="5" stroke-linecap="round" opacity=".96" />
-          <path d="M-10 132C66 113 116 145 180 127c63-18 91-36 147-15 27 10 50 8 78-2" fill="none" stroke="#ffd3a1" stroke-width="2" stroke-linecap="round" />
-        </svg>
-        <div class="promo__copy">
-          <h1 class="promo__title">智慧购房 安居成都</h1>
-          <p class="promo__subtitle">权威数据 · 安心交易 · 贴心服务</p>
-          <a class="promo__cta" href="#estateList">了解详情</a>
-        </div>
-      </section>
-    </section>
-
-    <section class="section-main">
-      <section class="home-overview-card" aria-label="首页重点数据">
-        <section class="featured-grid" aria-label="首页重点板块">
-          <a class="featured-card featured-card--city" href="./房产超市_住进成都.html?screen=city-tour">
-            <img class="featured-card__image" src="./assets/home-card-city.svg" alt="住进成都 进入专题">
-          </a>
-          <a class="featured-card featured-card--district" href="./district-zone/index.html">
-            <img class="featured-card__image" src="./assets/home-card-district.svg" alt="区县专区 查看专区">
-          </a>
-        </section>
-
-        <nav class="quick-grid quick-grid--stats" aria-label="首页楼盘数据">
-          <a class="quick-item quick-item--stat" href="#estateList"><span class="stat-icon"><svg viewBox="0 0 32 32"><path d="M5 27V10h10v17M15 27V4h12v23M2 27h28M9 14h2m-2 5h2m8-10h3m-3 5h3m-3 5h3" /></svg></span><strong>356</strong><span class="stat-label">在售新盘</span></a>
-          <a class="quick-item quick-item--stat" href="#estateList"><span class="stat-icon"><svg viewBox="0 0 32 32"><circle cx="16" cy="14" r="9" /><path d="m12 14 3 3 6-7M11 23l-2 6 7-3 7 3-2-6" /></svg></span><strong>23</strong><span class="stat-label">最新取证</span></a>
-          <a class="quick-item quick-item--stat" href="#estateList"><span class="stat-icon"><svg viewBox="0 0 32 32"><path d="M17 3c2 6-2 7 1 11 3-1 4-4 4-7 5 4 7 9 6 14-1 6-6 9-12 9S5 26 4 20c-1-5 2-10 7-14 0 5 1 7 3 8 2-3 0-6 3-11Z" /></svg></span><strong>169</strong><span class="stat-label">热门楼盘</span></a>
-          <a class="quick-item quick-item--stat" href="#estateList"><span class="stat-icon"><svg viewBox="0 0 32 32"><circle cx="16" cy="17" r="11" /><path d="M16 10v7l5 3M12 3h8" /></svg></span><strong>2</strong><span class="stat-label">即将开盘</span></a>
-        </nav>
-      </section>
-
-      <section class="home-services-card" aria-label="便民找房服务">
-        <nav class="home-tool-strip" aria-label="核心服务入口">
-          <img class="home-tool-strip__art" src="./assets/home-five-tools-knowledge.svg" alt="">
-          <a href="./网签成交.html" aria-label="网签成交"></a>
-          <a href="./楼盘榜单.html" aria-label="楼盘榜单"></a>
-          <a href="./购房知识.html" aria-label="购房知识"></a>
-          <a href="./地图搜索.html" aria-label="地图找房"></a>
-          <a href="./购房政策.html" aria-label="政策列表"></a>
-        </nav>
-
-        <section class="home-column" aria-label="直播与专题找房">
-          <div class="home-column__grid">
-            <a class="home-column-card home-column-card--live" id="homeLiveEntry" href="./房产超市_住进成都.html?screen=live">
-              <span class="home-live-copy">
-                <strong class="home-live-title">看房直播 <em>LIVE</em></strong>
-                <span>14场直播中<br>在线找房 · 实时互动</span>
-                <b class="home-live-cta">立即观看 ›</b>
-              </span>
-              <img class="home-live-person" src="./assets/advisor-avatar.png" alt="置业顾问正在直播讲房">
-            </a>
-            <section class="home-topic-panel" aria-labelledby="homeTopicTitle">
-              <header class="home-topic-panel__header">
-                <h2 class="home-topic-panel__title" id="homeTopicTitle">专题找房</h2>
-                <a class="home-topic-panel__all" href="./专题找房.html?view=all">更多专题 ›</a>
-                <span class="home-topic-panel__subtitle">为您精选优质房源</span>
-              </header>
-              <div class="home-topic-panel__list">
-                <a class="home-topic-entry" href="./专题找房.html?topic=rigid">刚需优选 <b>低总价好上车</b></a>
-                <a class="home-topic-entry" href="./专题找房.html?topic=improve">改善优选 <b>品质大三房</b></a>
-                <a class="home-topic-entry" href="./专题找房.html?topic=invest">投资优选 <b>潜力区域好盘</b></a>
-              </div>
-            </section>
-          </div>
-        </section>
-
-        <section class="property-news" id="propertyNews" aria-labelledby="propertyNewsTitle">
-          <header class="property-news__head">
-            <h2 id="propertyNewsTitle">房产动态</h2>
-            <a class="property-news__more" href="javascript:void(0)">更多 ›</a>
-          </header>
-          <div class="property-news__list">
-            <a class="property-news__item" href="./购房政策.html"><span class="property-news__tag">政策</span><span class="property-news__title">成都最新公积金贷款政策解读，首付比例下调</span><time class="property-news__date">06-20</time></a>
-            <a class="property-news__item" href="#estateList"><span class="property-news__tag">市场</span><span class="property-news__title">上周成都新房成交1234套，环比上涨12.5%</span><time class="property-news__date">06-19</time></a>
-          </div>
-        </section>
-      </section>
-
-      <section class="estate-section" id="estateList" aria-label="安家成都楼盘列表">
-        <header class="estate-section__head">
-          <h2>即将预售</h2>
-          <a href="javascript:void(0)">查看全部 ›</a>
+      <div class="h-masthead" data-review="header">
+        <div class="h-status" aria-hidden="true"><span>9:41</span><img src="./assets/home-0918/status-icons.svg" alt=""></div>
+        <header class="h-topbar">
+          <h1><img src="./assets/home-0918/header-brand.svg" alt="成都房产超市"></h1>
+          <div class="h-capsule" aria-hidden="true"><img src="./assets/home-0918/header-capsule.svg" alt=""></div>
         </header>
-        <section class="presale-feature" aria-label="即将预售楼盘">
-          <header class="presale-feature__head">
-            <span>预计9月取证</span>
-          </header>
-          <a class="estate-card estate-card--home estate-card--presale" href="./project-detail.html?presale=1" aria-label="查看招商·时代花园预售详情">
-            <div class="estate-cover estate-cover--presale">
-              <span class="estate-view-count"><svg viewBox="0 0 16 10"><path d="M1 5s2.5-4 7-4 7 4 7 4-2.5 4-7 4-7-4-7-4Z" /><circle cx="8" cy="5" r="1.7" /></svg>3456</span>
-            </div>
-            <div class="estate-info">
-              <h2 class="estate-title">招商·时代花园</h2>
-              <div class="estate-price">价格待定</div>
-              <div class="estate-meta">天府新区/建面120~130㎡</div>
-              <div class="estate-tags">
-                <span>改善住宅</span>
-              </div>
-            </div>
-          </a>
-        </section>
-        <div class="estate-tabs">
-          <span class="active">在售房源</span>
+        <div class="h-housing-tabs" aria-label="房源类型"><span aria-disabled="true">二手房</span><strong aria-current="page">新房</strong></div>
+      </div>
+
+      <section class="h-hero" aria-label="楼盘搜索">
+        <img class="h-banner" src="./assets/home-0918/banner.svg" alt="万千气象 幸福成都，成都城市价值推介暨市场拓展活动" data-review="banner">
+        <div class="h-search" role="search" data-review="search">
+          <label class="h-search-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.1"/><path d="m16 16 4.5 4.5"/></svg><input id="homeSearchInput" type="search" placeholder="请输入您感兴趣的楼盘" aria-label="搜索楼盘"></label>
+          <a class="h-map" href="./地图搜索.html"><img src="./assets/home-0918/map-pin.svg" alt="">地图</a>
+          <button class="h-scan" id="scanEntry" type="button" aria-label="扫一扫"><img src="./assets/home-0918/scan.svg" alt=""></button>
         </div>
-        <div class="filters">
-          <button type="button">区域⌄</button>
-          <button type="button">价格⌄</button>
-          <button type="button">户型⌄</button>
-          <button type="button">面积⌄</button>
-          <button type="button">更多⌄</button>
-        </div>
-        <a class="estate-card estate-card--home" href="./project-detail.html" aria-label="查看招商·时代花园楼盘详情">
-          <div class="estate-cover estate-cover--photo" data-badge="实景现房">
-            <span class="estate-view-count"><svg viewBox="0 0 16 10"><path d="M1 5s2.5-4 7-4 7 4 7 4-2.5 4-7 4-7-4-7-4Z" /><circle cx="8" cy="5" r="1.7" /></svg>3456</span>
-          </div>
-          <div class="estate-info">
-            <h2 class="estate-title">招商·时代花园</h2>
-            <div class="estate-price">31000~32000元/㎡</div>
-            <div class="estate-meta">天府新区/建面120~130㎡</div>
-            <div class="estate-tags">
-              <span>精装</span>
-              <span class="tag-gray">容积率2.3</span>
-              <span class="tag-benefit">惠&nbsp; 企业优惠减8.8万</span>
-              <span class="tag-subsidy">可享武侯区新房补贴</span>
-            </div>
-          </div>
-          <span class="estate-actions" aria-hidden="true">
-            <span class="estate-favorite"><svg viewBox="0 0 24 24"><path d="M20.8 4.7a5.6 5.6 0 0 0-7.9 0L12 5.6l-.9-.9a5.6 5.6 0 0 0-7.9 7.9l.9.9L12 21l7.9-7.5.9-.9a5.6 5.6 0 0 0 0-7.9Z" /></svg></span>
-            <span class="estate-leftover">30套<br>剩余</span>
-          </span>
-        </a>
-        <a class="estate-card estate-card--home" href="./project-detail.html" aria-label="查看首开·龙湖紫宸楼盘详情">
-          <div class="estate-cover estate-cover--blue" data-badge="实景现房">
-            <span class="estate-view-count"><svg viewBox="0 0 16 10"><path d="M1 5s2.5-4 7-4 7 4 7 4-2.5 4-7 4-7-4-7-4Z" /><circle cx="8" cy="5" r="1.7" /></svg>2134</span>
-          </div>
-          <div class="estate-info">
-            <h2 class="estate-title">首开·龙湖紫宸</h2>
-            <div class="estate-price">32300~35600元/㎡</div>
-            <div class="estate-meta">成华区/建面110~140㎡</div>
-            <div class="estate-tags">
-              <span>毛坯</span>
-              <span class="tag-gray">容积率2.3</span>
-            </div>
-          </div>
-          <span class="estate-actions" aria-hidden="true">
-            <span class="estate-favorite is-muted"><svg viewBox="0 0 24 24"><path d="M20.8 4.7a5.6 5.6 0 0 0-7.9 0L12 5.6l-.9-.9a5.6 5.6 0 0 0-7.9 7.9l.9.9L12 21l7.9-7.5.9-.9a5.6 5.6 0 0 0 0-7.9Z" /></svg></span>
-            <span class="estate-leftover">11套<br>剩余</span>
-          </span>
-        </a>
-        <a class="estate-card estate-card--home" href="./project-detail.html" aria-label="查看融创·春风十里楼盘详情">
-          <div class="estate-cover estate-cover--green" data-badge="安家成都">
-            <span class="estate-view-count"><svg viewBox="0 0 16 10"><path d="M1 5s2.5-4 7-4 7 4 7 4-2.5 4-7 4-7-4-7-4Z" /><circle cx="8" cy="5" r="1.7" /></svg>1543</span>
-          </div>
-          <div class="estate-info">
-            <h2 class="estate-title">融创·春风十里</h2>
-            <div class="estate-price">价格待定</div>
-            <div class="estate-meta">天府新区/建面120~130㎡</div>
-            <div class="estate-tags">
-              <span>安家成都</span>
-              <span class="tag-gray">容积率2.3</span>
-              <span class="tag-benefit">惠&nbsp; 企业优惠享8.8折，最多10万</span>
-            </div>
-          </div>
-          <span class="estate-actions" aria-hidden="true">
-            <span class="estate-favorite is-muted"><svg viewBox="0 0 24 24"><path d="M20.8 4.7a5.6 5.6 0 0 0-7.9 0L12 5.6l-.9-.9a5.6 5.6 0 0 0-7.9 7.9l.9.9L12 21l7.9-7.5.9-.9a5.6 5.6 0 0 0 0-7.9Z" /></svg></span>
-            <span class="estate-leftover">24套<br>剩余</span>
-          </span>
-        </a>
       </section>
+
+      <div class="h-content">
+        <section class="h-featured" aria-label="城市与区县专区" data-review="featured">
+          <a class="h-feature" href="./房产超市_住进成都.html?screen=city-tour"><span class="h-feature-title"><img src="./assets/home-0918/city-icon.svg" alt="">住进成都</span><span class="h-feature-update"><em>动态</em>兰州站正在进行中</span></a>
+          <a class="h-feature" href="./district-zone/index.html"><span class="h-feature-title"><img src="./assets/home-0918/district-icon.svg" alt="">走进区县</span><span class="h-feature-update"><em>更新</em>高新区最新购房政策</span></a>
+        </section>
+
+        <nav class="h-stats" aria-label="楼盘数据与购房政策" data-review="stats">
+          <a href="#estateList"><img src="./assets/home-0918/stat-sale.svg" alt=""><strong>356</strong><span>在售新盘</span></a>
+          <a href="#estateList"><img src="./assets/home-0918/stat-permit.svg" alt=""><strong>23</strong><span>最新取证</span></a>
+          <a href="./楼盘榜单.html"><img src="./assets/home-0918/stat-hot.svg" alt=""><strong>196</strong><span>热门楼盘</span></a>
+          <a href="./购房政策.html"><img src="./assets/home-0918/stat-policy.svg" alt=""><strong>3</strong><span>购房政策</span></a>
+        </nav>
+
+        <nav class="h-tools" aria-label="购房工具" data-review="tools">
+          <img class="h-tools-art" src="./assets/home-0918/tools.svg" alt="">
+          <a href="./网签成交.html">网签成交</a><a href="./楼盘榜单.html">楼盘榜单</a><button id="homeLoanEntry" type="button">房贷计算</button><a href="./地图搜索.html">地图找房</a><a href="./购房政策.html">政策列表</a>
+        </nav>
+
+        <section class="h-market" aria-labelledby="homeMarketTitle" data-review="market">
+          <header class="h-section-heading"><div class="h-market-heading"><h2 id="homeMarketTitle">行情<span>播报</span></h2><span class="h-market-period">当日</span></div><a href="./网签成交.html">查看行情</a></header>
+          <div class="h-metrics" aria-label="当日行情统计，以下数值为原型示例"><div data-metric="residential-count"><span>住宅套数</span><p><strong>232</strong><small>套</small></p></div><div data-metric="residential-area"><span>住宅面积</span><p><strong>28,560</strong><small>㎡</small></p></div><div data-metric="non-residential-area"><span>非住宅面积</span><p><strong>3,180</strong><small>㎡</small></p></div></div>
+        </section>
+
+        <section class="h-columns" aria-label="看房直播与专题找房" data-review="columns">
+          <a class="h-live" id="homeLiveEntry" href="./房产超市_住进成都.html?screen=live"><img src="./assets/home-0918/live.svg" alt="看房直播"><span>14场直播可看<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="m7 5 3 3-3 3"/></svg></span></a>
+          <section class="h-topic" aria-labelledby="homeTopicTitle"><header><h2 id="homeTopicTitle">专题找房</h2><a href="./专题找房.html?view=all">更多</a></header><div class="h-topic-links"><a href="./专题找房.html?topic=new-rule">新规产品<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 4 4 4-4 4"/></svg></a><a href="./专题找房.html?topic=metro">地铁产品<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 4 4 4-4 4"/></svg></a><a href="./专题找房.html?topic=subsidy">购房补贴产品<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 4 4 4-4 4"/></svg></a></div></section>
+        </section>
+
+        <button class="h-bank" id="homeBankEntry" type="button" aria-label="工商银行买房卖房服务，了解详情" data-review="bank"><img src="./assets/home-0918/bank-banner.svg" alt="ICBC中国工商银行，买房卖房找工行，了解详情"></button>
+      </div>
+
+      <section class="h-upcoming" id="upcomingProjects" aria-labelledby="upcomingProjectsTitle" data-review="upcoming">
+        <header class="h-section-heading"><h2 id="upcomingProjectsTitle">即将开盘项目</h2></header>
+        <div class="h-upcoming-track" id="homeUpcomingTrack" role="region" aria-label="即将开盘项目列表，共3个项目" tabindex="0">
+          <a class="h-upcoming-card" href="./project-detail.html?presale=1&amp;project=招商·时代花园&amp;source=home-upcoming" aria-label="查看招商·时代花园即将开盘详情"><img src="./assets/home-presale-2026.png" alt="招商·时代花园"><div><h3>招商·时代花园</h3><p class="h-price">价格待定</p><p class="h-estate-meta">天府新区 / 建面120–130㎡</p><span class="h-opening-label">开盘时间待公布</span></div></a>
+          <a class="h-upcoming-card" href="./project-detail.html?presale=1&amp;project=天府公园未来城&amp;source=home-upcoming" aria-label="查看天府公园未来城即将开盘详情"><img src="./assets/楼盘实景-社区楼景.png" alt="天府公园未来城"><div><h3>天府公园未来城</h3><p class="h-price">价格待定</p><p class="h-estate-meta">天府新区 / 建面98–143㎡</p><span class="h-opening-label">开盘时间待公布</span></div></a>
+          <a class="h-upcoming-card" href="./project-detail.html?presale=1&amp;project=锦江·天际云境&amp;source=home-upcoming" aria-label="查看锦江·天际云境即将开盘详情"><img src="./assets/楼盘实景-楼栋外立面.png" alt="锦江·天际云境"><div><h3>锦江·天际云境</h3><p class="h-price">价格待定</p><p class="h-estate-meta">锦江区 / 建面待公布</p><span class="h-opening-label">开盘时间待公布</span></div></a>
+        </div>
+      </section>
+
+      <section class="h-estates" id="estateList" aria-label="在售楼盘" data-review="estates">
+        <div class="h-estate-tabs" role="tablist" aria-label="楼盘列表"><button class="is-active" id="homeSaleTab" type="button" role="tab" aria-selected="true">在售房源</button><button id="homeHotTab" type="button" role="tab" aria-selected="false">热门楼盘</button></div>
+        <div class="h-filters" aria-label="楼盘筛选"><button type="button">区域<svg viewBox="0 0 10 10"><path d="m3 4 2 2 2-2"/></svg></button><button type="button">价格<svg viewBox="0 0 10 10"><path d="m3 4 2 2 2-2"/></svg></button><button type="button">户型<svg viewBox="0 0 10 10"><path d="m3 4 2 2 2-2"/></svg></button><button type="button">面积<svg viewBox="0 0 10 10"><path d="m3 4 2 2 2-2"/></svg></button><button type="button">更多<svg viewBox="0 0 10 10"><path d="m3 4 2 2 2-2"/></svg></button></div>
+        <div class="h-estate-feed" id="homeEstateFeed">
+          <article class="h-estate" data-heat="3456"><a class="h-estate-main" href="./project-detail.html"><img class="h-estate-cover" src="./assets/home-0918/estate-times.svg" alt="招商·时代花园实景"><div class="h-estate-info"><h3>招商·时代花园</h3><p class="h-price">31000~32000元/㎡</p><p class="h-estate-meta">天府新区/建面120~130㎡</p><div class="h-estate-tags"><span>精装</span><span>容积率2.3</span></div><div class="h-benefit"><b>惠</b>企业优惠减8.8万</div><div class="h-subsidy"><b><svg viewBox="0 0 16 16"><path d="M4 5h8v9H4zM6 5V3h4v2M6 8l2 2 2-2"/></svg></b>可享武侯区新房补贴</div></div></a><div class="h-estate-side"><button class="h-favorite is-saved" type="button" aria-label="取消关注招商·时代花园" aria-pressed="true"><svg viewBox="0 0 24 24"><path d="M20.8 4.7a5.6 5.6 0 0 0-7.9 0L12 5.6l-.9-.9a5.6 5.6 0 0 0-7.9 7.9L12 21l8.8-8.4a5.6 5.6 0 0 0 0-7.9Z"/></svg></button><a class="h-remaining" href="./project-detail.html"><strong>30套</strong><span>剩余</span></a></div></article>
+          <article class="h-estate" data-heat="2134"><a class="h-estate-main" href="./project-detail.html"><img class="h-estate-cover" src="./assets/home-0918/estate-longfor.svg" alt="首开·龙湖紫宸实景"><div class="h-estate-info"><h3>首开·龙湖紫宸</h3><p class="h-price">32300~35600元/㎡</p><p class="h-estate-meta">成华区/建面110~140㎡</p><div class="h-estate-tags"><span>精装</span><span>容积率2.3</span></div><div class="h-explain"><b><svg viewBox="0 0 16 16"><path d="m2 7 5-5h6v6l-5 5Z"/><circle cx="10" cy="5" r="1"/></svg></b>补贴说明</div></div></a><div class="h-estate-side"><button class="h-favorite" type="button" aria-label="关注首开·龙湖紫宸" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M20.8 4.7a5.6 5.6 0 0 0-7.9 0L12 5.6l-.9-.9a5.6 5.6 0 0 0-7.9 7.9L12 21l8.8-8.4a5.6 5.6 0 0 0 0-7.9Z"/></svg></button><a class="h-remaining" href="./project-detail.html"><strong>11套</strong><span>剩余</span></a></div></article>
+          <article class="h-estate" data-heat="1543"><a class="h-estate-main" href="./project-detail.html"><img class="h-estate-cover" src="./assets/home-0918/estate-sunac.svg" alt="融创·春风十里实景"><div class="h-estate-info"><h3>融创·春风十里</h3><p class="h-price">价格待定</p><p class="h-estate-meta">天府新区/建面120~130㎡</p><div class="h-estate-tags"><span class="h-tag-green">安家成都</span><span>容积率2.3</span></div><div class="h-benefit"><b>惠</b>企业优惠享8.8折，最多10万</div></div></a><div class="h-estate-side"><button class="h-favorite" type="button" aria-label="关注融创·春风十里" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M20.8 4.7a5.6 5.6 0 0 0-7.9 0L12 5.6l-.9-.9a5.6 5.6 0 0 0-7.9 7.9L12 21l8.8-8.4a5.6 5.6 0 0 0 0-7.9Z"/></svg></button><a class="h-remaining" href="./project-detail.html"><strong>24套</strong><span>剩余</span></a></div></article>
+        </div>
+        <p class="h-no-results" id="homeNoResults" hidden>暂无匹配楼盘，请尝试其他关键词</p>
+      </section>
+
+      <dialog class="h-loan-dialog" id="homeLoanDialog" aria-labelledby="homeLoanTitle"><form method="dialog"><header><h2 id="homeLoanTitle">房贷计算</h2><button aria-label="关闭房贷计算">×</button></header></form><label>贷款金额（万元）<input id="homeLoanAmount" type="number" min="1" value="100"></label><label>贷款年限（年）<input id="homeLoanYears" type="number" min="1" max="30" value="30"></label><label>年利率（%）<input id="homeLoanRate" type="number" min="0" max="30" step="0.01" value="3.1"></label><button class="h-loan-calculate" id="homeLoanCalculate" type="button">计算等额本息月供</button><output id="homeLoanResult" aria-live="polite"></output><small>利率可自行修改，计算结果仅供参考。</small></dialog>
     </section>
-    </section>
+
 
     <section class="app-view mine-view" id="mineView" data-view="mine">
       <div class="statusbar" aria-hidden="true">
@@ -3682,9 +3681,9 @@
 
   <nav class="tabbar" aria-label="底部导航">
     <button class="active" id="tabHome" type="button"><svg viewBox="0 0 24 24"><path d="m4 11 8-7 8 7v8a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1Z" /></svg><span>首页</span></button>
-    <button id="tabNews" type="button"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l4-2" /></svg><span>房产资讯</span></button>
+    <button id="tabNews" type="button"><svg viewBox="0 0 24 24"><path d="M7 4h12v17H7zM3 4v13h4M10 8h6M10 12h6M10 16h4"/></svg><span>房产资讯</span></button>
     <button class="tabbar__ai" id="tabAi" type="button" aria-label="安安AI助手"><img class="tabbar__ai-icon" src="./assets/home-ai-entry-v4.svg" alt=""><span>安安AI</span></button>
-    <button id="tabMessage" type="button" aria-label="消息"><svg viewBox="0 0 24 24"><path d="M4 5h16v12H8l-4 4Z" /><path d="M8 9h8M8 13h5" /></svg><span>消息</span></button>
+    <button id="tabMessage" type="button" aria-label="消息"><svg viewBox="0 0 24 24"><path d="M4 5h16v15l-5-3H4z"/><circle cx="8" cy="11" r=".5"/><circle cx="12" cy="11" r=".5"/><circle cx="16" cy="11" r=".5"/></svg><span>消息</span></button>
     <button id="tabMine" type="button"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></svg><span>我的</span></button>
   </nav>
 
@@ -3747,6 +3746,7 @@
     </div>
   </section>
 
+  <script src="./assets/follow-notice.js"></script>
   <script src="./assets/profile-binding.js"></script>
   <script>
     const scanEntry = document.getElementById("scanEntry");
@@ -3770,13 +3770,9 @@
     const tabMine = document.getElementById("tabMine");
     const tabAi = document.getElementById("tabAi");
     const tabMessage = document.getElementById("tabMessage");
-    const cityPickerButton = document.getElementById("cityPickerButton");
-    const cityPickerValue = document.getElementById("cityPickerValue");
-    const cityPickerMenu = document.getElementById("cityPickerMenu");
-    const cityPickerOptions = document.querySelectorAll("[data-city]");
     const homeSearchInput = document.getElementById("homeSearchInput");
     const estateList = document.getElementById("estateList");
-    const homeFilters = document.querySelectorAll("#homeView .filters button");
+    const homeFilters = document.querySelectorAll("#homeView .h-filters button");
     const couponEntry = document.getElementById("couponEntry");
     const couponDetailTriggers = document.querySelectorAll("[data-coupon-detail]");
     const couponListBack = document.getElementById("couponListBack");
@@ -3874,12 +3870,13 @@
 
     function showHashView() {
       const hashViewName = window.location.hash.replace("#", "") || "home";
-      if (hashViewName === "news") {
+      if (hashViewName === "estateList" || hashViewName === "upcomingProjects") {
         showView("home");
-        setActiveTab("news");
-        requestAnimationFrame(() => {
-          document.getElementById("propertyNews")?.scrollIntoView({ behavior: "auto", block: "center" });
-        });
+        requestAnimationFrame(() => document.getElementById(hashViewName)?.scrollIntoView({block: "start"}));
+        return;
+      }
+      if (hashViewName === "news") {
+        window.location.replace("./购房政策.html");
         return;
       }
       const viewName = hashViewName === "couponEstate" || hashViewName.startsWith("couponDetail")
@@ -3892,13 +3889,7 @@
     }
 
     tabHome.addEventListener("click", () => navigateTo("home"));
-    tabNews.addEventListener("click", () => {
-      navigateTo("home");
-      setActiveTab("news");
-      requestAnimationFrame(() => {
-        document.getElementById("propertyNews").scrollIntoView({ behavior: "smooth", block: "center" });
-      });
-    });
+    tabNews.addEventListener("click", () => { window.location.href = "./购房政策.html"; });
     tabMine.addEventListener("click", () => navigateTo("mine"));
     tabAi.addEventListener("click", () => goTopicRoute("?chat=home-ai"));
     tabMessage.addEventListener("click", () => goTopicRoute("?screen=message"));
@@ -3933,29 +3924,6 @@
     window.addEventListener("hashchange", showHashView);
     showHashView();
 
-    cityPickerButton.addEventListener("click", (event) => {
-      event.stopPropagation();
-      const willOpen = cityPickerMenu.hidden;
-      cityPickerMenu.hidden = !willOpen;
-      cityPickerButton.setAttribute("aria-expanded", String(willOpen));
-    });
-
-    cityPickerOptions.forEach((option) => {
-      option.addEventListener("click", () => {
-        cityPickerOptions.forEach((item) => item.classList.toggle("is-active", item === option));
-        cityPickerValue.textContent = option.dataset.city;
-        cityPickerMenu.hidden = true;
-        cityPickerButton.setAttribute("aria-expanded", "false");
-      });
-    });
-
-    document.addEventListener("click", (event) => {
-      if (!cityPickerMenu.hidden && !cityPickerMenu.contains(event.target)) {
-        cityPickerMenu.hidden = true;
-        cityPickerButton.setAttribute("aria-expanded", "false");
-      }
-    });
-
     homeSearchInput.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
         event.preventDefault();
@@ -3967,6 +3935,124 @@
       button.addEventListener("click", () => {
         button.classList.toggle("is-active");
       });
+    });
+
+    const upcomingTrack = document.getElementById('homeUpcomingTrack');
+    const upcomingCards = () => [...upcomingTrack.querySelectorAll('.h-upcoming-card')];
+    const nearestUpcomingIndex = (cards = upcomingCards()) => cards.reduce((best,card,index) =>
+      Math.abs(card.offsetLeft-upcomingTrack.scrollLeft) < Math.abs(cards[best].offsetLeft-upcomingTrack.scrollLeft) ? index : best, 0);
+    function updateUpcomingPosition() {
+      const cards = upcomingCards();
+      const multiple = cards.length > 1;
+      upcomingTrack.tabIndex = multiple ? 0 : -1;
+      const position = cards.length ? nearestUpcomingIndex(cards)+1 : 0;
+      upcomingTrack.setAttribute('aria-label', `即将开盘项目列表，共${cards.length}个项目，当前第${position}个`);
+    }
+    function scrollUpcomingTo(index) {
+      const cards = upcomingCards();
+      const card = cards[Math.max(0,Math.min(index,cards.length-1))];
+      if (card) upcomingTrack.scrollTo({left:card.offsetLeft,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+    }
+    upcomingTrack.addEventListener('scroll',updateUpcomingPosition,{passive:true});
+    upcomingTrack.addEventListener('keydown',event => {
+      const cards = upcomingCards();
+      if (cards.length < 2 || !['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
+      event.preventDefault();
+      const current = nearestUpcomingIndex(cards);
+      scrollUpcomingTo(event.key==='Home'?0:event.key==='End'?cards.length-1:current+(event.key==='ArrowRight'?1:-1));
+    });
+    let upcomingDrag = null;
+    let cancelUpcomingClick = false;
+    upcomingTrack.addEventListener('pointerdown',event => {
+      if (event.pointerType!=='mouse' || event.button!==0 || upcomingCards().length<2) return;
+      upcomingDrag={id:event.pointerId,x:event.clientX,scroll:upcomingTrack.scrollLeft,moved:false};
+    });
+    upcomingTrack.addEventListener('pointermove',event => {
+      if (!upcomingDrag || upcomingDrag.id!==event.pointerId) return;
+      const distance = event.clientX-upcomingDrag.x;
+      if (!upcomingDrag.moved && Math.abs(distance)>6) {
+        upcomingDrag.moved=true;
+        upcomingTrack.setPointerCapture(event.pointerId);
+        upcomingTrack.classList.add('is-dragging');
+      }
+      if (upcomingDrag.moved) {
+        event.preventDefault();
+        upcomingTrack.scrollLeft=upcomingDrag.scroll-distance;
+      }
+    });
+    function finishUpcomingDrag(event) {
+      if (!upcomingDrag || upcomingDrag.id!==event.pointerId) return;
+      const moved=upcomingDrag.moved;
+      upcomingDrag=null;
+      if (upcomingTrack.hasPointerCapture(event.pointerId)) upcomingTrack.releasePointerCapture(event.pointerId);
+      upcomingTrack.classList.remove('is-dragging');
+      if (moved) {
+        cancelUpcomingClick=true;
+        setTimeout(()=>{cancelUpcomingClick=false;},0);
+        scrollUpcomingTo(nearestUpcomingIndex());
+      }
+    }
+    upcomingTrack.addEventListener('pointerup',finishUpcomingDrag);
+    upcomingTrack.addEventListener('pointercancel',finishUpcomingDrag);
+    upcomingTrack.addEventListener('pointerleave',event=>{if(upcomingDrag && !upcomingDrag.moved) upcomingDrag=null;});
+    upcomingTrack.addEventListener('dragstart',event=>event.preventDefault());
+    upcomingTrack.addEventListener('click',event=>{if(cancelUpcomingClick){event.preventDefault();event.stopPropagation();}},{capture:true});
+    new MutationObserver(updateUpcomingPosition).observe(upcomingTrack,{childList:true});
+    window.addEventListener('resize',updateUpcomingPosition);
+    updateUpcomingPosition();
+
+    // Homepage interactions, kept separate from account and QR verification flows.
+    document.querySelectorAll('.h-favorite').forEach((button) => {
+      button.addEventListener('click', () => {
+        const saved = button.classList.toggle('is-saved');
+        const title = button.closest('.h-estate').querySelector('h3').textContent;
+        button.setAttribute('aria-pressed', String(saved));
+        button.setAttribute('aria-label', `${saved ? '取消关注' : '关注'}${title}`);
+        if (saved) HouseFollowNotice.show();
+      });
+    });
+    const homeSaleTab = document.getElementById('homeSaleTab');
+    const homeHotTab = document.getElementById('homeHotTab');
+    const homeEstateFeed = document.getElementById('homeEstateFeed');
+    const homeEstateOriginalOrder = [...homeEstateFeed.children];
+    [homeSaleTab, homeHotTab].forEach((button) => {
+      button.addEventListener('click', () => {
+        [homeSaleTab, homeHotTab].forEach((tab) => {
+          tab.classList.toggle('is-active', tab === button);
+          tab.setAttribute('aria-selected', String(tab === button));
+        });
+        const sorted = button === homeHotTab
+          ? [...homeEstateOriginalOrder].sort((a,b) => Number(b.dataset.heat) - Number(a.dataset.heat))
+          : homeEstateOriginalOrder;
+        sorted.forEach((estate) => homeEstateFeed.appendChild(estate));
+      });
+    });
+    function filterHomeEstates() {
+      const query = homeSearchInput.value.trim().toLowerCase();
+      let count = 0;
+      homeEstateOriginalOrder.forEach((estate) => {
+        const matches = !query || estate.querySelector('.h-estate-info').textContent.toLowerCase().includes(query);
+        estate.hidden = !matches;
+        if (matches) count++;
+      });
+      document.getElementById('homeNoResults').hidden = count > 0;
+    }
+    homeSearchInput.addEventListener('input', filterHomeEstates);
+    const homeLoanDialog = document.getElementById('homeLoanDialog');
+    document.getElementById('homeLoanEntry').addEventListener('click', () => homeLoanDialog.showModal());
+    document.getElementById('homeBankEntry').addEventListener('click', () => homeLoanDialog.showModal());
+    document.getElementById('homeLoanCalculate').addEventListener('click', () => {
+      const amount = Number(document.getElementById('homeLoanAmount').value) * 10000;
+      const years = Number(document.getElementById('homeLoanYears').value);
+      const rate = Number(document.getElementById('homeLoanRate').value) / 1200;
+      const result = document.getElementById('homeLoanResult');
+      if (!(amount > 0 && years >= 1 && years <= 30 && rate >= 0 && rate <= .025)) {
+        result.textContent = '请输入有效的贷款金额、年限和利率';
+        return;
+      }
+      const months = years * 12;
+      const monthly = rate === 0 ? amount / months : amount * rate * (1 + rate) ** months / ((1 + rate) ** months - 1);
+      result.textContent = `每月还款 ${monthly.toLocaleString('zh-CN', {minimumFractionDigits:2,maximumFractionDigits:2})} 元`;
     });
 
     function setQrScannerResult(text) {

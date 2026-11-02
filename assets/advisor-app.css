@@ -150,3 +150,7 @@ dialog{width:min(320px,90vw);border:0;border-radius:16px;padding:24px;text-align
 .app.is-mine .content{padding:0 16px 24px}
 
 .app.is-mine .mine-card{padding-top:4px}
+.app.is-mine .mine-profile{cursor:default}
+.app.is-mine .mine-menu-item__icon{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:#fff2e8;color:#fd6c22}
+.app.is-mine .mine-menu-item__icon svg{width:22px;height:22px;stroke-width:1.7}
+.followed-estate-tag{display:inline-block;margin-top:12px;padding:4px 8px;border-radius:5px;background:#fff0e5;color:#fd5d00;font-size:12px}.customer-activities{margin-top:14px;border-top:1px solid #f0f0f0;padding-top:12px}.customer-activities h3{font-size:14px;margin:0 0 10px;color:#606266}.customer-activity{font-size:13px;line-height:1.6;margin:0 0 10px;overflow-wrap:anywhere}.customer-activity time{display:block;color:#909399;font-size:12px;margin-top:2px}.customer-chat-button{display:block;text-align:center;padding:10px;border:1px solid #fd5d00;border-radius:8px;color:#fd5d00;text-decoration:none;margin-top:12px;font-size:14px}

@@ -1,0 +1,84 @@
+#followNoticeDialog {
+  box-sizing: border-box;
+  position: fixed;
+  inset: 0;
+  width: min(312px, calc(100vw - 48px));
+  max-height: calc(100dvh - 48px);
+  margin: auto;
+  padding: 0;
+  overflow: auto;
+  border: 0;
+  border-radius: 16px;
+  background: #fff;
+  color: #303133;
+  box-shadow: 0 16px 48px rgba(25, 33, 45, .16);
+  font: 14px/1.6 -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  text-align: center;
+}
+#followNoticeDialog:not([open]) { display: none; }
+#followNoticeDialog::backdrop { background: rgba(24, 31, 43, .42); }
+#followNoticeDialog form { margin: 0; padding: 24px 24px 20px; }
+#followNoticeDialog .follow-notice__icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  background: #fff1e7;
+}
+#followNoticeDialog .follow-notice__icon svg { width: 25px; height: 25px; fill: #ff771a; }
+#followNoticeDialog h2 { margin: 0; color: #303133; font-size: 18px; font-weight: 600; line-height: 26px; }
+#followNoticeDialog p { margin: 10px 0 0; color: #606266; font-size: 14px; line-height: 24px; }
+#followNoticeDialog .follow-notice__preference {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 36px;
+  margin: 12px 0;
+  color: #909399;
+  font-size: 13px;
+  cursor: pointer;
+}
+#followNoticeDialog .follow-notice__preference input {
+  appearance: none;
+  position: relative;
+  flex: 0 0 17px;
+  width: 17px;
+  height: 17px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #c8cdd5;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+}
+#followNoticeDialog .follow-notice__preference input:checked { border-color: #ff771a; background: #ff771a; }
+#followNoticeDialog .follow-notice__preference input:checked::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 4px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg);
+}
+#followNoticeDialog .follow-notice__confirm {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin: 0;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 8px;
+  background: linear-gradient(100deg, #ff8f2e, #fd5d00);
+  color: #fff;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+#followNoticeDialog input:focus-visible, #followNoticeDialog button:focus-visible { outline: 2px solid #ffb981; outline-offset: 3px; }

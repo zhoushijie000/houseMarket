@@ -90,3 +90,12 @@
         ]
       }
     ];
+
+// 客户行为演示数据，关注关系仅取已有明确关注记录。
+window.advisorCustomerSeed.forEach(c => {
+  c.activities = [
+    { nickname:c.name, action:'浏览房源', time:'2026-10-12 14:18' },
+    { nickname:c.name, action:'浏览户型', time:'2026-10-11 20:06' }
+  ];
+  if (c.id==='customer-001'||c.id==='customer-004') c.activities.unshift({nickname:c.name,action:'关注楼盘',estate:c.estate,time:c.id==='customer-001'?'2026-10-12 14:32':'2026-10-06 10:00'});
+});

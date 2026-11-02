@@ -3925,6 +3925,12 @@
       display: none;
     }
 
+    #messageDetailScreen .message-thread__notice { display: grid; gap: 18px; }
+    #messageDetailScreen .message-thread__notice-link { display: block; color: #303133; text-decoration: none; }
+    #messageDetailScreen .message-thread__inline-action { color: var(--brand-primary); font-weight: 500; white-space: nowrap; }
+    #messageDetailScreen .message-thread__notice-link:focus-visible { outline: 2px solid #ff9b5c; outline-offset: 3px; }
+    #messageOnlinePanel[hidden] { display: none !important; }
+
     #messageDetailScreen .message-thread__reply {
       display: flex;
       align-items: flex-start;
@@ -8563,16 +8569,25 @@
       },
       {
         id: "message-shanghai-001",
+        kind: "notification",
+        readOnly: true,
         sender: "成都住建房产超市",
         avatarText: "成",
-        unreadCount: 3,
-        latestMessage: "走进上海的活动开始啦，立即查看。",
+        unreadCount: 4,
+        latestMessage: "招商时代花园取证啦，立即查看。",
         content: "走进上海的活动开始啦，立即查看。",
-        timeLabel: "刚刚",
+        timeLabel: "1分钟前",
         lastMessageAt: new Date().toISOString(),
         activityCity: "上海",
         activityTitle: "上海春季成都好房展",
-        activityCover: "./assets/activity-detail-hero-shanghai.svg"
+        activityCover: "./assets/activity-detail-hero-shanghai.svg",
+        notifications: [{
+          id: "message-project-permit-001",
+          content: "招商时代花园取证啦，立即查看。",
+          timeLabel: "刚刚",
+          targetUrl: "./project-detail.html",
+          targetLabel: "立即查看招商时代花园楼盘详情"
+        }]
       }
     ];
     // 顾问客户数据与会话已迁移至独立置业顾问端。
@@ -10331,6 +10346,43 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         .join("");
     }
 
+    function canReplyToCurrentMessage() {
+      return currentMessageNotification?.kind === "chat" && currentMessageNotification.readOnly !== true;
+    }
+
+    function renderMessageNotification(notice) {
+      const group = document.createElement("div");
+      group.className = "message-thread__notice";
+      group.dataset.notificationId = notice.id;
+      const time = document.createElement("div");
+      time.className = "message-thread__time";
+      time.textContent = notice.timeLabel;
+      const row = document.createElement("div");
+      row.className = "message-thread__row";
+      const stack = document.createElement("div");
+      stack.className = "message-thread__stack";
+      const sender = document.createElement("div");
+      sender.className = "message-thread__sender";
+      sender.textContent = currentMessageNotification.sender;
+      const bubble = document.createElement("a");
+      bubble.className = "message-thread__bubble message-thread__notice-link";
+      bubble.href = notice.targetUrl;
+      bubble.setAttribute("aria-label", notice.targetLabel);
+      const content = document.createElement("span");
+      const actionIndex = notice.content.lastIndexOf("立即查看");
+      const prefix = notice.content.slice(0, actionIndex);
+      content.dataset.unmasked = prefix;
+      content.textContent = BlockedKeywords.mask(prefix);
+      const action = document.createElement("span");
+      action.className = "message-thread__inline-action";
+      action.textContent = "立即查看";
+      bubble.append(content, action, document.createTextNode(notice.content.slice(actionIndex + 4)));
+      stack.append(sender, bubble);
+      row.append(createMessageAdvisorAvatar(), stack);
+      group.append(time, row);
+      return group;
+    }
+
     function renderMessageDetail(messageId, advisorRoute = null, customerRoute = null) {
       saveWechatConversation();
       const baseMessageItem = getMessageNotificationById(messageId) || messageNotifications[0] || null;
@@ -10424,21 +10476,28 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         messageDetailCardCoverImage.alt = `${messageItem.activityCity || ""}活动详情封面`;
       }
       if (messageDetailConversation) {
-        messageDetailConversation.innerHTML = (messageItem.dialog || [])
-          .map((entry) => renderMessageReply(entry.role, entry.text))
-          .join("");
+        if (canReplyToCurrentMessage()) {
+          messageDetailConversation.innerHTML = (messageItem.dialog || [])
+            .map((entry) => renderMessageReply(entry.role, entry.text))
+            .join("");
+        } else {
+          messageDetailConversation.replaceChildren(...(messageItem.notifications || []).map(renderMessageNotification));
+        }
       }
       if (messageOnlinePanel) {
-        messageOnlinePanel.hidden = messageItem.kind !== "chat";
+        messageOnlinePanel.hidden = !canReplyToCurrentMessage();
+        messageOnlinePanel.querySelectorAll("input, button").forEach((control) => {
+          control.disabled = !canReplyToCurrentMessage();
+        });
       }
       if (messageOnlineQuick) {
         setMessageMediaOpen(false);
       }
       document.getElementById("messageWechatButton").hidden = messageItem.kind !== "chat";
-      const savedConversation = wechatConversations[wechatExchangeKey()];
+      const savedConversation = canReplyToCurrentMessage() && wechatConversations[wechatExchangeKey()];
       if (savedConversation) messageDetailConversation.innerHTML = savedConversation;
-      renderWechatExchange();
-      if (messageItem.incomingWechatRequest && !advisorRoute && !messageItem.customerName) renderAdvisorWechatRequest();
+      if (canReplyToCurrentMessage()) renderWechatExchange();
+      if (canReplyToCurrentMessage() && messageItem.incomingWechatRequest && !advisorRoute && !messageItem.customerName) renderAdvisorWechatRequest();
       const phoneButton = document.getElementById("messagePhoneButton");
       const advisorPhone = String(messageItem.advisorPhone || "").replace(/[\s()-]/g, "");
       const hasPhone = /^\+?\d{7,15}$/.test(advisorPhone);
@@ -10572,6 +10631,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
     });
 
     function appendOnlineMessage(role, text) {
+      if (!canReplyToCurrentMessage()) return;
       if (role !== "user" && isMessageAdvisorBlocked()) return;
       if (!messageDetailConversation || !text) {
         return;
@@ -10713,6 +10773,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
     }
 
     function sendOnlineMessage(text) {
+      if (!canReplyToCurrentMessage()) return;
       const question = String(text || "").trim();
       if (!question) {
         return;
@@ -11773,6 +11834,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       });
     }
     function setMessageMediaOpen(open) {
+      open = Boolean(open) && canReplyToCurrentMessage();
       messageOnlineQuick.hidden = !open;
       document.getElementById("messageMediaToggle").setAttribute("aria-expanded", String(open));
       if (open) {
@@ -11792,6 +11854,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
     });
     if (messageOnlineQuick) {
       messageOnlineQuick.addEventListener("click", (event) => {
+        if (!canReplyToCurrentMessage()) return;
         const media = event.target.closest("[data-message-media]");
         if (media) {
           setMessageMediaOpen(false);
@@ -11808,6 +11871,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
     document.getElementById("messageWechatButton").addEventListener("click", () => sendOnlineMessage("交换微信"));
     ["messageImageInput", "messageCameraInput"].forEach(id => {
       document.getElementById(id).addEventListener("change", async event => {
+        if (!canReplyToCurrentMessage()) return;
         const files = Array.from(event.target.files || []);
         const conversation = currentMessageNotification;
         event.target.value = "";
@@ -11819,7 +11883,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
             reader.onerror = () => resolve(null);
             reader.readAsDataURL(file);
           });
-          if (!src || currentMessageNotification !== conversation) continue;
+          if (!src || currentMessageNotification !== conversation || !canReplyToCurrentMessage()) continue;
           const row = document.createElement("div");
           row.className = "message-thread__reply is-user";
           const bubble = document.createElement("span");
@@ -11837,6 +11901,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
     const messageCommonToggle = document.getElementById("messageCommonToggle");
     const messageCommonPhrases = document.getElementById("messageCommonPhrases");
     function setMessageCommonOpen(open) {
+      open = Boolean(open) && canReplyToCurrentMessage();
       messageCommonPhrases.hidden = !open;
       messageCommonToggle.setAttribute("aria-expanded", String(open));
     }
@@ -11851,6 +11916,7 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       }
     });
     messageCommonPhrases.addEventListener("click", event => {
+      if (!canReplyToCurrentMessage()) return;
       const button = event.target.closest("button");
       if (!button) return;
       const phrase = button.textContent.trim();
