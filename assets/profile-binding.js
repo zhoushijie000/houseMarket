@@ -81,7 +81,8 @@
     const target = event.target.closest('button, a, [data-advisor-index]');
     if (!target) return;
     const following = target.matches('[data-mine-placeholder="我的关注"], .follow') || target.textContent.trim() === '我的关注';
-    const contact = target.matches('#advisorOnlineButton, [data-advisor-index], [data-chat-advisor-name]');
+    // 楼盘详情的在线咨询和弹窗在线沟通仅判断顾问注册状态，不要求获取手机号。
+    const contact = target.matches('[data-chat-advisor-name]');
     if ((following || contact) && !requirePhone(following ? '查看关注页面前，需要先获取您的手机号。' : '在线联系置业顾问前，需要先获取您的手机号。')) {
       event.preventDefault(); event.stopImmediatePropagation();
     }

@@ -3357,9 +3357,9 @@
       <div class="advisor-sheet__actions">
         <button class="advisor-sheet__action advisor-sheet__action--copy" id="copyAdvisorWechatButton" type="button">复制微信号</button>
         <a class="advisor-sheet__action advisor-sheet__action--call" id="callAdvisorButton" href="tel:13709063518">电话咨询</a>
-        <a class="advisor-sheet__action advisor-sheet__action--online" id="advisorOnlineButton" href="./房产超市_住进成都.html?screen=message-detail&amp;messageId=message-consult-001">在线联系</a>
+        <a class="advisor-sheet__action advisor-sheet__action--online" id="advisorOnlineButton" href="./房产超市_住进成都.html?screen=message-detail&amp;messageId=message-consult-001">在线沟通</a>
       </div>
-      <div class="advisor-sheet__tip" id="advisorSheetTip">可保存二维码、复制微信号、电话咨询或在线联系。</div>
+      <div class="advisor-sheet__tip" id="advisorSheetTip">可保存二维码、复制微信号、电话咨询或在线沟通。</div>
     </div>
   </section>
   <section class="qr-sheet" id="qrSheet" hidden aria-label="项目二维码">
@@ -3517,18 +3517,29 @@
     });
 
     const advisorProfiles = [
-      { name: "李晓雨", initial: "李", role: "高级置业顾问", company: "招商蛇口成都公司", phone: "13709063518", wechat: "AJCD-LXY2026" },
-      { name: "王晨", initial: "王", role: "资深置业顾问", company: "招商蛇口成都公司", phone: "13709063526", wechat: "AJCD-WC2026" },
-      { name: "陈思雨", initial: "陈", role: "置业顾问", company: "招商蛇口成都公司", phone: "13709063539", wechat: "AJCD-CSY2026" },
-      { name: "刘凡", initial: "刘", role: "置业顾问", company: "招商蛇口成都公司", phone: "13709063542", wechat: "AJCD-LF2026" },
-      { name: "张晓峰", initial: "张", role: "高级置业顾问", company: "招商蛇口成都公司", phone: "13709063555", wechat: "AJCD-ZXF2026" },
-      { name: "周宁", initial: "周", role: "置业顾问", company: "招商蛇口成都公司", phone: "13709063568", wechat: "AJCD-ZN2026" }
+      { name: "李晓雨", registered: true, initial: "李", role: "高级置业顾问", company: "招商蛇口成都公司", phone: "13709063518", wechat: "AJCD-LXY2026" },
+      { name: "王晨", registered: false, initial: "王", role: "资深置业顾问", company: "招商蛇口成都公司", phone: "13709063526", wechat: "AJCD-WC2026" },
+      { name: "陈思雨", registered: true, initial: "陈", role: "置业顾问", company: "招商蛇口成都公司", phone: "13709063539", wechat: "AJCD-CSY2026" },
+      { name: "刘凡", registered: true, initial: "刘", role: "置业顾问", company: "招商蛇口成都公司", phone: "13709063542", wechat: "AJCD-LF2026" },
+      { name: "张晓峰", registered: true, initial: "张", role: "高级置业顾问", company: "招商蛇口成都公司", phone: "13709063555", wechat: "AJCD-ZXF2026" },
+      { name: "周宁", registered: true, initial: "周", role: "置业顾问", company: "招商蛇口成都公司", phone: "13709063568", wechat: "AJCD-ZN2026" }
     ];
     const advisorSheet = document.getElementById("advisorSheet");
     const advisorSheetTip = document.getElementById("advisorSheetTip");
     const toggleAdvisorsButton = document.getElementById("toggleAdvisorsButton");
     let currentAdvisorIndex = 0;
     let advisorsExpanded = false;
+
+    // 原型：王晨模拟未注册；advisorRegistered=0 可演示弹窗在线沟通的未注册场景。
+    function contactAdvisor(index) {
+      const profile = advisorProfiles[Number(index)] || advisorProfiles[0];
+      const override = new URLSearchParams(location.search).get("advisorRegistered");
+      if (override === "0" || (override !== "1" && !profile.registered)) {
+        window.alert("当前置业顾问未注册，您可以使用其他方式联系");
+        return;
+      }
+      window.location.href = getAdvisorMessageUrl(index);
+    }
 
     function getAdvisorMessageUrl(index) {
       const profile = advisorProfiles[Number(index)] || advisorProfiles[0];
@@ -3559,7 +3570,7 @@
       document.getElementById("advisorWechat").textContent = profile.wechat;
       document.getElementById("callAdvisorButton").href = `tel:${profile.phone}`;
       document.getElementById("advisorOnlineButton").href = getAdvisorMessageUrl(currentAdvisorIndex);
-      setAdvisorTip("可保存二维码、复制微信号、电话咨询或在线联系。");
+      setAdvisorTip("可保存二维码、复制微信号、电话咨询或在线沟通。");
       advisorSheet.hidden = false;
       document.body.style.overflow = "hidden";
     }
@@ -4153,9 +4164,13 @@
     });
     document.getElementById("advisorGrid").addEventListener("click", (event) => {
       const card = event.target.closest("[data-advisor-index]");
-      if (card) window.location.href = getAdvisorMessageUrl(Number(card.dataset.advisorIndex));
+      if (card) contactAdvisor(Number(card.dataset.advisorIndex));
     });
     document.getElementById("openAdvisorInfoButton").addEventListener("click", () => openAdvisorSheet(0));
+    document.getElementById("advisorOnlineButton").addEventListener("click", (event) => {
+      event.preventDefault();
+      contactAdvisor(currentAdvisorIndex);
+    });
     document.getElementById("advisorSheetClose").addEventListener("click", closeAdvisorSheet);
     document.getElementById("advisorSheetBackdrop").addEventListener("click", closeAdvisorSheet);
     document.getElementById("copyAdvisorWechatButton").addEventListener("click", copyAdvisorWechat);
