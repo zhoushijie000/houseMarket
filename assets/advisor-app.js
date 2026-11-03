@@ -18,7 +18,7 @@
   const validAvatar = value => typeof value === 'string' && /^data:image\/(png|jpeg|webp);base64,/.test(value);
   let draftAvatar = '', avatarReadVersion = 0;
   function renderMine() { $('content').innerHTML=$('mineTemplate').innerHTML; document.querySelector('.mine-profile__phone').textContent=profile.name; if(validAvatar(profile.avatar)) document.querySelector('.mine-profile__avatar img').src=profile.avatar; }
-  window.addEventListener('advisor-card-saved',e=>{if(validAvatar(e.detail.avatar)){profile.avatar=e.detail.avatar;try{localStorage.setItem('houseMarket.advisor.profile.v1',JSON.stringify(profile));}catch{}if(view==='mine')renderMine();}});
+  window.addEventListener('advisor-card-saved',e=>{if(e.detail.name)profile.name=e.detail.name;if(e.detail.name||validAvatar(e.detail.avatar)){if(validAvatar(e.detail.avatar))profile.avatar=e.detail.avatar;try{localStorage.setItem('houseMarket.advisor.profile.v1',JSON.stringify(profile));}catch{}if(view==='mine')renderMine();}});
   const drafts = new Map();
   function toast(text) { $('toast').textContent = text; $('toast').hidden = false; clearTimeout(toast.timer); toast.timer = setTimeout(() => $('toast').hidden = true, 2600); }
   function save() { try { localStorage.setItem(key, JSON.stringify(customers)); } catch { toast('当前浏览器未能保存，请勿刷新页面'); } }
