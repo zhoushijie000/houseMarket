@@ -119,7 +119,6 @@
     .upload-preview.empty { display: none; }
     .upload-preview img { width: 100%; height: 100%; display: block; object-fit: cover; }
     .icon-preview { width: 100px; height: 100px; }
-    .cover-preview { width: 320px; height: 144px; }
     .preview-remove { width: 26px; height: 26px; position: absolute; top: 6px; right: 6px; display: flex; align-items: center; justify-content: center; color: #fff; background: rgba(36, 42, 54, .72); border: 0; border-radius: 50%; font-size: 18px; }
     .help { margin-top: 12px; color: var(--regular); line-height: 1.7; }
     .help.error { color: var(--danger); }
@@ -196,8 +195,7 @@
           <div class="form-row"><label class="form-label required" for="districtSelect" id="districtLabel">新增区县</label><div class="form-control"><select class="control-select" id="districtSelect"><option value="">请选择区县</option><option>新都区</option><option>新津区</option><option>金牛区</option><option>都江堰市</option><option>青白江区</option><option>崇州市</option><option>天府新区</option><option>高新区</option><option>武侯区</option><option>彭州市</option><option>大邑县</option><option>蒲江县</option></select></div></div>
           <div class="form-row"><label class="form-label required" for="introInput">区县简介</label><div class="intro-wrap"><input class="control-input" id="introInput" maxlength="20" placeholder="请输入区县简介"><span class="count"><span id="introCount">0</span>/20</span></div></div>
           <div class="form-row"><label class="form-label required" for="sortInput">区县排序</label><div class="form-control"><input class="control-input" id="sortInput" type="number" min="0" step="1" placeholder="请输入排序数字"><div class="help">仅支持非负整数，数值越小展示越靠前</div></div></div>
-          <div class="form-row"><div class="form-label required">区县 icon</div><div class="form-control"><button class="upload-button" id="iconUploadButton" type="button">点击上传</button><input class="hidden-file" id="iconInput" type="file" accept="image/png,image/jpeg"><div class="upload-preview icon-preview empty" id="iconPreview"><img alt="区县 icon 预览"><button class="preview-remove" type="button" data-remove-upload="icon" aria-label="移除区县 icon">×</button></div><div class="help" id="iconHelp">仅支持上传 PNG/JPG 格式文件，单个文件不能超过 500KB</div></div></div>
-          <div class="form-row"><div class="form-label required">封面图</div><div class="form-control"><button class="upload-button" id="coverUploadButton" type="button">点击上传</button><input class="hidden-file" id="coverInput" type="file" accept="image/png,image/jpeg"><div class="upload-preview cover-preview empty" id="coverPreview"><img alt="区县封面图预览"><button class="preview-remove" type="button" data-remove-upload="cover" aria-label="移除封面图">×</button></div><div class="help" id="coverHelp">仅支持上传 PNG/JPG 格式图片</div><div class="security-tip">严禁在互联网非涉密平台处理、传输国家秘密，请确认扫描、传输的文件不涉及国家秘密</div></div></div>
+          <div class="form-row"><div class="form-label required">区县 icon</div><div class="form-control"><button class="upload-button" id="iconUploadButton" type="button">点击上传</button><input class="hidden-file" id="iconInput" type="file" accept="image/png,image/jpeg"><div class="upload-preview icon-preview empty" id="iconPreview"><img alt="区县 icon 预览"><button class="preview-remove" type="button" data-remove-upload="icon" aria-label="移除区县 icon">×</button></div><div class="help" id="iconHelp">仅支持上传 PNG/JPG 格式文件，单个文件不能超过 10MB</div></div></div>
         </div>
       </section>
       <section class="form-card">
@@ -217,20 +215,20 @@
     const $ = selector => document.querySelector(selector);
     const $$ = selector => [...document.querySelectorAll(selector)];
     const districts = [
-      { id: 1, name: '新都区', intro: '安家成都·住享新都', sort: 10, type: '默认', icon: './assets/区县-新都区.jpg', cover: './assets/区县-新都区.jpg', video: '2022122601277616129.mp4' },
-      { id: 2, name: '新津区', intro: '安家成都 幸福新津', sort: 20, type: '默认', icon: './assets/区县-新津区.jpg', cover: './assets/区县-新津区.jpg', video: '' },
-      { id: 3, name: '金牛区', intro: '安家成都·住享金牛', sort: 30, type: '默认', icon: './assets/区县-金牛区.jpg', cover: './assets/区县-金牛区.jpg', video: '' },
-      { id: 4, name: '都江堰市', intro: '珍水万世堰·幸福安逸城', sort: 40, type: '默认', icon: './assets/区县-都江堰市.jpg', cover: './assets/区县-都江堰市.jpg', video: '' },
-      { id: 5, name: '青白江区', intro: '安家成都·悦居青白江', sort: 50, type: '默认', icon: './assets/区县-青白江区.jpg', cover: './assets/区县-青白江区.jpg', video: '' },
-      { id: 6, name: '崇州市', intro: '安家成都，奔赴“新”崇州', sort: 60, type: '默认', icon: './assets/区县-崇州市.jpg', cover: './assets/区县-崇州市.jpg', video: '' },
-      { id: 7, name: '天府新区', intro: '公园城市天府样板·把家安在风景里', sort: 70, type: '默认', icon: './assets/区县-四川天府新区.jpg', cover: './assets/区县-四川天府新区.jpg', video: '' },
-      { id: 8, name: '高新区', intro: '产城相融筑高地，安居乐业在高新', sort: 80, type: '默认', icon: './assets/区县-成都高新区.jpg', cover: './assets/区县-成都高新区.jpg', video: '' },
-      { id: 9, name: '武侯区', intro: '筑梦成都，乐居武侯', sort: 90, type: '默认', icon: './assets/区县-武侯区.jpg', cover: './assets/区县-武侯区.jpg', video: '' },
-      { id: 10, name: '彭州市', intro: '“千亿城·百万人”邀您安居山水彭州', sort: 100, type: '默认', icon: './assets/区县-彭州市.jpg', cover: './assets/区县-彭州市.jpg', video: '' },
-      { id: 11, name: '大邑县', intro: '雪山小城 大美大邑 享受生活宜居地', sort: 110, type: '默认', icon: './assets/区县-大邑县.jpg', cover: './assets/区县-大邑县.jpg', video: '' },
-      { id: 12, name: '蒲江县', intro: '生态福地 大美小城', sort: 120, type: '默认', icon: './assets/区县-蒲江县.jpg', cover: './assets/区县-蒲江县.jpg', video: '' }
+      { id: 1, name: '新都区', intro: '安家成都·住享新都', sort: 10, type: '默认', icon: './assets/区县-新都区.jpg', video: '2022122601277616129.mp4' },
+      { id: 2, name: '新津区', intro: '安家成都 幸福新津', sort: 20, type: '默认', icon: './assets/区县-新津区.jpg', video: '' },
+      { id: 3, name: '金牛区', intro: '安家成都·住享金牛', sort: 30, type: '默认', icon: './assets/区县-金牛区.jpg', video: '' },
+      { id: 4, name: '都江堰市', intro: '珍水万世堰·幸福安逸城', sort: 40, type: '默认', icon: './assets/区县-都江堰市.jpg', video: '' },
+      { id: 5, name: '青白江区', intro: '安家成都·悦居青白江', sort: 50, type: '默认', icon: './assets/区县-青白江区.jpg', video: '' },
+      { id: 6, name: '崇州市', intro: '安家成都，奔赴“新”崇州', sort: 60, type: '默认', icon: './assets/区县-崇州市.jpg', video: '' },
+      { id: 7, name: '天府新区', intro: '公园城市天府样板·把家安在风景里', sort: 70, type: '默认', icon: './assets/区县-四川天府新区.jpg', video: '' },
+      { id: 8, name: '高新区', intro: '产城相融筑高地，安居乐业在高新', sort: 80, type: '默认', icon: './assets/区县-成都高新区.jpg', video: '' },
+      { id: 9, name: '武侯区', intro: '筑梦成都，乐居武侯', sort: 90, type: '默认', icon: './assets/区县-武侯区.jpg', video: '' },
+      { id: 10, name: '彭州市', intro: '“千亿城·百万人”邀您安居山水彭州', sort: 100, type: '默认', icon: './assets/区县-彭州市.jpg', video: '' },
+      { id: 11, name: '大邑县', intro: '雪山小城 大美大邑 享受生活宜居地', sort: 110, type: '默认', icon: './assets/区县-大邑县.jpg', video: '' },
+      { id: 12, name: '蒲江县', intro: '生态福地 大美小城', sort: 120, type: '默认', icon: './assets/区县-蒲江县.jpg', video: '' }
     ];
-    const editorState = { editingId: null, icon: '', cover: '', video: '', query: '' };
+    const editorState = { editingId: null, icon: '', video: '', query: '' };
     let toastTimer;
 
     function escapeHTML(value) { return String(value).replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char])); }
@@ -242,32 +240,32 @@
     }
 
     function setPreview(type, src) {
-      const preview = type === 'icon' ? $('#iconPreview') : $('#coverPreview');
+      const preview = $('#iconPreview');
       const image = preview.querySelector('img');
       if (src) { image.src = src; preview.classList.remove('empty'); } else { image.removeAttribute('src'); preview.classList.add('empty'); }
     }
 
     function setHelp(type, message = '', isError = false) {
-      const help = type === 'icon' ? $('#iconHelp') : $('#coverHelp');
-      const fallback = type === 'icon' ? '仅支持上传 PNG/JPG 格式文件，单个文件不能超过 500KB' : '仅支持上传 PNG/JPG 格式图片';
+      const help = $('#iconHelp');
+      const fallback = type === 'icon' ? '仅支持上传 PNG/JPG 格式文件，单个文件不能超过 10MB' : '仅支持上传 PNG/JPG 格式图片';
       help.textContent = message || fallback;
       help.classList.toggle('error', isError);
     }
 
     function resetEditor() {
-      editorState.editingId = null; editorState.icon = ''; editorState.cover = ''; editorState.video = '';
+      editorState.editingId = null; editorState.icon = ''; editorState.video = '';
       $('#districtSelect').value = ''; $('#districtSelect').disabled = false; $('#introInput').value = ''; $('#introCount').textContent = '0'; $('#sortInput').value = '';
       $('input[name="zoneType"][value="default"]').checked = true; $('#linkInput').value = ''; $('#videoFile').innerHTML = '';
-      setPreview('icon', ''); setPreview('cover', ''); setHelp('icon'); setHelp('cover'); updateZoneType();
+      setPreview('icon', ''); setHelp('icon'); updateZoneType();
     }
 
     function openEditor(district = null) {
       resetEditor();
       if (district) {
-        editorState.editingId = district.id; editorState.icon = district.icon; editorState.cover = district.cover; editorState.video = district.video;
+        editorState.editingId = district.id; editorState.icon = district.icon; editorState.video = district.video;
         $('#editorTitle').textContent = '编辑专区'; $('#districtLabel').textContent = '编辑区县'; $('#districtSelect').value = district.name; $('#districtSelect').disabled = true;
         $('#introInput').value = district.intro; $('#introCount').textContent = district.intro.length; $('#sortInput').value = district.sort;
-        setPreview('icon', district.icon); setPreview('cover', district.cover);
+        setPreview('icon', district.icon);
         if (district.video) $('#videoFile').innerHTML = `<span>${escapeHTML(district.video)}</span><button class="video-remove" type="button" aria-label="移除视频">×</button>`;
       } else {
         $('#editorTitle').textContent = '新增专区'; $('#districtLabel').textContent = '新增区县';
@@ -281,7 +279,7 @@
       setHelp(type);
       if (!file) return;
       if (!['image/png', 'image/jpeg'].includes(file.type)) { setHelp(type, '仅支持上传 PNG/JPG 格式图片', true); return; }
-      if (type === 'icon' && file.size > 500 * 1024) { setHelp(type, '区县 icon 单个文件不能超过 500KB', true); return; }
+      if (type === 'icon' && file.size > 10 * 1024 * 1024) { setHelp(type, '区县 icon 单个文件不能超过 10MB', true); return; }
       const reader = new FileReader();
       reader.onload = () => { editorState[type] = reader.result; setPreview(type, reader.result); };
       reader.readAsDataURL(file);
@@ -294,14 +292,13 @@
 
     function saveDistrict() {
       const name = $('#districtSelect').value; const intro = $('#introInput').value.trim(); const sortValue = $('#sortInput').value.trim(); const sort = Number(sortValue); const isLink = $('input[name="zoneType"]:checked').value === 'link';
-      setHelp('icon'); setHelp('cover');
+      setHelp('icon');
       if (!name) return showToast('请选择区县');
       if (!intro) return showToast('请输入区县简介');
       if (sortValue === '' || !Number.isInteger(sort) || sort < 0) return showToast('区县排序请输入非负整数');
       if (!editorState.icon) { setHelp('icon', '请上传区县 icon', true); return showToast('请完善必填信息'); }
-      if (!editorState.cover) { setHelp('cover', '请上传封面图（PNG/JPG）', true); return showToast('请完善必填信息'); }
       if (isLink && !$('#linkInput').value.trim()) return showToast('请输入专区链接');
-      const data = { name, intro, sort, type: isLink ? '链接' : '默认', icon: editorState.icon, cover: editorState.cover, video: editorState.video };
+      const data = { name, intro, sort, type: isLink ? '链接' : '默认', icon: editorState.icon, video: editorState.video };
       if (editorState.editingId) Object.assign(districts.find(item => item.id === editorState.editingId), data);
       else districts.push({ id: Date.now(), ...data });
       renderTable(); closeEditor(); showToast(editorState.editingId ? '专区编辑成功' : '专区新增成功');
@@ -319,9 +316,7 @@
     });
     $('#introInput').addEventListener('input', event => { $('#introCount').textContent = event.target.value.length; });
     $('#iconUploadButton').addEventListener('click', () => $('#iconInput').click());
-    $('#coverUploadButton').addEventListener('click', () => $('#coverInput').click());
     $('#iconInput').addEventListener('change', event => handleImage(event.target.files[0], 'icon'));
-    $('#coverInput').addEventListener('change', event => handleImage(event.target.files[0], 'cover'));
     $$('[data-remove-upload]').forEach(button => button.addEventListener('click', () => { const type = button.dataset.removeUpload; editorState[type] = ''; setPreview(type, ''); setHelp(type); }));
     $$('input[name="zoneType"]').forEach(input => input.addEventListener('change', updateZoneType));
     $('#videoUploadButton').addEventListener('click', () => $('#videoInput').click());

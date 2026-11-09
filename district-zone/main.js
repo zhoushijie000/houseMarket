@@ -701,15 +701,6 @@
     const collectionBackButton = document.getElementById("collectionBackButton");
     const searchInputEl = document.getElementById("districtSearchInput");
     const gridEl = document.getElementById("districtGrid");
-    const modalEl = document.getElementById("districtModal");
-    const modalDialogEl = document.getElementById("districtModalDialog");
-    const modalBackdropEl = document.getElementById("districtModalBackdrop");
-    const modalCloseEl = document.getElementById("districtModalClose");
-    const modalTitleEl = document.getElementById("districtModalTitle");
-    const modalLocationEl = document.getElementById("districtModalLocation");
-    const modalIntroEl = document.getElementById("districtModalIntro");
-    const modalMapEl = document.getElementById("districtModalMap");
-    const modalEnterEl = document.getElementById("districtModalEnter");
     const defaultDistrict = DISTRICT_MAP[LOCATED_DISTRICT_ID];
     const collectionDistricts = DISTRICTS.filter(function (district) {
       return district.id !== "xindu";
@@ -719,7 +710,6 @@
       selectedDistrictId = "";
     }
     let keyword = "";
-    let lastTriggerEl = null;
 
     function getFilteredDistricts() {
       if (!keyword) {
@@ -748,83 +738,20 @@
 
       gridEl.innerHTML = filteredDistricts.map(function (district) {
         const cardMeta = DISTRICT_CARD_META[district.id] || {
-          english: district.name,
           image: "./watercolor-district-atlas.png",
           position: "0% 100%",
           size: "300% auto"
         };
         return '' +
-          '<button class="district-card" type="button" data-id="' + district.id + '" aria-haspopup="dialog" style="--district-card-accent:' + district.accent + ';--district-card-image:url(&quot;' + cardMeta.image + '&quot;);--district-card-position:' + cardMeta.position + ';--district-card-size:' + cardMeta.size + '">' +
+          '<a class="district-card" href="./detail.html?district=' + district.id + '" style="--district-card-accent:' + district.accent + ';--district-card-image:url(&quot;' + cardMeta.image + '&quot;);--district-card-position:' + cardMeta.position + ';--district-card-size:' + cardMeta.size + '">' +
             '<span class="district-card__art" aria-hidden="true"></span>' +
             '<div class="district-card__head">' +
               '<div class="district-card__name">' + district.name + "</div>" +
             "</div>" +
-            '<div class="district-card__english">' + cardMeta.english + "</div>" +
             '<p class="district-card__intro">' + district.intro + "</p>" +
-          "</button>";
+          "</a>";
       }).join("");
     }
-
-    function renderModalMap(district) {
-      return '' +
-        '<div class="district-modal__watercolor-map" role="img" aria-label="成都区县水墨地图，当前为' + district.name + '" style="--marker-x:' + district.map.markerX + ";--marker-y:" + district.map.markerY + '">' +
-          '<span class="district-modal__watercolor-marker" aria-hidden="true"></span>' +
-          '<span class="district-modal__map-callout">' + district.name + "</span>" +
-        "</div>";
-    }
-
-    function openDistrictModal(district, triggerEl) {
-      if (!district || !modalEl) {
-        return;
-      }
-
-      selectedDistrictId = district.id;
-      lastTriggerEl = triggerEl || null;
-      updateQuery(district.id);
-      setPageAccent(pageEl, district);
-      modalTitleEl.textContent = district.name;
-      modalLocationEl.textContent = district.location;
-      modalIntroEl.textContent = district.intro;
-      modalMapEl.innerHTML = renderModalMap(district);
-      modalEnterEl.href = "./detail.html?district=" + district.id;
-      modalEl.hidden = false;
-      document.body.classList.add("is-district-modal-open");
-      window.requestAnimationFrame(function () {
-        modalDialogEl.focus();
-      });
-    }
-
-    function closeDistrictModal() {
-      if (!modalEl || modalEl.hidden) {
-        return;
-      }
-
-      modalEl.hidden = true;
-      selectedDistrictId = "";
-      updateQuery("");
-      setPageAccent(pageEl, defaultDistrict);
-      document.body.classList.remove("is-district-modal-open");
-      if (lastTriggerEl && document.contains(lastTriggerEl)) {
-        lastTriggerEl.focus();
-      } else if (searchInputEl) {
-        searchInputEl.focus();
-      }
-    }
-
-    gridEl.addEventListener("click", function (event) {
-      const button = event.target.closest("button[data-id]");
-      if (button) {
-        openDistrictModal(DISTRICT_MAP[button.getAttribute("data-id")], button);
-      }
-    });
-
-    modalBackdropEl.addEventListener("click", closeDistrictModal);
-    modalCloseEl.addEventListener("click", closeDistrictModal);
-    document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape" && !modalEl.hidden) {
-        closeDistrictModal();
-      }
-    });
 
     if (searchInputEl) {
       searchInputEl.addEventListener("input", function (event) {
@@ -837,7 +764,7 @@
     bindHistoryBack(collectionBackButton, "../房产超市_住进成都.html");
     renderGrid();
     if (selectedDistrictId && DISTRICT_MAP[selectedDistrictId]) {
-      openDistrictModal(DISTRICT_MAP[selectedDistrictId]);
+      window.location.replace("./detail.html?district=" + selectedDistrictId);
     }
   }
 
