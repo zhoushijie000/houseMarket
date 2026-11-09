@@ -3671,6 +3671,37 @@
       padding: 0 0 calc(126px + env(safe-area-inset-bottom, 0px));
     }
 
+    .system-notice-button {
+      position: absolute;
+      right: 16px;
+      bottom: calc(94px + env(safe-area-inset-bottom, 0px));
+      z-index: 5;
+      display: grid;
+      justify-items: center;
+      gap: 4px;
+      padding: 10px;
+      border: 1px solid #dbe7f3;
+      border-radius: 16px;
+      background: white;
+      color: #1768af;
+      box-shadow: 0 3px 14px #20466b24;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .system-notice-button__badge {
+      position: absolute;
+      top: -6px;
+      right: -5px;
+      min-width: 18px;
+      padding: 0 5px;
+      border-radius: 12px;
+      background: #d93038;
+      color: white;
+      font: 600 12px/18px sans-serif;
+      text-align: center;
+    }
+
     #messageScreen .message-page {
       background: #ffffff;
     }
@@ -7989,6 +8020,13 @@
             <div class="message-list" id="messageList"></div>
           </section>
         </div>
+        <button class="system-notice-button" type="button" data-open-message="message-shanghai-001">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 17h14l-2-3V9a5 5 0 0 0-10 0v5zM10 20a2.5 2.5 0 0 0 4 0"/>
+          </svg>
+          系统通知
+          <span class="system-notice-button__badge" id="systemNoticeBadge" hidden></span>
+        </button>
         <nav class="bottom-tabbar" aria-label="底部导航">
           <button class="bottom-tabbar__item" id="messageTabHome" type="button" aria-label="首页">
             <span class="bottom-tabbar__icon"><svg viewBox="0 0 24 24"><path d="m4 11 8-7 8 7v8a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1Z" /></svg></span>
@@ -10319,7 +10357,15 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
       }
     }
 
+    const systemNoticeBadge = document.getElementById("systemNoticeBadge");
+    const systemNoticeButton = systemNoticeBadge.closest("button");
+    const systemNotice = messageNotifications.find(item => item.id === systemNoticeButton.dataset.openMessage);
+
     function renderMessageList() {
+      const unread = systemNotice?.unreadCount || 0;
+      systemNoticeBadge.hidden = unread === 0;
+      systemNoticeBadge.textContent = unread > 99 ? "99+" : String(unread);
+      systemNoticeButton.setAttribute("aria-label", unread ? `系统通知，${unread}条待阅读` : "系统通知");
       if (!messageList) {
         return;
       }
@@ -10517,6 +10563,10 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
     }
 
     function openMessageDetailScreen(messageId, advisorRoute = null, options = {}) {
+      if (systemNotice && messageId === systemNotice.id && systemNotice.unreadCount) {
+        systemNotice.unreadCount = 0;
+        renderMessageList();
+      }
       messageDetailReturnTarget = options.returnTarget || "message";
       renderMessageDetail(messageId, advisorRoute, options.customerRoute || null);
       showScreen("messageDetail");
@@ -11721,8 +11771,8 @@ const ACTIVITY_SIGNUP_DONE_TEXT = "您已完成本次活动报名。";
         openHomeAiAnalysis();
       });
     }
-    if (messageList) {
-      messageList.addEventListener("click", (event) => {
+    if (screens.message) {
+      screens.message.addEventListener("click", (event) => {
         const button = event.target.closest("[data-open-message]");
         if (!button) {
           return;
