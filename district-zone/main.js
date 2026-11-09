@@ -273,14 +273,14 @@
 
   const LOCATED_DISTRICT_ID = "gaoxin";
 
-  const DISTRICT_CARD_META = {
-    tianfu: { english: "SICHUAN TIANFU NEW AREA", image: "./assets/district-tianfu.png", position: "50% 100%", size: "auto 100%" },
-    gaoxin: { english: "CHENGDU HIGH-TECH ZONE", image: "./assets/district-gaoxin.png", position: "58% 100%", size: "auto 100%" },
-    jinjiang: { english: "JINJIANG DISTRICT", image: "./assets/district-jinjiang.png", position: "72% 100%", size: "auto 100%" },
-    qingyang: { english: "QINGYANG DISTRICT", image: "./assets/district-qingyang.png", position: "76% 100%", size: "auto 100%" },
-    wuhou: { english: "WUHOU DISTRICT", image: "./assets/district-wuhou.png", position: "38% 100%", size: "auto 100%" },
-    chenghua: { english: "CHENGHUA DISTRICT", image: "./assets/district-chenghua.png", position: "68% 100%", size: "auto 100%" },
-    xindu: { english: "XINDU DISTRICT", image: "./watercolor-district-atlas.png", position: "0% 100%", size: "300% auto" }
+  const collectionImages = {
+    tianfu: "./assets/collection-tianfu.png",
+    gaoxin: "./assets/collection-gaoxin.png",
+    jinjiang: "./assets/collection-jinjiang.png",
+    qingyang: "./assets/collection-qingyang.png",
+    wuhou: "./assets/collection-wuhou.png",
+    chenghua: "./assets/collection-chenghua.png",
+    xindu: "./assets/collection-xindu.png",
   };
 
   const DISTRICT_VIDEO_COVER_PRESETS = {
@@ -702,13 +702,8 @@
     const searchInputEl = document.getElementById("districtSearchInput");
     const gridEl = document.getElementById("districtGrid");
     const defaultDistrict = DISTRICT_MAP[LOCATED_DISTRICT_ID];
-    const collectionDistricts = DISTRICTS.filter(function (district) {
-      return district.id !== "xindu";
-    });
-    let selectedDistrictId = getDistrictFromQuery("");
-    if (selectedDistrictId === "xindu") {
-      selectedDistrictId = "";
-    }
+    const collectionDistricts = Object.keys(collectionImages).map(id => DISTRICT_MAP[id]);
+    const selectedDistrictId = getDistrictFromQuery("");
     let keyword = "";
 
     function getFilteredDistricts() {
@@ -737,13 +732,8 @@
       }
 
       gridEl.innerHTML = filteredDistricts.map(function (district) {
-        const cardMeta = DISTRICT_CARD_META[district.id] || {
-          image: "./watercolor-district-atlas.png",
-          position: "0% 100%",
-          size: "300% auto"
-        };
         return '' +
-          '<a class="district-card" href="./detail.html?district=' + district.id + '" style="--district-card-accent:' + district.accent + ';--district-card-image:url(&quot;' + cardMeta.image + '&quot;);--district-card-position:' + cardMeta.position + ';--district-card-size:' + cardMeta.size + '">' +
+          '<a class="district-card" href="./detail.html?district=' + district.id + '" style="--district-card-image:url(&quot;' + collectionImages[district.id] + '&quot;)">' +
             '<span class="district-card__art" aria-hidden="true"></span>' +
             '<div class="district-card__head">' +
               '<div class="district-card__name">' + district.name + "</div>" +
