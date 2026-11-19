@@ -43,7 +43,7 @@ function render(){
  $('count').textContent='共 '+list.length+' 条';
 }
 function preview(type,value){$(type+'Preview').innerHTML=value?'<img src="'+esc(value)+'" alt="图片预览">':'＋'}
-function syncRole(){const a=advisorPage||$('role').value==='置业顾问';$('advisorFields').hidden=!advisorPage;$('wechatField').hidden=!advisorPage;$('wechat').required=advisorPage;$('wechat').disabled=!advisorPage;$('roleField').hidden=advisorPage;$('passwordNotice').hidden=a;if($('idNumber')){$('idNumber').required=!a;$('idLabel').classList.toggle('required',!a);$('idNumber').placeholder=a?'请输入身份证号（选填）':'请输入身份证号';}}
+function syncRole(){const a=advisorPage||$('role').value==='置业顾问';$('advisorFields').hidden=!a;$('wechatField').hidden=!advisorPage;$('wechat').required=advisorPage;$('wechat').disabled=!advisorPage;$('roleField').hidden=advisorPage;$('passwordNotice').hidden=a;if($('idNumber')){$('idNumber').required=!a;$('idLabel').classList.toggle('required',!a);$('idNumber').placeholder=a?'请输入身份证号（选填）':'请输入身份证号';}}
 function openEditor(id=null){
  if(advisorPage&&id===null)return;
  editing=id;const p=people.find(p=>p.id===id);editingOrg=p?.org??org;$('personForm').reset();$('editorTitle').textContent=(p?'编辑':'新增')+(advisorPage?'置业顾问':'人员');
