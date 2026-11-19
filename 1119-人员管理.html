@@ -43,7 +43,7 @@ function render(){
  $('count').textContent='共 '+list.length+' 条';
 }
 function preview(type,value){$(type+'Preview').innerHTML=value?'<img src="'+esc(value)+'" alt="图片预览">':'＋'}
-function syncRole(){const a=advisorPage||$('role').value==='置业顾问';$('advisorFields').hidden=!advisorPage;$('wechatField').hidden=!a;$('wechat').required=a;$('wechat').disabled=!a;$('roleField').hidden=advisorPage;$('passwordNotice').hidden=a;if($('idNumber')){$('idNumber').required=!a;$('idLabel').classList.toggle('required',!a);$('idNumber').placeholder=a?'请输入身份证号（选填）':'请输入身份证号';}}
+function syncRole(){const a=advisorPage||$('role').value==='置业顾问';$('advisorFields').hidden=!advisorPage;$('wechatField').hidden=!advisorPage;$('wechat').required=advisorPage;$('wechat').disabled=!advisorPage;$('roleField').hidden=advisorPage;$('passwordNotice').hidden=a;if($('idNumber')){$('idNumber').required=!a;$('idLabel').classList.toggle('required',!a);$('idNumber').placeholder=a?'请输入身份证号（选填）':'请输入身份证号';}}
 function openEditor(id=null){
  if(advisorPage&&id===null)return;
  editing=id;const p=people.find(p=>p.id===id);editingOrg=p?.org??org;$('personForm').reset();$('editorTitle').textContent=(p?'编辑':'新增')+(advisorPage?'置业顾问':'人员');
@@ -55,8 +55,8 @@ for(const type of ['avatar','qr'])$(type+'File').onchange=async e=>{const file=e
 $('personForm').onsubmit=async e=>{
  e.preventDefault();if(pendingUploads)return;const old=people.find(p=>p.id===editing),a=advisorPage||$('role').value==='置业顾问',name=$('name').value.trim(),phone=advisorPage?old.phone:$('phone').value.trim();
  if(!name){$('formError').textContent='请输入姓名';return}if(people.some(p=>p.phone===phone&&p.id!==editing)){$('formError').textContent='该手机号已存在于人员管理中，请勿重复添加';return}
- if(a&&!$('wechat').value.trim()){$('formError').textContent='请填写微信号';return}
- const data={...old,id:editing??Date.now(),org:editingOrg,category:a?'advisor':'staff',name,phone,idNumber:advisorPage?(old?.idNumber||''):$('idNumber').value.trim().toUpperCase(),role:a?'置业顾问':$('role').value,projects:old?.projects||[],...(a?{avatar,qr,wechat:$('wechat').value.trim(),phases:old?phases(old):[]}:{})};
+ if(advisorPage&&!$('wechat').value.trim()){$('formError').textContent='请填写微信号';return}
+ const data={...old,id:editing??Date.now(),org:editingOrg,category:a?'advisor':'staff',name,phone,idNumber:advisorPage?(old?.idNumber||''):$('idNumber').value.trim().toUpperCase(),role:a?'置业顾问':$('role').value,projects:old?.projects||[],...(a?{avatar,qr,wechat:advisorPage?$('wechat').value.trim():(old?.wechat||''),phases:old?phases(old):[]}:{})};
  const previous=people;people=editing?people.map(p=>p.id===editing?data:p):[...people,data];$('save').disabled=true;
  const saved=await persist();$('save').disabled=false;if(!saved){people=previous;$('formError').textContent='本地存储空间不足或不可用，请检查浏览器存储权限后重试';return}$('editor').close();render();notify('保存成功');
 };
