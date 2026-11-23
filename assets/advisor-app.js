@@ -1,24 +1,25 @@
 (() => {
-  const $ = id => document.getElementById(id), key = 'houseMarket.advisor.v1';
+  const $ = id => document.getElementById(id), storageSuffix = window.advisorDemo?.storageSuffix || '';
+  const key = 'houseMarket.advisor.v1' + storageSuffix, profileKey = 'houseMarket.advisor.profile.v1' + storageSuffix;
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const mask = value => window.BlockedKeywords ? BlockedKeywords.mask(value) : value;
   let customers = structuredClone(window.advisorCustomerSeed).map(c => ({...c, unread: c.status === 'uncontacted' ? 1 : 0}));
   try { const saved = JSON.parse(localStorage.getItem(key)); if (Array.isArray(saved) && saved.length && saved.every(c => customers.some(seed => seed.id === c.id) && typeof c.name === 'string' && Array.isArray(c.dialog) && Array.isArray(c.dynamics))) customers = saved; } catch {}
   customers.forEach(c => {
     const seed = window.advisorCustomerSeed.find(item => item.id === c.id);
-    if(c.activityVersion!==2){c.activities=structuredClone(seed.activities);c.activityVersion=2;}
+    if(c.activityVersion!==3 || !Array.isArray(c.activities)){c.activities=structuredClone(seed.activities);c.activityVersion=3;}
     const timestamp = c.lastMessageAt || c.lastSent || seed?.lastMessageAt;
     c.lastMessageAt = Number.isFinite(new Date(timestamp).getTime()) ? new Date(timestamp).toISOString() : seed.lastMessageAt;
     c.unread = Math.max(0, Math.floor(Number(c.unread) || 0));
   });
   const messageTime = c => new Intl.DateTimeFormat('zh-CN', { timeZone: 'Asia/Shanghai', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date(c.lastMessageAt));
   let unreadOnly = false, current = null, view = 'messages';
-  let profile = {name:'李晓雨', wechat:'AJCD-LXY2026'};
-  try { const saved=JSON.parse(localStorage.getItem('houseMarket.advisor.profile.v1')); if(saved && typeof saved.name==='string' && saved.name.trim() && saved.name.length<=20 && typeof saved.wechat==='string' && saved.wechat.length<=32) profile=saved; } catch {}
+  let profile = { name: window.advisorDemo?.name || '李晓雨', wechat: window.advisorDemo?.wechat || 'AJCD-LXY2026' };
+  try { const saved=JSON.parse(localStorage.getItem(profileKey)); if(saved && typeof saved.name==='string' && saved.name.trim() && saved.name.length<=20 && typeof saved.wechat==='string' && saved.wechat.length<=32) profile=saved; } catch {}
   const validAvatar = value => typeof value === 'string' && /^data:image\/(png|jpeg|webp);base64,/.test(value);
   let draftAvatar = '', avatarReadVersion = 0;
-  function renderMine() { $('content').innerHTML=$('mineTemplate').innerHTML; document.querySelector('.mine-profile__phone').textContent=profile.name; if(validAvatar(profile.avatar)) document.querySelector('.mine-profile__avatar img').src=profile.avatar; }
-  window.addEventListener('advisor-card-saved',e=>{if(e.detail.name)profile.name=e.detail.name;if(e.detail.name||validAvatar(e.detail.avatar)){if(validAvatar(e.detail.avatar))profile.avatar=e.detail.avatar;try{localStorage.setItem('houseMarket.advisor.profile.v1',JSON.stringify(profile));}catch{}if(view==='mine')renderMine();}});
+  function renderMine() { $('content').innerHTML=$('mineTemplate').innerHTML; document.querySelector('.mine-profile__phone').textContent=profile.name; if(window.advisorDemo) $('mineRoleLabel').textContent=window.advisorProjects[0]; if(validAvatar(profile.avatar)) document.querySelector('.mine-profile__avatar img').src=profile.avatar; }
+  window.addEventListener('advisor-card-saved',e=>{if(e.detail.name)profile.name=e.detail.name;if(e.detail.name||validAvatar(e.detail.avatar)){if(validAvatar(e.detail.avatar))profile.avatar=e.detail.avatar;try{localStorage.setItem(profileKey,JSON.stringify(profile));}catch{}if(view==='mine')renderMine();}});
   const drafts = new Map();
   function toast(text) { $('toast').textContent = text; $('toast').hidden = false; clearTimeout(toast.timer); toast.timer = setTimeout(() => $('toast').hidden = true, 2600); }
   function save() { try { localStorage.setItem(key, JSON.stringify(customers)); } catch { toast('当前浏览器未能保存，请勿刷新页面'); } }
@@ -26,7 +27,27 @@
   const followsEstate = c => c.activities.some(d => d.action === '关注楼盘' && (d.estate || c.estate) === c.estate);
   const avatar = c => `<span class="avatar">${esc(c.name.slice(0,1))}</span>`;
   const activityText = (c,d) => d.action==='关注楼盘'?'已关注'+(d.estate||c.estate)+'楼盘':d.action==='浏览房源'?'浏览房源：3栋1单元1401-120㎡ -542万':d.action==='浏览户型'?'浏览：A户型 142㎡ 3室2厅1卫':d.action;
-  function customerActivity(c){return `<div class="customer-activities"><h3>客户动态</h3>${c.activities.map(d=>`<div class="customer-activity"><div>${esc(activityText(c,d))}</div><time>${esc(d.time)}</time></div>`).join('')||'<p class="muted">暂无客户动态</p>'}</div>`;}
+  const activityPhases = new Map();
+  const advisorEstates = [...new Set(window.advisorProjects.filter(Boolean))];
+  const activityEstate = (c, d) => d.estate || c.estate;
+  function activityRows(c, estate, detail) {
+    return c.activities.filter(d => activityEstate(c, d) === estate &&
+      (!detail || ['关注楼盘', '浏览户型', '浏览房源'].includes(d.action)))
+      .map(d => detail
+        ? `<div class="event"><small>${esc(d.time)}</small><span class="activity-nickname">${esc(d.nickname || c.name)}</span> <span>${esc(activityText(c, d))}</span></div>`
+        : `<div class="customer-activity"><div>${esc(activityText(c, d))}</div><time>${esc(d.time)}</time></div>`)
+      .join('') || '<p class="muted">暂无客户动态</p>';
+  }
+  function customerActivity(c, detail = false) {
+    const selected = activityPhases.get(c.id) || advisorEstates[0] || c.estate;
+    return `<section class="${detail ? 'card timeline' : 'customer-activities'}" data-activity-customer="${esc(c.id)}">
+      ${detail ? '<h2>客户动态</h2>' : '<h3>客户动态</h3>'}
+      ${advisorEstates.length > 1 ? `<div class="activity-phases" role="group" aria-label="按楼盘分期筛选">
+        ${advisorEstates.map(estate => `<button type="button" data-activity-phase="${esc(estate)}" aria-pressed="${estate === selected}">${esc(estate)}</button>`).join('')}
+      </div>` : ''}
+      <div data-activity-rows aria-live="polite">${activityRows(c, selected, detail)}</div>
+    </section>`;
+  }
   function renderList() {
     const q = view === 'customers' ? $('search').value.trim() : ''; 
     const list = customers.filter(c => (!q || (c.name+c.phone+c.estate).includes(q)) && (view==='messages' ? !unreadOnly || c.unread>0 : true));
@@ -40,7 +61,7 @@
     </button>`:`<section class="card"><div class="row"><a class="customer-summary" href="#customer/${c.id}">${avatar(c)}<div class="grow"><strong>${esc(c.name)}</strong><p class="muted">${esc(c.phone)}</p></div></a><button type="button" class="call-customer" data-call="${c.id}" aria-label="拨打电话" title="拨打电话"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z"/></svg></button></div>${followsEstate(c)?'<span class="followed-estate-tag">已关注您的楼盘</span>':''}${customerActivity(c)}<a class="customer-chat-button" href="#chat/${c.id}?from=customers">在线沟通</a></section>`).join(''):'<div class="empty">暂无符合条件的'+(view==='messages'?'会话':'客户')+'<br>试试调整筛选或搜索条件</div>';
   }
   function renderDetail(c) {
-    $('content').innerHTML=`<section class="card"><div class="row">${avatar(c)}<div class="grow"><strong>${esc(c.name)}</strong><p class="muted">${esc(c.phone)}</p></div>${followsEstate(c)?'<span class="badge">已关注您的楼盘</span>':''}</div><dl><dt>意向楼盘</dt><dd>${esc(c.estate)}</dd><dt>客户来源</dt><dd>${esc(c.source)}</dd></dl><div class="actions"><button type="button" data-call="${c.id}">拨打电话</button><a class="primary" href="#chat/${c.id}?from=customer">在线发送消息</a></div></section><section class="card timeline"><h2>客户动态</h2>${c.activities.filter(d=>['关注楼盘','浏览户型','浏览房源'].includes(d.action)).map(d=>`<div class="event"><small>${esc(d.time)}</small><span class="activity-nickname">${esc(d.nickname||c.name)}</span> <span>${esc(activityText(c,d))}</span></div>`).join('') || '<p class="muted">暂无客户动态</p>'}</section>`;
+    $('content').innerHTML=`<section class="card"><div class="row">${avatar(c)}<div class="grow"><strong>${esc(c.name)}</strong><p class="muted">${esc(c.phone)}</p></div>${followsEstate(c)?'<span class="badge">已关注您的楼盘</span>':''}</div><dl><dt>意向楼盘</dt><dd>${esc(c.estate)}</dd><dt>客户来源</dt><dd>${esc(c.source)}</dd></dl><div class="actions"><button type="button" data-call="${c.id}">拨打电话</button><a class="primary" href="#chat/${c.id}?from=customer">在线发送消息</a></div></section>${customerActivity(c, true)}`;
   }
   function renderChat(c) {
     $('content').innerHTML=`<div class="message-contact"><div class="message-contact__avatar">${esc(c.name.slice(0,1))}</div><div class="message-contact__info"><div class="message-contact__name">${esc(c.name)}</div><div class="message-contact__project">${esc(c.phone)}</div></div><button type="button" class="call-customer" data-call="${c.id}" aria-label="拨打电话" title="拨打电话"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z"/></svg></button></div><div class="message-thread__body"><div class="message-thread__time">${messageTime(c)}</div><div class="message-thread__conversation">${c.dialog.map(m=>`<div class="message-thread__reply ${m.role==='user'?'is-user':''}">${m.role==='user'?'':`<div class="message-thread__avatar">${esc(c.name.slice(0,1))}</div>`}<span>${m.image&&/^data:image\/(png|jpeg);base64,/.test(m.image)?`<img src="${m.image}" alt="发送的图片">`:esc(mask(m.text)).replace(/\n/g,'<br>')}</span></div>`).join('')}</div></div>`;
@@ -69,6 +90,18 @@
   }
   $('composer').addEventListener('submit',e=>{e.preventDefault();const text=$('messageInput').value.trim();if(!text||text.length>1000)return;send({text});$('messageInput').value='';drafts.delete(current.id);});
   $('search').addEventListener('input',renderList);
+  $('content').addEventListener('click', e => {
+    const button = e.target.closest('[data-activity-phase]');
+    if (!button) return;
+    const section = button.closest('[data-activity-customer]');
+    const customer = customers.find(c => c.id === section.dataset.activityCustomer);
+    const estate = button.dataset.activityPhase;
+    activityPhases.set(customer.id, estate);
+    section.querySelectorAll('[data-activity-phase]').forEach(tab => {
+      tab.setAttribute('aria-pressed', String(tab === button));
+    });
+    section.querySelector('[data-activity-rows]').innerHTML = activityRows(customer, estate, view === 'customer');
+  });
   $('filters').onclick=e=>{const b=e.target.closest('button');if(!b)return;unreadOnly=b.dataset.unread==='unread';renderList();};
   $('content').onclick=e=>{const item=e.target.closest('[data-mine-placeholder]');if(item){toast(item.dataset.minePlaceholder+'功能已保留');return;}const message=e.target.closest('[data-open-message]');if(message){location.hash='chat/'+message.dataset.openMessage;return;}const callButton=e.target.closest('[data-call]');const callCustomer=callButton?customers.find(c=>c.id===callButton.dataset.call):null;if(callCustomer){ if(callCustomer.hasCalledAdvisor!==true){toast('客户尚未拨打您的电话，暂不可回拨');return;} $('callNumber').textContent='95013 转 '+callCustomer.privacyNumber.slice(-6); $('callDialog').showModal(); }};
   $('phrasesToggle').onclick=()=>{$('phrases').hidden=!$('phrases').hidden;$('phrasesToggle').setAttribute('aria-expanded',String(!$('phrases').hidden));};
@@ -105,7 +138,7 @@
     e.preventDefault();if($('saveSettings').disabled)return;const name=$('advisorName').value.trim(),wechat=$('advisorWechat').value.trim();$('settingsError').hidden=false;
     if(!name||name.length>20||wechat.length>32){$('settingsError').textContent='请填写20字以内的昵称，微信号不超过32字';return;}
     const next={...profile,name,wechat,avatar:draftAvatar};
-    try {localStorage.setItem('houseMarket.advisor.profile.v1',JSON.stringify(next));} catch {$('settingsError').textContent='保存失败，请尝试更小的头像或检查浏览器存储后重试';return;}
+    try {localStorage.setItem(profileKey,JSON.stringify(next));} catch {$('settingsError').textContent='保存失败，请尝试更小的头像或检查浏览器存储后重试';return;}
     profile=next;if(view==='mine')renderMine();$('settingsError').textContent='已保存';$('nicknameChoice').hidden=true;
   });
   $('closeCall').onclick=()=>$('callDialog').close();
