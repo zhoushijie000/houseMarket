@@ -1,14 +1,3 @@
-const advisorDemoProfiles = {
-  'single-1': { name: '陈晓琳', wechat: 'AJCD-CXL', projects: ['招商·时代花园'] },
-  'single-2': { name: '周明远', wechat: 'AJCD-ZMY', projects: ['招商·时代花园二期'] }
-};
-const advisorDemoId = new URLSearchParams(location.search).get('advisor');
-window.advisorDemo = Object.hasOwn(advisorDemoProfiles, advisorDemoId)
-  ? { ...advisorDemoProfiles[advisorDemoId], storageSuffix: '.' + advisorDemoId }
-  : null;
-window.advisorProjects = window.advisorDemo?.projects ??
-  window.advisorProjects ?? ['招商·时代花园', '招商·时代花园二期'];
-
     window.advisorCustomerSeed = [
       {
         id: "customer-001",
@@ -113,10 +102,3 @@ window.advisorCustomerSeed.forEach(c => {
     c.activities.push({ nickname: c.name, action: '浏览户型', estate: '招商·时代花园二期', time: '2026-10-11 19:42' });
   }
 });
-
-if (window.advisorDemo) {
-  window.advisorCustomerSeed = window.advisorCustomerSeed.filter(c =>
-    window.advisorProjects.includes(c.estate) ||
-    c.activities.some(d => window.advisorProjects.includes(d.estate))
-  );
-}

@@ -1,6 +1,5 @@
 (() => {
-  const $ = id => document.getElementById(id), storageSuffix = window.advisorDemo?.storageSuffix || '';
-  const key = 'houseMarket.advisor.v1' + storageSuffix, profileKey = 'houseMarket.advisor.profile.v1' + storageSuffix;
+  const $ = id => document.getElementById(id), key = 'houseMarket.advisor.v1', profileKey = 'houseMarket.advisor.profile.v1';
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const mask = value => window.BlockedKeywords ? BlockedKeywords.mask(value) : value;
   let customers = structuredClone(window.advisorCustomerSeed).map(c => ({...c, unread: c.status === 'uncontacted' ? 1 : 0}));
@@ -14,11 +13,11 @@
   });
   const messageTime = c => new Intl.DateTimeFormat('zh-CN', { timeZone: 'Asia/Shanghai', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date(c.lastMessageAt));
   let unreadOnly = false, current = null, view = 'messages';
-  let profile = { name: window.advisorDemo?.name || '李晓雨', wechat: window.advisorDemo?.wechat || 'AJCD-LXY2026' };
+  let profile = { name: '李晓雨', wechat: 'AJCD-LXY2026' };
   try { const saved=JSON.parse(localStorage.getItem(profileKey)); if(saved && typeof saved.name==='string' && saved.name.trim() && saved.name.length<=20 && typeof saved.wechat==='string' && saved.wechat.length<=32) profile=saved; } catch {}
   const validAvatar = value => typeof value === 'string' && /^data:image\/(png|jpeg|webp);base64,/.test(value);
   let draftAvatar = '', avatarReadVersion = 0;
-  function renderMine() { $('content').innerHTML=$('mineTemplate').innerHTML; document.querySelector('.mine-profile__phone').textContent=profile.name; if(window.advisorDemo) $('mineRoleLabel').textContent=window.advisorProjects[0]; if(validAvatar(profile.avatar)) document.querySelector('.mine-profile__avatar img').src=profile.avatar; }
+  function renderMine() { $('content').innerHTML=$('mineTemplate').innerHTML; document.querySelector('.mine-profile__phone').textContent=profile.name; if(validAvatar(profile.avatar)) document.querySelector('.mine-profile__avatar img').src=profile.avatar; }
   window.addEventListener('advisor-card-saved',e=>{if(e.detail.name)profile.name=e.detail.name;if(e.detail.name||validAvatar(e.detail.avatar)){if(validAvatar(e.detail.avatar))profile.avatar=e.detail.avatar;try{localStorage.setItem(profileKey,JSON.stringify(profile));}catch{}if(view==='mine')renderMine();}});
   const drafts = new Map();
   function toast(text) { $('toast').textContent = text; $('toast').hidden = false; clearTimeout(toast.timer); toast.timer = setTimeout(() => $('toast').hidden = true, 2600); }
@@ -28,7 +27,6 @@
   const avatar = c => `<span class="avatar">${esc(c.name.slice(0,1))}</span>`;
   const activityText = (c,d) => d.action==='关注楼盘'?'已关注'+(d.estate||c.estate)+'楼盘':d.action==='浏览房源'?'浏览房源：3栋1单元1401-120㎡ -542万':d.action==='浏览户型'?'浏览：A户型 142㎡ 3室2厅1卫':d.action;
   const activityPhases = new Map();
-  const advisorEstates = [...new Set(window.advisorProjects.filter(Boolean))];
   const activityEstate = (c, d) => d.estate || c.estate;
   function activityRows(c, estate, detail) {
     return c.activities.filter(d => activityEstate(c, d) === estate &&
@@ -39,11 +37,12 @@
       .join('') || '<p class="muted">暂无客户动态</p>';
   }
   function customerActivity(c, detail = false) {
-    const selected = activityPhases.get(c.id) || advisorEstates[0] || c.estate;
+    const estates = [...new Set([c.estate, ...c.activities.map(d => activityEstate(c, d))].filter(Boolean))];
+    const selected = activityPhases.get(c.id) || estates[0];
     return `<section class="${detail ? 'card timeline' : 'customer-activities'}" data-activity-customer="${esc(c.id)}">
       ${detail ? '<h2>客户动态</h2>' : '<h3>客户动态</h3>'}
-      ${advisorEstates.length > 1 ? `<div class="activity-phases" role="group" aria-label="按楼盘分期筛选">
-        ${advisorEstates.map(estate => `<button type="button" data-activity-phase="${esc(estate)}" aria-pressed="${estate === selected}">${esc(estate)}</button>`).join('')}
+      ${estates.length > 1 ? `<div class="activity-phases" role="group" aria-label="按楼盘分期筛选">
+        ${estates.map(estate => `<button type="button" data-activity-phase="${esc(estate)}" aria-pressed="${estate === selected}">${esc(estate)}</button>`).join('')}
       </div>` : ''}
       <div data-activity-rows aria-live="polite">${activityRows(c, selected, detail)}</div>
     </section>`;
