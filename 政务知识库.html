@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>知识库 - 成都住建线上房产超市管理平台</title>
+  <link rel="stylesheet" href="./assets/government-nav.css">
+  <link rel="stylesheet" href="./assets/government-library.css">
+  <script defer src="./assets/policy-catalog.js"></script>
+  <script defer src="./assets/government-library-storage.js"></script>
+  <script defer src="./assets/government-library.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <a class="brand-home" href="./0715-房源展示价格管理.html">
+        <span class="brand-logo" aria-hidden="true"></span>
+        成都住建线上房产超市管理平台
+      </a>
+      <span class="agency" id="agencyName">成都市住房和城乡建设局</span>
+    </div>
+    <nav class="topnav" aria-label="平台导航">
+      <a href="./0715-房源展示价格管理.html">项目</a>
+      <a href="./registration-workbench/admin.html">申请</a>
+      <a href="./0821-直播管理.html">运营</a>
+      <a href="./网签成交.html">统计</a>
+      <a href="./0831-客户管理.html">客户</a>
+      <details class="government-nav" name="admin-navigation">
+        <summary class="is-current">政务</summary>
+        <div class="government-nav__links">
+          <a href="./购房政策.html">购房政策</a>
+          <a href="./政务知识库.html" aria-current="page">知识库</a>
+        </div>
+      </details>
+      <a href="./1119-人员管理.html">管理</a>
+      <a href="./1102-小程序管理.html">系统</a>
+    </nav>
+    <div class="account">
+      <span class="account-avatar" aria-hidden="true"></span>
+      <span class="account-name" id="accountName">周世杰</span>
+    </div>
+  </header>
+
+  <div class="workspace-tabs"><h1 class="workspace-tab" id="pageTitle">知识库</h1></div>
+  <main class="page" aria-labelledby="pageTitle">
+    <form id="searchForm" class="filter-card">
+      <label class="filter-item" for="keyword">资料名称
+        <input id="keyword" type="search" placeholder="请输入文件或文件夹名称">
+      </label>
+      <label class="filter-item" id="districtFilterField" for="districtFilter" hidden>区市县
+        <select id="districtFilter"></select>
+      </label>
+      <div class="filter-actions">
+        <button class="btn primary" type="submit">查询</button>
+        <button class="btn" type="reset">重置</button>
+      </div>
+    </form>
+
+    <section class="list-card" aria-label="资料列表">
+      <div class="library-toolbar" id="uploadActions" hidden>
+        <button type="button" class="btn primary" id="uploadFiles">上传文档</button>
+        <button type="button" class="btn" id="uploadFolder">上传文件夹</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <colgroup>
+            <col><col class="size-col"><col id="scopeCol" class="scope-col"><col class="time-col"><col class="action-col">
+          </colgroup>
+          <thead><tr>
+            <th scope="col">名称</th>
+            <th scope="col">大小</th>
+            <th scope="col" id="scopeHeading">可下载区市县</th>
+            <th scope="col">上传时间</th>
+            <th scope="col">操作</th>
+          </tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <div class="table-state" id="tableState" role="status">正在加载知识库…</div>
+      </div>
+      <div class="table-footer" id="resultCount" aria-live="polite"></div>
+    </section>
+  </main>
+  <p class="toast" id="notice" role="status" hidden></p>
+
+  <dialog id="editor" aria-labelledby="dialogTitle">
+    <form id="uploadForm">
+      <div class="dialog-heading">
+        <h2 id="dialogTitle">上传文档</h2>
+        <button class="icon-button" id="closeEditor" type="button" aria-label="关闭">×</button>
+      </div>
+      <div class="dialog-body">
+        <div class="field" id="uploadField">
+          <span class="field-label" id="uploadLabel">待上传文档</span>
+          <div class="file-picker">
+            <button id="chooseFiles" class="btn" type="button">选择文档</button>
+            <input id="fileInput" type="file" multiple hidden>
+            <input id="folderInput" type="file" webkitdirectory multiple hidden>
+            <span class="muted" id="fileSummary">尚未选择文档</span>
+          </div>
+          <ul id="filePreview" class="file-preview" hidden></ul>
+        </div>
+        <p class="edit-target" id="editTarget" hidden></p>
+        <fieldset>
+          <legend>可下载区市县 <span class="required" aria-hidden="true">*</span></legend>
+          <div class="district-toolbar">
+            <span class="muted" id="selectedDistricts"></span>
+            <button class="text-button" type="button" id="toggleDistricts">全选</button>
+          </div>
+          <div id="districtOptions" class="district-options"></div>
+          <p class="muted" id="scopeHelp">所选区市县可查看并下载本次上传的文档。</p>
+        </fieldset>
+        <p id="editorError" class="error" role="alert" hidden></p>
+      </div>
+      <div class="dialog-footer">
+        <button type="button" class="btn" id="cancelEditor">取消</button>
+        <button class="btn primary" id="saveEntry">确认上传</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>
